@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import Login from './components/Login'
+import Login from './components/Login/Login'
 import Admin from './components/Admin';
 import Logout from "./components/Logout";
 

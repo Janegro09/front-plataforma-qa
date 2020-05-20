@@ -31,7 +31,7 @@ export default class Login extends Component {
         e.preventDefault();
         const { username, password } = this.state;
         // VALIDO EL NOMBRE DE USUARIO Y EL PASSWORD
-        if (username === "a" && password === "a") {
+        if (username === "admin" && password === "admin") {
             localStorage.setItem("token", "faslfhasopfjaposf");
             this.setState({
                 loggedIn: true
@@ -42,19 +42,12 @@ export default class Login extends Component {
     render() {
         // VERIFICO SI EL USUARIO SE LOGUEO CORRECTAMENTE Y REDIRIJO AL PANEL DE ADMIN
         if (this.state.loggedIn) {
-            return <Redirect to="/admin" />
+            return <Redirect to={{
+                pathname: '/admin',
+                state: this.state
+            }} />
         }
         return (
-            // <div>
-            //     <h1>Iniciar sesión</h1>
-            //     <form onSubmit={this.submitForm}>
-            //         <input type="text" placeholder="username" name="username" value={this.state.username} onChange={this.onChange} />
-            //         <br />
-            //         <input type="password" placeholder="password" name="password" value={this.state.password} onChange={this.onChange} />
-            //         <br />
-            //         <input type="submit" />
-            //     </form>
-            // </div>
             <div className="center">
                 <h1>Iniciar sesión</h1>
                 <form onSubmit={this.submitForm}>

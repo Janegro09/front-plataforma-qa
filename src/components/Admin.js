@@ -21,7 +21,7 @@ export default class Admin extends Component {
         }
         return (
             <div>
-                <h1>Página de administrador, solo la soga Maciucci puede acceder</h1>
+                <h1>Bienvenido {this.props.location.state.username} !!</h1>
                 <Link to="/logout">Cerrar sesión</Link>
             </div>
         )

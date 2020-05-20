@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
+import './Login.css';
 
 export default class Login extends Component {
     constructor(props) {
@@ -30,7 +31,7 @@ export default class Login extends Component {
         e.preventDefault();
         const { username, password } = this.state;
         // VALIDO EL NOMBRE DE USUARIO Y EL PASSWORD
-        if (username === "lasoga" && password === "maciucci") {
+        if (username === "a" && password === "a") {
             localStorage.setItem("token", "faslfhasopfjaposf");
             this.setState({
                 loggedIn: true
@@ -44,14 +45,34 @@ export default class Login extends Component {
             return <Redirect to="/admin" />
         }
         return (
-            <div>
+            // <div>
+            //     <h1>Iniciar sesión</h1>
+            //     <form onSubmit={this.submitForm}>
+            //         <input type="text" placeholder="username" name="username" value={this.state.username} onChange={this.onChange} />
+            //         <br />
+            //         <input type="password" placeholder="password" name="password" value={this.state.password} onChange={this.onChange} />
+            //         <br />
+            //         <input type="submit" />
+            //     </form>
+            // </div>
+            <div className="center">
                 <h1>Iniciar sesión</h1>
                 <form onSubmit={this.submitForm}>
-                    <input type="text" placeholder="username" name="username" value={this.state.username} onChange={this.onChange} />
-                    <br />
-                    <input type="password" placeholder="password" name="password" value={this.state.password} onChange={this.onChange} />
-                    <br />
-                    <input type="submit" />
+                    <div className="txt_field">
+                        <input type="text" name="username" value={this.state.username} onChange={this.onChange} required />
+                        <span></span>
+                        <label>Nombre de usuario</label>
+                    </div>
+                    <div className="txt_field">
+                        <input type="password" name="password" value={this.state.password} onChange={this.onChange} required />
+                        <span></span>
+                        <label>Contraseña</label>
+                    </div>
+                    <div className="pass">Olvidaste tu contraseña?</div>
+                    <button type="submit">Iniciar sesión</button>
+                    <div className="signup_link">
+                        <p>No tienes una cuenta? <a href="/#">Registrarse</a></p>
+                    </div>
                 </form>
             </div>
         )

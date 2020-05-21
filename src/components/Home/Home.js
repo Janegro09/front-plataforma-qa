@@ -34,12 +34,17 @@ export default class Home extends Component {
 
         return (
             <div>
-                <h1>Bienvenido {userInfo.name} {userInfo.lastName} !!</h1>
-                <ul>
-                    <li>Tu email es: {userInfo.email}</li>
-                    <li>Tu id es: {userInfo.id}</li>
-                </ul>
-                <Link to="/" onClick={this.logout}>Cerrar sesión</Link>
+                {userInfo &&
+                    <div>
+                        <h1>Bienvenido {userInfo.name} {userInfo.lastName} !!</h1>
+                        <ul>
+                            <li>Tu email es: {userInfo.email}</li>
+                            <li>Tu id es: {userInfo.id}</li>
+                        </ul>
+                        <Link to="/" onClick={this.logout}>Cerrar sesión</Link>
+                    </div>
+                }
+
             </div>
         )
     }

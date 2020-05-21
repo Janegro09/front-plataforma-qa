@@ -2,16 +2,15 @@ import React from 'react'
 import './App.css'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Login from './components/Login/Login'
-import Admin from './components/Admin';
-import Logout from "./components/Logout";
+import Home from './components/Home/Home';
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={Login} />
-        <Route path="/admin" component={Admin} />
-        <Route path="/logout" component={Logout} />
+        <Route path="/login" component={Login} />
+        <Route path="/home" component={Home} />
       </Switch>
     </BrowserRouter>
   );

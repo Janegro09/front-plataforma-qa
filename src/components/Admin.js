@@ -15,13 +15,19 @@ export default class Admin extends Component {
             loggedIn
         }
     }
+
     render() {
         if (this.state.loggedIn === false) {
             return <Redirect to="/" />
         }
+
         return (
             <div>
                 <h1>Bienvenido {this.props.location.state.username} !!</h1>
+                <p>
+                    Tu mail es: {this.props.location.state.userInfo.loggedUser.email} <br />
+                    Role: {this.props.location.state.userInfo.loggedUser.role}
+                </p>
                 <Link to="/logout">Cerrar sesión</Link>
             </div>
         )

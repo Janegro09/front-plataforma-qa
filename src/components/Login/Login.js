@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
+import axios from 'axios';
 import './Login.css';
+import Global from '../../Global'
 
 export default class Login extends Component {
     constructor(props) {
@@ -14,6 +16,7 @@ export default class Login extends Component {
         this.state = {
             username: '',
             password: '',
+            userInfo: '',
             loggedIn
         }
 
@@ -27,16 +30,31 @@ export default class Login extends Component {
         });
     }
 
+    loginUser(username, password) {
+        axios.post(Global.login, {
+            user: username,
+            password: password
+        }
+        )
+            .then(response => {
+                this.setState({
+                    userInfo: response.data
+                })
+                if (this.state.userInfo.Success) {
+                    let token = this.state.userInfo.loggedUser.token;
+                    localStorage.setItem("token", token);
+                    this.setState({
+                        loggedIn: true
+                    })
+                }
+            })
+            .catch(err => console.warn(err));
+    }
+
     submitForm(e) {
         e.preventDefault();
         const { username, password } = this.state;
-        // VALIDO EL NOMBRE DE USUARIO Y EL PASSWORD
-        if (username === "admin" && password === "admin") {
-            localStorage.setItem("token", "faslfhasopfjaposf");
-            this.setState({
-                loggedIn: true
-            })
-        }
+        this.loginUser(username, password);
     }
 
     render() {

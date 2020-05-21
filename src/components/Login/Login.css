@@ -119,3 +119,10 @@ form button:hover {
 .signup_link a:hover {
     text-decoration: underline;
 }
+
+.error {
+    position: absolute;
+    top: 11px;
+    color: #f44336;
+    font-weight: 500;
+}

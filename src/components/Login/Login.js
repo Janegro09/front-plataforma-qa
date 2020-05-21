@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import axios from 'axios';
+import SimpleReactValidator from 'simple-react-validator'
 import './Login.css';
 import Global from '../../Global'
 
@@ -13,6 +14,12 @@ export default class Login extends Component {
             redirect: false
         }
 
+        this.validator = new SimpleReactValidator({
+            messages: {
+                required: 'Completá este campo'
+            }
+        });
+
         this.login = this.login.bind(this)
         this.onChange = this.onChange.bind(this)
     }
@@ -20,8 +27,15 @@ export default class Login extends Component {
     login(e) {
         e.preventDefault()
         const { username, password } = this.state;
-        this.loginUser(username, password);
-
+        if (this.validator.allValid()) {
+            this.loginUser(username, password);
+        } else {
+            this.setState({
+                redirect: false
+            })
+            this.validator.showMessages();
+            this.forceUpdate();
+        }
     }
 
     onChange(e) {
@@ -64,12 +78,22 @@ export default class Login extends Component {
                 <h1>Iniciar sesión</h1>
                 <form onSubmit={this.login}>
                     <div className="txt_field">
-                        <input type="text" name="username" onChange={this.onChange} required />
+                        <input type="text" name="username" onChange={this.onChange} />
+                        <div className="error">
+                            {
+                                this.validator.message('title', this.state.username, 'required')
+                            }
+                        </div>
                         <span></span>
                         <label>Nombre de usuario</label>
                     </div>
                     <div className="txt_field">
-                        <input type="password" name="password" onChange={this.onChange} required />
+                        <input type="password" name="password" onChange={this.onChange} />
+                        <div className="error">
+                            {
+                                this.validator.message('title', this.state.password, 'required')
+                            }
+                        </div>
                         <span></span>
                         <label>Contraseña</label>
                     </div>

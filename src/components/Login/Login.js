@@ -40,7 +40,8 @@ export default class Login extends Component {
                 .then(response => {
                     console.log(response.data)
                     if (response.data.Success) {
-                        localStorage.setItem('userData', response.data)
+                        console.log(response.data)
+                        localStorage.setItem('userData', JSON.stringify(response.data.loggedUser))
                         this.setState({ redirect: true })
                     } else {
                         console.log("Login error")

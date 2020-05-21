@@ -13,26 +13,32 @@ export default class Home extends Component {
 
     componentDidMount() {
         if (localStorage.getItem("userData")) {
-            console.log("Call user feed")
+            console.log("Datos almacenados")
         } else {
-            this.setState({redirect: true})
+            this.setState({ redirect: true })
         }
     }
 
     logout() {
-        localStorage.setItem("userData",'')
+        localStorage.setItem("userData", '')
         localStorage.clear()
-        this.setState({redirect: true})
+        this.setState({ redirect: true })
     }
 
     render() {
+        const userInfo = JSON.parse(localStorage.getItem("userData"));
+        console.log(userInfo)
         if (this.state.redirect) {
             return <Redirect to={'/'} />
         }
 
         return (
             <div>
-                <h1>Bienvenido !!</h1>
+                <h1>Bienvenido {userInfo.name} {userInfo.lastName} !!</h1>
+                <ul>
+                    <li>Tu email es: {userInfo.email}</li>
+                    <li>Tu id es: {userInfo.id}</li>
+                </ul>
                 <Link to="/" onClick={this.logout}>Cerrar sesión</Link>
             </div>
         )

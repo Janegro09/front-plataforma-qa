@@ -74,35 +74,34 @@ export default class Login extends Component {
             return <Redirect to={'/home'} />
         }
         return (
-            <div className="center">
-                <h1>Iniciar sesión</h1>
-                <form onSubmit={this.login}>
-                    <div className="txt_field">
-                        <input type="text" name="username" onChange={this.onChange} />
-                        <div className="error">
-                            {
-                                this.validator.message('title', this.state.username, 'required')
-                            }
+            <div className="container">
+                <div className="center">
+                    <h1>Iniciar sesión</h1>
+                    <form onSubmit={this.login}>
+                        <div className="txt_field">
+                            <input type="text" name="username" onChange={this.onChange} />
+                            <div className="error">
+                                {
+                                    this.validator.message('title', this.state.username, 'required')
+                                }
+                            </div>
+                            <span></span>
+                            <label>Nombre de usuario</label>
                         </div>
-                        <span></span>
-                        <label>Nombre de usuario</label>
-                    </div>
-                    <div className="txt_field">
-                        <input type="password" name="password" onChange={this.onChange} />
-                        <div className="error">
-                            {
-                                this.validator.message('title', this.state.password, 'required')
-                            }
+                        <div className="txt_field">
+                            <input type="password" name="password" onChange={this.onChange} />
+                            <div className="error">
+                                {
+                                    this.validator.message('title', this.state.password, 'required')
+                                }
+                            </div>
+                            <span></span>
+                            <label>Contraseña</label>
                         </div>
-                        <span></span>
-                        <label>Contraseña</label>
-                    </div>
-                    <div className="pass">Olvidaste tu contraseña?</div>
-                    <button type="submit">Iniciar sesión</button>
-                    <div className="signup_link">
-                        <p>No tienes una cuenta? <a href="/#">Registrarse</a></p>
-                    </div>
-                </form>
+                        <div className="pass">Olvidaste tu contraseña?</div>
+                        <button type="submit">Iniciar sesión</button>
+                    </form>
+                </div>
             </div>
         )
     }

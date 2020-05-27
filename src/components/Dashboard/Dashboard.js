@@ -128,7 +128,8 @@ export default function Dashboard() {
     setOpen(false);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
+  const userInfo = JSON.parse(localStorage.getItem("userData"));
+  console.log("Desde el dashboard: ", userInfo)
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -144,7 +145,7 @@ export default function Dashboard() {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Bienvenido usuario!
+            Bienvenido {userInfo.name}!
           </Typography>
           <Logout />
           {/* <IconButton color="inherit">

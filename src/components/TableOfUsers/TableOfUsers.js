@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import MaterialTable from 'material-table';
 
 export default function MaterialTableDemo() {
@@ -155,4 +155,33 @@ export default function MaterialTableDemo() {
             }}
         />
     );
+} */
+
+import React, { Component } from 'react'
+import Global from '../../Global'
+import axios from 'axios'
+
+export default class TableOfUsers extends Component {
+    componentDidMount() {
+        // const userInfo = JSON.parse(localStorage.getItem("userData"));
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
+        axios.get(Global.getUsers, { headers: { Authorization: bearer } }).then(response => {
+            console.log("La data a recorrer: ", response.data.Data);
+            /* se actualiza el token */
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+        })
+            .catch((error) => {
+                console.log('error ' + error);
+            });
+    }
+    render() {
+        return (
+            <div>
+                <h1>Tabla de usarios</h1>
+            </div>
+        )
+    }
 }
+

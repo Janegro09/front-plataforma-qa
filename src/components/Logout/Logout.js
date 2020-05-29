@@ -23,6 +23,7 @@ export default class Logout extends Component {
 
     logout() {
         localStorage.setItem("userData", '')
+        localStorage.setItem("token", '')
         localStorage.clear()
         this.setState({ redirect: true })
     }

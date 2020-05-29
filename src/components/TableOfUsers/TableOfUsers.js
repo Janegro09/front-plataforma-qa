@@ -4,11 +4,11 @@ import MaterialTable from 'material-table';
 export default function MaterialTableDemo() {
     const [state, setState] = React.useState({
         columns: [
-            { title: 'Name', field: 'name' },
-            { title: 'Surname', field: 'surname' },
-            { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
+            { title: 'Nombre', field: 'name' },
+            { title: 'Apellido', field: 'surname' },
+            { title: 'Cumpleaños', field: 'birthYear', type: 'numeric' },
             {
-                title: 'Birth Place',
+                title: 'Lugar de nacimiento',
                 field: 'birthCity',
                 lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
             },
@@ -71,9 +71,9 @@ export default function MaterialTableDemo() {
                     //   filterTooltip: 'Filter'
                     // },
                     editRow: {
-                      deleteText: 'Estás seguro que quieres borrar el usuario?',
-                      cancelTooltip: 'No',
-                      saveTooltip: 'Sí'
+                        deleteText: 'Estás seguro que quieres borrar el usuario?',
+                        cancelTooltip: 'No',
+                        saveTooltip: 'Sí'
                     }
                 },
                 grouping: {
@@ -81,7 +81,7 @@ export default function MaterialTableDemo() {
                     groupedBy: 'Gruppiert nach:'
                 },
                 header: {
-                    actions: 'Aktionen'
+                    actions: 'Acciones'
                 },
                 pagination: {
                     labelDisplayedRows: '{from}-{to} de {count}',
@@ -118,6 +118,8 @@ export default function MaterialTableDemo() {
                             setState((prevState) => {
                                 const data = [...prevState.data];
                                 data.push(newData);
+                                console.log("Add prevState: ", prevState)
+                                console.log("Add data: ", data)
                                 return { ...prevState, data };
                             });
                         }, 600);
@@ -130,6 +132,8 @@ export default function MaterialTableDemo() {
                                 setState((prevState) => {
                                     const data = [...prevState.data];
                                     data[data.indexOf(oldData)] = newData;
+                                    console.log("Update prevState: ", prevState)
+                                    console.log("Update data: ", data)
                                     return { ...prevState, data };
                                 });
                             }
@@ -142,6 +146,8 @@ export default function MaterialTableDemo() {
                             setState((prevState) => {
                                 const data = [...prevState.data];
                                 data.splice(data.indexOf(oldData), 1);
+                                console.log("Delete prevState: ", prevState)
+                                console.log("Delete data: ", data)
                                 return { ...prevState, data };
                             });
                         }, 600);

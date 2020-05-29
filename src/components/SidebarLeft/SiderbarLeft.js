@@ -100,6 +100,7 @@ export default function PersistentDrawerLeft() {
                 className={clsx(classes.appBar, {
                     [classes.appBarShift]: open,
                 })}
+                style={{ background: '#2E3B55' }}
             >
                 <Toolbar>
                     <IconButton
@@ -161,7 +162,7 @@ export default function PersistentDrawerLeft() {
                 })}
             >
                 <div className={classes.drawerHeader} />
-                <Typography paragraph>
+                {/* <Typography paragraph>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                     ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
                     facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
@@ -183,7 +184,7 @@ export default function PersistentDrawerLeft() {
                     tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
                     nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
                     accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        </Typography> */}
             </main>
         </div>
     );

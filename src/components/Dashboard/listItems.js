@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -10,6 +10,17 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
+export class Selected extends Component {
+    constructor() {
+        super()
+        this.state = { isUserLogged: true }
+    }
+
+    render() {
+        return <h1>Hola mundo</h1>
+    }
+}
+
 export const mainListItems = (
     <div>
         <ListItem button>
@@ -18,7 +29,7 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
         </ListItem>
-        <ListItem button>
+        <ListItem button >
             <ListItemIcon>
                 <ShoppingCartIcon />
             </ListItemIcon>

@@ -18,11 +18,14 @@ import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 // import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
+import { mainListItems, secondaryListItems, Selected } from './listItems';
 // import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
 import Logout from './../Logout/Logout'
+
+console.log("sendItem", Selected)
+// console.log("secondary", secondaryListItems)
 
 function Copyright() {
   return (
@@ -185,6 +188,9 @@ export default function Dashboard() {
             {/* Recent Deposits */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
+                {/* {mainListItems.props.children
+
+                } */}
                 <Deposits />
               </Paper>
             </Grid>

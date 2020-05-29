@@ -1,8 +1,0 @@
-{
-    UserRootTelecom
-    SolucionesTelecom2020!
-},
-{
-    39609808,
-    Telecom01
-}

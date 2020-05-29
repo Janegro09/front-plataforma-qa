@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import Button from '@material-ui/core/Button';
+import ListItemText from '@material-ui/core/ListItemText';
 
 
 export default class Logout extends Component {
@@ -35,10 +35,8 @@ export default class Logout extends Component {
         }
         return (
             <div>
-                <Link to="/" onClick={this.logout} style={{ color: 'inherit', textDecoration: 'inherit'}}>
-                    <Button variant="contained" color="primary" disableElevation>
-                        SALIR
-                </Button>
+                <Link to="/" onClick={this.logout} style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                    <ListItemText primary={"salir"} />
                 </Link>
             </div>
         )

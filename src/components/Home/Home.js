@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import SiderbarLeft from '../SidebarLeft/SiderbarLeft'
 import TablePagination from '../TableOfUsers/TableOfUsers'
-import { Link, Redirect } from 'react-router-dom'
-import Button from '@material-ui/core/Button';
+import { Redirect } from 'react-router-dom'
+
 
 export default class Home extends Component {
     constructor(props) {
@@ -30,13 +30,6 @@ export default class Home extends Component {
             <div>
                 <div className="header">
                     {/* BOTON DE SALIDA */}
-                    <Link className="salir" to="/" onClick={this.logout} style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                        <Button variant="contained" color="primary" disableElevation>
-                            SALIR
-                        </Button>
-                    </Link>
-                    {/* MENSAJE BIENVENIDA */}
-                    <div className="welcome-message">Bienvenido {userInfo.name}</div>
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft name={userInfo.name} />
                 </div>

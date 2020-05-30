@@ -160,16 +160,27 @@ export default function MaterialTableDemo() {
 import React, { Component } from 'react'
 import Global from '../../Global'
 import axios from 'axios'
+import UserTable from '../UserTable/UserTable'
 
 export default class TableOfUsers extends Component {
+    constructor() {
+        super()
+        this.state = {
+            allUsers: null
+        }
+        console.log("Constructor lanzado")
+    }
     componentDidMount() {
+        console.log("componentDidMount lanzado")
         // const userInfo = JSON.parse(localStorage.getItem("userData"));
         const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.get(Global.getUsers, { headers: { Authorization: bearer } }).then(response => {
-            console.log("La data a recorrer: ", response.data.Data);
             /* se actualiza el token */
+            this.setState({
+                allUsers: response.data.Data
+            })
             localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         })
             .catch((error) => {
@@ -177,9 +188,17 @@ export default class TableOfUsers extends Component {
             });
     }
     render() {
+        console.log("Daos en el render: ", this.state)
         return (
             <div>
-                <h1>Tabla de usarios</h1>
+                {this.state.allUsers === null &&
+                    <h1>Cargando...</h1>
+                }
+
+                {this.state.allUsers != null &&
+                    <UserTable allUsers={this.state.allUsers} />
+                }
+
             </div>
         )
     }

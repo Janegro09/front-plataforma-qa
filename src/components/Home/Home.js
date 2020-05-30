@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import SiderbarLeft from '../SidebarLeft/SiderbarLeft'
-import TablePagination from '../TableOfUsers/TableOfUsers'
+import UserInfoContainer from '../UserInfoContainer/UserInfoContainer'
 import { Redirect } from 'react-router-dom'
+import './Home.css'
 
 
 export default class Home extends Component {
@@ -34,7 +35,10 @@ export default class Home extends Component {
                     <SiderbarLeft name={userInfo.name} />
                 </div>
                 {/* PAGINACION  */}
-                <TablePagination userInfo={userInfo} />
+                <div className="section-content">
+                    <UserInfoContainer userInfo={userInfo} />
+                </div>
+                
             </div>
         )
     }

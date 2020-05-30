@@ -23,7 +23,6 @@ export default class Home extends Component {
 
     render() {
         const userInfo = JSON.parse(localStorage.getItem("userData"));
-        console.log(userInfo)
         if (this.state.redirect) {
             return <Redirect to={'/'} />
         }

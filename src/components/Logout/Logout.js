@@ -15,7 +15,7 @@ export default class Logout extends Component {
 
     componentDidMount() {
         if (localStorage.getItem("userData")) {
-            console.log("Datos almacenados")
+            // console.log("Datos almacenados")
         } else {
             this.setState({ redirect: true })
         }
@@ -29,8 +29,6 @@ export default class Logout extends Component {
     }
 
     render() {
-        const userInfo = JSON.parse(localStorage.getItem("userData"));
-        console.log(userInfo)
         if (this.state.redirect) {
             return <Redirect to={'/'} />
         }

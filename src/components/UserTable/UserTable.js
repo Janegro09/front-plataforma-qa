@@ -28,6 +28,7 @@ export default class UserTable extends Component {
             if (user.id === title) {
                 this.setState({ encontrado: user })
             }
+            return true;
         })
     }
 
@@ -37,7 +38,9 @@ export default class UserTable extends Component {
             <div>
                 <form onSubmit={this.buscar}>
                     <input type="text"
-                        ref={(c) => this.title = c}
+                        ref={(c) => {
+                            this.title = c
+                        }}
                     />
                     <input type="submit" value="Buscar" />
                 </form>
@@ -54,29 +57,32 @@ export default class UserTable extends Component {
                             </tr>
                         </thead>
 
-                        <tbody>
-                            {this.props.allUsers && this.state.encontrado === null &&
-                                this.props.allUsers.slice(0, this.state.totalDisplayed).map((user, index) =>
-                                    (
-                                        <tr key={index}>
-                                            <td>{user.id}</td>
-                                            <td>{user.name} {user.lastName}</td>
-                                            <td>{user.email}</td>
-                                            <td>{user.equipoEspecifico}</td>
-                                        </tr>
-                                    )
-                                )
-                            }
 
-                            {this.state.encontrado &&
-                                <tr key={this.state.encontrado.id}>
+                        {this.props.allUsers && this.state.encontrado === null &&
+                            this.props.allUsers.slice(0, this.state.totalDisplayed).map((user, index) =>
+                                (<tbody key={index}>
+                                    <tr>
+                                        <td>{user.id}</td>
+                                        <td>{user.name} {user.lastName}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.equipoEspecifico}</td>
+                                    </tr>
+                                </tbody>
+                                )
+                            )
+                        }
+
+                        {this.state.encontrado &&
+                            <tbody key={this.state.encontrado.id}>
+                                <tr>
                                     <td>{this.state.encontrado.id}</td>
                                     <td>{this.state.encontrado.name} {this.state.encontrado.lastName}</td>
                                     <td>{this.state.encontrado.email}</td>
                                     <td>{this.state.encontrado.equipoEspecifico}</td>
                                 </tr>
-                            }
-                        </tbody>
+                            </tbody>
+                        }
+
                     </table>
                 </div>
                 {this.state.encontrado === null &&

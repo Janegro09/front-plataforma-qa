@@ -49,11 +49,13 @@ export default class UserTable extends Component {
     render() {
         return (
             <div>
-                <form onSubmit={this.buscar}>
-                    <input type="text"
+                <form onSubmit={this.buscar} className="buscador">
+                    <input 
+                        type="text"
                         ref={(c) => {
                             this.title = c
                         }}
+                        placeholder="Ingrese el número de id"
                     />
                     <input type="submit" value="Buscar" />
                 </form>

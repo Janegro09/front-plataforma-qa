@@ -176,3 +176,8 @@ table tr:nth-child(2n+1) {
     color: black;
     border-radius: 5px;
 }
+
+.buscador {
+    display: flex;
+    justify-content: center;
+}

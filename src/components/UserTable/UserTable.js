@@ -7,7 +7,7 @@ export default class UserTable extends Component {
         super(props)
         this.state = {
             showMore: false,
-            totalDisplayed: 5,
+            totalDisplayed: 10,
             term: '',
             encontrado: null
         }

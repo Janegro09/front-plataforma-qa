@@ -126,3 +126,7 @@ form button:hover {
     color: #f44336;
     font-weight: 500;
 }
+
+.titulo {
+    color: red;
+}

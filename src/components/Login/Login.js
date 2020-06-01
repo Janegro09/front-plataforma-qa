@@ -77,7 +77,7 @@ export default class Login extends Component {
         return (
             <div className="container">
                 <div className="center">
-                    <h1>Iniciar sesión</h1>
+                    <h1 className="titulo">Iniciar sesión</h1>
                     <form onSubmit={this.login}>
                         <div className="txt_field">
                             <input type="text" name="username" onChange={this.onChange} />

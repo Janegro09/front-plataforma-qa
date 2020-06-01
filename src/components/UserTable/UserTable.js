@@ -9,26 +9,26 @@ export default class UserTable extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            showMore: false,
-            totalDisplayed: 10,
             term: '',
             encontrado: null,
             editUser: false,
             deleteUser: false,
             userSelected: null,
-            allUsers: null
+            allUsers: null,
+            searched: false
         }
 
         this.buscar = this.buscar.bind(this)
         this.editUser = this.editUser.bind(this)
         this.deleteUser = this.deleteUser.bind(this)
     }
-    handleClick() {
-        this.setState({ showMore: true, totalDisplayed: this.state.totalDisplayed + 5 })
-    }
 
     buscar(event) {
         event.preventDefault()
+        this.setState({
+            searched: true
+        })
+
         let title = this.title.value;
         if (title === '') {
             this.setState({ encontrado: null })
@@ -43,7 +43,7 @@ export default class UserTable extends Component {
             this.setState({
                 allUsers: response.data.Data
             })
-            
+
             localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
             this.state.allUsers.map(user => {
@@ -58,9 +58,6 @@ export default class UserTable extends Component {
                 console.log('error ' + error);
                 this.logout()
             });
-        
-            
-
     }
 
     editUser(event, userInfo) {
@@ -114,39 +111,33 @@ export default class UserTable extends Component {
                     />
                     <input type="submit" value="Buscar" />
                 </form>
-                <div className="table-users">
-                    <div className="table-header">Listado de Usuarios</div>
 
-                    <table cellSpacing="0">
-                        <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>Nombre y apellido</th>
-                                <th>Mail</th>
-                                <th>Sector</th>
-                                <th>Editar</th>
-                                <th>Eliminar</th>
-                            </tr>
-                        </thead>
+                {this.state.encontrado === null && this.state.searched === false &&
+                    <h1>Ingresá un id para buscar</h1>
+                }
+
+                {this.state.encontrado === null && this.state.searched === true &&
+                    <h1>Buscando usuario...</h1>
+                }
+
+                {this.state.encontrado &&
+                    <div className="table-users">
+
+                        <div className="table-header">Datos de {this.state.encontrado.name} {this.state.encontrado.lastName} </div>
+
+                        <table cellSpacing="0">
+                            <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>Nombre y apellido</th>
+                                    <th>Mail</th>
+                                    <th>Sector</th>
+                                    <th>Editar</th>
+                                    <th>Eliminar</th>
+                                </tr>
+                            </thead>
 
 
-                        {this.props.allUsers && this.state.encontrado === null &&
-                            this.props.allUsers.slice(0, this.state.totalDisplayed).map((user, index) =>
-                                (<tbody key={index}>
-                                    <tr>
-                                        <td>{user.id}</td>
-                                        <td>{user.name} {user.lastName}</td>
-                                        <td>{user.email}</td>
-                                        <td>{user.equipoEspecifico}</td>
-                                        <td onClick={e => this.editUser(e, user)}>icono-edit</td>
-                                        <td onClick={e => this.deleteUser(e, user)}>icono-delete</td>
-                                    </tr>
-                                </tbody>
-                                )
-                            )
-                        }
-
-                        {this.state.encontrado &&
                             <tbody key={this.state.encontrado.id}>
                                 <tr>
                                     <td>{this.state.encontrado.id}</td>
@@ -157,13 +148,7 @@ export default class UserTable extends Component {
                                     <td onClick={e => this.deleteUser(e, this.state.encontrado)}>icono-delete</td>
                                 </tr>
                             </tbody>
-                        }
-
-                    </table>
-                </div>
-                {this.state.encontrado === null &&
-                    <div className="flex-button">
-                        <button onClick={() => this.handleClick()} className="ver-mas">Ver más</button>
+                        </table>
                     </div>
                 }
             </div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './UserTable.css'
+import { Redirect } from 'react-router-dom'
 
 
 export default class UserTable extends Component {
@@ -9,7 +10,10 @@ export default class UserTable extends Component {
             showMore: false,
             totalDisplayed: 10,
             term: '',
-            encontrado: null
+            encontrado: null,
+            editUser: false,
+            deleteUser: false,
+            userSelected: null
         }
 
         this.buscar = this.buscar.bind(this)
@@ -35,22 +39,48 @@ export default class UserTable extends Component {
     }
 
     editUser(event, userInfo) {
+        // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
-        console.log("Editar Usuario")
-        console.log(userInfo)
+        this.setState({
+            editUser: true,
+            userSelected: userInfo
+        })
+
     }
 
     deleteUser(event, userInfo) {
+        // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
-        console.log("Borrar Usuario")
-        console.log(userInfo)
+        this.setState({
+            deleteUser: true,
+            userSelected: userInfo
+        })
+
     }
 
     render() {
+        // Si se selecciono editar usuario lo envío a la página editUser con los datos del usuario
+        if (this.state.editUser) {
+            return <Redirect to={{
+                pathname: '/editUser',
+                state: { userSelected: this.state.userSelected }
+            }}
+            />
+        }
+
+        // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
+        if (this.state.deleteUser) {
+            return <Redirect to={{
+                pathname: '/deleteUser',
+                state: { userSelected: this.state.userSelected }
+            }}
+            />
+        }
+
         return (
             <div>
                 <form onSubmit={this.buscar} className="buscador">
-                    <input 
+                    <input
                         type="text"
                         ref={(c) => {
                             this.title = c
@@ -111,8 +141,6 @@ export default class UserTable extends Component {
                         <button onClick={() => this.handleClick()} className="ver-mas">Ver más</button>
                     </div>
                 }
-
-
             </div>
         )
     }

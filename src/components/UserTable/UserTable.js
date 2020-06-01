@@ -15,7 +15,8 @@ export default class UserTable extends Component {
             deleteUser: false,
             userSelected: null,
             allUsers: null,
-            searched: false
+            searched: false,
+            error: false
         }
 
         this.buscar = this.buscar.bind(this)
@@ -55,8 +56,11 @@ export default class UserTable extends Component {
         })
             .catch((error) => {
                 // Si hay algún error en el request lo deslogueamos
+                this.setState({
+                    error: true
+                })
                 console.log('error ' + error);
-                this.logout()
+                // this.logout()
             });
     }
 
@@ -112,12 +116,12 @@ export default class UserTable extends Component {
                     <input type="submit" value="Buscar" />
                 </form>
 
-                {this.state.encontrado === null && this.state.searched === false &&
-                    <h1>Ingresá un id para buscar</h1>
+                {this.state.searched && this.state.encontrado === null && !this.state.error &&
+                    <h1>Buscando usuario...</h1>
                 }
 
-                {this.state.encontrado === null && this.state.searched === true &&
-                    <h1>Buscando usuario...</h1>
+                {this.state.error &&
+                    <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1>
                 }
 
                 {this.state.encontrado &&

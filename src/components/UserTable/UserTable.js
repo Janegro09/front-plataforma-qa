@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import './UserTable.css'
 import { Redirect } from 'react-router-dom'
+import Global from '../../Global'
+import axios from 'axios'
 
 
 export default class UserTable extends Component {
@@ -13,7 +15,8 @@ export default class UserTable extends Component {
             encontrado: null,
             editUser: false,
             deleteUser: false,
-            userSelected: null
+            userSelected: null,
+            allUsers: null
         }
 
         this.buscar = this.buscar.bind(this)
@@ -30,12 +33,34 @@ export default class UserTable extends Component {
         if (title === '') {
             this.setState({ encontrado: null })
         }
-        this.props.allUsers.map(user => {
-            if (user.id === title) {
-                this.setState({ encontrado: user })
-            }
-            return true;
+
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
+        axios.get(Global.getUsers, { headers: { Authorization: bearer } }).then(response => {
+            console.log("response.data", response.data)
+            /* se actualiza el token */
+            this.setState({
+                allUsers: response.data.Data
+            })
+            
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+
+            this.state.allUsers.map(user => {
+                if (user.id === title) {
+                    this.setState({ encontrado: user })
+                }
+                return true;
+            })
         })
+            .catch((error) => {
+                // Si hay algún error en el request lo deslogueamos
+                console.log('error ' + error);
+                this.logout()
+            });
+        
+            
+
     }
 
     editUser(event, userInfo) {

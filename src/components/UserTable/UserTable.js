@@ -13,6 +13,8 @@ export default class UserTable extends Component {
         }
 
         this.buscar = this.buscar.bind(this)
+        this.editUser = this.editUser.bind(this)
+        this.deleteUser = this.deleteUser.bind(this)
     }
     handleClick() {
         this.setState({ showMore: true, totalDisplayed: this.state.totalDisplayed + 5 })
@@ -32,6 +34,17 @@ export default class UserTable extends Component {
         })
     }
 
+    editUser(event, userInfo) {
+        event.preventDefault()
+        console.log("Editar Usuario")
+        console.log(userInfo)
+    }
+
+    deleteUser(event, userInfo) {
+        event.preventDefault()
+        console.log("Borrar Usuario")
+        console.log(userInfo)
+    }
 
     render() {
         return (
@@ -54,6 +67,8 @@ export default class UserTable extends Component {
                                 <th>Nombre y apellido</th>
                                 <th>Mail</th>
                                 <th>Sector</th>
+                                <th>Editar</th>
+                                <th>Eliminar</th>
                             </tr>
                         </thead>
 
@@ -66,6 +81,8 @@ export default class UserTable extends Component {
                                         <td>{user.name} {user.lastName}</td>
                                         <td>{user.email}</td>
                                         <td>{user.equipoEspecifico}</td>
+                                        <td onClick={e => this.editUser(e, user)}>icono-edit</td>
+                                        <td onClick={e => this.deleteUser(e, user)}>icono-delete</td>
                                     </tr>
                                 </tbody>
                                 )
@@ -79,6 +96,8 @@ export default class UserTable extends Component {
                                     <td>{this.state.encontrado.name} {this.state.encontrado.lastName}</td>
                                     <td>{this.state.encontrado.email}</td>
                                     <td>{this.state.encontrado.equipoEspecifico}</td>
+                                    <td onClick={e => this.editUser(e, this.state.encontrado)}>icono-edit</td>
+                                    <td onClick={e => this.deleteUser(e, this.state.encontrado)}>icono-delete</td>
                                 </tr>
                             </tbody>
                         }

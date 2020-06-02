@@ -16,12 +16,14 @@ export default class UserTable extends Component {
             userSelected: null,
             allUsers: null,
             searched: false,
-            error: false
+            error: false,
+            redirect: false
         }
 
         this.buscar = this.buscar.bind(this)
         this.editUser = this.editUser.bind(this)
         this.deleteUser = this.deleteUser.bind(this)
+        this.logout = this.logout.bind(this)
     }
 
     buscar(event) {
@@ -57,10 +59,11 @@ export default class UserTable extends Component {
             .catch((error) => {
                 // Si hay algún error en el request lo deslogueamos
                 this.setState({
-                    error: true
+                    error: true,
+                    redirect: true
                 })
                 console.log('error ' + error);
-                // this.logout()
+                this.logout()
             });
     }
 
@@ -84,7 +87,17 @@ export default class UserTable extends Component {
 
     }
 
+    logout() {
+        localStorage.setItem("userData", '')
+        localStorage.setItem("token", '')
+        localStorage.clear()
+        this.setState({ redirect: true })
+    }
+
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={'/home'} />
+        }
         // Si se selecciono editar usuario lo envío a la página editUser con los datos del usuario
         if (this.state.editUser) {
             return <Redirect to={{

@@ -7,7 +7,8 @@ let Global = {
     deleteUser: `${BASE}/users/`,
     modifyUser: `${BASE}/users/`,
     changeStatus: `${BASE}/users/`,
-    passChange: `${BASE}/users/passchange/`
+    passChange: `${BASE}/users/passchange/`,
+    permissions: `${BASE}/permissions/`,
 }
 
 export default Global;

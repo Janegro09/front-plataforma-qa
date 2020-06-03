@@ -118,6 +118,25 @@ export default class editUserComponent extends Component {
         //     })
         // FIN MODIFICAR USUARIO
         //========================================================================
+        // CHANGE STATUS
+        // let token = JSON.parse(localStorage.getItem('token'))
+        // let id = this.props.location.state.userSelected.id
+        // const config = {
+        //     headers: { Authorization: `Bearer ${token}` }
+        // };
+
+        // // PARAMETROS A MODIFICAR, SE MANDAN POR ACA
+        // const bodyParameters = {};
+
+        // axios.put(Global.changeStatus + id, bodyParameters, config)
+        //     .then(response => {
+        //         console.log(response)
+        //     })
+        //     .catch(e => {
+        //         console.log("Error: ", e)
+        //     })
+        // FIN CHANGE STATUS
+        //========================================================================
 
     }
     render() {

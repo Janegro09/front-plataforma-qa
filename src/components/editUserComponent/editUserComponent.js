@@ -12,6 +12,7 @@ export default class editUserComponent extends Component {
     componentDidMount() {
         console.log("Componente lanzado!!")
 
+        /*
         // CREAR USUARIO
         let token = JSON.parse(localStorage.getItem('token'))
         console.log("token: ", token)
@@ -34,7 +35,29 @@ export default class editUserComponent extends Component {
             bodyParameters,
             config
         ).then(response => console.log(response)).catch(e => console.log(e));
-        // FIN CREAR USUARIO
+        // FIN CREAR USUARIO 
+        */
+       
+//========================================================================
+        /*
+        // GET USER
+        let token = JSON.parse(localStorage.getItem('token'))
+        let id = this.props.location.state.userSelected.id
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
+        axios.get(Global.getUsers+'/'+id, config)
+        .then(response => {
+            console.log(response)
+        })
+        .catch(e => {
+            console.log("error", e)
+        })
+        // FIN GET USER
+        */
+//========================================================================
+
     }
     render() {
         return (

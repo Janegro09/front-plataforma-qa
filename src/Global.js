@@ -4,7 +4,8 @@ let Global = {
     login: `${BASE}/login`,
     getUsers: `${BASE}/users`,
     createUser: `${BASE}/users/new`,
-    deleteUser: `${BASE}/users/`
+    deleteUser: `${BASE}/users/`,
+    passChange: `${BASE}/users/passchange/`
 }
 
 export default Global;

@@ -4,14 +4,14 @@ import axios from 'axios'
 import Global from '../../Global'
 
 export default class addUserComponent extends Component {
-    // constructor(props) {
-    //     super(props)
-    //     this.addUser = this.addUser.bind(this)
-    // }
+    constructor(props) {
+        super(props)
+        this.addUser = this.addUser.bind(this)
+    }
 
     /*
 // CREAR USUARIO
-let token = JSON.parse(localStorage.getItem('token'))
+token = JSON.parse(localStorage.getItem('token'))
 console.log("token: ", token)
 const config = {
     headers: { Authorization: `Bearer ${token}` }
@@ -37,6 +37,56 @@ axios.post(
     addUser(event) {
         event.preventDefault()
         console.log("Agregar usuario")
+
+        let token = JSON.parse(localStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        const bodyParameters = {
+            id: this.id.value,
+            dni: this.dni.value,
+            name: this.name.value,
+            lastName: this.lastName.value,
+            role: this.role.value,
+            legajo: this.legajo.value,
+            email: this.email.value,
+            phone: this.phone.value,
+            sexo: this.sexo.value,
+            status: this.status.value,
+            fechaIngresoLinea: this.fechaIngresoLinea.value,
+            fechaBaja: this.fechaBaja.value,
+            motivoBaja: this.motivoBaja.value,
+            propiedad: this.propiedad.value,
+            canal: this.canal.value,
+            negocio: this.negocio.value,
+            razonSocial: this.razonSocial.value,
+            edificioLaboral: this.edificioLaboral.value,
+            gerencia1: this.gerencia1.value,
+            nameG1: this.nameG1.value,
+            gerencia2: this.gerencia2.value,
+            nameG2: this.nameG2.value,
+            jefeCoordinador: this.jefeCoordinador.value,
+            responsable: this.responsable.value,
+            supervisor: this.supervisor.value,
+            lider: this.lider.value,
+            provincia: this.provincia.value,
+            region: this.region.value,
+            subregion: this.subregion.value,
+            equipoEspecifico: this.equipoEspecifico.value,
+            puntoVenta: this.puntoVenta.value,
+            group: this.group.value,
+            turno: this.turno.value,
+            imagen: this.imagen.value
+        }
+
+        axios.post(
+            Global.createUser,
+            bodyParameters,
+            config
+        ).then(response => {
+            console.log(response)
+            localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+        }).catch(e => console.log(e));
     }
 
     render() {
@@ -48,12 +98,14 @@ axios.post(
                     <SiderbarLeft />
                 </div>
                 <form onSubmit={this.addUser}>
-                    <input type="text" placeholder="name" name="name" ref={(c) => this.name = c} />
-                    <input type="text" placeholder="lastName" name="lastName" ref={(c) => this.lastName = c} />
-                    <input type="text" placeholder="role" ref={(c) => this.role = c} />
+                    <input type="text" placeholder="id" name="id" ref={(c) => this.id = c} required />
+                    <input type="text" placeholder="dni" name="dni" ref={(c) => this.dni = c} required />
+                    <input type="text" placeholder="name" name="name" ref={(c) => this.name = c} required />
+                    <input type="text" placeholder="lastName" name="lastName" ref={(c) => this.lastName = c} required />
+                    <input type="text" placeholder="role" ref={(c) => this.role = c} required />
                     <input type="text" placeholder="legajo" ref={(c) => this.legajo = c} />
-                    <input type="text" placeholder="email" ref={(c) => this.email = c} />
-                    <input type="text" placeholder="phone" ref={(c) => this.phone = c} />
+                    <input type="email" placeholder="email" ref={(c) => this.email = c} required />
+                    <input type="tel" placeholder="phone" ref={(c) => this.phone = c} />
                     <input type="text" placeholder="sexo" ref={(c) => this.sexo = c} />
                     <input type="text" placeholder="status" ref={(c) => this.status = c} />
                     <input type="text" placeholder="fechaIngresoLinea" ref={(c) => this.fechaIngresoLinea = c} />
@@ -80,7 +132,7 @@ axios.post(
                     <input type="text" placeholder="group" ref={(c) => this.group = c} />
                     <input type="text" placeholder="turno" ref={(c) => this.turno = c} />
                     <input type="text" placeholder="imagen" ref={(c) => this.imagen = c} />
-                    <input type="submit" value="modificar usuario" />
+                    <input type="submit" value="Crear usuario" />
                 </form>
             </div>
         )

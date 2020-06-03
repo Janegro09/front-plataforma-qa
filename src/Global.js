@@ -5,6 +5,7 @@ let Global = {
     getUsers: `${BASE}/users`,
     createUser: `${BASE}/users/new`,
     deleteUser: `${BASE}/users/`,
+    modifyUser: `${BASE}/users/`,
     passChange: `${BASE}/users/passchange/`
 }
 

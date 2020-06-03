@@ -37,7 +37,7 @@ export default class editUserComponent extends Component {
         ).then(response => console.log(response)).catch(e => console.log(e));
         // FIN CREAR USUARIO 
         */
-       
+
 //========================================================================
         /*
         // GET USER
@@ -56,6 +56,23 @@ export default class editUserComponent extends Component {
         })
         // FIN GET USER
         */
+//========================================================================
+
+        // // DELETE USER
+        // let token = JSON.parse(localStorage.getItem('token'))
+        // let id = this.props.location.state.userSelected.id
+        // const config = {
+        //     headers: { Authorization: `Bearer ${token}` }
+        // };
+
+        // axios.delete(Global.getUsers+'/'+id, config)
+        // .then(response => {
+        //     console.log(response)
+        // })
+        // .catch(e => {
+        //     console.log("error", e)
+        // })
+        // // FIN DELETE USER
 //========================================================================
 
     }

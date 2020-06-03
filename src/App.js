@@ -6,6 +6,7 @@ import Home from './components/Home/Home';
 import UsersComponent from './components/UsersComponent/UsersComponent';
 import editUserComponent from './components/editUserComponent/editUserComponent'
 import deleteUserComponent from './components/deleteUserComponent/deleteUserComponent'
+import addUserComponent from './components/addUserComponent/addUserComponent'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
         <Route path="/users" component={UsersComponent} />
+        <Route path="/addUser" component={addUserComponent} />
         <Route path="/editUser" component={editUserComponent} />
         <Route path="/deleteUser" component={deleteUserComponent} />
       </Switch>

@@ -12,6 +12,7 @@ export default class UserTable extends Component {
             term: '',
             encontrado: null,
             editUser: false,
+            addUser: false,
             deleteUser: false,
             userSelected: null,
             allUsers: null,
@@ -22,6 +23,7 @@ export default class UserTable extends Component {
 
         this.buscar = this.buscar.bind(this)
         this.editUser = this.editUser.bind(this)
+        this.addUser = this.addUser.bind(this)
         this.deleteUser = this.deleteUser.bind(this)
         this.logout = this.logout.bind(this)
     }
@@ -87,6 +89,14 @@ export default class UserTable extends Component {
 
     }
 
+    addUser(event) {
+      // Cargo en el estado la información del usuario seleccionado
+      event.preventDefault()
+      this.setState({
+          addUser: true
+      })
+    }
+
     logout() {
         localStorage.setItem("userData", '')
         localStorage.setItem("token", '')
@@ -104,6 +114,12 @@ export default class UserTable extends Component {
                 pathname: '/editUser',
                 state: { userSelected: this.state.userSelected }
             }}
+            />
+        }
+
+        // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
+        if (this.state.addUser) {
+            return <Redirect to="/addUser"
             />
         }
 
@@ -129,6 +145,8 @@ export default class UserTable extends Component {
                     />
                     <input type="submit" value="Buscar" />
                 </form>
+
+                <button onClick={e => this.addUser(e)}>Crear usuario</button>
 
                 {this.state.searched && this.state.encontrado === null && !this.state.error &&
                     <div className="sk-fading-circle">

@@ -88,8 +88,8 @@ export default class addUserComponent extends Component {
     }
 
     render() {
-        const groups = this.state.groups
-        const roles = this.state.roles
+        // const groups = this.state.groups
+        // const roles = this.state.roles
 
         return (
             <div>

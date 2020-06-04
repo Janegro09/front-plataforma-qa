@@ -6,7 +6,7 @@ import Global from '../../Global'
 class SelectGroup extends Component {
     constructor(props) {
         super(props);
-        console.log(props)
+        console.log(this.props.defaultValue)
         this.state = {
             value: "",
             groups: null,
@@ -33,6 +33,45 @@ class SelectGroup extends Component {
             groupsToSend: contacatenada
         })
     };
+
+    searchDefault() {
+        let groupData = []
+        if (this.state.groupSelect.length > 0 && this.props.defaultValue.length > 0 && this.state.groupsToSend === '') {
+            this.props.defaultValue.map(v => {
+                this.state.groupSelect.map(value => {
+                    if (value.value === v.id) {
+                        groupData.push(value)
+                    }
+                    return true;
+                })
+                return true;
+            })
+            return groupData
+        } else if (this.state.groupsToSend) {
+            let temp
+            temp = this.state.groupsToSend.split("|")
+            temp.map(v => {
+                console.log(temp)
+                this.state.groupSelect.map(value => {
+                    if (value.value === v) {
+                        groupData.push(value)
+                    }
+                    return true;
+                })
+                return true;
+            })
+            console.log(groupData);
+            
+            return groupData
+        } else {
+            return {
+                label: "Seleccionar grupo...",
+                value: ""
+            }
+        }
+
+
+    }
 
     componentDidMount() {
         let groupSelect = []
@@ -73,6 +112,7 @@ class SelectGroup extends Component {
                 closeMenuOnSelect={false}
                 onChange={this.handleInputChange}
                 inputValue={this.state.value}
+                value={this.searchDefault()}
             />
         );
     }

@@ -10,7 +10,7 @@ class SelectRoles extends Component {
             value: "",
             groups: null,
             groupSelect: [],
-            rolesToSend: ""
+            rolesToSend: this.props.defaultValue || ''
         };
     }
 
@@ -19,8 +19,26 @@ class SelectRoles extends Component {
         this.setState({
             rolesToSend: value.value
         })
-        React.createRef();
     };
+
+    searchDefault() {
+        if (this.state.groupSelect.length > 0 && this.props.defaultValue && this.state.rolesToSend === '') {
+            let data = this.state.groupSelect.filter(value => {
+                return value.value === this.props.defaultValue
+            })
+            return data
+        } else if (this.state.rolesToSend) {
+            let data = this.state.groupSelect.filter(value => {
+                return value.value === this.state.rolesToSend
+            })
+            return data
+        } else {
+            return {
+                label: "Seleccionar rol...",
+                value: ""
+            }
+        }
+    }
 
     componentDidMount() {
         let groupSelect = []
@@ -50,7 +68,6 @@ class SelectRoles extends Component {
 
     render() {
         let options = this.state.groupSelect
-
         this.props.getValue(this.state.rolesToSend)
         return (
             <Select
@@ -61,6 +78,7 @@ class SelectRoles extends Component {
                 closeMenuOnSelect={false}
                 onChange={this.handleInputChange}
                 inputValue={this.state.value}
+                value={this.searchDefault()}
             />
         );
     }

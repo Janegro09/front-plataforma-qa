@@ -6,6 +6,7 @@ import './Login.css';
 import Global from '../../Global'
 import Logo from './qa_logos.png';
 
+
 export default class Login extends Component {
     constructor(props) {
         super(props)
@@ -54,12 +55,14 @@ export default class Login extends Component {
             }
             )
                 .then(response => {
-                    console.log(response.data)
+
+
                     if (response.data.Success) {
                         console.log("El que se va a loguear: ", response.data.loggedUser)
                         localStorage.setItem('userData', JSON.stringify(response.data.loggedUser))
                         localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                         this.setState({ redirect: true })
+
                     } else {
                         console.log("Login error")
                         localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
@@ -77,6 +80,7 @@ export default class Login extends Component {
     }
 
     render() {
+
         if (this.state.redirect) {
             return <Redirect to={'/home'} />
         }

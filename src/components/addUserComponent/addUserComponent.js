@@ -6,6 +6,7 @@ import SelectGroup from './SelectGroup'
 import SelectRoles from './SelectRoles'
 import SimpleReactValidator from 'simple-react-validator'
 import {HELPER_FUNCTIONS} from '../../helpers/Helpers'
+import swal from 'sweetalert'
 
 export default class addUserComponent extends Component {
     constructor(props) {
@@ -28,7 +29,7 @@ export default class addUserComponent extends Component {
         event.preventDefault()
         console.log(this.validator)
         if (this.validator.allValid()) {
-            alert("ok")
+            swal("Usuario creado!", "Ya se encuentra registrado", "success");
         } else {
             alert()
             this.validator.showMessages();

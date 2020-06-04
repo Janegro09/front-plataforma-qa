@@ -3,7 +3,7 @@ import './UserTable.css'
 import { Redirect } from 'react-router-dom'
 import Global from '../../Global'
 import axios from 'axios'
-
+import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 
 export default class UserTable extends Component {
     constructor(props) {
@@ -150,18 +150,22 @@ export default class UserTable extends Component {
         return (
             <div>
                 {/* Buscador */}
-                <form onSubmit={this.buscar} className="buscador">
-                    <input
-                        type="text"
-                        ref={(c) => {
-                            this.title = c
-                        }}
-                        placeholder="Ingrese el número de id"
-                    />
-                    <input type="submit" value="Buscar" />
-                </form>
+                {HELPER_FUNCTIONS.checkPermission("GET|users/:id") &&
+                    <form onSubmit={this.buscar} className="buscador">
+                        <input
+                            type="text"
+                            ref={(c) => {
+                                this.title = c
+                            }}
+                            placeholder="Ingrese el número de id"
+                        />
+                        <input type="submit" value="Buscar" />
+                    </form>
+                }
 
-                <button onClick={e => this.addUser(e)}>Crear usuario</button>
+                {HELPER_FUNCTIONS.checkPermission("POST|users/new") &&
+                    <button onClick={e => this.addUser(e)}>Crear usuario</button>
+                }
 
                 {this.state.searched && this.state.encontrado === null && !this.state.error &&
                     <div className="sk-fading-circle">

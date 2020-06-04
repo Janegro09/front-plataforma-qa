@@ -7,6 +7,10 @@ export default class addUserComponent extends Component {
     constructor(props) {
         super(props)
         this.addUser = this.addUser.bind(this)
+        this.state = {
+            groups: null,
+            roles: null
+        }
     }
 
     /*
@@ -89,7 +93,28 @@ axios.post(
         }).catch(e => console.log(e));
     }
 
+    componentDidMount() {
+        axios.get(Global.frontUtilities)
+        .then(response => {
+            // console.log("Front: ", response.data.Data)
+            this.setState({
+                groups: response.data.Data.groups,
+                roles: response.data.Data.roles
+            })
+
+            // console.log(this.state)
+        })
+        .catch(e => {
+            console.log("Error: ", e)
+        })
+    }
+
     render() {
+        const groups = this.state.groups
+        const roles = this.state.roles
+        console.log("groups render: ", groups)
+        console.log("roles render: ", roles)
+
         return (
             <div>
                 <div className="header">

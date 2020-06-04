@@ -9,6 +9,7 @@ let Global = {
     changeStatus: `${BASE}/users/`,
     passChange: `${BASE}/users/passchange/`,
     permissions: `${BASE}/permissions/`,
+    frontUtilities: `${BASE}/frontUtilities`,
 }
 
 export default Global;

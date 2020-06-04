@@ -4,6 +4,7 @@ import axios from 'axios';
 import SimpleReactValidator from 'simple-react-validator'
 import './Login.css';
 import Global from '../../Global'
+import Logo from './qa_logos.png';
 
 export default class Login extends Component {
     constructor(props) {
@@ -76,7 +77,7 @@ export default class Login extends Component {
         }
         return (
             <div className="container">
-                <div className="center">
+                {/* <div className="center">
                     <h1 className="titulo">Iniciar sesión</h1>
                     <form onSubmit={this.login}>
                         <div className="txt_field">
@@ -102,7 +103,57 @@ export default class Login extends Component {
                         <div className="pass">Olvidaste tu contraseña?</div>
                         <button type="submit">Iniciar sesión</button>
                     </form>
+                </div> */}
+
+                <div id="login" class="signin-card">
+
+
+                    <div class="logo-image">
+                        <img src={Logo} alt="Logo" title="Logo" class="Logo" />
+                    </div>
+
+
+                    <form onSubmit={this.login}>
+                            <div id="form-login-username" class="form-group">
+                                <input id="username" onChange={this.onChange} class="form-control" name="username" type="text" size="18" alt="login" required />
+                                <div className="error">
+                                    {
+                                        this.validator.message('title', this.state.username, 'required')
+                                    }
+                                 </div>
+                                 
+                                <span class="form-highlight"></span>
+                                <span class="form-bar"></span>
+                              <label for="username" class="float-label">login</label>
+                            </div>
+
+                            <div id="form-login-password" class="form-group">
+                              <input id="passwd" onChange={this.onChange} class="form-control" name="password" type="password" size="18" alt="password" required />
+                               
+                                <div className="error">
+                                    {
+                                        this.validator.message('title', this.state.password, 'required')
+                                    }
+                                </div>
+
+                                <span class="form-highlight"></span>
+                                <span class="form-bar"></span>
+                              <label for="password" class="float-label">password</label>
+                            </div> 
+
+                            <div id="form-login-remember" class="form-group">
+                                <div class="checkbox checkbox-default">       
+                                    <input id="remember" type="checkbox" value="yes" alt="Remember me" class="" />
+                                    <label for="remember">Remember me</label>      
+                                </div>
+                            </div> 
+
+                        <div>
+                          <button class="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Sign in</button>  
+	                    </div>
+                    </form>
                 </div>
+
             </div>
         )
     }

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import SiderbarLeft from '../SidebarLeft/SiderbarLeft'
 import axios from 'axios'
 import Global from '../../Global'
+import SelectGroup from './SelectGroup'
 
 export default class addUserComponent extends Component {
     constructor(props) {
@@ -83,6 +84,9 @@ axios.post(
             imagen: this.imagen.value
         }
 
+        console.log(bodyParameters)
+        debugger
+
         axios.post(
             Global.createUser,
             bodyParameters,
@@ -122,6 +126,7 @@ axios.post(
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
                 </div>
+            
                 <form onSubmit={this.addUser}>
                     <input type="text" placeholder="id" name="id" ref={(c) => this.id = c} required />
                     <input type="text" placeholder="dni" name="dni" ref={(c) => this.dni = c} required />
@@ -154,7 +159,8 @@ axios.post(
                     <input type="text" placeholder="subregion" ref={(c) => this.subregion = c} />
                     <input type="text" placeholder="equipoEspecifico" ref={(c) => this.equipoEspecifico = c} />
                     <input type="text" placeholder="puntoVenta" ref={(c) => this.puntoVenta = c} />
-                    <input type="text" placeholder="group" ref={(c) => this.group = c} />
+                    {/* <input type="text" placeholder="group" ref={(c) => this.group = c} /> */}
+                    <SelectGroup />
                     <input type="text" placeholder="turno" ref={(c) => this.turno = c} />
                     <input type="text" placeholder="imagen" ref={(c) => this.imagen = c} />
                     <input type="submit" value="Crear usuario" />

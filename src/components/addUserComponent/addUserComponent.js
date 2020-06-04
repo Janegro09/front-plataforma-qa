@@ -138,8 +138,8 @@ axios.post(
                     <input type="tel" placeholder="phone" ref={(c) => this.phone = c} />
                     <input type="text" placeholder="sexo" ref={(c) => this.sexo = c} />
                     <input type="text" placeholder="status" ref={(c) => this.status = c} />
-                    <input type="text" placeholder="fechaIngresoLinea" ref={(c) => this.fechaIngresoLinea = c} />
-                    <input type="text" placeholder="fechaBaja" ref={(c) => this.fechaBaja = c} />
+                    <input type="date" placeholder="fechaIngresoLinea" ref={(c) => this.fechaIngresoLinea = c} />
+                    <input type="date" placeholder="fechaBaja" ref={(c) => this.fechaBaja = c} />
                     <input type="text" placeholder="motivoBaja" ref={(c) => this.motivoBaja = c} />
                     <input type="text" placeholder="propiedad" ref={(c) => this.propiedad = c} />
                     <input type="text" placeholder="canal" ref={(c) => this.canal = c} />

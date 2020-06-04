@@ -13,16 +13,20 @@ class SelectGroup extends Component {
             groupsToSend: ""
         };
     }
+
     handleInputChange = (value) => {
         let contacatenada = ""
 
-        value.map(v => {
-            if (contacatenada === "") {
-                contacatenada += v.value
-            } else {
-                contacatenada += `|${v.value}`
-            }
-        })
+        if (value !== null) {
+            value.map(v => {
+                if (contacatenada === "") {
+                    contacatenada += v.value
+                } else {
+                    contacatenada += `|${v.value}`
+                }
+                return true;
+            })
+        }
 
         this.setState({
             groupsToSend: contacatenada
@@ -43,6 +47,7 @@ class SelectGroup extends Component {
                         label: group.group
                     }
                     groupSelect.push(temp)
+                    return true;
                 })
 
                 this.setState({
@@ -52,9 +57,8 @@ class SelectGroup extends Component {
             .catch(e => {
                 console.log("Error: ", e)
             })
-
-
     }
+    
     render() {
         let options = this.state.groupSelect
         return (

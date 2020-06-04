@@ -5,6 +5,7 @@ import Global from '../../Global'
 import SelectGroup from '../addUserComponent/SelectGroup'
 import SelectRoles from '../addUserComponent/SelectRoles'
 import ChangePassword from '../changePassword/ChangePassword'
+import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 
 export default class editUserComponent extends Component {
     constructor(props) {
@@ -175,7 +176,9 @@ export default class editUserComponent extends Component {
                             <option value={user.turno ? user.turno === 'TM' ? 'TT' : 'TM' : 'TT'}>{user.turno ? user.turno === 'TT' ? 'TM' : 'TT' : "TT"}</option>
                         </select>
                         {/* <input type="text" placeholder="imagen" ref={(c) => this.imagen = c} defaultValue={user.imagen ? user.imagen : ''} /> */}
-                        <input type="submit" value="modificar usuario" />
+                        {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
+                            <input type="submit" value="modificar usuario" />
+                        }
                     </form>
                 }
 

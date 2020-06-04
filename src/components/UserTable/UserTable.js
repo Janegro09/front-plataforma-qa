@@ -212,8 +212,19 @@ export default class UserTable extends Component {
                                     <td>{this.state.encontrado.name} {this.state.encontrado.lastName}</td>
                                     <td>{this.state.encontrado.email}</td>
                                     <td>{this.state.encontrado.equipoEspecifico}</td>
-                                    <td onClick={e => this.editUser(e, this.state.encontrado)}>icono-edit</td>
-                                    <td onClick={e => this.deleteUser(e, this.state.encontrado)}>icono-delete</td>
+                                    {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
+                                        <td onClick={e => this.editUser(e, this.state.encontrado)}>icono-edit</td>
+                                    }
+                                    {!HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
+                                        <td disabled>icono-edit</td>
+                                    }
+                                    {HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
+                                        <td onClick={e => this.deleteUser(e, this.state.encontrado)}>icono-delete</td>
+                                    }
+                                    {!HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
+                                        <td disabled>icono-delete</td>
+                                    }
+
                                 </tr>
                             </tbody>
                         </table>

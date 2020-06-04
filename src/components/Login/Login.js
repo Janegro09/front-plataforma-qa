@@ -78,42 +78,10 @@ export default class Login extends Component {
         }
         return (
             <div className="container">
-                {/* <div className="center">
-                    <h1 className="titulo">Iniciar sesión</h1>
-                    <form onSubmit={this.login}>
-                        <div className="txt_field">
-                            <input type="text" name="username" onChange={this.onChange} />
-                            <div className="error">
-                                {
-                                    this.validator.message('title', this.state.username, 'required')
-                                }
-                            </div>
-                            <span></span>
-                            <label>Nombre de usuario</label>
-                        </div>
-                        <div className="txt_field">
-                            <input type="password" name="password" onChange={this.onChange} />
-                            <div className="error">
-                                {
-                                    this.validator.message('title', this.state.password, 'required')
-                                }
-                            </div>
-                            <span></span>
-                            <label>Contraseña</label>
-                        </div>
-                        <div className="pass">Olvidaste tu contraseña?</div>
-                        <button type="submit">Iniciar sesión</button>
-                    </form>
-                </div> */}
-
                 <div id="login" className="signin-card">
-
-
                     <div className="logo-image">
                         <img src={Logo} alt="Logo" title="Logo" className="Logo" />
                     </div>
-
-
                     <form onSubmit={this.login}>
                         <div id="form-login-username" className="form-group">
                             <input id="username" onChange={this.onChange} className="form-control" name="username" type="text" size="18" alt="login" required />

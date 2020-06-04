@@ -4,6 +4,8 @@ import axios from 'axios'
 import Global from '../../Global'
 import SelectGroup from './SelectGroup'
 import SelectRoles from './SelectRoles'
+import SimpleReactValidator from 'simple-react-validator'
+import {HELPER_FUNCTIONS} from '../../helpers/Helpers'
 
 export default class addUserComponent extends Component {
     constructor(props) {
@@ -13,11 +15,25 @@ export default class addUserComponent extends Component {
             groups: null,
             roles: null
         }
+
+        this.validator = new SimpleReactValidator({
+            messages: {
+                required: 'Completá este campo'
+            }
+        });
         this.handleChange = this.handleChange.bind(this);
     }
 
     addUser(event) {
         event.preventDefault()
+        console.log(this.validator)
+        if (this.validator.allValid()) {
+            alert("ok")
+        } else {
+            alert()
+            this.validator.showMessages();
+            this.forceUpdate();
+        }
 
         let token = JSON.parse(localStorage.getItem('token'))
         const config = {
@@ -68,10 +84,12 @@ export default class addUserComponent extends Component {
             localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
         }).catch(e => {
             console.log(e)
+            HELPER_FUNCTIONS.logout()
         });
     }
 
     componentDidMount() {
+        // console.log(HELPER_FUNCTIONS.logout)
         axios.get(Global.frontUtilities)
             .then(response => {
                 this.setState({
@@ -90,8 +108,6 @@ export default class addUserComponent extends Component {
     }
 
     render() {
-        // const groups = this.state.groups
-        // const roles = this.state.roles
 
         return (
             <div>
@@ -103,6 +119,11 @@ export default class addUserComponent extends Component {
 
                 <form onSubmit={this.addUser}>
                     <input type="text" placeholder="id" name="id" ref={(c) => this.id = c} required />
+                    <div className="error">
+                        {
+                            this.validator.message('title', this.id, 'required')
+                        }
+                    </div>
                     <input type="text" placeholder="dni" name="dni" ref={(c) => this.dni = c} required />
                     <input type="text" placeholder="name" name="name" ref={(c) => this.name = c} required />
                     <input type="text" placeholder="lastName" name="lastName" ref={(c) => this.lastName = c} required />

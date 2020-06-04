@@ -7,6 +7,7 @@ import UsersComponent from './components/UsersComponent/UsersComponent';
 import editUserComponent from './components/editUserComponent/editUserComponent'
 import deleteUserComponent from './components/deleteUserComponent/deleteUserComponent'
 import addUserComponent from './components/addUserComponent/addUserComponent'
+import ChangePassword from './components/changePassword/ChangePassword'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/addUser" component={addUserComponent} />
         <Route path="/editUser" component={editUserComponent} />
         <Route path="/deleteUser" component={deleteUserComponent} />
+        <Route path="/changePassword" component={ChangePassword} />
       </Switch>
     </BrowserRouter>
   );

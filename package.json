@@ -17,7 +17,8 @@
     "react-scripts": "3.4.1",
     "react-select": "^3.1.0",
     "recharts": "^1.8.5",
-    "simple-react-validator": "^1.4.6"
+    "simple-react-validator": "^1.4.6",
+    "sweetalert": "^2.1.2"
   },
   "scripts": {
     "start": "react-scripts start",

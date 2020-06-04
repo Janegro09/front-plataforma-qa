@@ -4,6 +4,7 @@ import axios from 'axios'
 import Global from '../../Global'
 import SelectGroup from '../addUserComponent/SelectGroup'
 import SelectRoles from '../addUserComponent/SelectRoles'
+import ChangePassword from '../changePassword/ChangePassword'
 
 export default class editUserComponent extends Component {
     constructor(props) {
@@ -120,6 +121,7 @@ export default class editUserComponent extends Component {
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
                 </div>
+                <ChangePassword />
                 {user !== null &&
                     <form onSubmit={this.modifyUser}>
                         <input type="text" placeholder="id" name="id" ref={(c) => this.id = c} defaultValue={user.id ? user.id : ''} disabled />

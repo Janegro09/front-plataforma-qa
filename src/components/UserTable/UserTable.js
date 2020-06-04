@@ -18,12 +18,14 @@ export default class UserTable extends Component {
             allUsers: null,
             searched: false,
             error: false,
-            redirect: false
+            redirect: false,
+            changePassword: false
         }
 
         this.buscar = this.buscar.bind(this)
         this.editUser = this.editUser.bind(this)
         this.addUser = this.addUser.bind(this)
+        this.changePassword = this.changePassword.bind(this)
         this.deleteUser = this.deleteUser.bind(this)
         this.logout = this.logout.bind(this)
     }
@@ -90,11 +92,18 @@ export default class UserTable extends Component {
     }
 
     addUser(event) {
-      // Cargo en el estado la información del usuario seleccionado
-      event.preventDefault()
-      this.setState({
-          addUser: true
-      })
+        // Cargo en el estado la información del usuario seleccionado
+        event.preventDefault()
+        this.setState({
+            addUser: true
+        })
+    }
+
+    changePassword(event) {
+        event.preventDefault()
+        this.setState({
+            changePassword: true
+        })
     }
 
     logout() {
@@ -124,6 +133,12 @@ export default class UserTable extends Component {
         }
 
         // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
+        if (this.state.changePassword) {
+            return <Redirect to="/changePassword"
+            />
+        }
+
+        // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
         if (this.state.deleteUser) {
             return <Redirect to={{
                 pathname: '/deleteUser',
@@ -147,6 +162,7 @@ export default class UserTable extends Component {
                 </form>
 
                 <button onClick={e => this.addUser(e)}>Crear usuario</button>
+                <button onClick={e => this.changePassword(e)}>Cambiar contraseña</button>
 
                 {this.state.searched && this.state.encontrado === null && !this.state.error &&
                     <div className="sk-fading-circle">

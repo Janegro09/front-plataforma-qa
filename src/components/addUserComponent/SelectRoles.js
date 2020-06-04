@@ -3,35 +3,23 @@ import Select from "react-select";
 import axios from 'axios'
 import Global from '../../Global'
 
-class SelectGroup extends Component {
+class SelectRoles extends Component {
     constructor(props) {
         super(props);
-        console.log(props)
         this.state = {
             value: "",
             groups: null,
             groupSelect: [],
-            groupsToSend: ""
+            rolesToSend: ""
         };
     }
 
     handleInputChange = (value) => {
-        let contacatenada = ""
-
-        if (value !== null) {
-            value.map(v => {
-                if (contacatenada === "") {
-                    contacatenada += v.value
-                } else {
-                    contacatenada += `|${v.value}`
-                }
-                return true;
-            })
-        }
 
         this.setState({
-            groupsToSend: contacatenada
+            rolesToSend: value.value
         })
+        React.createRef();
     };
 
     componentDidMount() {
@@ -39,13 +27,13 @@ class SelectGroup extends Component {
         axios.get(Global.frontUtilities)
             .then(response => {
                 this.setState({
-                    groups: response.data.Data.groups
+                    groups: response.data.Data.roles
                 })
 
                 this.state.groups.map(group => {
                     let temp = {
                         value: group.id,
-                        label: group.group
+                        label: group.role
                     }
                     groupSelect.push(temp)
                     return true;
@@ -62,10 +50,10 @@ class SelectGroup extends Component {
 
     render() {
         let options = this.state.groupSelect
-        this.props.getValue(this.state.groupsToSend)
+
+        this.props.getValue(this.state.rolesToSend)
         return (
             <Select
-                isMulti
                 name="colors"
                 options={options}
                 className="basic-multi-select"
@@ -77,4 +65,4 @@ class SelectGroup extends Component {
         );
     }
 }
-export default SelectGroup;
+export default SelectRoles;

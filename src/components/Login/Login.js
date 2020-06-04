@@ -61,6 +61,7 @@ export default class Login extends Component {
                         this.setState({ redirect: true })
                     } else {
                         console.log("Login error")
+                        localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                     }
                 })
                 .catch(err => console.warn(err));
@@ -105,52 +106,45 @@ export default class Login extends Component {
                     </form>
                 </div> */}
 
-                <div id="login" class="signin-card">
+                <div id="login" className="signin-card">
 
 
-                    <div class="logo-image">
-                        <img src={Logo} alt="Logo" title="Logo" class="Logo" />
+                    <div className="logo-image">
+                        <img src={Logo} alt="Logo" title="Logo" className="Logo" />
                     </div>
 
 
                     <form onSubmit={this.login}>
-                            <div id="form-login-username" class="form-group">
-                                <input id="username" onChange={this.onChange} class="form-control" name="username" type="text" size="18" alt="login" required />
-                                <div className="error">
-                                    {
-                                        this.validator.message('title', this.state.username, 'required')
-                                    }
-                                 </div>
-                                 
-                                <span class="form-highlight"></span>
-                                <span class="form-bar"></span>
-                              <label for="username" class="float-label">login</label>
+                        <div id="form-login-username" className="form-group">
+                            <input id="username" onChange={this.onChange} className="form-control" name="username" type="text" size="18" alt="login" required />
+                            <div className="error">
+                                {
+                                    this.validator.message('title', this.state.username, 'required')
+                                }
                             </div>
 
-                            <div id="form-login-password" class="form-group">
-                              <input id="passwd" onChange={this.onChange} class="form-control" name="password" type="password" size="18" alt="password" required />
-                               
-                                <div className="error">
-                                    {
-                                        this.validator.message('title', this.state.password, 'required')
-                                    }
-                                </div>
+                            <span className="form-highlight"></span>
+                            <span className="form-bar"></span>
+                            <label htmlFor="username" className="float-label">login</label>
+                        </div>
 
-                                <span class="form-highlight"></span>
-                                <span class="form-bar"></span>
-                              <label for="password" class="float-label">password</label>
-                            </div> 
+                        <div id="form-login-password" className="form-group">
+                            <input id="passwd" onChange={this.onChange} className="form-control" name="password" type="password" size="18" alt="password" required />
 
-                            <div id="form-login-remember" class="form-group">
-                                <div class="checkbox checkbox-default">       
-                                    <input id="remember" type="checkbox" value="yes" alt="Remember me" class="" />
-                                    <label for="remember">Remember me</label>      
-                                </div>
-                            </div> 
+                            <div className="error">
+                                {
+                                    this.validator.message('title', this.state.password, 'required')
+                                }
+                            </div>
+
+                            <span className="form-highlight"></span>
+                            <span className="form-bar"></span>
+                            <label htmlFor="password" className="float-label">password</label>
+                        </div>
 
                         <div>
-                          <button class="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Sign in</button>  
-	                    </div>
+                            <button className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Sign in</button>
+                        </div>
                     </form>
                 </div>
 

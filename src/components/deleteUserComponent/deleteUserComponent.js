@@ -10,23 +10,24 @@ export default class deleteUserComponent extends Component {
     }
 
     componentDidMount() {
-      console.log("Componente delete lanzado!!");
-      // DELETE USER
-      let token = JSON.parse(localStorage.getItem('token'))
-      let id = this.props.location.state.userSelected.id
-      const config = {
-          headers: { Authorization: `Bearer ${token}` }
-      };
+        console.log("Componente delete lanzado!!");
+        // DELETE USER
+        let token = JSON.parse(localStorage.getItem('token'))
+        let id = this.props.location.state.userSelected.id
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
 
-      axios.delete(Global.getUsers+'/'+id, config)
-      .then(response => {
-          console.log(response)
-          localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-      })
-      .catch(e => {
-          console.log("error", e)
-      })
-      // FIN DELETE USER
+        axios.delete(Global.getUsers + '/' + id, config)
+            .then(response => {
+                console.log(response)
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+            })
+            .catch(e => {
+                console.log("error", e)
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+            })
+        // FIN DELETE USER
     }
 
     render() {

@@ -96,6 +96,7 @@ class SelectGroup extends Component {
             })
             .catch(e => {
                 console.log("Error: ", e)
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
             })
     }
 

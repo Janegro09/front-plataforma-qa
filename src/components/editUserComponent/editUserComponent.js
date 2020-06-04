@@ -38,6 +38,7 @@ export default class editUserComponent extends Component {
             })
             .catch(e => {
                 console.log("error", e)
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
             })
     }
 
@@ -47,7 +48,7 @@ export default class editUserComponent extends Component {
 
     handleChangeStatus(event) {
         console.log(this.userActive);
-        
+
         this.userActive = event.target.value
     }
 
@@ -107,6 +108,7 @@ export default class editUserComponent extends Component {
             })
             .catch(e => {
                 console.log("Error: ", e)
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
             })
 
     }
@@ -121,7 +123,10 @@ export default class editUserComponent extends Component {
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
                 </div>
-                <ChangePassword />
+                {this.state.userInfo !== null &&
+                    <ChangePassword user={this.state.userInfo} />
+                }
+
                 {user !== null &&
                     <form onSubmit={this.modifyUser}>
                         <input type="text" placeholder="id" name="id" ref={(c) => this.id = c} defaultValue={user.id ? user.id : ''} disabled />

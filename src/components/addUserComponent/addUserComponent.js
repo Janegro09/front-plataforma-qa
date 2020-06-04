@@ -66,7 +66,10 @@ export default class addUserComponent extends Component {
             config
         ).then(response => {
             localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-        }).catch(e => console.log(e));
+        }).catch(e => {
+            console.log(e)
+            localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+        });
     }
 
     componentDidMount() {
@@ -80,6 +83,7 @@ export default class addUserComponent extends Component {
             })
             .catch(e => {
                 console.log("Error: ", e)
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
             })
     }
 

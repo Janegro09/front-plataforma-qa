@@ -133,11 +133,11 @@ form button:hover {
 
 
 /* -- import Bootstrap v3 ----------------------------- */
-@import "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css";
+@import "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css";
 /* -- import Bootstrap docs ---------------------------- */
-@import "//getbootstrap.com/assets/css/docs.min.css";
+/* @import "//getbootstrap.com/assets/css/docs.min.css"; */
 /* -- import Roboto Font ------------------------------ */
-@import "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css";
+/* @import "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"; */
 @font-face {
   font-family: 'Roboto';
   font-style: italic;

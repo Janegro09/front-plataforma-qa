@@ -67,7 +67,6 @@ export default class UserTable extends Component {
                     redirect: true
                 })
                 console.log('error ' + error);
-                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 this.logout()
             });
     }

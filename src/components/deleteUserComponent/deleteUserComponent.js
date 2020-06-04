@@ -25,7 +25,6 @@ export default class deleteUserComponent extends Component {
             })
             .catch(e => {
                 console.log("error", e)
-                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
             })
         // FIN DELETE USER
     }

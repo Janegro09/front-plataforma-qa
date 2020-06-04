@@ -4,9 +4,6 @@ import axios from 'axios'
 import Global from '../../Global'
 
 export default class ChangePassword extends Component {
-    constructor(props) {
-        super(props)
-    }
     render() {
         return (
             <div>
@@ -44,7 +41,6 @@ export default class ChangePassword extends Component {
                                     })
                                     .catch(e => {
                                         console.log("Error: ", e)
-                                        localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                                     })
                             });
                     }}

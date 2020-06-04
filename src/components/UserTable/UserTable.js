@@ -162,7 +162,6 @@ export default class UserTable extends Component {
                 </form>
 
                 <button onClick={e => this.addUser(e)}>Crear usuario</button>
-                <button onClick={e => this.changePassword(e)}>Cambiar contraseña</button>
 
                 {this.state.searched && this.state.encontrado === null && !this.state.error &&
                     <div className="sk-fading-circle">

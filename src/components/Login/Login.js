@@ -12,7 +12,8 @@ export default class Login extends Component {
         this.state = {
             username: '',
             password: '',
-            redirect: false
+            redirect: false,
+            wrongValidations: false
         }
 
         this.validator = new SimpleReactValidator({
@@ -64,7 +65,14 @@ export default class Login extends Component {
                         localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                     }
                 })
-                .catch(err => console.warn(err));
+                .catch(err => {
+                    this.setState({
+                        username: '',
+                        password: '',
+                        wrongValidations: true
+                    })
+                    console.warn(err)
+                });
         }
     }
 
@@ -84,7 +92,7 @@ export default class Login extends Component {
                     </div>
                     <form onSubmit={this.login}>
                         <div id="form-login-username" className="form-group">
-                            <input id="username" onChange={this.onChange} className="form-control" name="username" type="text" size="18" alt="login" required />
+                            <input id="username" onChange={this.onChange} className="form-control" name="username" type="text" size="18" alt="login" value={this.state.username} required />
                             <div className="error">
                                 {
                                     this.validator.message('title', this.state.username, 'required')
@@ -97,7 +105,7 @@ export default class Login extends Component {
                         </div>
 
                         <div id="form-login-password" className="form-group">
-                            <input id="passwd" onChange={this.onChange} className="form-control" name="password" type="password" size="18" alt="password" required />
+                            <input id="passwd" onChange={this.onChange} className="form-control" name="password" type="password" size="18" alt="password" value={this.state.password} required />
 
                             <div className="error">
                                 {
@@ -114,6 +122,12 @@ export default class Login extends Component {
                             <button className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Sign in</button>
                         </div>
                     </form>
+                    {this.state.wrongValidations &&
+                        <div className="alert alert-danger" role="alert">
+                            Error de autenticación, intentá nuevamente
+                        </div>
+                    }
+
                 </div>
 
             </div>

@@ -9,6 +9,7 @@ import deleteUserComponent from './components/deleteUserComponent/deleteUserComp
 import addUserComponent from './components/addUserComponent/addUserComponent'
 import ChangePassword from './components/changePassword/ChangePassword'
 import GroupsComponent from './components/GroupsComponent/GroupsComponent'
+import editGroupComponent from './components/editGroupComponent/editGroupComponent'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/users" component={UsersComponent} />
         <Route path="/addUser" component={addUserComponent} />
         <Route path="/editUser" component={editUserComponent} />
+        <Route path="/editGroup" component={editGroupComponent} />
         <Route path="/deleteUser" component={deleteUserComponent} />
         <Route path="/changePassword" component={ChangePassword} />
         <Route path="/groups" component={GroupsComponent} />

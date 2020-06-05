@@ -19,7 +19,9 @@ export default class UserTable extends Component {
             searched: false,
             error: false,
             redirect: false,
-            changePassword: false
+            changePassword: false,
+            actualPage: 1,
+            searchedUsers: []
         }
 
         this.buscar = this.buscar.bind(this)
@@ -28,47 +30,38 @@ export default class UserTable extends Component {
         this.changePassword = this.changePassword.bind(this)
         this.deleteUser = this.deleteUser.bind(this)
         this.logout = this.logout.bind(this)
+        this.getUsersPage = this.getUsersPage.bind(this)
     }
 
-    buscar(event) {
-        event.preventDefault()
-        this.setState({
-            searched: true
-        })
-
-        let title = this.title.value;
-        if (title === '') {
-            this.setState({ encontrado: null })
+    buscar() {
+        let searched
+        if (this.title && this.title !== undefined) {
+            searched = this.title.value
         }
-
-        const tokenUser = JSON.parse(localStorage.getItem("token"))
-        const token = tokenUser
-        const bearer = `Bearer ${token}`
-        axios.get(Global.getUsers, { headers: { Authorization: bearer } }).then(response => {
-            console.log("response.data", response.data)
-            /* se actualiza el token */
-            this.setState({
-                allUsers: response.data.Data
-            })
-
-            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-
-            this.state.allUsers.map(user => {
-                if (user.id === title) {
-                    this.setState({ encontrado: user })
+        let returnData = []
+        this.state.allUsers.map(user => {
+            let nameLastName = `${user.name} ${user.lastName}`
+            if (searched !== undefined) {
+                if (searched.indexOf('@') >= 0) {
+                    if (user.email.indexOf(searched) >= 0) {
+                        returnData.push(user)
+                    }
+                } else {
+                    if (user.id.indexOf(searched) >= 0) {
+                        returnData.push(user)
+                    } else if (nameLastName.indexOf(searched) >= 0) {
+                        returnData.push(user)
+                    }
                 }
-                return true;
-            })
+            } else {
+                returnData.push(user)
+            }
+            return true
         })
-            .catch((error) => {
-                // Si hay algún error en el request lo deslogueamos
-                this.setState({
-                    error: true,
-                    redirect: true
-                })
-                console.log('error ' + error);
-                this.logout()
-            });
+
+        this.setState({
+            searchedUsers: returnData
+        })
     }
 
     editUser(event, userInfo) {
@@ -113,7 +106,88 @@ export default class UserTable extends Component {
         this.setState({ redirect: true })
     }
 
+    getUsersPage(page, allUsers) {
+        let total = []
+        let cantOfPages = 0
+        if (allUsers !== null) {
+            const cantPerPage = 25
+            cantOfPages = Math.ceil(allUsers.length / cantPerPage)
+
+            let index = (page - 1) * cantPerPage
+            let acum = index + cantPerPage
+            if (acum > allUsers.length) {
+                acum = allUsers.length
+            }
+            while (index < acum) {
+                total.push(allUsers[index])
+                index++
+            }
+        }
+        return {
+            total: total,
+            cantOfPages: cantOfPages
+        }
+    }
+
+    componentDidMount() {
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
+        axios.get(Global.getUsers, { headers: { Authorization: bearer } }).then(response => {
+
+            this.setState({
+                allUsers: response.data.Data
+            })
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            this.buscar()
+        })
+            .catch((error) => {
+                // Si hay algún error en el request lo deslogueamos
+                this.setState({
+                    error: true,
+                    redirect: true
+                })
+                console.log('error ' + error);
+                this.logout()
+            });
+    }
+
     render() {
+
+        const allUsers = this.state.searchedUsers
+        let pagina = this.getUsersPage(this.state.actualPage, allUsers)
+        let totalUsuarios = pagina.total
+        let botones = []
+        for (let index = 0; index < pagina.cantOfPages; index++) {
+            if (botones.length < 4) {
+                botones.push(
+                    <button key={index} onClick={() => {
+                        this.setState({
+                            actualPage: index + 1
+                        })
+                    }}>
+                        {index + 1}
+                    </button>
+                )
+            } else {
+                botones.push(
+                    <button key={index - 1} disabled> ... </button>
+                )
+                break
+            }
+        }
+        if (botones.length < pagina.cantOfPages) {
+            botones.push(
+                <button key={botones.length} onClick={() => {
+                    this.setState({
+                        actualPage: pagina.cantOfPages
+                    })
+                }}>
+                    {pagina.cantOfPages}
+                </button>
+            )
+        }
+
         if (this.state.redirect) {
             return <Redirect to={'/home'} />
         }
@@ -149,18 +223,17 @@ export default class UserTable extends Component {
 
         return (
             <div>
+
                 {/* Buscador */}
                 {HELPER_FUNCTIONS.checkPermission("GET|users/:id") &&
-                    <form onSubmit={this.buscar} className="buscador">
-                        <input
-                            type="text"
-                            ref={(c) => {
-                                this.title = c
-                            }}
-                            placeholder="Ingrese el número de id"
-                        />
-                        <input type="submit" value="Buscar" />
-                    </form>
+                    <input
+                        type="text"
+                        ref={(c) => {
+                            this.title = c
+                        }}
+                        placeholder="Ingrese el número de id"
+                        onChange={this.buscar}
+                    />
                 }
 
                 {HELPER_FUNCTIONS.checkPermission("POST|users/new") &&
@@ -179,7 +252,9 @@ export default class UserTable extends Component {
                         <div className="sk-circle8 sk-circle"></div>
                         <div className="sk-circle9 sk-circle"></div>
                         <div className="sk-circle10 sk-circle"></div>
-                        <div className="sk-circle11 sk-circle"></div>
+                        <div className="sk-circle11 sk-while (true) {
+                    <h1>Hola</h1>
+                }circle"></div>
                         <div className="sk-circle12 sk-circle"></div>
                     </div>
                 }
@@ -188,48 +263,71 @@ export default class UserTable extends Component {
                     <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1>
                 }
 
-                {this.state.encontrado &&
-                    <div className="table-users">
+                <div className="table-users">
 
-                        <div className="table-header">Datos de {this.state.encontrado.name} {this.state.encontrado.lastName} </div>
+                    <table cellSpacing="0">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>Nombre y apellido</th>
+                                <th>Mail</th>
+                                <th>Sector</th>
+                                <th>Editar</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
 
-                        <table cellSpacing="0">
-                            <thead>
-                                <tr>
-                                    <th>id</th>
-                                    <th>Nombre y apellido</th>
-                                    <th>Mail</th>
-                                    <th>Sector</th>
-                                    <th>Editar</th>
-                                    <th>Eliminar</th>
-                                </tr>
-                            </thead>
+                        <tbody>
+                            {totalUsuarios &&
 
+                                totalUsuarios.map((user, index) => {
+                                    return (
+                                        <tr key={index}>
+                                            <td>{user.id}</td>
+                                            <td>{user.name} {user.lastName}</td>
+                                            <td>{user.email}</td>
+                                            <td>{user.equipoEspecifico}</td>
+                                            {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
+                                                <td onClick={e => this.editUser(e, user)}>icono-edit</td>
+                                            }
+                                            {!HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
+                                                <td disabled>icono-edit</td>
+                                            }
+                                            {HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
+                                                <td onClick={e => this.deleteUser(e, user)}>icono-delete</td>
+                                            }
+                                            {!HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
+                                                <td disabled>icono-delete</td>
+                                            }
 
-                            <tbody key={this.state.encontrado.id}>
-                                <tr>
-                                    <td>{this.state.encontrado.id}</td>
-                                    <td>{this.state.encontrado.name} {this.state.encontrado.lastName}</td>
-                                    <td>{this.state.encontrado.email}</td>
-                                    <td>{this.state.encontrado.equipoEspecifico}</td>
-                                    {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                                        <td onClick={e => this.editUser(e, this.state.encontrado)}>icono-edit</td>
-                                    }
-                                    {!HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                                        <td disabled>icono-edit</td>
-                                    }
-                                    {HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
-                                        <td onClick={e => this.deleteUser(e, this.state.encontrado)}>icono-delete</td>
-                                    }
-                                    {!HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
-                                        <td disabled>icono-delete</td>
-                                    }
+                                        </tr>
+                                    )
+                                })
+                            }
+                        </tbody>
+                    </table>
 
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div className="botones">
+                        {this.state.actualPage > 1 &&
+                            <button onClick={() => {
+                                this.setState({
+                                    actualPage: this.state.actualPage - 1
+                                })
+                            }}>Página anterior</button>
+                        }
+
+                        {botones}
+
+                        {this.state.actualPage !== pagina.cantOfPages &&
+                            <button onClick={() => {
+                                this.setState({
+                                    actualPage: this.state.actualPage + 1
+                                })
+                            }}>Página siguiente</button>
+                        }
+
                     </div>
-                }
+                </div>
             </div>
         )
     }

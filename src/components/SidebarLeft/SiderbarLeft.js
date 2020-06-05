@@ -136,15 +136,15 @@ export default function PersistentDrawerLeft() {
                 <Divider />
                 <List>
                     <NavLink to="/home" activeClassName="active" style={{ textDecoration: 'none' }}>
-                        <ListItem button key={"Usuarios"}>
+                        <ListItem button key={"Home"}>
                             <ListItemIcon><PeopleIcon /></ListItemIcon>
-                            <ListItemText primary={"usuarios"} />
+                            <ListItemText primary={"home"} />
                         </ListItem>
                     </NavLink>
                     <NavLink to="/users" activeClassName="active" style={{ textDecoration: 'none' }}>
-                        <ListItem button key={"otro"}>
+                        <ListItem button key={"Usuarios"}>
                             <ListItemIcon><InboxIcon /></ListItemIcon>
-                            <ListItemText primary={"otro"} />
+                            <ListItemText primary={"usuarios"} />
                         </ListItem>
                     </NavLink>
                 </List>

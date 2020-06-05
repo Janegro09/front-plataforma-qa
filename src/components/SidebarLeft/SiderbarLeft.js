@@ -22,6 +22,7 @@ import Logout from '../Logout/Logout'
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import HomeIcon from '@material-ui/icons/Home';
 import PersonIcon from '@material-ui/icons/Person';
+import SecurityIcon from '@material-ui/icons/Security';
 
 const drawerWidth = 240;
 
@@ -152,6 +153,12 @@ export default function PersistentDrawerLeft() {
                         <ListItem button key={"Grupos"}>
                             <ListItemIcon><PeopleAltIcon /></ListItemIcon>
                             <ListItemText primary={"grupos"} />
+                        </ListItem>
+                    </NavLink>
+                    <NavLink to="/roles" activeClassName="active" style={{ textDecoration: 'none' }}>
+                        <ListItem button key={"Roles"}>
+                            <ListItemIcon><SecurityIcon /></ListItemIcon>
+                            <ListItemText primary={"roles"} />
                         </ListItem>
                     </NavLink>
                 </List>

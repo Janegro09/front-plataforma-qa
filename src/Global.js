@@ -10,7 +10,8 @@ let Global = {
     passChange: `${BASE}/users/passchange/`,
     permissions: `${BASE}/permissions/`,
     frontUtilities: `${BASE}/frontUtilities`,
-    getGroups: `${BASE}/groups`
+    getGroups: `${BASE}/groups`,
+    getRoles: `${BASE}/roles`
 }
 
 export default Global;

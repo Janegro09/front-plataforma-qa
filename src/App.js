@@ -12,6 +12,8 @@ import GroupsComponent from './components/GroupsComponent/GroupsComponent'
 import editGroupComponent from './components/editGroupComponent/editGroupComponent'
 import deleteGroupComponent from './components/deleteGroupComponent/deleteGroupComponent'
 import createGroupComponent from './components/createGroupComponent/createGroupComponent'
+import RolesComponent from './components/RolesComponent/RolesComponent'
+import createRoleComponent from './components/createRoleComponent/createRoleComponent'
 
 function App() {
   return (
@@ -26,9 +28,11 @@ function App() {
         <Route path="/editGroup" component={editGroupComponent} />
         <Route path="/deleteUser" component={deleteUserComponent} />
         <Route path="/createGroup" component={createGroupComponent} />
+        <Route path="/createRole" component={createRoleComponent} />
         <Route path="/deleteGroup" component={deleteGroupComponent} />
         <Route path="/changePassword" component={ChangePassword} />
         <Route path="/groups" component={GroupsComponent} />
+        <Route path="/roles" component={RolesComponent} />
       </Switch>
     </BrowserRouter>
   );

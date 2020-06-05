@@ -215,7 +215,7 @@ export default class RolesComponent extends Component {
         // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
         if (this.state.deleteUser) {
             return <Redirect to={{
-                pathname: '/deleteGroup',
+                pathname: '/deleteRole',
                 state: { userSelected: this.state.userSelected }
             }}
             />

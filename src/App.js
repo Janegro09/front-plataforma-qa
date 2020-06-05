@@ -15,6 +15,7 @@ import deleteGroupComponent from './components/deleteGroupComponent/deleteGroupC
 import createGroupComponent from './components/createGroupComponent/createGroupComponent'
 import RolesComponent from './components/RolesComponent/RolesComponent'
 import createRoleComponent from './components/createRoleComponent/createRoleComponent'
+import deleteRoleComponent from './components/deleteRoleComponent/deleteRoleComponent'
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/deleteUser" component={deleteUserComponent} />
         <Route path="/createGroup" component={createGroupComponent} />
         <Route path="/createRole" component={createRoleComponent} />
+        <Route path="/deleteRole" component={deleteRoleComponent} />
         <Route path="/deleteGroup" component={deleteGroupComponent} />
         <Route path="/changePassword" component={ChangePassword} />
         <Route path="/groups" component={GroupsComponent} />

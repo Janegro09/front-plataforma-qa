@@ -63,11 +63,14 @@ table th {
     text-align: center;
 
 }
+table tr {
+  border-top: 1px solid #ebebeb;
+}
 table tr:nth-child(2n) {
-    background-color: white;
+    background-color: transparent;
 }
 table tr:nth-child(2n+1) {
-    /* background-color: #edf7f8; */
+    background-color: transparent;
 }
 @media screen and (max-width: 700px) {
     table, tr, td {

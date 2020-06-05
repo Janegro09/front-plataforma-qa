@@ -17,7 +17,8 @@ export default class BackOfficeComponent extends Component {
             selectedFile: event.target.files[0]
         });
         if (event.target.files[0].type !== "text/csv") {
-            console.log("sweeet")
+            swal("ATENCIÓN", "El archivo tiene que ser CSV", "info");
+
         } else {
             swal({
                 title: "Estás por actualizar la nómina de usuarios",
@@ -72,7 +73,7 @@ export default class BackOfficeComponent extends Component {
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
                 </div>
-
+                <h1>BACKOFFICE</h1>
                 {HELPER_FUNCTIONS.checkPermission('POST|backoffice/nomina') &&
                     <div className="form-group">
                         <label htmlFor="file">Subir nómina (Sólo archivos CSV)</label>

@@ -236,6 +236,7 @@ export default class RolesComponent extends Component {
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderBarLeft />
                 </div>
+                <h1>ROLES</h1>
                 {/* Buscador */}
                 {HELPER_FUNCTIONS.checkPermission("GET|roles/:id") &&
                     <input

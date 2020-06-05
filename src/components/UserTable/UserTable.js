@@ -244,7 +244,7 @@ export default class UserTable extends Component {
                     <button onClick={e => this.addUser(e)} className="btnCrear">+</button>
                 }
 
-                {this.state.searched && this.state.encontrado === null && !this.state.error &&
+                {this.state.allUsers === null &&
                     <div className="sk-fading-circle">
                         <div className="sk-circle1 sk-circle"></div>
                         <div className="sk-circle2 sk-circle"></div>

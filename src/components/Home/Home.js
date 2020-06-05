@@ -5,9 +5,12 @@ export default class UsersComponent extends Component {
     render() {
         return (
             <div>
-                <div className="welcome-message">Users component</div>
-                <SidebarLeft />
+                <div>
+                    <SidebarLeft />
+                </div>
+                <h1>HOME</h1>
             </div>
+
         )
     }
 }

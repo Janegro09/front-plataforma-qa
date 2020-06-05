@@ -35,6 +35,7 @@ export default class Home extends Component {
                     <SiderbarLeft name={userInfo.name} />
                 </div>
                 {/* PAGINACION  */}
+                <h1>USUARIOS</h1>
                 <div className="section-content">
                     <UserInfoContainer userInfo={userInfo} />
                 </div>

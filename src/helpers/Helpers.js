@@ -8,6 +8,17 @@ export const HELPER_FUNCTIONS = {
         localStorage.clear()
         return (<Redirect to='/' />)
     },
+    checkPermissionGroup: (grupo) => {
+        const userInfo = JSON.parse(localStorage.getItem("userData"))
+        const permissions = userInfo.role[0].permissionAssign
+        for (let index = 0; index < permissions.length; index++) {
+            const element = permissions[index];
+            if (grupo === element.group) {
+                return true
+            }
+        }
+        return false
+    },
     checkPermission: (route) => {
         const userInfo = JSON.parse(localStorage.getItem("userData"))
         const permissions = userInfo.role[0].permissionAssign
@@ -52,7 +63,6 @@ export const HELPER_FUNCTIONS = {
             }
             return true
         })
-        console.log(name)
         return nameReturn
 
     }

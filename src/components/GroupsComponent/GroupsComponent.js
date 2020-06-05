@@ -237,6 +237,8 @@ export default class GroupsComponent extends Component {
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderBarLeft />
                 </div>
+
+                <h1>GRUPOS</h1>
                 {/* Buscador */}
                 {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") &&
                     <input

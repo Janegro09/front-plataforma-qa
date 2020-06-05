@@ -24,6 +24,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import PersonIcon from '@material-ui/icons/Person';
 import SecurityIcon from '@material-ui/icons/Security';
 import SettingsIcon from '@material-ui/icons/Settings';
+import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 
 const drawerWidth = 240;
 
@@ -144,30 +145,43 @@ export default function PersistentDrawerLeft() {
                             <ListItemText primary={"home"} />
                         </ListItem>
                     </NavLink>
-                    <NavLink to="/users" activeClassName="active" style={{ textDecoration: 'none' }}>
-                        <ListItem button key={"Usuarios"}>
-                            <ListItemIcon><PersonIcon /></ListItemIcon>
-                            <ListItemText primary={"usuarios"} />
-                        </ListItem>
-                    </NavLink>
-                    <NavLink to="/groups" activeClassName="active" style={{ textDecoration: 'none' }}>
-                        <ListItem button key={"Grupos"}>
-                            <ListItemIcon><PeopleAltIcon /></ListItemIcon>
-                            <ListItemText primary={"grupos"} />
-                        </ListItem>
-                    </NavLink>
-                    <NavLink to="/roles" activeClassName="active" style={{ textDecoration: 'none' }}>
-                        <ListItem button key={"Roles"}>
-                            <ListItemIcon><SecurityIcon /></ListItemIcon>
-                            <ListItemText primary={"roles"} />
-                        </ListItem>
-                    </NavLink>
-                    <NavLink to="/backoffice" activeClassName="active" style={{ textDecoration: 'none' }}>
-                        <ListItem button key={"Backoffice"}>
-                            <ListItemIcon><SettingsIcon /></ListItemIcon>
-                            <ListItemText primary={"backoffice"} />
-                        </ListItem>
-                    </NavLink>
+                    {HELPER_FUNCTIONS.checkPermissionGroup("users") &&
+
+                        <NavLink to="/users" activeClassName="active" style={{ textDecoration: 'none' }}>
+                            <ListItem button key={"Usuarios"}>
+                                <ListItemIcon><PersonIcon /></ListItemIcon>
+                                <ListItemText primary={"usuarios"} />
+                            </ListItem>
+                        </NavLink>
+                    }
+
+                    {HELPER_FUNCTIONS.checkPermissionGroup("groups") &&
+                        <NavLink to="/groups" activeClassName="active" style={{ textDecoration: 'none' }}>
+                            <ListItem button key={"Grupos"}>
+                                <ListItemIcon><PeopleAltIcon /></ListItemIcon>
+                                <ListItemText primary={"grupos"} />
+                            </ListItem>
+                        </NavLink>
+                    }
+
+                    {HELPER_FUNCTIONS.checkPermissionGroup("roles") &&
+                        <NavLink to="/roles" activeClassName="active" style={{ textDecoration: 'none' }}>
+                            <ListItem button key={"Roles"}>
+                                <ListItemIcon><SecurityIcon /></ListItemIcon>
+                                <ListItemText primary={"roles"} />
+                            </ListItem>
+                        </NavLink>
+                    }
+
+                    {HELPER_FUNCTIONS.checkPermissionGroup("") &&
+
+                        <NavLink to="/backoffice" activeClassName="active" style={{ textDecoration: 'none' }}>
+                            <ListItem button key={"Backoffice"}>
+                                <ListItemIcon><SettingsIcon /></ListItemIcon>
+                                <ListItemText primary={"backoffice"} />
+                            </ListItem>
+                        </NavLink>
+                    }
                 </List>
                 <Divider />
                 <List>

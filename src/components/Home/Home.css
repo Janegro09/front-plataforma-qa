@@ -2,3 +2,7 @@
     overflow-y: scroll;
     height: 80vh;
 }
+
+.header {
+    background-color: black !important;
+}

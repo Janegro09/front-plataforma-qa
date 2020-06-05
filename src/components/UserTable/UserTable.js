@@ -223,10 +223,14 @@ export default class UserTable extends Component {
 
         return (
             <div>
+                 
+                <div className="table-users">
 
+                <div className="flex-input-add">   
                 {/* Buscador */}
                 {HELPER_FUNCTIONS.checkPermission("GET|users/:id") &&
                     <input
+                    className="form-control"
                         type="text"
                         ref={(c) => {
                             this.title = c
@@ -237,7 +241,7 @@ export default class UserTable extends Component {
                 }
 
                 {HELPER_FUNCTIONS.checkPermission("POST|users/new") &&
-                    <button onClick={e => this.addUser(e)}>Crear usuario</button>
+                    <button onClick={e => this.addUser(e)} className="btn  btn-info ripple-effect btnCrear">Crear Usuario</button>
                 }
 
                 {this.state.searched && this.state.encontrado === null && !this.state.error &&
@@ -262,8 +266,7 @@ export default class UserTable extends Component {
                 {this.state.error &&
                     <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1>
                 }
-
-                <div className="table-users">
+                </div>
 
                     <table cellSpacing="0">
                         <thead>

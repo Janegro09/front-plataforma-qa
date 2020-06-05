@@ -41,9 +41,14 @@ class SelectGroup extends Component {
     searchDefault() {
         let groupData = []
         if (this.state.groupSelect.length > 0 && this.props.defaultValue && !this.state.groupsToSend) {
+            let ids = []
             this.props.defaultValue.map(v => {
+                ids.push(v._id)
+                return true
+            })
+            ids.map(v => {
                 this.state.groupSelect.map(value => {
-                    if (value.value === v.id) {
+                    if (value.value === v) {
                         groupData.push(value)
                     }
                     return true;

@@ -125,7 +125,6 @@ export default class RolesComponent extends Component {
     }
 
     createGroup() {
-        console.log("Crear grupo")
         this.setState({
             createGroup: true
         })
@@ -195,7 +194,7 @@ export default class RolesComponent extends Component {
         // Si se selecciono editar usuario lo envío a la página editUser con los datos del usuario
         if (this.state.editUser) {
             return <Redirect to={{
-                pathname: '/editGroup',
+                pathname: '/editRole',
                 state: { userSelected: this.state.userSelected }
             }}
             />
@@ -279,11 +278,11 @@ export default class RolesComponent extends Component {
                 }
 
                 <div className="table-users">
-
                     <table cellSpacing="0">
                         <thead>
                             <tr>
                                 <th>Role</th>
+                                <th>Descripción</th>
                                 <th>Editar</th>
                                 <th>Eliminar</th>
                             </tr>
@@ -296,6 +295,7 @@ export default class RolesComponent extends Component {
                                     return (
                                         <tr key={index}>
                                             <td>{user.role}</td>
+                                            <td>{user.description}</td>
                                             {HELPER_FUNCTIONS.checkPermission("PUT|roles/:id") &&
                                                 <td onClick={e => this.editUser(e, user)}>icono-edit</td>
                                             }

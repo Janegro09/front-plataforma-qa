@@ -11,7 +11,8 @@ let Global = {
     permissions: `${BASE}/permissions/`,
     frontUtilities: `${BASE}/frontUtilities`,
     getGroups: `${BASE}/groups`,
-    getRoles: `${BASE}/roles`
+    getRoles: `${BASE}/roles`,
+    sendNomina: `${BASE}/backoffice/nomina` 
 }
 
 export default Global;

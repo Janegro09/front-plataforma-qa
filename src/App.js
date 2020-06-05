@@ -16,6 +16,7 @@ import createGroupComponent from './components/createGroupComponent/createGroupC
 import RolesComponent from './components/RolesComponent/RolesComponent'
 import createRoleComponent from './components/createRoleComponent/createRoleComponent'
 import deleteRoleComponent from './components/deleteRoleComponent/deleteRoleComponent'
+import BackOfficeComponent from './components/BackOfficeComponent/BackOfficeComponent'
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/changePassword" component={ChangePassword} />
         <Route path="/groups" component={GroupsComponent} />
         <Route path="/roles" component={RolesComponent} />
+        <Route path="/backoffice" component={BackOfficeComponent} />
       </Switch>
     </BrowserRouter>
   );

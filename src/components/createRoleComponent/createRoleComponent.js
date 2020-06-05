@@ -4,6 +4,7 @@ import Global from '../../Global'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import swal from 'sweetalert'
 import SelectGroup from './SelectGroup'
+import SiderbarLeft from '../SidebarLeft/SiderbarLeft'
 
 export default class createRoleComponent extends Component {
     constructor(props) {
@@ -38,6 +39,7 @@ export default class createRoleComponent extends Component {
 
         const bodyParameters = {
             role: this.role.value,
+            description: this.description.value,
             permissions: this.permissions
         }
 
@@ -64,11 +66,19 @@ export default class createRoleComponent extends Component {
     render() {
         return (
             <div>
+                <div className="header">
+                    {/* BOTON DE SALIDA */}
+                    {/* BARRA LATERAL IZQUIERDA */}
+                    <SiderbarLeft />
+                </div>
                 <form onSubmit={this.modifyUser}>
-                    {HELPER_FUNCTIONS.checkPermission("POST|groups/:id") &&
+                    {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
                         <input type="text" placeholder="role" name="group" ref={(c) => this.role = c} required />
                     }
-                    {HELPER_FUNCTIONS.checkPermission("POST|groups/:id") &&
+                    {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
+                        <input type="text" placeholder="description" name="description" ref={(c) => this.description = c} required />
+                    }
+                    {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
                         <input type="submit" value="Agregar" />
                     }
                 </form>

@@ -30,7 +30,7 @@ img {
     width: 60px;
 }
 .table-users {
-    border-top: 1px solid #313131;
+    /* border-top: 1px solid #313131; */
     /* border-radius: 10px; */
 
     max-width: calc(100% - 2em);
@@ -324,3 +324,14 @@ table tr:nth-child(2n+1) {
     0%, 39%, 100% { opacity: 0; }
     40% { opacity: 1; } 
   }
+
+  .flex-input-add {
+    display: flex;
+
+  }
+
+.btnCrear {
+  width: 150px;
+  font-size: 0.8em;
+
+}

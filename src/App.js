@@ -8,6 +8,7 @@ import editUserComponent from './components/editUserComponent/editUserComponent'
 import deleteUserComponent from './components/deleteUserComponent/deleteUserComponent'
 import addUserComponent from './components/addUserComponent/addUserComponent'
 import ChangePassword from './components/changePassword/ChangePassword'
+import GroupsComponent from './components/GroupsComponent/GroupsComponent'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/editUser" component={editUserComponent} />
         <Route path="/deleteUser" component={deleteUserComponent} />
         <Route path="/changePassword" component={ChangePassword} />
+        <Route path="/groups" component={GroupsComponent} />
       </Switch>
     </BrowserRouter>
   );

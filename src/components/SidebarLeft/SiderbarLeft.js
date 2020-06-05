@@ -1,7 +1,6 @@
 import React from 'react';
 import './styles.css'
 import { NavLink } from 'react-router-dom';
-import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -18,9 +17,11 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Logout from '../Logout/Logout'
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import HomeIcon from '@material-ui/icons/Home';
+import PersonIcon from '@material-ui/icons/Person';
 
 const drawerWidth = 240;
 
@@ -137,14 +138,20 @@ export default function PersistentDrawerLeft() {
                 <List>
                     <NavLink to="/home" activeClassName="active" style={{ textDecoration: 'none' }}>
                         <ListItem button key={"Home"}>
-                            <ListItemIcon><PeopleIcon /></ListItemIcon>
+                            <ListItemIcon><HomeIcon /></ListItemIcon>
                             <ListItemText primary={"home"} />
                         </ListItem>
                     </NavLink>
                     <NavLink to="/users" activeClassName="active" style={{ textDecoration: 'none' }}>
                         <ListItem button key={"Usuarios"}>
-                            <ListItemIcon><InboxIcon /></ListItemIcon>
+                            <ListItemIcon><PersonIcon /></ListItemIcon>
                             <ListItemText primary={"usuarios"} />
+                        </ListItem>
+                    </NavLink>
+                    <NavLink to="/groups" activeClassName="active" style={{ textDecoration: 'none' }}>
+                        <ListItem button key={"Grupos"}>
+                            <ListItemIcon><PeopleAltIcon /></ListItemIcon>
+                            <ListItemText primary={"grupos"} />
                         </ListItem>
                     </NavLink>
                 </List>

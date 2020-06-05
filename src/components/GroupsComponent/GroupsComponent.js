@@ -22,7 +22,8 @@ export default class GroupsComponent extends Component {
             redirect: false,
             changePassword: false,
             actualPage: 1,
-            searchedUsers: []
+            searchedUsers: [],
+            createGroup: false
         }
 
         this.buscar = this.buscar.bind(this)
@@ -32,6 +33,7 @@ export default class GroupsComponent extends Component {
         this.deleteUser = this.deleteUser.bind(this)
         this.logout = this.logout.bind(this)
         this.getUsersPage = this.getUsersPage.bind(this)
+        this.createGroup = this.createGroup.bind(this)
     }
 
     buscar() {
@@ -122,6 +124,13 @@ export default class GroupsComponent extends Component {
         }
     }
 
+    createGroup() {
+        console.log("Crear grupo")
+        this.setState({
+            createGroup: true
+        })
+    }
+
     componentDidMount() {
         const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
@@ -207,7 +216,15 @@ export default class GroupsComponent extends Component {
         // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
         if (this.state.deleteUser) {
             return <Redirect to={{
-                pathname: '/deleteUser',
+                pathname: '/deleteGroup',
+                state: { userSelected: this.state.userSelected }
+            }}
+            />
+        }
+
+        if (this.state.createGroup) {
+            return <Redirect to={{
+                pathname: '/createGroup',
                 state: { userSelected: this.state.userSelected }
             }}
             />
@@ -235,6 +252,8 @@ export default class GroupsComponent extends Component {
                 {HELPER_FUNCTIONS.checkPermission("POST|groups/new") &&
                     <button onClick={e => this.addUser(e)}>Crear usuario</button>
                 }
+
+                <button onClick={this.createGroup}>Crear grupo</button>
 
                 {this.state.searched && this.state.encontrado === null && !this.state.error &&
                     <div className="sk-fading-circle">

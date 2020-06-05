@@ -5,7 +5,7 @@ import Global from '../../Global'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import swal from 'sweetalert'
 
-export default class editGroupComponent extends Component {
+export default class createGroupComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -15,25 +15,6 @@ export default class editGroupComponent extends Component {
         this.handleChangeStatus = this.handleChangeStatus.bind(this)
         this.handleChangeTurno = this.handleChangeTurno.bind(this)
         this.handleChange = this.handleChange.bind(this);
-    }
-
-    componentDidMount() {
-        let token = JSON.parse(localStorage.getItem('token'))
-        let id = this.props.location.state.userSelected.id
-        const config = {
-            headers: { Authorization: `Bearer ${token}` }
-        };
-
-        axios.get(Global.getGroups + '/' + id, config)
-            .then(response => {
-                this.setState({
-                    userInfo: response.data.Data[0]
-                })
-                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-            })
-            .catch(e => {
-                console.log("error", e)
-            })
     }
 
     handleChange(event) {
@@ -58,12 +39,13 @@ export default class editGroupComponent extends Component {
             group: this.group.value
         }
 
-        let id = this.props.location.state.userSelected.id
-
-        axios.put(Global.getGroups + "/" + id, bodyParameters, config)
+        axios.post(Global.getGroups + "/new", bodyParameters, config)
             .then(response => {
                 localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-                swal("Felicidades!", "Has cambiado el nombre del grupo", "success");
+                if (response.data.Success) {
+                    swal("Felicidades!", "Se ha creado el grupo correctamente", "success");
+                }
+
             })
             .catch(e => {
                 console.log("Error: ", e)
@@ -72,7 +54,6 @@ export default class editGroupComponent extends Component {
     }
 
     render() {
-        const group = this.state.userInfo
         return (
             <div>
                 <div className="header">
@@ -80,15 +61,14 @@ export default class editGroupComponent extends Component {
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
                 </div>
-                {group !== null &&
-                    <form onSubmit={this.modifyUser}>
-                        <input type="text" placeholder="id" name="id" ref={(c) => this.id = c} defaultValue={group.id ? group.id : ''} disabled />
-                        <input type="text" placeholder="group" name="group" ref={(c) => this.group = c} defaultValue={group.group ? group.group : ''} />
-                        {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                            <input type="submit" value="modificar usuario" />
-                        }
-                    </form>
-                }
+                <form onSubmit={this.modifyUser}>
+                    {HELPER_FUNCTIONS.checkPermission("POST|groups/:id") &&
+                        <input type="text" placeholder="group" name="group" ref={(c) => this.group = c} />
+                    }
+                    {HELPER_FUNCTIONS.checkPermission("POST|groups/:id") &&
+                        <input type="submit" value="Agregar" />
+                    }
+                </form>
 
             </div>
         )

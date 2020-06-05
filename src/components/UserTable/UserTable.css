@@ -62,7 +62,10 @@ img {
     width: 1000px;
 }
 table {
+
     width: 100%;
+    border-bottom: 0.2px solid #dedede;
+    margin-bottom: 11px;
 
 }
 table td, table th {
@@ -382,4 +385,18 @@ table tr:nth-child(2n+1) {
   flex-direction: column;
   width: 50%;
   margin: auto;
+}
+
+.botones {
+  float: right;
+}
+
+.botones > button {
+  border: none;
+  border-bottom: 1px solid;
+  background-color: transparent;
+}
+
+button:focus {
+  display: none;
 }

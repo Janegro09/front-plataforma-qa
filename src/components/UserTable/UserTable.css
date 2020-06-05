@@ -5,13 +5,36 @@
     border: 1px solid #ddd;
   }
   
+  th {
+    background-color: black;
+    color: white !important;
+    font-weight: 500 !important ;
+  }
+
   th, td {
     text-align: left;
     padding: 16px;
+    font-family: inherit;
+    font-weight: 300;
+  }
+
+  td:hover {
+    background-color: #e8e7e7 !important;
+    border-bottom: 1px solid #d2d2d2;
   }
   
   tr:nth-child(even) {
     background-color: #f2f2f2;
+  }
+
+  tr:hover {
+    background-color: #e8e7e7 !important;
+    border-bottom: 1px solid #d2d2d2;
+
+  }
+
+  tr {
+    border-radius: 4px !important;
   }
 
 
@@ -67,9 +90,11 @@ table tr {
   border-top: 1px solid #ebebeb;
 }
 table tr:nth-child(2n) {
+    background-color: white;
     background-color: transparent;
 }
 table tr:nth-child(2n+1) {
+    /* background-color: #edf7f8; */
     background-color: transparent;
 }
 @media screen and (max-width: 700px) {
@@ -330,11 +355,23 @@ table tr:nth-child(2n+1) {
 
   .flex-input-add {
     display: flex;
-
+    margin-bottom: 20px;
+    align-items: flex-end;
   }
 
 .btnCrear {
-  width: 150px;
-  font-size: 0.8em;
+  font-size: 1em;
+  border-radius: 5px;
+  color: #383838;
+  font-weight: 400;
+  border: 1px solid;
+  height: 36px;
+  margin-left: 8px;
+  background-color: transparent;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
 
+.btnCrear:hover {
+  color: white;
+  background-color: #313131;
 }

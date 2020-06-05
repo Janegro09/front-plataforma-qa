@@ -1,5 +1,5 @@
 .section-content {
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     height: 80vh;
 }
 

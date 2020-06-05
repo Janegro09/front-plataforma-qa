@@ -750,10 +750,11 @@ body {
   border-radius: 0 !important;
   font-size: 16px;
   font-weight: 300;
-  padding: 0;
+  padding: 9px;
+  font-style: italic;
   background-color: transparent;
   box-shadow: none;
-  border-bottom: 1px solid #757575;
+  border-bottom: 1px solid;
 }
 .input-group .form-control {
   position: relative;
@@ -766,6 +767,7 @@ body {
   border-color: #757575;
   outline: none;
   box-shadow: none;
+  background-color: transparent !important;
 }
 /* -- label styles ---------------------------------- */
 label {
@@ -787,7 +789,11 @@ label {
   .form-horizontal .control-label {
     font-size: 16px;
   }
+
 }
+
+
+
 .float-label {
   left: 0;
   top: 7px;
@@ -892,6 +898,7 @@ label {
   -moz-animation: inputHighlighter 0.3s ease;
   animation: inputHighlighter 0.3s ease;
 }
+
 /* -- highlighter animation --------------------------- */
 @-webkit-keyframes inputHighlighter {
   from {
@@ -1085,10 +1092,7 @@ fieldset[disabled] .form-control {
   src: local('Roboto Black'), local('Roboto-Black'), url(http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtfABc9.ttf) format('truetype');
 }
 /* -- body styles ------------------------------------- */
-body {
-  font-family: "Roboto", 'Helvetica Neue, Helvetica, Arial', sans-serif;
-  background: #ebebeb;
-}
+
 /* -- button styles ------------------------------------- */
 /*-- signin-card animation ---------------------------------------- */
 .signin-card {
@@ -1100,6 +1104,7 @@ body {
 }
 /* -- login paper styles ------------------------------ */
 .signin-card {
+  margin-top: 20%;
   max-width: 350px;
   border-radius: 2px;
   margin: 20px auto;
@@ -1233,3 +1238,17 @@ body {
 .MuiSvgIcon-root {
         font-size: 1.8rem !important;
 }
+
+#root {
+  height: 100%;
+  padding: 5%;
+}
+
+@media (max-width: 768px) {
+  #root{
+    padding: 0px;
+  }
+
+}
+
+

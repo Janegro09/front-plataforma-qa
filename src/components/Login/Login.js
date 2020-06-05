@@ -7,6 +7,8 @@ import Global from '../../Global'
 import Logo from './qa_logos.png';
 
 
+
+
 export default class Login extends Component {
     constructor(props) {
         super(props)

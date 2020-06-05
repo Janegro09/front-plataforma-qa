@@ -1,0 +1,76 @@
+import React, { Component } from 'react'
+import SiderbarLeft from '../SidebarLeft/SiderbarLeft'
+import axios from 'axios'
+import Global from '../../Global'
+import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
+import swal from 'sweetalert'
+
+export default class createGroupComponent extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            userInfo: null
+        }
+        this.modifyUser = this.modifyUser.bind(this)
+        this.handleChangeStatus = this.handleChangeStatus.bind(this)
+        this.handleChangeTurno = this.handleChangeTurno.bind(this)
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event) {
+        this.sexo = event.target.value
+    }
+
+    handleChangeStatus(event) {
+        this.userActive = event.target.value
+    }
+
+    handleChangeTurno(event) {
+        this.turno = event.target.value
+    }
+
+    modifyUser(e) {
+        e.preventDefault()
+        let token = JSON.parse(localStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        const bodyParameters = {
+            group: this.group.value
+        }
+
+        axios.post(Global.getGroups + "/new", bodyParameters, config)
+            .then(response => {
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                if (response.data.Success) {
+                    swal("Felicidades!", "Se ha creado el grupo correctamente", "success");
+                }
+
+            })
+            .catch(e => {
+                console.log("Error: ", e)
+            })
+
+    }
+
+    render() {
+        return (
+            <div>
+                <div className="header">
+                    {/* BOTON DE SALIDA */}
+                    {/* BARRA LATERAL IZQUIERDA */}
+                    <SiderbarLeft />
+                </div>
+                <form onSubmit={this.modifyUser}>
+                    {HELPER_FUNCTIONS.checkPermission("POST|groups/:id") &&
+                        <input type="text" placeholder="group" name="group" ref={(c) => this.group = c} />
+                    }
+                    {HELPER_FUNCTIONS.checkPermission("POST|groups/:id") &&
+                        <input type="submit" value="Agregar" />
+                    }
+                </form>
+
+            </div>
+        )
+    }
+}

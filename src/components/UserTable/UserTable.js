@@ -241,7 +241,7 @@ export default class UserTable extends Component {
                 }
 
                 {HELPER_FUNCTIONS.checkPermission("POST|users/new") &&
-                    <button onClick={e => this.addUser(e)} className="btnCrear">Agregar</button>
+                    <button onClick={e => this.addUser(e)} className="btnCrear">+</button>
                 }
 
                 {this.state.searched && this.state.encontrado === null && !this.state.error &&

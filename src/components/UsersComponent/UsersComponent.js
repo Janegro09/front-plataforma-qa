@@ -16,13 +16,13 @@ export default class Home extends Component {
     }
 
     logout() {
-        localStorage.setItem("userData", '')
-        localStorage.clear()
+        sessionStorage.setItem("userData", '')
+        sessionStorage.clear()
         this.setState({ redirect: true })
     }
 
     render() {
-        const userInfo = JSON.parse(localStorage.getItem("userData"));
+        const userInfo = JSON.parse(sessionStorage.getItem("userData"));
         
         if (this.state.redirect || userInfo === null) {
             return <Redirect to={'/'} />

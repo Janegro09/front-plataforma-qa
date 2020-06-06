@@ -19,7 +19,7 @@ export default class editRoleComponent extends Component {
     }
 
     componentDidMount() {
-        let token = JSON.parse(localStorage.getItem('token'))
+        let token = JSON.parse(sessionStorage.getItem('token'))
         let id = this.props.location.state.userSelected.id
         const config = {
             headers: { Authorization: `Bearer ${token}` }
@@ -30,10 +30,16 @@ export default class editRoleComponent extends Component {
                 this.setState({
                     userInfo: response.data.Data[0]
                 })
-                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
             })
             .catch(e => {
-                console.log("error", e)
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
+                }
+                console.log("Error: ", e)
             })
     }
 
@@ -51,7 +57,7 @@ export default class editRoleComponent extends Component {
 
     modifyUser(e) {
         e.preventDefault()
-        let token = JSON.parse(localStorage.getItem('token'))
+        let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -65,14 +71,14 @@ export default class editRoleComponent extends Component {
 
         axios.put(Global.getRoles + "/" + id, bodyParameters, config)
             .then(response => {
-                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 swal("Felicidades!", "Has cambiado el nombre del grupo", "success");
             })
             .catch(e => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema al agregar los roles", "error");
                 }
                 console.log("Error: ", e)

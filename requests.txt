@@ -1,6 +1,6 @@
         /*
         // CREAR USUARIO
-        let token = JSON.parse(localStorage.getItem('token'))
+        let token = JSON.parse(sessionStorage.getItem('token'))
         console.log("token: ", token)
         const config = {
             headers: { Authorization: `Bearer ${token}` }
@@ -27,7 +27,7 @@
         //========================================================================
         /*
         // GET USER
-        let token = JSON.parse(localStorage.getItem('token'))
+        let token = JSON.parse(sessionStorage.getItem('token'))
         let id = this.props.location.state.userSelected.id
         const config = {
             headers: { Authorization: `Bearer ${token}` }
@@ -45,7 +45,7 @@
         //========================================================================
 
         // // DELETE USER
-        // let token = JSON.parse(localStorage.getItem('token'))
+        // let token = JSON.parse(sessionStorage.getItem('token'))
         // let id = this.props.location.state.userSelected.id
         // const config = {
         //     headers: { Authorization: `Bearer ${token}` }
@@ -62,7 +62,7 @@
         //========================================================================
 
         // CHANGE PASSWORD
-        // let token = JSON.parse(localStorage.getItem('token'))
+        // let token = JSON.parse(sessionStorage.getItem('token'))
         // let id = this.props.location.state.userSelected.id
         // const config = {
         //     headers: { Authorization: `Bearer ${token}` }
@@ -83,7 +83,7 @@
         // FIN CHANGE PASSWORD
         //========================================================================
         // MODIFICAR USUARIO
-        // let token = JSON.parse(localStorage.getItem('token'))
+        // let token = JSON.parse(sessionStorage.getItem('token'))
         // let id = this.props.location.state.userSelected.id
         // const config = {
         //     headers: { Authorization: `Bearer ${token}` }
@@ -105,7 +105,7 @@
         // FIN MODIFICAR USUARIO
         //========================================================================
         // CHANGE STATUS
-        // let token = JSON.parse(localStorage.getItem('token'))
+        // let token = JSON.parse(sessionStorage.getItem('token'))
         // let id = this.props.location.state.userSelected.id
         // const config = {
         //     headers: { Authorization: `Bearer ${token}` }
@@ -124,7 +124,7 @@
         // FIN CHANGE STATUS
         //========================================================================
         // PERMISSIONS
-        // let token = JSON.parse(localStorage.getItem('token'))
+        // let token = JSON.parse(sessionStorage.getItem('token'))
         // let id = this.props.location.state.userSelected.id
         // const config = {
         //     headers: { Authorization: `Bearer ${token}` }

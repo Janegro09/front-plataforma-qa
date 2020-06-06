@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom'
 import Global from '../../Global'
 import axios from 'axios'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
+import swal from 'sweetalert'
 
 export default class UserTable extends Component {
     constructor(props) {
@@ -100,9 +101,9 @@ export default class UserTable extends Component {
     }
 
     logout() {
-        localStorage.setItem("userData", '')
-        localStorage.setItem("token", '')
-        localStorage.clear()
+        sessionStorage.setItem("userData", '')
+        sessionStorage.setItem("token", '')
+        sessionStorage.clear()
         this.setState({ redirect: true })
     }
 
@@ -130,7 +131,7 @@ export default class UserTable extends Component {
     }
 
     componentDidMount() {
-        const tokenUser = JSON.parse(localStorage.getItem("token"))
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.get(Global.getUsers, { headers: { Authorization: bearer } }).then(response => {
@@ -138,17 +139,22 @@ export default class UserTable extends Component {
             this.setState({
                 allUsers: response.data.Data
             })
-            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.buscar()
         })
-            .catch((error) => {
+            .catch((e) => {
                 // Si hay algún error en el request lo deslogueamos
                 this.setState({
                     error: true,
                     redirect: true
                 })
-                console.log('error ' + error);
-                this.logout()
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
+                }
+                console.log("Error: ", e)
             });
     }
 

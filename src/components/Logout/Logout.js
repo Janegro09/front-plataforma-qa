@@ -14,7 +14,7 @@ export default class Logout extends Component {
     }
 
     componentDidMount() {
-        if (localStorage.getItem("userData")) {
+        if (sessionStorage.getItem("userData")) {
             // console.log("Datos almacenados")
         } else {
             this.setState({ redirect: true })
@@ -22,9 +22,9 @@ export default class Logout extends Component {
     }
 
     logout() {
-        localStorage.setItem("userData", '')
-        localStorage.setItem("token", '')
-        localStorage.clear()
+        sessionStorage.setItem("userData", '')
+        sessionStorage.setItem("token", '')
+        sessionStorage.clear()
         this.setState({ redirect: true })
     }
 

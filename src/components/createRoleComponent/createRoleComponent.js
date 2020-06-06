@@ -32,7 +32,7 @@ export default class createRoleComponent extends Component {
 
     modifyUser(e) {
         e.preventDefault()
-        let token = JSON.parse(localStorage.getItem('token'))
+        let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -45,7 +45,7 @@ export default class createRoleComponent extends Component {
 
         axios.post(Global.getRoles + "/new", bodyParameters, config)
             .then(response => {
-                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 if (response.data.Success) {
                     swal("Felicidades!", "Se ha creado el role correcamente", "success");
                 }
@@ -55,7 +55,7 @@ export default class createRoleComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema al agregar los roles", "error");
                 }
                 console.log("Error: ", e)

@@ -6,13 +6,16 @@ import SelectGroup from '../addUserComponent/SelectGroup'
 import SelectRoles from '../addUserComponent/SelectRoles'
 import ChangePassword from '../changePassword/ChangePassword'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
+import { Redirect } from 'react-router-dom'
+import swal from 'sweetalert'
 
 export default class editUserComponent extends Component {
     constructor(props) {
         super(props)
         console.log("Desde el constructor ", this.props.location.state.userSelected)
         this.state = {
-            userInfo: null
+            userInfo: null,
+            redirect: false
         }
         this.modifyUser = this.modifyUser.bind(this)
         this.handleChangeStatus = this.handleChangeStatus.bind(this)
@@ -23,7 +26,7 @@ export default class editUserComponent extends Component {
     componentDidMount() {
         console.log("Componente lanzado!!")
         console.log(this.props.location.state.userSelected)
-        let token = JSON.parse(localStorage.getItem('token'))
+        let token = JSON.parse(sessionStorage.getItem('token'))
         let id = this.props.location.state.userSelected.id
         const config = {
             headers: { Authorization: `Bearer ${token}` }
@@ -35,10 +38,16 @@ export default class editUserComponent extends Component {
                 this.setState({
                     userInfo: response.data.Data[0]
                 })
-                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
             })
             .catch(e => {
-                console.log("error", e)
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
+                }
+                console.log("Error: ", e)
             })
     }
 
@@ -58,7 +67,7 @@ export default class editUserComponent extends Component {
 
     modifyUser(e) {
         e.preventDefault()
-        let token = JSON.parse(localStorage.getItem('token'))
+        let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -103,10 +112,19 @@ export default class editUserComponent extends Component {
 
         axios.post(Global.modifyUser + id, bodyParameters, config)
             .then(response => {
-                console.log(response)
-                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                this.setState({
+                    redirect: true
+                })
+                swal("Genial!", "Usuario editado exitosamente!", "success");
             })
             .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema al agregar el usuario", "error");
+                }
                 console.log("Error: ", e)
             })
 
@@ -114,7 +132,10 @@ export default class editUserComponent extends Component {
 
     render() {
         const user = this.state.userInfo
-        console.log("userInfo: ", user)
+        if (this.state.redirect) {
+            return <Redirect to="/users" />
+        }
+
         return (
             <div>
                 <div className="header">

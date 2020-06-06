@@ -3,13 +3,13 @@ import { Redirect } from 'react-router-dom';
 
 export const HELPER_FUNCTIONS = {
     logout: () => {
-        localStorage.setItem("userData", '')
-        localStorage.setItem("token", '')
-        localStorage.clear()
+        sessionStorage.setItem("userData", '')
+        sessionStorage.setItem("token", '')
+        sessionStorage.clear()
         return (<Redirect to='/' />)
     },
     checkPermissionGroup: (grupo) => {
-        const userInfo = JSON.parse(localStorage.getItem("userData"))
+        const userInfo = JSON.parse(sessionStorage.getItem("userData"))
         const permissions = userInfo.role[0].permissionAssign
         for (let index = 0; index < permissions.length; index++) {
             const element = permissions[index];
@@ -20,7 +20,7 @@ export const HELPER_FUNCTIONS = {
         return false
     },
     checkPermission: (route) => {
-        const userInfo = JSON.parse(localStorage.getItem("userData"))
+        const userInfo = JSON.parse(sessionStorage.getItem("userData"))
         const permissions = userInfo.role[0].permissionAssign
         for (let index = 0; index < permissions.length; index++) {
             const element = permissions[index];

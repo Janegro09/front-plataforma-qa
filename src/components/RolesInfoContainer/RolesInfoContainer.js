@@ -13,9 +13,9 @@ export default class TableOfUsers extends Component {
     }
 
     logout() {
-        localStorage.setItem("userData", '')
-        localStorage.setItem("token", '')
-        localStorage.clear()
+        sessionStorage.setItem("userData", '')
+        sessionStorage.setItem("token", '')
+        sessionStorage.clear()
         this.setState({ redirect: true })
     }
 

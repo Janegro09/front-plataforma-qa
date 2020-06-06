@@ -61,13 +61,13 @@ export default class Login extends Component {
 
                     if (response.data.Success) {
                         console.log("El que se va a loguear: ", response.data.loggedUser)
-                        localStorage.setItem('userData', JSON.stringify(response.data.loggedUser))
-                        localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                        sessionStorage.setItem('userData', JSON.stringify(response.data.loggedUser))
+                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                         this.setState({ redirect: true })
 
                     } else {
                         console.log("Login error")
-                        localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                     }
                 })
                 .catch(err => {
@@ -87,7 +87,7 @@ export default class Login extends Component {
             return <Redirect to={'/home'} />
         }
 
-        if (localStorage.getItem("userData")) {
+        if (sessionStorage.getItem("userData")) {
             return <Redirect to={'/home'} />
         }
         return (

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Select from "react-select";
 import axios from 'axios'
 import Global from '../../Global'
+import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
+import swal from 'sweetalert'
 
 class SelectRoles extends Component {
     constructor(props) {
@@ -62,6 +64,12 @@ class SelectRoles extends Component {
                 })
             })
             .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema al agregar el usuario", "error");
+                }
                 console.log("Error: ", e)
             })
     }

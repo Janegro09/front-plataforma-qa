@@ -3,6 +3,7 @@ import Select from "react-select";
 import axios from 'axios'
 import Global from '../../Global'
 import { HELPER_FUNCTIONS } from "../../helpers/Helpers";
+import swal from 'sweetalert'
 
 class SelectGroup extends Component {
     constructor(props) {
@@ -109,6 +110,12 @@ class SelectGroup extends Component {
             .catch(e => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
+                }
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
             })

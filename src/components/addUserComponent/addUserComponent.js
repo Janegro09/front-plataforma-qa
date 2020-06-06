@@ -5,8 +5,9 @@ import Global from '../../Global'
 import SelectGroup from './SelectGroup'
 import SelectRoles from './SelectRoles'
 import SimpleReactValidator from 'simple-react-validator'
-import {HELPER_FUNCTIONS} from '../../helpers/Helpers'
+import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import swal from 'sweetalert'
+import { Redirect } from 'react-router-dom'
 
 export default class addUserComponent extends Component {
     constructor(props) {
@@ -14,7 +15,8 @@ export default class addUserComponent extends Component {
         this.addUser = this.addUser.bind(this)
         this.state = {
             groups: null,
-            roles: null
+            roles: null,
+            redirect: false
         }
 
         this.validator = new SimpleReactValidator({
@@ -23,70 +25,79 @@ export default class addUserComponent extends Component {
             }
         });
         this.handleChange = this.handleChange.bind(this);
+        this.handleTurno = this.handleTurno.bind(this);
     }
 
     addUser(event) {
         event.preventDefault()
         console.log(this.validator)
-        if (this.validator.allValid()) {
-            swal("Usuario creado!", "Ya se encuentra registrado", "success");
-        } else {
-            alert()
+        if (!this.validator.allValid()) {
+            swal("Error!", "Parámetros inválidos", "error");
             this.validator.showMessages();
             this.forceUpdate();
+        } else {
+            let token = JSON.parse(sessionStorage.getItem('token'))
+            const config = {
+                headers: { Authorization: `Bearer ${token}` }
+            };
+            const bodyParameters = {
+                id: this.id.value,
+                dni: this.dni.value,
+                name: this.name.value,
+                lastName: this.lastName.value,
+                role: this.role,
+                legajo: this.legajo.value,
+                email: this.email.value,
+                phone: this.phone.value,
+                sexo: this.sexo,
+                status: this.status.value,
+                fechaIngresoLinea: this.fechaIngresoLinea.value,
+                fechaBaja: this.fechaBaja.value,
+                motivoBaja: this.motivoBaja.value,
+                propiedad: this.propiedad.value,
+                canal: this.canal.value,
+                negocio: this.negocio.value,
+                razonSocial: this.razonSocial.value,
+                edificioLaboral: this.edificioLaboral.value,
+                gerencia1: this.gerencia1.value,
+                nameG1: this.nameG1.value,
+                gerencia2: this.gerencia2.value,
+                nameG2: this.nameG2.value,
+                jefeCoordinador: this.jefeCoordinador.value,
+                responsable: this.responsable.value,
+                supervisor: this.supervisor.value,
+                lider: this.lider.value,
+                provincia: this.provincia.value,
+                region: this.region.value,
+                subregion: this.subregion.value,
+                equipoEspecifico: this.equipoEspecifico.value,
+                puntoVenta: this.puntoVenta.value,
+                group: this.group,
+                turno: this.turno,
+                // imagen: this.imagen.value
+            }
+
+            axios.post(
+                Global.createUser,
+                bodyParameters,
+                config
+            ).then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                this.setState({
+                    redirect: true
+                })
+                swal("Usuario creado!", "Ya se encuentra registrado", "success");
+            }).catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema al agregar el usuario", "error");
+                }
+                console.log("Error: ", e)
+            });
         }
 
-        let token = JSON.parse(localStorage.getItem('token'))
-        const config = {
-            headers: { Authorization: `Bearer ${token}` }
-        };
-        const bodyParameters = {
-            id: this.id.value,
-            dni: this.dni.value,
-            name: this.name.value,
-            lastName: this.lastName.value,
-            role: this.role,
-            legajo: this.legajo.value,
-            email: this.email.value,
-            phone: this.phone.value,
-            sexo: this.sexo,
-            status: this.status.value,
-            fechaIngresoLinea: this.fechaIngresoLinea.value,
-            fechaBaja: this.fechaBaja.value,
-            motivoBaja: this.motivoBaja.value,
-            propiedad: this.propiedad.value,
-            canal: this.canal.value,
-            negocio: this.negocio.value,
-            razonSocial: this.razonSocial.value,
-            edificioLaboral: this.edificioLaboral.value,
-            gerencia1: this.gerencia1.value,
-            nameG1: this.nameG1.value,
-            gerencia2: this.gerencia2.value,
-            nameG2: this.nameG2.value,
-            jefeCoordinador: this.jefeCoordinador.value,
-            responsable: this.responsable.value,
-            supervisor: this.supervisor.value,
-            lider: this.lider.value,
-            provincia: this.provincia.value,
-            region: this.region.value,
-            subregion: this.subregion.value,
-            equipoEspecifico: this.equipoEspecifico.value,
-            puntoVenta: this.puntoVenta.value,
-            group: this.group,
-            turno: this.turno.value,
-            // imagen: this.imagen.value
-        }
-
-        axios.post(
-            Global.createUser,
-            bodyParameters,
-            config
-        ).then(response => {
-            localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-        }).catch(e => {
-            console.log(e)
-            HELPER_FUNCTIONS.logout()
-        });
     }
 
     componentDidMount() {
@@ -100,6 +111,12 @@ export default class addUserComponent extends Component {
 
             })
             .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema al agregar el usuario", "error");
+                }
                 console.log("Error: ", e)
             })
     }
@@ -108,8 +125,14 @@ export default class addUserComponent extends Component {
         this.sexo = event.target.value
     }
 
-    render() {
+    handleTurno(event) {
+        this.turno = event.target.value
+    }
 
+    render() {
+        if (this.state.redirect) {
+            return <Redirect to="/users" />
+        }
         return (
             <div>
                 <div className="header">
@@ -161,7 +184,11 @@ export default class addUserComponent extends Component {
                     <input type="text" placeholder="equipoEspecifico" ref={(c) => this.equipoEspecifico = c} />
                     <input type="text" placeholder="puntoVenta" ref={(c) => this.puntoVenta = c} />
                     <SelectGroup getValue={(c) => this.group = c} />
-                    <input type="text" placeholder="turno" ref={(c) => this.turno = c} />
+                    <select onChange={this.handleTurno}>
+                        <option value="TT">TT</option>
+                        <option value="TM">TM</option>
+                    </select>
+                    {/* <input type="text" placeholder="turno" ref={(c) => this.turno = c} /> */}
                     {/* <input type="text" placeholder="imagen" ref={(c) => this.imagen = c} /> */}
                     <input type="submit" value="Crear usuario" />
                 </form>

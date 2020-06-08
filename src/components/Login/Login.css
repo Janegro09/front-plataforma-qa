@@ -1239,7 +1239,7 @@ fieldset[disabled] .form-control {
 
 #root {
   height: 100%;
-  padding: 5%;
+  /* padding: 5%; */
 }
 
 @media (max-width: 768px) {

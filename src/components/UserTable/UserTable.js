@@ -114,7 +114,7 @@ export default class UserTable extends Component {
         let total = []
         let cantOfPages = 0
         if (allUsers !== null) {
-            const cantPerPage = 25
+            const cantPerPage = 12
             cantOfPages = Math.ceil(allUsers.length / cantPerPage)
 
             let index = (page - 1) * cantPerPage

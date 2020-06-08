@@ -106,7 +106,7 @@ export default class RolesComponent extends Component {
         let total = []
         let cantOfPages = 0
         if (allGroups !== null) {
-            const cantPerPage = 25
+            const cantPerPage = 12
             cantOfPages = Math.ceil(allGroups.length / cantPerPage)
 
             let index = (page - 1) * cantPerPage

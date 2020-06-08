@@ -5,6 +5,7 @@ import SimpleReactValidator from 'simple-react-validator'
 import './Login.css';
 import Global from '../../Global'
 import Logo from './qa_logos.png';
+import ReCAPTCHA from "react-google-recaptcha";
 
 
 
@@ -16,7 +17,9 @@ export default class Login extends Component {
             username: '',
             password: '',
             redirect: false,
-            wrongValidations: false
+            wrongValidations: false,
+            'g-recaptcha-response': null,
+            errorMessage: ''
         }
 
         this.validator = new SimpleReactValidator({
@@ -31,6 +34,7 @@ export default class Login extends Component {
 
     login(e) {
         e.preventDefault()
+        this.captcha.reset()
         const { username, password } = this.state;
         if (this.validator.allValid()) {
             this.loginUser(username, password);
@@ -53,7 +57,8 @@ export default class Login extends Component {
         if (username && password) {
             axios.post(Global.login, {
                 user: username,
-                password: password
+                password: password,
+                'g-recaptcha-response': this.state["g-recaptcha-response"]
             }
             )
                 .then(response => {
@@ -74,7 +79,8 @@ export default class Login extends Component {
                     this.setState({
                         username: '',
                         password: '',
-                        wrongValidations: true
+                        wrongValidations: true,
+                        errorMessage: err.response.data.Message
                     })
                     console.warn(err)
                 });
@@ -124,17 +130,29 @@ export default class Login extends Component {
                             <label htmlFor="password" className="float-label">password</label>
                         </div>
 
+                        <ReCAPTCHA
+
+                            ref={e => (this.captcha = e)}
+                            sitekey="6Lc_kQEVAAAAALDdMw8duPQhADuwZTxBPElW-UYe"
+                            onChange={(e) => {
+                                this.setState({
+                                    'g-recaptcha-response': e
+                                })
+                            }}
+                        />
                         <div>
-                            <button className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Sign in</button>
+                            <button disabled={!this.state["g-recaptcha-response"]} className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Sign in</button>
                         </div>
                     </form>
-                    {this.state.wrongValidations &&
+                    {this.state.errorMessage !== '' &&
                         <div className="alert alert-danger" role="alert">
-                            Error de autenticación, intentá nuevamente
+                            {this.state.errorMessage}
                         </div>
                     }
 
                 </div>
+
+
 
             </div>
         )

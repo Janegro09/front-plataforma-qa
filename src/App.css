@@ -8,10 +8,16 @@
   /* height: 90px; */
   width: 100%;
   position: inherit;
+
 }
 
 .salir {
   position: absolute;
   right: 0;
   padding: 10px;
+}
+
+
+.section-content {
+  padding: 50px;
 }

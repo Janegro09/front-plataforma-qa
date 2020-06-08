@@ -217,7 +217,8 @@ body {
   font-weight: 300;
   font-size: 14px;
   line-height: 1.4;
-  color: #212121;
+  /* color: #212121; */
+  color: #ebebeb;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -754,7 +755,7 @@ body {
   font-style: italic;
   background-color: transparent;
   box-shadow: none;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #989898;
 }
 .input-group .form-control {
   position: relative;

@@ -110,8 +110,10 @@ display: none;
   position: relative;
   color: #fff;
   font-size: 27px;
-  padding: 9px;
+  /* padding: 9px; */
+  margin-top: 10px;
   text-align: center;
+  height: 45px;
 }
 
 .parent__menu_holder > li:hover,
@@ -197,10 +199,10 @@ div.content{
 
 .LogoIn {
   border-radius: 0;
-  height: 40px;
-  width: 40px;
-  opacity:0.3;
-  margin: 10px 5px 5px 9px;
+  height: 35px;
+  width: 35px;
+  opacity: 0.5;
+  margin: 10px 5px 5px 11px;
 }
 
 .hoverMenu {

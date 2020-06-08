@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Poiret+One|Varela+Round);
+/* @import url(https://fonts.googleapis.com/css?family=Poiret+One|Varela+Round);
 
 .toggle {
 text-decoration: none;
@@ -62,4 +62,123 @@ left: 200px;
 display: none; 
 }
 
+ */
 
+
+ *{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+.side__bar_inverse{
+  background-color: #333;
+    border-color: #080808;
+}
+
+.side__bar{
+  /*width: 360px;*/
+  /*background-color: #f3f3f3;*/
+  height: 100vh;
+  position: fixed;
+  overflow-y: scroll;
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  left: 0;
+}
+
+.side__bar:hover{
+  width: 360px;
+}
+
+.side__bar::-webkit-scrollbar { width: 0 !important }
+
+.side__bar_container{
+  width: 60px;
+  height: 100vh;
+  z-index: 999;
+}
+
+.parent__menu_holder{
+  list-style: none;
+}
+
+.parent__menu_holder > li {
+  position: relative;
+  color: #fff;
+  font-size: 27px;
+  padding: 9px;
+}
+
+.parent__menu_holder > li:hover,
+.parent__menu_holder > li:hover .child__menu > li,
+.child__list > li:hover a{
+  background-color: #080808;
+}
+
+.parent__menu_holder > li:hover .child__menu{
+  display: block;
+}
+
+.parent__menu_holder > li:hover::after{
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 3px;
+  background-color: #4666FF;
+  top: 0;
+  left: 0;
+}
+
+.parent__menu_holder > li:hover i{
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6, 0 0 25px #0073e6, 0 0 30px #0073e6, 0 0 35px #0073e6;
+}
+
+.child__menu{
+  display: none;
+  position: absolute;
+  list-style: none;
+  background-color: #333;
+  width: min-content;
+  top: 0;
+  left: 100%;
+}
+
+.child__list{
+  list-style: none;
+  overflow: auto;
+  height: 160px;
+  overflow: auto;
+}
+
+.child__list > li > a{
+  font-size: 15px;
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding: 6px 12px;
+}
+
+.child__menu > li{
+  font-size: 18px;
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding: 14px 12px;
+  font-weight: bold;
+  width: 240px;
+}
+
+.child__menu > li:hover a{
+  background-color: #080808;
+}
+
+/*Just For Test*/
+div.content{
+  background-color: #999;
+  width: 100%;
+  height: 100vh;
+  padding: 120px;
+}
+/*Test*/

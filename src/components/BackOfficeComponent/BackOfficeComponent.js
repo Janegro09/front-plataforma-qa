@@ -75,7 +75,7 @@ export default class BackOfficeComponent extends Component {
                 </div>
                 <h1>BACKOFFICE</h1>
                 {HELPER_FUNCTIONS.checkPermission('POST|backoffice/nomina') &&
-                    <div className="section-content">
+                    <div className="form-group">
                         <label htmlFor="file">Subir nómina (Sólo archivos CSV)</label>
                         <input type="file" name="file" onChange={this.fileChange} />
                     </div>

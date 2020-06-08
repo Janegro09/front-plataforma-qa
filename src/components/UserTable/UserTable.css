@@ -6,7 +6,7 @@
   }
 
   .encabezadoTabla {
-    border-bottom: 1px solid #464646;
+    border-bottom: 1px solid #d2d2d2;
   }
 
 td {
@@ -22,7 +22,7 @@ td {
   }
 
   tr:hover {
-    background-color: #383838 !important;
+    background-color: #e8e7e7 !important;
   }
 
 
@@ -40,14 +40,10 @@ img {
     overflow: hidden;
     width: 1000px;
 }
-thead {
-  background-color: #383838;
-}
-
 table {
 
     width: 100%;
-    border-bottom: 1px solid #464646;
+    border-bottom: 0.2px solid #dedede;
     margin-bottom: 11px;
 
 }
@@ -60,7 +56,6 @@ table td, table th {
 table td {
     text-align: center;
     vertical-align: middle;
-    text-align: -webkit-center;
     
 }
 table td:last-child {
@@ -74,8 +69,6 @@ table th {
     text-align: center;
 
 }
-
-
 
 
 
@@ -412,10 +405,7 @@ button:focus {
   margin-bottom: 20px;
 }
 
-svg {
-  color: #5d5d5d;
-}
 
-svg:hover {
-  color: #313131;
+.section-content {
+  padding: 50px;
 }

@@ -1235,9 +1235,7 @@ fieldset[disabled] .form-control {
         font-size: 12px !important;
 }
 
-.MuiSvgIcon-root {
-        font-size: 1.8rem !important;
-}
+
 
 #root {
   height: 100%;
@@ -1251,4 +1249,7 @@ fieldset[disabled] .form-control {
 
 }
 
+.MuiSvgIcon-root {
+  font-size: 1.2rem !important;
+}
 

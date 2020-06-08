@@ -5,6 +5,9 @@ import Global from '../../Global'
 import axios from 'axios'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import swal from 'sweetalert'
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 export default class UserTable extends Component {
     constructor(props) {
@@ -250,7 +253,16 @@ export default class UserTable extends Component {
                     <button onClick={e => this.addUser(e)} className="btnCrear">+</button>
                 }
 
-                {this.state.allUsers === null &&
+
+
+                {this.state.error &&
+                    <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1>
+                }
+                </div>
+
+                    <table cellSpacing="0">
+
+                    {this.state.allUsers === null &&
                     <div className="sk-fading-circle">
                         <div className="sk-circle1 sk-circle"></div>
                         <div className="sk-circle2 sk-circle"></div>
@@ -269,13 +281,7 @@ export default class UserTable extends Component {
                     </div>
                 }
 
-                {this.state.error &&
-                    <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1>
-                }
-                </div>
-
-                    <table cellSpacing="0">
-                        <thead>
+                        <thead class="encabezadoTabla">
                             <tr>
                                 <th>id</th>
                                 <th>Nombre y apellido</th>
@@ -297,16 +303,16 @@ export default class UserTable extends Component {
                                             <td>{user.email}</td>
                                             <td>{user.equipoEspecifico}</td>
                                             {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                                                <td onClick={e => this.editUser(e, user)}>icono-edit</td>
+                                                <td onClick={e => this.editUser(e, user)}><EditIcon></EditIcon></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                                                <td disabled>icono-edit</td>
+                                                <td disabled><EditIcon></EditIcon></td>
                                             }
                                             {HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
-                                                <td onClick={e => this.deleteUser(e, user)}>icono-delete</td>
+                                                <td onClick={e => this.deleteUser(e, user)}><DeleteIcon></DeleteIcon></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
-                                                <td disabled>icono-delete</td>
+                                                <td disabled><DeleteIcon></DeleteIcon></td>
                                             }
 
                                         </tr>
@@ -322,7 +328,7 @@ export default class UserTable extends Component {
                                 this.setState({
                                     actualPage: this.state.actualPage - 1
                                 })
-                            }}>Página anterior</button>
+                            }}>◄</button>
                         }
 
                         {botones}
@@ -332,7 +338,7 @@ export default class UserTable extends Component {
                                 this.setState({
                                     actualPage: this.state.actualPage + 1
                                 })
-                            }}>Página siguiente</button>
+                            }}>►</button>
                         }
 
                     </div>

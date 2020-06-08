@@ -4,49 +4,36 @@
     width: 100%;
     border: 1px solid #ddd;
   }
-  
-  th {
-    background-color: black;
-    color: white !important;
-    font-weight: 500 !important ;
+
+  .encabezadoTabla {
+    border-bottom: 1px solid #d2d2d2;
   }
 
   th, td {
+    /* color: #313131 !important; */
     text-align: left;
     padding: 16px;
     font-family: inherit;
     font-weight: 300;
   }
 
-  td:hover {
-    background-color: #e8e7e7 !important;
-    border-bottom: 1px solid #d2d2d2;
+
+
+
+  th {
+    font-weight: 500 !important ;
   }
-  
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
+
 
   tr:hover {
     background-color: #e8e7e7 !important;
-    border-bottom: 1px solid #d2d2d2;
 
   }
 
-  tr {
-    border-radius: 4px !important;
-  }
 
 
-/* ESTILOS DE LA TABLA */
-.table-header {
-    background-color: #327a81;
-    color: white;
-    font-size: 1.5em;
-    padding: 1rem;
-    text-align: center;
-    text-transform: uppercase;
-}
+
+
 img {
     border-radius: 50%;
     height: 60px;
@@ -69,8 +56,9 @@ table {
 
 }
 table td, table th {
-    color: #585858;
+    /* color: black; */
     padding: 10px;
+    font-size: 13px;
 
 }
 table td {
@@ -89,17 +77,17 @@ table th {
     text-align: center;
 
 }
-table tr {
-  border-top: 1px solid #ebebeb;
+
+
+
+table svg {
+  /* color: #565656; */
 }
-table tr:nth-child(2n) {
-    background-color: white;
-    background-color: transparent;
+
+table svg:hover {
+  cursor: pointer;
 }
-table tr:nth-child(2n+1) {
-    /* background-color: #edf7f8; */
-    background-color: transparent;
-}
+
 @media screen and (max-width: 700px) {
     table, tr, td {
         display: block;
@@ -222,9 +210,10 @@ table tr:nth-child(2n+1) {
 
 .sk-fading-circle {
     margin: 100px auto;
-    width: 40px;
-    height: 40px;
-    position: relative;
+    width: 20px;
+    height: 20px;
+    left: 50%;
+    position: sticky;
   }
   
   .sk-fading-circle .sk-circle {
@@ -393,10 +382,13 @@ table tr:nth-child(2n+1) {
 
 .botones > button {
   border: none;
-  border-bottom: 1px solid;
+  color: inherit;
   background-color: transparent;
 }
 
 button:focus {
   display: none;
 }
+
+
+

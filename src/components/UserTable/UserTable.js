@@ -7,6 +7,7 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import swal from 'sweetalert'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 
 export default class UserTable extends Component {
@@ -250,7 +251,7 @@ export default class UserTable extends Component {
                 }
 
                 {HELPER_FUNCTIONS.checkPermission("POST|users/new") &&
-                    <button onClick={e => this.addUser(e)} className="btnCrear">+</button>
+                    <button onClick={e => this.addUser(e)}><PersonAddIcon style={{ fontSize: 33 }} /></button>
                 }
 
 
@@ -303,13 +304,13 @@ export default class UserTable extends Component {
                                             <td>{user.email}</td>
                                             <td>{user.equipoEspecifico}</td>
                                             {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                                                <td onClick={e => this.editUser(e, user)}><EditIcon></EditIcon></td>
+                                                <td onClick={e => this.editUser(e, user)}><EditIcon style={{ fontSize: 15 }} /></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
                                                 <td disabled><EditIcon></EditIcon></td>
                                             }
                                             {HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
-                                                <td onClick={e => this.deleteUser(e, user)}><DeleteIcon></DeleteIcon></td>
+                                                <td onClick={e => this.deleteUser(e, user)}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
                                                 <td disabled><DeleteIcon></DeleteIcon></td>

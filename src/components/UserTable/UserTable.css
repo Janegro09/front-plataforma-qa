@@ -9,7 +9,7 @@
     border-bottom: 1px solid #d2d2d2;
   }
 
-  th, td {
+td {
     /* color: #313131 !important; */
     text-align: left;
     padding: 16px;
@@ -17,21 +17,13 @@
     font-weight: 300;
   }
 
-
-
-
   th {
     font-weight: 500 !important ;
   }
 
-
   tr:hover {
     background-color: #e8e7e7 !important;
-
   }
-
-
-
 
 
 img {
@@ -376,6 +368,10 @@ table svg:hover {
   margin: auto;
 }
 
+.addUserIcon > .PersonAddIcon {
+  font-size: 30px;
+}
+
 .botones {
   float: right;
 }
@@ -386,9 +382,19 @@ table svg:hover {
   background-color: transparent;
 }
 
+button  {
+  border: none;
+  background-color: transparent;
+}
+
+
+
+
+
 button:focus {
   display: none;
 }
+
 
 .inputsEditUser {
   width: 50%;
@@ -398,4 +404,5 @@ button:focus {
 .inputsEditUser > input {
   margin-bottom: 20px;
 }
+
 

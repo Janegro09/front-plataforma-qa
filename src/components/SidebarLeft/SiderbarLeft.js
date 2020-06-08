@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import './styles.css'
+import { NavLink } from 'react-router-dom';
+import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
+import Logout from '../Logout/Logout'
 
 // Íconos de Material UI
 import HomeIcon from '@material-ui/icons/Home';
@@ -15,31 +18,47 @@ export default class SiderbarLeft extends Component {
             <div className="side__bar">
                 <div className="side__bar_container side__bar_inverse">
                     <ul className="parent__menu_holder side__bar_inverse">
-                        <li><HomeIcon /></li>
-                        <li><PersonIcon /></li>
-                        <li><PeopleIcon /></li>
-                        <li><SecurityIcon /></li>
-                        <li><SettingsIcon />
-                            <ul className="child__menu">
-                                <li>My New Design</li>
-                                <ul className="child__list">
-                                    <li><a href="#">Design One</a></li>
-                                    <li><a href="#">Design Two</a></li>
-                                    <li><a href="#">Design Three</a></li>
-                                    <li><a href="#">One Of My Best Design</a></li>
-                                    <li><a href="#">Check Out My Other Design www.niweshshrestha.com.np</a></li>
-                                    <li><a href="#">Design Four</a></li>
-                                    <li><a href="#">Design Three</a></li>
-                                    <li><a href="#">One Of My Best Design</a></li>
-                                    <li><a href="#">Check Out My Other Design www.niweshshrestha.com.np</a></li>
-                                    <li><a href="#">Design Four</a></li>
+                        {/* HOME */}
+                        <li><NavLink to="/home"><HomeIcon /></NavLink></li>
+
+                        {/* USERS */}
+                        {HELPER_FUNCTIONS.checkPermissionGroup("users") &&
+                            <li><NavLink to="/users"><PersonIcon /></NavLink></li>
+                        }
+                        {/* GROUPS */}
+                        {HELPER_FUNCTIONS.checkPermissionGroup("groups") &&
+                            <li><NavLink to="/groups"><PeopleIcon /></NavLink></li>
+                        }
+                        {/* ROLES */}
+                        {HELPER_FUNCTIONS.checkPermissionGroup("roles") &&
+                            <li><NavLink to="/roles"><SecurityIcon /></NavLink></li>
+                        }
+                        {/* BACKOFFICE */}
+                        {HELPER_FUNCTIONS.checkPermissionGroup("") &&
+                            <li><NavLink to="/backoffice"><SettingsIcon />
+                                <ul className="child__menu">
+                                    <li>My New Design</li>
+                                    <ul className="child__list">
+                                        <li><a href="#">Design One</a></li>
+                                        <li><a href="#">Design Two</a></li>
+                                        <li><a href="#">Design Three</a></li>
+                                        <li><a href="#">One Of My Best Design</a></li>
+                                        <li><a href="#">Check Out My Other Design www.niweshshrestha.com.np</a></li>
+                                        <li><a href="#">Design Four</a></li>
+                                        <li><a href="#">Design Three</a></li>
+                                        <li><a href="#">One Of My Best Design</a></li>
+                                        <li><a href="#">Check Out My Other Design www.niweshshrestha.com.np</a></li>
+                                        <li><a href="#">Design Four</a></li>
+                                    </ul>
                                 </ul>
-                            </ul>
-                        </li>
-                        <li><ExitToAppIcon />
-                            <ul className="child__menu">
-                                <li>My New Design</li>
-                            </ul>
+                            </NavLink>
+                            </li>
+                        }
+
+                        {/* EXIT */}
+                        <li>
+                            <ExitToAppIcon />
+                            <Logout />
                         </li>
                         {/* <li><i className="fa fa-dropbox"></i>
                             <ul className="child__menu">

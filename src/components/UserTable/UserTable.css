@@ -390,5 +390,12 @@ button:focus {
   display: none;
 }
 
+.inputsEditUser {
+  width: 50%;
+  margin: auto;
+}
 
+.inputsEditUser > input {
+  margin-bottom: 20px;
+}
 

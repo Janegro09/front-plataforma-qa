@@ -12,7 +12,6 @@ import swal from 'sweetalert'
 export default class editUserComponent extends Component {
     constructor(props) {
         super(props)
-        console.log("Desde el constructor ", this.props.location.state.userSelected)
         this.state = {
             userInfo: null,
             redirect: false
@@ -24,9 +23,11 @@ export default class editUserComponent extends Component {
     }
 
     componentDidMount() {
-        console.log("Componente lanzado!!")
-        console.log(this.props.location.state.userSelected)
         let token = JSON.parse(sessionStorage.getItem('token'))
+        // Protección de rutas
+        if (token === null) {
+            return <Redirect to={'/'} />
+        }
         let id = this.props.location.state.userSelected.id
         const config = {
             headers: { Authorization: `Bearer ${token}` }

@@ -4,6 +4,7 @@ import axios from 'axios'
 import Global from '../../Global'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import swal from 'sweetalert'
+import { Redirect } from 'react-router-dom'
 
 export default class createGroupComponent extends Component {
     constructor(props) {
@@ -11,10 +12,19 @@ export default class createGroupComponent extends Component {
         this.state = {
             userInfo: null
         }
+        
         this.modifyUser = this.modifyUser.bind(this)
         this.handleChangeStatus = this.handleChangeStatus.bind(this)
         this.handleChangeTurno = this.handleChangeTurno.bind(this)
         this.handleChange = this.handleChange.bind(this);
+    }
+
+    componentDidMount() {
+        // Protección de rutas
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        if (tokenUser === null) {
+            return <Redirect to={'/'} />
+        }
     }
 
     handleChange(event) {

@@ -5,6 +5,7 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import swal from 'sweetalert'
 import SelectGroup from './SelectGroup'
 import SiderbarLeft from '../SidebarLeft/SiderbarLeft'
+import { Redirect } from 'react-router-dom'
 
 export default class createRoleComponent extends Component {
     constructor(props) {
@@ -64,6 +65,11 @@ export default class createRoleComponent extends Component {
     }
 
     render() {
+        // Protección de rutas
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        if (tokenUser === null) {
+            return <Redirect to={'/'} />
+        }
         return (
             <div>
                 <div className="header">

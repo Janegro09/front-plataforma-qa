@@ -4,6 +4,7 @@ import axios from 'axios'
 import Global from '../../Global'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import swal from 'sweetalert'
+import { Redirect } from 'react-router-dom'
 
 export default class editGroupComponent extends Component {
     constructor(props) {
@@ -19,6 +20,10 @@ export default class editGroupComponent extends Component {
 
     componentDidMount() {
         let token = JSON.parse(sessionStorage.getItem('token'))
+        // Protección de rutas
+        if (token === null) {
+            return <Redirect to={'/'} />
+        }
         let id = this.props.location.state.userSelected.id
         const config = {
             headers: { Authorization: `Bearer ${token}` }

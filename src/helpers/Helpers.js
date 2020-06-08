@@ -10,22 +10,26 @@ export const HELPER_FUNCTIONS = {
     },
     checkPermissionGroup: (grupo) => {
         const userInfo = JSON.parse(sessionStorage.getItem("userData"))
-        const permissions = userInfo.role[0].permissionAssign
-        for (let index = 0; index < permissions.length; index++) {
-            const element = permissions[index];
-            if (grupo === element.group) {
-                return true
+        if (userInfo !== null) {
+            const permissions = userInfo.role[0].permissionAssign
+            for (let index = 0; index < permissions.length; index++) {
+                const element = permissions[index];
+                if (grupo === element.group) {
+                    return true
+                }
             }
         }
         return false
     },
     checkPermission: (route) => {
         const userInfo = JSON.parse(sessionStorage.getItem("userData"))
-        const permissions = userInfo.role[0].permissionAssign
-        for (let index = 0; index < permissions.length; index++) {
-            const element = permissions[index];
-            if (route === element.route) {
-                return true
+        if (userInfo !== null) {   
+            const permissions = userInfo.role[0].permissionAssign
+            for (let index = 0; index < permissions.length; index++) {
+                const element = permissions[index];
+                if (route === element.route) {
+                    return true
+                }
             }
         }
         return false

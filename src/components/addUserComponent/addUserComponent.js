@@ -130,6 +130,12 @@ export default class addUserComponent extends Component {
     }
 
     render() {
+        // Protección de rutas
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        if (tokenUser === null) {
+            return <Redirect to={'/'} />
+        }
+
         if (this.state.redirect) {
             return <Redirect to="/users" />
         }

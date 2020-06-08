@@ -3,10 +3,16 @@ import swal from 'sweetalert';
 import axios from 'axios'
 import Global from '../../Global'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
+import { Redirect } from 'react-router-dom'
 
 
 export default class ChangePassword extends Component {
     render() {
+        // Protección de rutas
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        if (tokenUser === null) {
+            return <Redirect to={'/'} />
+        }
         return (
             <div>
                 {HELPER_FUNCTIONS.checkPermission("POST|users/passchange/:id") &&

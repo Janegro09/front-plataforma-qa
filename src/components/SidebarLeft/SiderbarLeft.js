@@ -3,6 +3,7 @@ import './styles.css'
 import { NavLink } from 'react-router-dom';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import Logout from '../Logout/Logout'
+import LogoIn from './qa_logo.png';
 
 // Íconos de Material UI
 import HomeIcon from '@material-ui/icons/Home';
@@ -12,30 +13,32 @@ import SecurityIcon from '@material-ui/icons/Security';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
+
 export default class SiderbarLeft extends Component {
     render() {
         return (
+            
             <div className="side__bar">
                 <div className="side__bar_container side__bar_inverse">
                     <ul className="parent__menu_holder side__bar_inverse">
                         {/* HOME */}
-                        <li><NavLink to="/home"><HomeIcon /></NavLink></li>
+                        <span class="LogoInMenu"><NavLink to="/home"><img src={LogoIn} className="LogoIn" /></NavLink></span>
 
                         {/* USERS */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("users") &&
-                            <li><NavLink to="/users"><PersonIcon /></NavLink></li>
+                            <li><NavLink to="/users"><PersonIcon className="IconoMenu"/></NavLink></li>
                         }
                         {/* GROUPS */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("groups") &&
-                            <li><NavLink to="/groups"><PeopleIcon /></NavLink></li>
+                            <li><NavLink to="/groups"><PeopleIcon className="IconoMenu"/></NavLink></li>
                         }
                         {/* ROLES */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("roles") &&
-                            <li><NavLink to="/roles"><SecurityIcon /></NavLink></li>
+                            <li><NavLink to="/roles"><SecurityIcon className="IconoMenu"/></NavLink></li>
                         }
                         {/* BACKOFFICE */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("") &&
-                            <li><NavLink to="/backoffice"><SettingsIcon />
+                            <li><NavLink to="/backoffice"><SettingsIcon className="IconoMenu"/>
                                 <ul className="child__menu">
                                     <li>My New Design</li>
                                     <ul className="child__list">

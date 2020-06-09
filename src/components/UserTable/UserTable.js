@@ -54,8 +54,23 @@ export default class UserTable extends Component {
                 } else {
                     if (user.id.indexOf(searched) >= 0) {
                         returnData.push(user)
-                    } else if (nameLastName.indexOf(searched) >= 0) {
+                    }else if (nameLastName.indexOf(searched) >= 0) {
                         returnData.push(user)
+                    } else {
+                        // Generamos parametros de busqueda 
+                        let nameDividido = nameLastName.split(' ');
+                        let busquedaDividida = searched.split(' ');
+                        let coincide = 0;
+                        for(let x = 0; x < nameDividido.length; x++){
+                            for(let y = 0; y < busquedaDividida.length; y++){
+                                if(nameDividido[x].indexOf(busquedaDividida[y]) >= 0) {
+                                    coincide++;
+                                }
+                            }
+                        }
+                        if(coincide === busquedaDividida.length) {
+                            returnData.push(user);
+                        }
                     }
                 }
             } else {

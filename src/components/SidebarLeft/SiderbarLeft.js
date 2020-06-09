@@ -23,7 +23,7 @@ export default class SiderbarLeft extends Component {
                     <ul className="parent__menu_holder side__bar_inverse">
                         {/* HOME */}
                         <span class="LogoInMenu"><NavLink to="/home"><img src={LogoIn} className="LogoIn" /></NavLink></span>
-
+<hr></hr>
                         {/* USERS */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("users") &&
                             <li><NavLink to="/users"><PersonIcon className="IconoMenu"/></NavLink></li>

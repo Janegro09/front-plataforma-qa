@@ -117,7 +117,7 @@ display: none;
 .parent__menu_holder > li:hover,
 .parent__menu_holder > li:hover .child__menu > li,
 .child__list > li:hover a{
-  background-color: #080808;
+  background-color: #1d1d1d;
 }
 
 .parent__menu_holder > li:hover .child__menu{
@@ -205,4 +205,11 @@ div.content{
 
 .hoverMenu {
   color: #ebebeb !important;
+}
+
+hr {
+    margin-top: 0.45rem;
+    margin-bottom: 0;
+    border: 0;
+    border-top: 1px solid rgba(171, 171, 171, 0.1);
 }

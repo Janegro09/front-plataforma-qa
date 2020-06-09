@@ -288,8 +288,8 @@ export default class UserTable extends Component {
                                 <th>Nombre y apellido</th>
                                 <th>Mail</th>
                                 <th>Sector</th>
-                                <th><EditIcon style={{ fontSize: 15 }} /></th>
-                                <th><DeleteIcon style={{ fontSize: 15 }} /></th>
+                                <th>Editar</th>
+                                <th>Eliminar</th>
                             </tr>
                         </thead>
 
@@ -304,16 +304,16 @@ export default class UserTable extends Component {
                                             <td>{user.email}</td>
                                             <td>{user.equipoEspecifico}</td>
                                             {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                                                <td className="edit" onClick={e => this.editUser(e, user)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                <td onClick={e => this.editUser(e, user)}><EditIcon style={{ fontSize: 15 }} /></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                                                <td className="edit" disabled><EditIcon></EditIcon></td>
+                                                <td disabled><EditIcon></EditIcon></td>
                                             }
                                             {HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
-                                                <td className="edit" onClick={e => this.deleteUser(e, user)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                                <td onClick={e => this.deleteUser(e, user)}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
-                                                <td className="edit" disabled><DeleteIcon></DeleteIcon></td>
+                                                <td disabled><DeleteIcon></DeleteIcon></td>
                                             }
 
                                         </tr>

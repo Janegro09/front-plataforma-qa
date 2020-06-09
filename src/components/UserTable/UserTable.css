@@ -21,10 +21,14 @@ td {
     font-weight: 500 !important ;
   }
 
+  tr:hover .edit {
+    display: table-cell;
+
+  }
+
   tr:hover {
     background-color: #e8e7e7 !important;
   }
-
 
 img {
     border-radius: 50%;
@@ -408,4 +412,32 @@ button:focus {
 
 .section-content {
   padding: 50px;
+  margin-left: 44px;
+}
+
+svg {
+  color: #5d5d5d;
+}
+
+.form-control{
+  background-color: #f9f9f9;
+  border-radius: 4px !important;
+  margin-right: 8px;
+  border-bottom: 1px solid #bfbfbf;
+} 
+
+
+
+
+
+
+
+
+.edit {
+padding-top: 7px;	
+padding-right: 7px;
+
+right: 0;
+top: 0;
+display: none;
 }

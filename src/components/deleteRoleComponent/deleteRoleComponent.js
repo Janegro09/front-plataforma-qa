@@ -66,6 +66,9 @@ export default class deleteRoleComponent extends Component {
 
                 } else {
                     swal("OK! el rol NO se ha eliminado");
+                    this.setState({
+                        redirect: true
+                    })
                 }
             });
     }

@@ -10,7 +10,8 @@ export default class editGroupComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            userInfo: null
+            userInfo: null,
+            redirect: false
         }
         this.modifyUser = this.modifyUser.bind(this)
         this.handleChangeStatus = this.handleChangeStatus.bind(this)
@@ -42,6 +43,10 @@ export default class editGroupComponent extends Component {
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
+
+                    this.setState({
+                        redirect: true
+                    })
                 }
                 console.log("Error: ", e)
             })
@@ -60,13 +65,13 @@ export default class editGroupComponent extends Component {
     }
 
     modifyUser(e) {
-        e.preventDefault()
+        // e.preventDefault()
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
         const bodyParameters = {
-            group: this.group.value
+            group: this.group
         }
 
         let id = this.props.location.state.userSelected.id
@@ -75,6 +80,9 @@ export default class editGroupComponent extends Component {
             .then(response => {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 swal("Felicidades!", "Has cambiado el nombre del grupo", "success");
+                this.setState({
+                    redirect: true
+                })
             })
             .catch(e => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
@@ -82,6 +90,9 @@ export default class editGroupComponent extends Component {
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
+                    this.setState({
+                        redirect: true
+                    })
                 }
                 console.log("Error: ", e)
             })
@@ -89,7 +100,29 @@ export default class editGroupComponent extends Component {
     }
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to="/groups" />
+        }
+
         const group = this.state.userInfo
+
+        if (group !== null) {
+            console.log("group: ", group)
+            const name = group.group
+            swal("Ingrese nombre del grupo:", {
+                content: {
+                    element: 'input',
+                    attributes: {
+                        defaultValue: name,
+                    }
+                }
+            })
+                .then((value) => {
+                    console.log("El valor: ", value)
+                    this.group = value
+                    this.modifyUser()
+                })
+        }
         return (
             <div>
                 <div className="header">
@@ -97,15 +130,14 @@ export default class editGroupComponent extends Component {
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
                 </div>
-                {group !== null &&
-                    <form onSubmit={this.modifyUser}>
-                        <input type="text" placeholder="id" name="id" ref={(c) => this.id = c} defaultValue={group.id ? group.id : ''} disabled />
+                {/* {group !== null &&
+                    <form onSubmit={this.modifyUser} className="input-file">
                         <input type="text" placeholder="group" name="group" ref={(c) => this.group = c} defaultValue={group.group ? group.group : ''} />
                         {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                            <input type="submit" value="modificar usuario" />
+                            <input type="submit" value="Modificar grupo" />
                         }
                     </form>
-                }
+                } */}
 
             </div>
         )

@@ -67,7 +67,7 @@ export default class deleteUserComponent extends Component {
 
 
                 } else {
-                    swal("El grupo NO se ha eliminado");
+                    swal("OK", "El grupo NO se ha eliminado", "info");
                     // Cambio el redirect a true para volver a /groups
                     this.setState({
                         redirect: true

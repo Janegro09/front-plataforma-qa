@@ -13,7 +13,7 @@ export default class createGroupComponent extends Component {
             userInfo: null,
             redirect: false
         }
-        
+
         this.modifyUser = this.modifyUser.bind(this)
         this.handleChangeStatus = this.handleChangeStatus.bind(this)
         this.handleChangeTurno = this.handleChangeTurno.bind(this)
@@ -41,13 +41,13 @@ export default class createGroupComponent extends Component {
     }
 
     modifyUser(e) {
-        e.preventDefault()
+        // e.preventDefault()
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
         const bodyParameters = {
-            group: this.group.value
+            group: this.group
         }
 
         axios.post(Global.getGroups + "/new", bodyParameters, config)
@@ -78,27 +78,24 @@ export default class createGroupComponent extends Component {
 
     render() {
 
-        if (this.state.redirect){
-            return <Redirect to ="/groups"/> 
+        if (this.state.redirect) {
+            return <Redirect to="/groups" />
 
         }
 
-        return (
-            <div>
-                <div className="header">
-                    {/* BOTON DE SALIDA */}
-                    {/* BARRA LATERAL IZQUIERDA */}
-                    <SiderbarLeft />
-                </div>
-                <form onSubmit={this.modifyUser}>
-                    {HELPER_FUNCTIONS.checkPermission("POST|groups/:id") &&
-                        <input type="text" placeholder="group" name="group" ref={(c) => this.group = c} />
-                    }
-                    {HELPER_FUNCTIONS.checkPermission("POST|groups/:id") &&
-                        <input type="submit" value="Agregar" />
-                    }
-                </form>
+        swal("Ingrese nombre del grupo:", {
+            content: "input",
+        })
+            .then((value) => {
+                this.group = value
+                this.modifyUser()
+            })
 
+        return (
+            <div className="header">
+                {/* BOTON DE SALIDA */}
+                {/* BARRA LATERAL IZQUIERDA */}
+                <SiderbarLeft />
             </div>
         )
     }

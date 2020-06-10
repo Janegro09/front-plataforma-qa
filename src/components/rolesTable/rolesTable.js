@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './UserTable.css'
+import './rolesTable.css'
 import { Redirect } from 'react-router-dom'
 import Global from '../../Global'
 import axios from 'axios'
@@ -10,7 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 
-export default class UserTable extends Component {
+export default class RolesTable extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -20,13 +20,14 @@ export default class UserTable extends Component {
             addUser: false,
             deleteUser: false,
             userSelected: null,
-            allUsers: null,
+            allGroups: null,
             searched: false,
             error: false,
             redirect: false,
             changePassword: false,
             actualPage: 1,
-            searchedUsers: []
+            searchedUsers: [],
+            createGroup: false
         }
 
         this.buscar = this.buscar.bind(this)
@@ -36,30 +37,23 @@ export default class UserTable extends Component {
         this.deleteUser = this.deleteUser.bind(this)
         this.logout = this.logout.bind(this)
         this.getUsersPage = this.getUsersPage.bind(this)
+        this.createGroup = this.createGroup.bind(this)
     }
 
     buscar() {
         let searched
         if (this.title && this.title !== undefined) {
-            searched = this.title.value
+            searched = this.title.value.toUpperCase()
         }
         let returnData = []
-        this.state.allUsers.map(user => {
-            let nameLastName = `${user.name} ${user.lastName}`
+        this.state.allGroups.map(group => {
             if (searched !== undefined) {
-                if (searched.indexOf('@') >= 0) {
-                    if (user.email.indexOf(searched) >= 0) {
-                        returnData.push(user)
-                    }
-                } else {
-                    if (user.id.indexOf(searched) >= 0) {
-                        returnData.push(user)
-                    } else if (nameLastName.indexOf(searched) >= 0) {
-                        returnData.push(user)
-                    }
+                group.role = group.role.toUpperCase()
+                if (group.role.indexOf(searched) >= 0) {
+                    returnData.push(group)
                 }
             } else {
-                returnData.push(user)
+                returnData.push(group)
             }
             return true
         })
@@ -68,7 +62,6 @@ export default class UserTable extends Component {
             searchedUsers: returnData
         })
     }
-
     editUser(event, userInfo) {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
@@ -111,20 +104,20 @@ export default class UserTable extends Component {
         this.setState({ redirect: true })
     }
 
-    getUsersPage(page, allUsers) {
+    getUsersPage(page, allGroups) {
         let total = []
         let cantOfPages = 0
-        if (allUsers !== null) {
+        if (allGroups !== null) {
             const cantPerPage = 12
-            cantOfPages = Math.ceil(allUsers.length / cantPerPage)
+            cantOfPages = Math.ceil(allGroups.length / cantPerPage)
 
             let index = (page - 1) * cantPerPage
             let acum = index + cantPerPage
-            if (acum > allUsers.length) {
-                acum = allUsers.length
+            if (acum > allGroups.length) {
+                acum = allGroups.length
             }
             while (index < acum) {
-                total.push(allUsers[index])
+                total.push(allGroups[index])
                 index++
             }
         }
@@ -134,14 +127,20 @@ export default class UserTable extends Component {
         }
     }
 
+    createGroup() {
+        console.log("Crear grupo")
+        this.setState({
+            createGroup: true
+        })
+    }
+
     componentDidMount() {
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
-        axios.get(Global.getUsers, { headers: { Authorization: bearer } }).then(response => {
-
+        axios.get(Global.getRoles, { headers: { Authorization: bearer } }).then(response => {
             this.setState({
-                allUsers: response.data.Data
+                allGroups: response.data.Data
             })
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.buscar()
@@ -164,8 +163,8 @@ export default class UserTable extends Component {
 
     render() {
 
-        const allUsers = this.state.searchedUsers
-        let pagina = this.getUsersPage(this.state.actualPage, allUsers)
+        const allGroups = this.state.searchedUsers
+        let pagina = this.getUsersPage(this.state.actualPage, allGroups)
         let totalUsuarios = pagina.total
         let botones = []
         for (let index = 0; index < pagina.cantOfPages; index++) {
@@ -238,7 +237,7 @@ export default class UserTable extends Component {
 
                     <div className="flex-input-add">
                         {/* Buscador */}
-                        {HELPER_FUNCTIONS.checkPermission("GET|users/:id") &&
+                        {HELPER_FUNCTIONS.checkPermission("GET|roles/:id") &&
                             <input
                                 className="form-control"
                                 type="text"
@@ -250,7 +249,7 @@ export default class UserTable extends Component {
                             />
                         }
 
-                        {HELPER_FUNCTIONS.checkPermission("POST|users/new") &&
+                        {HELPER_FUNCTIONS.checkPermission("POST|roles/new") &&
                             <button onClick={e => this.addUser(e)}><PersonAddIcon style={{ fontSize: 33 }} /></button>
                         }
 
@@ -263,8 +262,7 @@ export default class UserTable extends Component {
 
                     <table cellSpacing="0">
 
-
-                        {this.state.allUsers === null &&
+                        {/* {this.state.allUsers === null &&
                             <div className="sk-fading-circle">
                                 <div className="sk-circle1 sk-circle"></div>
                                 <div className="sk-circle2 sk-circle"></div>
@@ -281,40 +279,35 @@ export default class UserTable extends Component {
                 }circle"></div>
                                 <div className="sk-circle12 sk-circle"></div>
                             </div>
+                        } */}
 
-                        }
-
-                        <thead class="encabezadoTabla">
+                        <thead className="encabezadoTabla">
                             <tr>
-                                <th>id</th>
-                                <th>Nombre y apellido</th>
-                                <th>Mail</th>
-                                <th>Sector</th>
+                                <th>Rol</th>
                                 <th>Editar</th>
                                 <th>Eliminar</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            {totalUsuarios &&
-
-                                totalUsuarios.map((user, index) => {
+                            {console.log('andaa2', totalUsuarios)}
+                            {
+                            // totalUsuarios &&
+                                totalUsuarios.map((role, index) => {
+                                    console.log('andaa', role)
                                     return (
                                         <tr key={index}>
-                                            <td>{user.id}</td>
-                                            <td>{user.name} {user.lastName}</td>
-                                            <td>{user.email}</td>
-                                            <td>{user.equipoEspecifico}</td>
-                                            {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                                                <td onClick={e => this.editUser(e, user)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                            <td>{role.role}</td>
+                                            {HELPER_FUNCTIONS.checkPermission("PUT|roles/:id") &&
+                                                <td onClick={e => this.editUser(e, role)}><EditIcon style={{ fontSize: 15 }} /></td>
                                             }
-                                            {!HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
+                                            {!HELPER_FUNCTIONS.checkPermission("PUT|roles/:id") &&
                                                 <td disabled><EditIcon></EditIcon></td>
                                             }
-                                            {HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
-                                                <td onClick={e => this.deleteUser(e, user)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                            {HELPER_FUNCTIONS.checkPermission("DELETE|roles/:id") &&
+                                                <td onClick={e => this.deleteUser(e, role)}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                             }
-                                            {!HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
+                                            {!HELPER_FUNCTIONS.checkPermission("DELETE|roles/:id") &&
                                                 <td disabled><DeleteIcon></DeleteIcon></td>
                                             }
 

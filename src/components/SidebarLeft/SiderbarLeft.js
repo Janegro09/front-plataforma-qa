@@ -3,7 +3,7 @@ import './styles.css'
 import { NavLink } from 'react-router-dom';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import Logout from '../Logout/Logout'
-import LogoIn from './qa_logo.png';
+import LogoIn from './qa_logo2.png';
 
 // Íconos de Material UI
 import HomeIcon from '@material-ui/icons/Home';

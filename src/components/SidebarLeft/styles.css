@@ -112,6 +112,7 @@ display: none;
   font-size: 27px;
   padding: 9px;
   text-align: center;
+  transition: all 0.15s ease-in;
 }
 
 .parent__menu_holder > li:hover,
@@ -128,7 +129,7 @@ display: none;
   content: '';
   position: absolute;
   height: 100%;
-  width: 3px;
+  width: 1px;
   background-color: #4b9cba;
   top: 0;
   left: 0;
@@ -187,7 +188,7 @@ div.content{
 /*Test*/
 
 .IconoMenu {
-  color: #5d5d5d;
+  color: #757575;
 }
 
 .IconoMenuDia {
@@ -212,4 +213,8 @@ hr {
     margin-bottom: 0;
     border: 0;
     border-top: 1px solid rgba(171, 171, 171, 0.1);
+}
+
+li:hover {
+  background: -webkit-linear-gradient(left, rgba(41,184,229,0.13) 0%, rgba(188,224,238,0) 100%);
 }

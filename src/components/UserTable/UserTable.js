@@ -251,7 +251,7 @@ export default class UserTable extends Component {
                         }
 
                         {HELPER_FUNCTIONS.checkPermission("POST|users/new") &&
-                            <button onClick={e => this.addUser(e)}><PersonAddIcon style={{ fontSize: 33 }} /></button>
+                            <button className="addItem" onClick={e => this.addUser(e)}><PersonAddIcon style={{ fontSize: 25 }} /></button>
                         }
 
 

@@ -21,6 +21,10 @@ td {
     font-weight: 500 !important ;
   }
 
+  tr {
+    border-bottom: 1px solid #e4e4e4;
+  }
+
   tr:hover .edit {
     display: table-cell;
 
@@ -426,6 +430,11 @@ svg {
   border-bottom: 1px solid #bfbfbf;
 } 
 
+
+/* svg > button {
+  box-shadow: 0 8px 11px rgba(0,0,0,0.2);
+  border: 1px solid #25a3e0;
+} */
 
 
 

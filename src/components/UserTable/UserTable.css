@@ -21,6 +21,10 @@ td {
     font-weight: 500 !important ;
   }
 
+tr {
+  border-bottom: 1px solid #e4e4e4;
+}
+
   tr:hover .edit {
     display: table-cell;
 
@@ -84,7 +88,7 @@ table svg:hover {
   cursor: pointer;
 }
 
-@media screen and (max-width: 700px) {
+/* @media screen and (max-width: 700px) {
     table, tr, td {
         display: block;
    }
@@ -179,7 +183,7 @@ table svg:hover {
         box-shadow: none;
         overflow: visible;
    }
-}
+} */
 
 /* BOTON VER MAS */
 
@@ -418,6 +422,13 @@ button:focus {
 svg {
   color: #5d5d5d;
 }
+/* svg > button {
+  box-shadow: 0 8px 11px rgba(0,0,0,0.2);
+  border: 1px solid #25a3e0;
+} */
+
+
+
 
 .form-control{
   background-color: #f9f9f9;
@@ -425,13 +436,6 @@ svg {
   margin-right: 8px;
   border-bottom: 1px solid #bfbfbf;
 } 
-
-
-
-
-
-
-
 
 .edit {
 padding-top: 7px;	
@@ -441,3 +445,9 @@ right: 0;
 top: 0;
 display: none;
 }
+
+/* .addItem {
+    background-color: #39a2d4;
+    border-radius: 3px;
+    padding: 5px;
+} */

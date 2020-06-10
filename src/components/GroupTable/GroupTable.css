@@ -21,6 +21,10 @@ td {
     font-weight: 500 !important ;
   }
 
+  tr {
+    border-bottom: 1px solid #e4e4e4;
+  }
+
   tr:hover .edit {
     display: table-cell;
 

@@ -10,7 +10,8 @@ export default class createGroupComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            userInfo: null
+            userInfo: null,
+            redirect: false
         }
         
         this.modifyUser = this.modifyUser.bind(this)
@@ -54,6 +55,9 @@ export default class createGroupComponent extends Component {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 if (response.data.Success) {
                     swal("Felicidades!", "Se ha creado el grupo correctamente", "success");
+                    this.setState({
+                        redirect: true
+                    })
                 }
 
             })
@@ -63,6 +67,9 @@ export default class createGroupComponent extends Component {
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema al agregar el usuario", "error");
+                    this.setState({
+                        redirect: true
+                    })
                 }
                 console.log("Error: ", e)
             })
@@ -70,6 +77,12 @@ export default class createGroupComponent extends Component {
     }
 
     render() {
+
+        if (this.state.redirect){
+            return <Redirect to ="/groups"/> 
+
+        }
+
         return (
             <div>
                 <div className="header">

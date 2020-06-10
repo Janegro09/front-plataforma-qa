@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './UserTable.css'
+import './GroupTable.css'
 import { Redirect } from 'react-router-dom'
 import Global from '../../Global'
 import axios from 'axios'
@@ -7,10 +7,10 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import swal from 'sweetalert'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 
 
-export default class UserTable extends Component {
+export default class GroupsTable extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -20,13 +20,14 @@ export default class UserTable extends Component {
             addUser: false,
             deleteUser: false,
             userSelected: null,
-            allUsers: null,
+            allGroups: null,
             searched: false,
             error: false,
             redirect: false,
             changePassword: false,
             actualPage: 1,
-            searchedUsers: []
+            searchedUsers: [],
+            createGroup: false
         }
 
         this.buscar = this.buscar.bind(this)
@@ -36,30 +37,23 @@ export default class UserTable extends Component {
         this.deleteUser = this.deleteUser.bind(this)
         this.logout = this.logout.bind(this)
         this.getUsersPage = this.getUsersPage.bind(this)
+        this.createGroup = this.createGroup.bind(this)
     }
 
     buscar() {
         let searched
         if (this.title && this.title !== undefined) {
-            searched = this.title.value
+            searched = this.title.value.toUpperCase()
         }
         let returnData = []
-        this.state.allUsers.map(user => {
-            let nameLastName = `${user.name} ${user.lastName}`
+        this.state.allGroups.map(group => {
             if (searched !== undefined) {
-                if (searched.indexOf('@') >= 0) {
-                    if (user.email.indexOf(searched) >= 0) {
-                        returnData.push(user)
-                    }
-                } else {
-                    if (user.id.indexOf(searched) >= 0) {
-                        returnData.push(user)
-                    } else if (nameLastName.indexOf(searched) >= 0) {
-                        returnData.push(user)
-                    }
+                group.group = group.group.toUpperCase()
+                if (group.group.indexOf(searched) >= 0) {
+                    returnData.push(group)
                 }
             } else {
-                returnData.push(user)
+                returnData.push(group)
             }
             return true
         })
@@ -111,20 +105,20 @@ export default class UserTable extends Component {
         this.setState({ redirect: true })
     }
 
-    getUsersPage(page, allUsers) {
+    getUsersPage(page, allGroups) {
         let total = []
         let cantOfPages = 0
-        if (allUsers !== null) {
-            const cantPerPage = 12
-            cantOfPages = Math.ceil(allUsers.length / cantPerPage)
+        if (allGroups !== null) {
+            const cantPerPage = 25
+            cantOfPages = Math.ceil(allGroups.length / cantPerPage)
 
             let index = (page - 1) * cantPerPage
             let acum = index + cantPerPage
-            if (acum > allUsers.length) {
-                acum = allUsers.length
+            if (acum > allGroups.length) {
+                acum = allGroups.length
             }
             while (index < acum) {
-                total.push(allUsers[index])
+                total.push(allGroups[index])
                 index++
             }
         }
@@ -134,14 +128,20 @@ export default class UserTable extends Component {
         }
     }
 
+    createGroup() {
+        console.log("Crear grupo")
+        this.setState({
+            createGroup: true
+        })
+    }
+
     componentDidMount() {
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
-        axios.get(Global.getUsers, { headers: { Authorization: bearer } }).then(response => {
-
+        axios.get(Global.getGroups, { headers: { Authorization: bearer } }).then(response => {
             this.setState({
-                allUsers: response.data.Data
+                allGroups: response.data.Data
             })
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.buscar()
@@ -164,8 +164,8 @@ export default class UserTable extends Component {
 
     render() {
 
-        const allUsers = this.state.searchedUsers
-        let pagina = this.getUsersPage(this.state.actualPage, allUsers)
+        const allGroups = this.state.searchedUsers
+        let pagina = this.getUsersPage(this.state.actualPage, allGroups)
         let totalUsuarios = pagina.total
         let botones = []
         for (let index = 0; index < pagina.cantOfPages; index++) {
@@ -204,17 +204,17 @@ export default class UserTable extends Component {
         // Si se selecciono editar usuario lo envío a la página editUser con los datos del usuario
         if (this.state.editUser) {
             return <Redirect to={{
-                pathname: '/editUser',
+                pathname: '/editGroup',
                 state: { userSelected: this.state.userSelected }
             }}
             />
         }
 
         // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
-        if (this.state.addUser) {
-            return <Redirect to="/addUser"
-            />
-        }
+        // if (this.state.addUser) {
+        //     return <Redirect to="/addUser"
+        //     />
+        // }
 
         // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
         if (this.state.changePassword) {
@@ -225,7 +225,15 @@ export default class UserTable extends Component {
         // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
         if (this.state.deleteUser) {
             return <Redirect to={{
-                pathname: '/deleteUser',
+                pathname: '/deleteGroup',
+                state: { userSelected: this.state.userSelected }
+            }}
+            />
+        }
+
+        if (this.state.createGroup) {
+            return <Redirect to={{
+                pathname: '/createGroup',
                 state: { userSelected: this.state.userSelected }
             }}
             />
@@ -238,21 +246,21 @@ export default class UserTable extends Component {
 
                     <div className="flex-input-add">
                         {/* Buscador */}
-                        {HELPER_FUNCTIONS.checkPermission("GET|users/:id") &&
+                        {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") &&
                             <input
                                 className="form-control"
                                 type="text"
                                 ref={(c) => {
                                     this.title = c
                                 }}
-                                placeholder="Buscar"
+                                placeholder="Ingrese el nombre del grupo"
                                 onChange={this.buscar}
                             />
                         }
 
-                        {HELPER_FUNCTIONS.checkPermission("POST|users/new") &&
-                            <button onClick={e => this.addUser(e)}><PersonAddIcon style={{ fontSize: 33 }} /></button>
-                        }
+                        {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
+                            <button onClick={e => this.createGroup(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                        {/* } */}
 
 
 
@@ -263,7 +271,7 @@ export default class UserTable extends Component {
 
                     <table cellSpacing="0">
 
-                        {/* {this.state.allUsers === null &&
+                        {this.state.allUsers === null &&
                             <div className="sk-fading-circle">
                                 <div className="sk-circle1 sk-circle"></div>
                                 <div className="sk-circle2 sk-circle"></div>
@@ -280,14 +288,12 @@ export default class UserTable extends Component {
                 }circle"></div>
                                 <div className="sk-circle12 sk-circle"></div>
                             </div>
-                        } */}
+                        }
 
                         <thead class="encabezadoTabla">
                             <tr>
-                                <th>id</th>
-                                <th>Nombre y apellido</th>
-                                <th>Mail</th>
-                                <th>Sector</th>
+
+                                <th>Nombre</th>
                                 <th>Editar</th>
                                 <th>Eliminar</th>
                             </tr>
@@ -296,23 +302,22 @@ export default class UserTable extends Component {
                         <tbody>
                             {totalUsuarios &&
 
-                                totalUsuarios.map((user, index) => {
+                                totalUsuarios.map((group, index) => {
+
                                     return (
                                         <tr key={index}>
-                                            <td>{user.id}</td>
-                                            <td>{user.name} {user.lastName}</td>
-                                            <td>{user.email}</td>
-                                            <td>{user.equipoEspecifico}</td>
-                                            {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                                                <td onClick={e => this.editUser(e, user)}><EditIcon style={{ fontSize: 15 }} /></td>
+
+                                            <td>{group.group}</td>
+                                            {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
+                                                <td onClick={e => this.editUser(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
                                             }
-                                            {!HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
+                                            {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
                                                 <td disabled><EditIcon></EditIcon></td>
                                             }
-                                            {HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
-                                                <td onClick={e => this.deleteUser(e, user)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                            {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
+                                                <td onClick={e => this.deleteUser(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                             }
-                                            {!HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
+                                            {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
                                                 <td disabled><DeleteIcon></DeleteIcon></td>
                                             }
 

@@ -23,7 +23,7 @@ export default class Home extends Component {
 
     render() {
         const userInfo = JSON.parse(sessionStorage.getItem("userData"));
-        
+
         if (this.state.redirect || userInfo === null) {
             return <Redirect to={'/'} />
         }
@@ -39,7 +39,7 @@ export default class Home extends Component {
                 <div className="section-content">
                     <UserInfoContainer userInfo={userInfo} />
                 </div>
-                
+
             </div>
         )
     }

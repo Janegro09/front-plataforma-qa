@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import SidebarLeft from '../SidebarLeft/SiderbarLeft'
 import { Redirect } from 'react-router-dom'
-import Logo from '../SidebarLeft/qa_logo2.png';
+import './Home.css';
+import Logo from '../Home/logo_background.png';
 
 export default class UsersComponent extends Component {
     render() {
@@ -15,9 +16,9 @@ export default class UsersComponent extends Component {
                 <div>
                     <SidebarLeft />
                 </div>
-                <h1>HOME</h1>
-                <div className="">
-                    <img src={Logo} alt="Logo" title="Logo" className="Logo" />
+ 
+                <div className="logoBackground">
+                    <img src={Logo} alt="Logo" title="Logo" className="Logo2" />
                 </div>
             </div>
 

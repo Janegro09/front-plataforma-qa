@@ -462,3 +462,21 @@ svg {
   top: 0;
   display: none;
 }
+
+
+.logoBackground {
+  display: flex;
+  height: 100vh;
+  position: fixed;
+  left: 28%;
+  justify-content: space-between;
+  align-items: center;
+  z-index: -1;
+}
+
+.Logo2 {
+  width: 600px;
+  height: 600px;
+  opacity: 0.2;
+  border-radius: 0;
+}

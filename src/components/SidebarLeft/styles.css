@@ -86,6 +86,7 @@ display: none;
   overflow: -moz-scrollbars-none;
   -ms-overflow-style: none;
   left: 0;
+  z-index: 1;
 }
 
 .side__bar:hover{

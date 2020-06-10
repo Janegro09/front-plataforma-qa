@@ -4,3 +4,16 @@
     padding: 50px;
 }
 
+.logoBackground {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.Logo2 {
+    width: 600px;
+    height: 600px;
+    opacity: 0.3;
+    border-radius: 0;
+}

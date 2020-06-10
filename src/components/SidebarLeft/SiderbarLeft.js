@@ -6,7 +6,6 @@ import Logout from '../Logout/Logout'
 import LogoIn from './qa_logo2.png';
 
 // Íconos de Material UI
-import HomeIcon from '@material-ui/icons/Home';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleIcon from '@material-ui/icons/People';
 import SecurityIcon from '@material-ui/icons/Security';
@@ -22,7 +21,7 @@ export default class SiderbarLeft extends Component {
                 <div className="side__bar_container side__bar_inverse">
                     <ul className="parent__menu_holder side__bar_inverse">
                         {/* HOME */}
-                        <span className="LogoInMenu"><NavLink to="/home"><img src={LogoIn} className="LogoIn" /></NavLink></span>
+                        <span className="LogoInMenu"><NavLink to="/home"><img src={LogoIn} className="LogoIn" alt="logo" /></NavLink></span>
                         <hr></hr>
                         {/* USERS */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("users") &&

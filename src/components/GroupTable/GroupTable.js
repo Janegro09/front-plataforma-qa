@@ -290,7 +290,7 @@ export default class GroupsTable extends Component {
                             </div>
                         }
 
-                        <thead class="encabezadoTabla">
+                        <thead className="encabezadoTabla">
                             <tr>
 
                                 <th>Nombre</th>

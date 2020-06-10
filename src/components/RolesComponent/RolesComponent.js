@@ -1,15 +1,6 @@
 import React, { Component } from 'react'
 import SiderBarLeft from '../SidebarLeft/SiderbarLeft'
-// import './UserTable.css'
-import { Redirect } from 'react-router-dom'
 import RolesInfoContainer from '../RolesInfoContainer/RolesInfoContainer'
-
-
-import Global from '../../Global'
-import axios from 'axios'
-import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
-import swal from 'sweetalert'
-
 
 export default class Home extends Component {
     constructor(props) {

@@ -7,6 +7,13 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import { Redirect } from 'react-router-dom'
 
 export default class deleteUserComponent extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            redirect: false
+        }
+    }
+
     componentDidMount() {
         // Protección de rutas
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
@@ -14,8 +21,8 @@ export default class deleteUserComponent extends Component {
             return <Redirect to={'/'} />
         }
         swal({
-            title: "¿Estás seguro que queres borras el grupo?",
-            text: "Una vez borrado, no podrás recuperarlo :(",
+            title: "¿Estás seguro que queres borrar el grupo?",
+            text: "Una vez borrado, no podrás recuperarlo",
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -32,12 +39,15 @@ export default class deleteUserComponent extends Component {
                         .then(response => {
                             console.log(response.data.Success)
                             sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-
-                            console.log("La response: ", response.data)
                             if (response.data.Success) {
                                 swal("Genial! el grupo se ha eliminado correctamente", {
                                     icon: "success",
                                 });
+
+                                // Cambio el redirect a true para volver a /groups
+                                this.setState({
+                                    redirect: true
+                                })
                             }
                         })
                         .catch(e => {
@@ -46,6 +56,10 @@ export default class deleteUserComponent extends Component {
                             } else {
                                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                 swal("Error!", "Hubo un problema al agregar el usuario", "error");
+                                // Cambio el redirect a true para volver a /groups
+                                this.setState({
+                                    redirect: true
+                                })
                             }
                             console.log("Error: ", e)
                         })
@@ -53,12 +67,20 @@ export default class deleteUserComponent extends Component {
 
 
                 } else {
-                    swal("Uffff, casi... el grupo no se ha eliminado");
+                    swal("El grupo NO se ha eliminado");
+                    // Cambio el redirect a true para volver a /groups
+                    this.setState({
+                        redirect: true
+                    })
                 }
             });
     }
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to="/groups" />
+        }
+
         return (
             <div>
                 <div className="header">

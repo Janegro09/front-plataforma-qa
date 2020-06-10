@@ -284,7 +284,7 @@ export default class UserTable extends Component {
 
                         }
 
-                        <thead class="encabezadoTabla">
+                        <thead className="encabezadoTabla">
                             <tr>
                                 <th>id</th>
                                 <th>Nombre y apellido</th>

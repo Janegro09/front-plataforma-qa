@@ -147,7 +147,7 @@ export default class addUserComponent extends Component {
                     <SiderbarLeft />
                 </div>
 
-                <form onSubmit={this.addUser} class="addUserForm">
+                <form onSubmit={this.addUser} className="addUserForm">
                     <input type="text" placeholder="id" name="id" ref={(c) => this.id = c} required />
                     <div className="error">
                         {

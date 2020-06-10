@@ -1,7 +1,7 @@
 .welcome-message {
   text-align: center;
   padding: 15px;
-  background: #ebebeb; 
+  background: #ebebeb;
 }
 
 .header {
@@ -14,4 +14,23 @@
   position: absolute;
   right: 0;
   padding: 10px;
+}
+
+.button-change-pass {
+  padding: 10px;
+  background: #333;
+  border-radius: 5px;
+  color: #ebebeb;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.button-change-pass:hover {
+  background: #777;
+}
+
+.select-t {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }

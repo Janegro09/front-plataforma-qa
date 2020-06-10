@@ -163,7 +163,6 @@ export default class GroupsTable extends Component {
     }
 
     render() {
-
         const allGroups = this.state.searchedUsers
         let pagina = this.getUsersPage(this.state.actualPage, allGroups)
         let totalUsuarios = pagina.total
@@ -241,7 +240,11 @@ export default class GroupsTable extends Component {
 
         return (
             <div>
-
+                {!this.state.allGroups &&
+                    <React.Fragment>
+                        {HELPER_FUNCTIONS.backgroundLoading()}
+                    </React.Fragment>
+                }
                 <div className="table-users">
 
                     <div className="flex-input-add">
@@ -259,7 +262,7 @@ export default class GroupsTable extends Component {
                         }
 
                         {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
-                            <button onClick={e => this.createGroup(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                        <button onClick={e => this.createGroup(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
                         {/* } */}
 
 

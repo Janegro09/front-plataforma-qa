@@ -1,5 +1,6 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom';
+import '../App.css'
 
 export const HELPER_FUNCTIONS = {
     logout: () => {
@@ -69,5 +70,13 @@ export const HELPER_FUNCTIONS = {
         })
         return nameReturn
 
+    },
+    backgroundLoading: () => {
+        console.log("Background lanzado!!")
+        return (
+            <div className="background-loading">
+                <h1>Cargando...</h1>
+            </div>
+        )
     }
 } 

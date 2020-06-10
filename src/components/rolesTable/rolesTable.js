@@ -245,7 +245,11 @@ export default class RolesTable extends Component {
 
         return (
             <div>
-
+                {this.state.allGroups === null &&
+                    <React.Fragment>
+                        {HELPER_FUNCTIONS.backgroundLoading()}
+                    </React.Fragment>
+                }
                 <div className="table-users">
 
                     <div className="flex-input-add">

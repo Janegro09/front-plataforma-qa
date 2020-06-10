@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import SidebarLeft from '../SidebarLeft/SiderbarLeft'
 import { Redirect } from 'react-router-dom'
-import Logo from './qa_logos.png';
+import Logo from '../SidebarLeft/qa_logo2.png';
 
 export default class UsersComponent extends Component {
     render() {
@@ -17,8 +17,8 @@ export default class UsersComponent extends Component {
                 </div>
                 <h1>HOME</h1>
                 <div className="">
-                        <img src={Logo} alt="Logo" title="Logo" className="Logo" />
-                    </div>
+                    <img src={Logo} alt="Logo" title="Logo" className="Logo" />
+                </div>
             </div>
 
         )

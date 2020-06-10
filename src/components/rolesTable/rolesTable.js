@@ -211,7 +211,7 @@ export default class RolesTable extends Component {
 
         // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
         if (this.state.addUser) {
-            return <Redirect to="/addUser"
+            return <Redirect to="/addRole"
             />
         }
 
@@ -249,10 +249,10 @@ export default class RolesTable extends Component {
                             />
                         }
 
-                        {HELPER_FUNCTIONS.checkPermission("POST|roles/new") &&
-                            <button onClick={e => this.addUser(e)}><PersonAddIcon style={{ fontSize: 33 }} /></button>
+                        {
+                        // HELPER_FUNCTIONS.checkPermission("POST|roles/new") &&
+                            <button onClick={e => this.addRole(e)}><PersonAddIcon style={{ fontSize: 33 }} /></button>
                         }
-
 
 
                         {this.state.error &&

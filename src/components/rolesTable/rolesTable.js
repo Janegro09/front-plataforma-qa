@@ -38,6 +38,7 @@ export default class RolesTable extends Component {
         this.logout = this.logout.bind(this)
         this.getUsersPage = this.getUsersPage.bind(this)
         this.createGroup = this.createGroup.bind(this)
+        this.addRole = this.addRole.bind(this)
     }
 
     buscar() {
@@ -65,6 +66,8 @@ export default class RolesTable extends Component {
     editUser(event, userInfo) {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
+
+        console.log("User edit: ", userInfo)
         this.setState({
             editUser: true,
             userSelected: userInfo
@@ -134,6 +137,12 @@ export default class RolesTable extends Component {
         })
     }
 
+    addRole() {
+        this.setState({
+            createRole: true
+        })
+    }
+
     componentDidMount() {
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
@@ -162,7 +171,7 @@ export default class RolesTable extends Component {
     }
 
     render() {
-
+        console.log("El state: ", this.state)
         const allGroups = this.state.searchedUsers
         let pagina = this.getUsersPage(this.state.actualPage, allGroups)
         let totalUsuarios = pagina.total
@@ -197,6 +206,10 @@ export default class RolesTable extends Component {
             )
         }
 
+        if (this.state.createRole) {
+            return <Redirect to={'/createRole'} />
+        }
+
         if (this.state.redirect) {
             return <Redirect to={'/home'} />
         }
@@ -211,7 +224,7 @@ export default class RolesTable extends Component {
 
         // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
         if (this.state.addUser) {
-            return <Redirect to="/addRole"
+            return <Redirect to="/createRole"
             />
         }
 
@@ -250,7 +263,7 @@ export default class RolesTable extends Component {
                         }
 
                         {
-                        // HELPER_FUNCTIONS.checkPermission("POST|roles/new") &&
+                            // HELPER_FUNCTIONS.checkPermission("POST|roles/new") &&
                             <button onClick={e => this.addRole(e)}><PersonAddIcon style={{ fontSize: 33 }} /></button>
                         }
 
@@ -292,7 +305,7 @@ export default class RolesTable extends Component {
                         <tbody>
                             {console.log('andaa2', totalUsuarios)}
                             {
-                            // totalUsuarios &&
+                                // totalUsuarios &&
                                 totalUsuarios.map((role, index) => {
                                     console.log('andaa', role)
                                     return (

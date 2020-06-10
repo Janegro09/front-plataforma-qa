@@ -35,10 +35,10 @@ export default class editRoleComponent extends Component {
             .then(response => {
                 this.setState({
                     userInfo: response.data.Data[0],
-                    redirect: true
+                    // redirect: true
                 })
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-                swal("Genial!", "El rol ha sido modificado correctamente", "success");
+                // swal("Genial!", "El rol ha sido modificado correctamente", "success");
             })
             .catch(e => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
@@ -84,6 +84,9 @@ export default class editRoleComponent extends Component {
             .then(response => {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 swal("Felicidades!", "Has cambiado el nombre del grupo", "success");
+                this.setState({
+                    redirect: true
+                })
             })
             .catch(e => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {

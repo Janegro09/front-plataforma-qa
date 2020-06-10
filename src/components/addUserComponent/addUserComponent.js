@@ -50,7 +50,6 @@ export default class addUserComponent extends Component {
                 email: this.email.value,
                 phone: this.phone.value,
                 sexo: this.sexo,
-                status: this.status.value,
                 fechaIngresoLinea: this.fechaIngresoLinea.value,
                 fechaBaja: this.fechaBaja.value,
                 motivoBaja: this.motivoBaja.value,
@@ -167,7 +166,6 @@ export default class addUserComponent extends Component {
                         <option value="FEMENINO">Mujer</option>
                         <option value="OTRO">Otro</option>
                     </select>
-                    <input type="text" placeholder="status" ref={(c) => this.status = c} />
                     <input type="date" placeholder="fechaIngresoLinea" ref={(c) => this.fechaIngresoLinea = c} />
                     <input type="date" placeholder="fechaBaja" ref={(c) => this.fechaBaja = c} />
                     <input type="text" placeholder="motivoBaja" ref={(c) => this.motivoBaja = c} />

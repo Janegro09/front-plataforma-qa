@@ -139,7 +139,6 @@ export default class UserTable extends Component {
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.get(Global.getUsers, { headers: { Authorization: bearer } }).then(response => {
-
             this.setState({
                 allUsers: response.data.Data
             })

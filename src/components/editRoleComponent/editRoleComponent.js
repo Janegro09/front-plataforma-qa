@@ -11,7 +11,8 @@ export default class editRoleComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            userInfo: null
+            userInfo: null,
+            redirect: false
         }
         this.modifyUser = this.modifyUser.bind(this)
         this.handleChangeStatus = this.handleChangeStatus.bind(this)
@@ -33,9 +34,11 @@ export default class editRoleComponent extends Component {
         axios.get(Global.getRoles + '/' + id, config)
             .then(response => {
                 this.setState({
-                    userInfo: response.data.Data[0]
+                    userInfo: response.data.Data[0],
+                    redirect: true
                 })
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                swal("Genial!", "El rol ha sido modificado correctamente", "success");
             })
             .catch(e => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
@@ -43,6 +46,9 @@ export default class editRoleComponent extends Component {
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
+                    this.setState({
+                        redirect: true
+                    })
                 }
                 console.log("Error: ", e)
             })
@@ -92,6 +98,10 @@ export default class editRoleComponent extends Component {
     }
 
     render() {
+
+        if (this.state.redirect) {
+            return <Redirect to="/roles" />
+        }
         const group = this.state.userInfo
         return (
             <div>

@@ -203,7 +203,7 @@ export default class RolesTable extends Component {
         // Si se selecciono editar usuario lo envío a la página editUser con los datos del usuario
         if (this.state.editUser) {
             return <Redirect to={{
-                pathname: '/editUser',
+                pathname: '/editRole',
                 state: { userSelected: this.state.userSelected }
             }}
             />
@@ -224,7 +224,7 @@ export default class RolesTable extends Component {
         // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
         if (this.state.deleteUser) {
             return <Redirect to={{
-                pathname: '/deleteUser',
+                pathname: '/deleteRole',
                 state: { userSelected: this.state.userSelected }
             }}
             />

@@ -7,6 +7,12 @@ import swal from 'sweetalert'
 import { Redirect } from 'react-router-dom'
 
 export default class deleteRoleComponent extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            redirect: false
+        }
+    }
     componentDidMount() {
         // Protección de rutas
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
@@ -14,7 +20,7 @@ export default class deleteRoleComponent extends Component {
             return <Redirect to={'/'} />
         }
         swal({
-            title: "¿Estás seguro que queres borras el grupo?",
+            title: "¿Estás seguro que queres borras el rol?",
             text: "Una vez borrado, no podrás recuperarlo :(",
             icon: "warning",
             buttons: true,
@@ -35,9 +41,12 @@ export default class deleteRoleComponent extends Component {
 
                             console.log("La response: ", response.data)
                             if (response.data.Success) {
-                                swal("Genial! el grupo se ha eliminado correctamente", {
+                                swal("Genial! se ha eliminado el rol correctamente", {
                                     icon: "success",
                                 });
+                                this.setState({
+                                    redirect: true
+                                })
                             }
                         })
                         .catch(e => {
@@ -45,7 +54,10 @@ export default class deleteRoleComponent extends Component {
                                 HELPER_FUNCTIONS.logout()
                             } else {
                                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                                swal("Error!", "Hubo un problema al intentar borrar el grupo", "error");
+                                swal("Error!", "Hubo un problema al intentar borrar el rol", "error");
+                                this.setState({
+                                    redirect: true
+                                })
                             }
                             console.log("Error: ", e)
                         })
@@ -53,12 +65,15 @@ export default class deleteRoleComponent extends Component {
 
 
                 } else {
-                    swal("Uffff, casi... el grupo no se ha eliminado");
+                    swal("OK! el rol NO se ha eliminado");
                 }
             });
     }
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={'/roles'} />
+        }
         return (
             <div>
                 <div className="header">

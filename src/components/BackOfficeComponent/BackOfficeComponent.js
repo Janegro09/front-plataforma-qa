@@ -4,6 +4,7 @@ import swal from 'sweetalert'
 import axios from 'axios'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import Global from '../../Global'
+import './BackOfficeComponent.css'
 
 export default class BackOfficeComponent extends Component {
     state = {
@@ -73,9 +74,8 @@ export default class BackOfficeComponent extends Component {
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
                 </div>
-                <h1>BACKOFFICE</h1>
                 {HELPER_FUNCTIONS.checkPermission('POST|backoffice/nomina') &&
-                    <div className="form-group">
+                    <div className="input-file">
                         <label htmlFor="file">Subir nómina (Sólo archivos CSV)</label>
                         <input type="file" name="file" onChange={this.fileChange} />
                     </div>

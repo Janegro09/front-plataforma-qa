@@ -65,7 +65,6 @@ export default class Login extends Component {
 
 
                     if (response.data.Success) {
-                        console.log("El que se va a loguear: ", response.data.loggedUser)
                         sessionStorage.setItem('userData', JSON.stringify(response.data.loggedUser))
                         sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                         this.setState({ redirect: true })

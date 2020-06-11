@@ -72,7 +72,6 @@ export const HELPER_FUNCTIONS = {
 
     },
     backgroundLoading: () => {
-        console.log("Background lanzado!!")
         return (
             <div className="background-loading">
                 <h1>Cargando...</h1>

@@ -171,7 +171,6 @@ export default class RolesTable extends Component {
     }
 
     render() {
-        console.log("El state: ", this.state)
         const allGroups = this.state.searchedUsers
         let pagina = this.getUsersPage(this.state.actualPage, allGroups)
         let totalUsuarios = pagina.total
@@ -278,26 +277,6 @@ export default class RolesTable extends Component {
                     </div>
 
                     <table cellSpacing="0">
-
-                        {/* {this.state.allUsers === null &&
-                            <div className="sk-fading-circle">
-                                <div className="sk-circle1 sk-circle"></div>
-                                <div className="sk-circle2 sk-circle"></div>
-                                <div className="sk-circle3 sk-circle"></div>
-                                <div className="sk-circle4 sk-circle"></div>
-                                <div className="sk-circle5 sk-circle"></div>
-                                <div className="sk-circle6 sk-circle"></div>
-                                <div className="sk-circle7 sk-circle"></div>
-                                <div className="sk-circle8 sk-circle"></div>
-                                <div className="sk-circle9 sk-circle"></div>
-                                <div className="sk-circle10 sk-circle"></div>
-                                <div className="sk-circle11 sk-while (true) {
-                    <h1>Hola</h1>
-                }circle"></div>
-                                <div className="sk-circle12 sk-circle"></div>
-                            </div>
-                        } */}
-
                         <thead className="encabezadoTabla">
                             <tr>
                                 <th>Rol</th>
@@ -307,11 +286,8 @@ export default class RolesTable extends Component {
                         </thead>
 
                         <tbody>
-                            {console.log('andaa2', totalUsuarios)}
-                            {
-                                // totalUsuarios &&
+                            {totalUsuarios &&
                                 totalUsuarios.map((role, index) => {
-                                    console.log('andaa', role)
                                     return (
                                         <tr key={index}>
                                             <td>{role.role}</td>

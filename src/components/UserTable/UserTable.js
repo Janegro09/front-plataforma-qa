@@ -180,7 +180,7 @@ export default class UserTable extends Component {
                 )
             } else {
                 botones.push(
-                    <button key={index - 1} disabled> ... </button>
+                    <button key={index} disabled> ... </button>
                 )
                 break
             }
@@ -260,14 +260,14 @@ export default class UserTable extends Component {
                         }
                     </div>
 
+                    {this.state.allUsers === null &&
+                        <React.Fragment>
+                            {HELPER_FUNCTIONS.backgroundLoading()}
+                        </React.Fragment>
+                    }
                     <table cellSpacing="0">
 
 
-                        {this.state.allUsers === null &&
-                            <React.Fragment>
-                                {HELPER_FUNCTIONS.backgroundLoading()}
-                            </React.Fragment>
-                        }
 
                         <thead className="encabezadoTabla">
                             <tr>
@@ -283,9 +283,9 @@ export default class UserTable extends Component {
                         <tbody>
                             {totalUsuarios &&
 
-                                totalUsuarios.map((user, index) => {
+                                totalUsuarios.map(user => {
                                     return (
-                                        <tr key={index}>
+                                        <tr key={user.idDB}>
                                             <td>{user.id}</td>
                                             <td>{user.name} {user.lastName}</td>
                                             <td>{user.email}</td>

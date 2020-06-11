@@ -65,7 +65,8 @@ export default class UserTable extends Component {
         })
 
         this.setState({
-            searchedUsers: returnData
+            searchedUsers: returnData,
+            actualPage: 1
         })
     }
 

@@ -59,7 +59,8 @@ export default class GroupsTable extends Component {
         })
 
         this.setState({
-            searchedUsers: returnData
+            searchedUsers: returnData,
+            actualPage: 1
         })
     }
 

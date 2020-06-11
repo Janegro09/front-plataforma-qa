@@ -60,7 +60,8 @@ export default class RolesTable extends Component {
         })
 
         this.setState({
-            searchedUsers: returnData
+            searchedUsers: returnData,
+            actualPage: 1
         })
     }
     editUser(event, userInfo) {

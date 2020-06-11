@@ -19,23 +19,23 @@ export default class SiderbarLeft extends Component {
                 <div className="side__bar_container side__bar_inverse">
                     <ul className="parent__menu_holder side__bar_inverse">
                         {/* HOME */}
-                        <span className="LogoInMenu"><NavLink to="/home"><img src={LogoIn} className="LogoIn" alt="logo" /></NavLink></span>
+                        <span className="LogoInMenu"><NavLink to="/home" activeClassName=""><img src={LogoIn} className="LogoIn" alt="logo" /></NavLink></span>
                         <hr></hr>
                         {/* USERS */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("users") &&
-                            <li><NavLink to="/users"><PersonIcon className="IconoMenu" /></NavLink></li>
+                            <li><NavLink to="/users" activeClassName="active"><PersonIcon className="IconoMenu" /></NavLink></li>
                         }
                         {/* GROUPS */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("groups") &&
-                            <li><NavLink to="/groups"><PeopleIcon className="IconoMenu" /></NavLink></li>
+                            <li><NavLink to="/groups" activeClassName="active"><PeopleIcon className="IconoMenu" /></NavLink></li>
                         }
                         {/* ROLES */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("roles") &&
-                            <li><NavLink to="/roles"><SecurityIcon className="IconoMenu" /></NavLink></li>
+                            <li><NavLink to="/roles" activeClassName="active"><SecurityIcon className="IconoMenu" /></NavLink></li>
                         }
                         {/* BACKOFFICE */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("") &&
-                            <li><NavLink to="/backoffice"><SettingsIcon className="IconoMenu" />
+                            <li><NavLink to="/backoffice" activeClassName="active"><SettingsIcon className="IconoMenu" />
                              
                             </NavLink>
                             </li>

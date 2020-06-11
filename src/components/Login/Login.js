@@ -5,7 +5,7 @@ import SimpleReactValidator from 'simple-react-validator'
 import './Login.css';
 import Global from '../../Global'
 import Logo from './qa_logos.png';
-import ReCAPTCHA from "react-google-recaptcha";
+// import ReCAPTCHA from "react-google-recaptcha";
 
 
 
@@ -18,7 +18,7 @@ export default class Login extends Component {
             password: '',
             redirect: false,
             wrongValidations: false,
-            'g-recaptcha-response': null,
+            // 'g-recaptcha-response': null,
             errorMessage: ''
         }
 
@@ -34,7 +34,7 @@ export default class Login extends Component {
 
     login(e) {
         e.preventDefault()
-        this.captcha.reset()
+        // this.captcha.reset()
         const { username, password } = this.state;
         if (this.validator.allValid()) {
             this.loginUser(username, password);
@@ -58,7 +58,7 @@ export default class Login extends Component {
             axios.post(Global.login, {
                 user: username,
                 password: password,
-                'g-recaptcha-response': this.state["g-recaptcha-response"]
+                // 'g-recaptcha-response': this.state["g-recaptcha-response"]
             }
             )
                 .then(response => {
@@ -128,7 +128,7 @@ export default class Login extends Component {
                             <span className="form-bar"></span>
                             <label htmlFor="password" className="float-label">password</label>
                         </div>
-
+{/* 
                         <ReCAPTCHA
 
                             ref={e => (this.captcha = e)}
@@ -138,9 +138,10 @@ export default class Login extends Component {
                                     'g-recaptcha-response': e
                                 })
                             }}
-                        />
+                        /> */}
                         <div>
-                            <button disabled={!this.state["g-recaptcha-response"]} className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Sign in</button>
+                            {/* Para deshabilitar el botón con el captcha agregarle disabled={!this.state["g-recaptcha-response"]} */}
+                            <button  className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Sign in</button>
                         </div>
                     </form>
                     {this.state.errorMessage !== '' &&

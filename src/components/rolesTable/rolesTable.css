@@ -384,6 +384,8 @@ table svg:hover {
   float: right;
   width: 157px;
   display: flex;
+  font-size: 11px;
+  margin-top: 12px;
   justify-content: space-between;
 }
 

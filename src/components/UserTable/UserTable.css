@@ -411,12 +411,16 @@ table svg:hover {
 
 .botones {
   float: right;
+  width: 157px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .botones>button {
   border: none;
   color: inherit;
   background-color: transparent;
+  
 }
 
 button {

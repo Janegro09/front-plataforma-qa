@@ -382,6 +382,9 @@ table svg:hover {
 
 .botones {
   float: right;
+  width: 157px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .botones > button {

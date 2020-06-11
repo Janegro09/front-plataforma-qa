@@ -66,7 +66,7 @@ export default class createGroupComponent extends Component {
                     HELPER_FUNCTIONS.logout()
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema al agregar el usuario", "error");
+                    swal("Atención", "No se ha agregado el grupo", "info");
                     this.setState({
                         redirect: true
                     })

@@ -49,7 +49,7 @@ export default class ChangePassword extends Component {
                             HELPER_FUNCTIONS.logout()
                         } else {
                             sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                            swal("Error!", "Hubo un problema al agregar el usuario", "error");
+                            swal("Atención", "No has cambiado nada", "info");
                         }
                         console.log("Error: ", e)
                     })

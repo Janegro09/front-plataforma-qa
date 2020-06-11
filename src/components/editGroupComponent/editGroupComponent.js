@@ -97,7 +97,7 @@ export default class editGroupComponent extends Component {
                     HELPER_FUNCTIONS.logout()
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema", "error");
+                    swal("Atención!", "No has cambiado nada", "info");
                     this.setState({
                         redirect: true
                     })

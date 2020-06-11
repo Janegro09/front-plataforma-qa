@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import './styles.css'
 import { NavLink } from 'react-router-dom';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
-import Logout from '../Logout/Logout'
 import LogoIn from './qa_logo2.png';
 
 // Íconos de Material UI
@@ -10,7 +9,6 @@ import PersonIcon from '@material-ui/icons/Person';
 import PeopleIcon from '@material-ui/icons/People';
 import SecurityIcon from '@material-ui/icons/Security';
 import SettingsIcon from '@material-ui/icons/Settings';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 
 export default class SiderbarLeft extends Component {
@@ -42,13 +40,6 @@ export default class SiderbarLeft extends Component {
                             </NavLink>
                             </li>
                         }
-
-                        {/* EXIT */}
-                        <li>
-                            <ExitToAppIcon />
-                            <Logout />
-                        </li>
-      
                     </ul>
                 </div>
             </div>

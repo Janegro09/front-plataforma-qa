@@ -12,6 +12,12 @@ export default class UsersComponent extends Component {
     constructor(props) {
         super(props)
         this.changePass = this.changePass.bind(this)
+
+        this.state = {
+            value: 'user'
+        }
+
+        this.handleChange = this.handleChange.bind(this);
     }
 
     changePass() {
@@ -58,9 +64,24 @@ export default class UsersComponent extends Component {
                     })
             });
     }
+
+    handleChange(event) {
+        this.setState({ value: event.target.value });
+        // console.log(this.state.value)
+        if (event.target.value === 'pass') {
+            this.changePass()
+        }
+
+        if (event.target.value === 'exit') {
+            return HELPER_FUNCTIONS.logout()
+        }
+    }
+
     render() {
         // Protección de rutas
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const userData = JSON.parse(sessionStorage.getItem("userData"))
+
         if (tokenUser === null) {
             return <Redirect to={'/'} />
         }
@@ -74,11 +95,15 @@ export default class UsersComponent extends Component {
                     <img src={Logo} alt="Logo" title="Logo" className="Logo2" />
                 </div>
 
-                <div className="container">
-                    {HELPER_FUNCTIONS.checkPermission("POST|users/passchange/:id") &&
-                        <button onClick={this.changePass} className="button-change-pass">Cambiar contraseña</button>
-                    }
-                </div>
+                {HELPER_FUNCTIONS.checkPermission("POST|users/passchange/:id") && userData &&
+                    <div>
+                        <select className="container" value={this.state.value} onChange={this.handleChange}>
+                            <option value="user">Bienvenido {userData.name}</option>
+                            <option value="pass">Cambiar contraseña</option>
+                            <option value="exit">Salir</option>
+                        </select>
+                    </div>
+                }
             </div>
 
         )

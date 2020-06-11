@@ -330,6 +330,10 @@ export default class UserTable extends Component {
                         }
 
                     </div>
+                    
+                    {this.state.allUsers &&
+                        <div>Cantidad de usuarios {this.state.allUsers.length}</div>
+                    }
                 </div>
             </div>
         )

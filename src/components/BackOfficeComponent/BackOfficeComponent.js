@@ -8,7 +8,8 @@ import './BackOfficeComponent.css'
 
 export default class BackOfficeComponent extends Component {
     state = {
-        selectedFile: null
+        selectedFile: null,
+        loading: false
     };
 
     fileChange = (event) => {
@@ -21,6 +22,9 @@ export default class BackOfficeComponent extends Component {
             swal("ATENCIÓN", "El archivo tiene que ser CSV", "info");
 
         } else {
+            this.setState({
+                loading: true
+            })
             swal({
                 title: "Estás por actualizar la nómina de usuarios",
                 text: `Nombre del archivo: ${event.target.files[0].name}, tené en cuenta que los cambios son irreversibles.`,
@@ -30,6 +34,7 @@ export default class BackOfficeComponent extends Component {
             })
                 .then((willDelete) => {
                     if (willDelete) {
+                        
                         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
                         const token = tokenUser
                         const bearer = `Bearer ${token}`
@@ -46,6 +51,9 @@ export default class BackOfficeComponent extends Component {
                             swal(`Nómina en proceso de actualización, cuando finalice recibirás un mail en ${mail}`, {
                                 icon: "success",
                             });
+                            this.setState({
+                                loading: false
+                            })
                         })
                             .catch((e) => {
                                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
@@ -53,12 +61,18 @@ export default class BackOfficeComponent extends Component {
                                 } else {
                                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                     swal("Error!", "Hubo un problema al agregar la nómina", "error");
+                                    this.setState({
+                                        loading: false
+                                    })
                                 }
                                 console.log("Error: ", e)
                             });
 
                     } else {
                         swal("Nómina NO actualizada!");
+                        this.setState({
+                            loading: false
+                        })
                     }
                 });
 
@@ -74,6 +88,9 @@ export default class BackOfficeComponent extends Component {
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
                 </div>
+                {this.state.loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
                 {HELPER_FUNCTIONS.checkPermission('POST|backoffice/nomina') &&
                     <div className="input-file">
                         <label htmlFor="file">Subir nómina (Sólo archivos CSV)</label>

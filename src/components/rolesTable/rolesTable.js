@@ -67,7 +67,6 @@ export default class RolesTable extends Component {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
 
-        console.log("User edit: ", userInfo)
         this.setState({
             editUser: true,
             userSelected: userInfo

@@ -30,42 +30,48 @@ export default class deleteUserComponent extends Component {
             .then((willDelete) => {
                 if (willDelete) {
                     let token = JSON.parse(sessionStorage.getItem('token'))
-                    let id = this.props.location.state.userSelected.id
-                    const config = {
-                        headers: { Authorization: `Bearer ${token}` }
-                    };
 
-                    axios.delete(Global.getGroups + '/' + id, config)
-                        .then(response => {
-                            console.log(response.data.Success)
-                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-                            if (response.data.Success) {
-                                swal("Genial! el grupo se ha eliminado correctamente", {
-                                    icon: "success",
-                                });
+                    if (this.props.location.state) {
 
-                                // Cambio el redirect a true para volver a /groups
-                                this.setState({
-                                    redirect: true
-                                })
-                            }
+                        let id = this.props.location.state.userSelected.id
+                        const config = {
+                            headers: { Authorization: `Bearer ${token}` }
+                        };
+
+                        axios.delete(Global.getGroups + '/' + id, config)
+                            .then(response => {
+                                console.log(response.data.Success)
+                                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                                if (response.data.Success) {
+                                    swal("Genial! el grupo se ha eliminado correctamente", {
+                                        icon: "success",
+                                    });
+
+                                    // Cambio el redirect a true para volver a /groups
+                                    this.setState({
+                                        redirect: true
+                                    })
+                                }
+                            })
+                            .catch(e => {
+                                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                                    HELPER_FUNCTIONS.logout()
+                                } else {
+                                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                    swal("Error!", "Hubo un problema al agregar el usuario", "error");
+                                    // Cambio el redirect a true para volver a /groups
+                                    this.setState({
+                                        redirect: true
+                                    })
+                                }
+                                console.log("Error: ", e)
+                            })
+                    } else {
+                        this.setState({
+                            redirect: true
                         })
-                        .catch(e => {
-                            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                                HELPER_FUNCTIONS.logout()
-                            } else {
-                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                                swal("Error!", "Hubo un problema al agregar el usuario", "error");
-                                // Cambio el redirect a true para volver a /groups
-                                this.setState({
-                                    redirect: true
-                                })
-                            }
-                            console.log("Error: ", e)
-                        })
-
-
-
+                        return HELPER_FUNCTIONS.logout()
+                    }
                 } else {
                     swal("OK", "El grupo NO se ha eliminado", "info");
                     // Cambio el redirect a true para volver a /groups

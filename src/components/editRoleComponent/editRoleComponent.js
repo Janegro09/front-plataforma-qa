@@ -26,32 +26,40 @@ export default class editRoleComponent extends Component {
         if (token === null) {
             return <Redirect to={'/'} />
         }
-        let id = this.props.location.state.userSelected.id
-        const config = {
-            headers: { Authorization: `Bearer ${token}` }
-        };
 
-        axios.get(Global.getRoles + '/' + id, config)
-            .then(response => {
-                this.setState({
-                    userInfo: response.data.Data[0],
-                    // redirect: true
-                })
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-                // swal("Genial!", "El rol ha sido modificado correctamente", "success");
-            })
-            .catch(e => {
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema", "error");
+        if (this.props.location.state) {
+            let id = this.props.location.state.userSelected.id
+            const config = {
+                headers: { Authorization: `Bearer ${token}` }
+            };
+    
+            axios.get(Global.getRoles + '/' + id, config)
+                .then(response => {
                     this.setState({
-                        redirect: true
+                        userInfo: response.data.Data[0],
+                        // redirect: true
                     })
-                }
-                console.log("Error: ", e)
+                    sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                    // swal("Genial!", "El rol ha sido modificado correctamente", "success");
+                })
+                .catch(e => {
+                    if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                        HELPER_FUNCTIONS.logout()
+                    } else {
+                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        swal("Error!", "Hubo un problema", "error");
+                        this.setState({
+                            redirect: true
+                        })
+                    }
+                    console.log("Error: ", e)
+                })
+        } else {
+            this.setState({
+                redirect: true
             })
+            return HELPER_FUNCTIONS.logout()
+        }
     }
 
     handleChange(event) {

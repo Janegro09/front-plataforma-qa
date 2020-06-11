@@ -29,41 +29,47 @@ export default class deleteRoleComponent extends Component {
             .then((willDelete) => {
                 if (willDelete) {
                     let token = JSON.parse(sessionStorage.getItem('token'))
-                    let id = this.props.location.state.userSelected.id
-                    const config = {
-                        headers: { Authorization: `Bearer ${token}` }
-                    };
 
-                    axios.delete(Global.getRoles + '/' + id, config)
-                        .then(response => {
-                            console.log(response.data.Success)
-                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                    if (this.props.location.state) {
 
-                            console.log("La response: ", response.data)
-                            if (response.data.Success) {
-                                swal("Genial! se ha eliminado el rol correctamente", {
-                                    icon: "success",
-                                });
-                                this.setState({
-                                    redirect: true
-                                })
-                            }
+                        let id = this.props.location.state.userSelected.id
+                        const config = {
+                            headers: { Authorization: `Bearer ${token}` }
+                        };
+
+                        axios.delete(Global.getRoles + '/' + id, config)
+                            .then(response => {
+                                console.log(response.data.Success)
+                                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+
+                                console.log("La response: ", response.data)
+                                if (response.data.Success) {
+                                    swal("Genial! se ha eliminado el rol correctamente", {
+                                        icon: "success",
+                                    });
+                                    this.setState({
+                                        redirect: true
+                                    })
+                                }
+                            })
+                            .catch(e => {
+                                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                                    HELPER_FUNCTIONS.logout()
+                                } else {
+                                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                    swal("Error!", "Hubo un problema al intentar borrar el rol", "error");
+                                    this.setState({
+                                        redirect: true
+                                    })
+                                }
+                                console.log("Error: ", e)
+                            })
+                    } else {
+                        this.setState({
+                            redirect: true
                         })
-                        .catch(e => {
-                            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                                HELPER_FUNCTIONS.logout()
-                            } else {
-                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                                swal("Error!", "Hubo un problema al intentar borrar el rol", "error");
-                                this.setState({
-                                    redirect: true
-                                })
-                            }
-                            console.log("Error: ", e)
-                        })
-
-
-
+                        return HELPER_FUNCTIONS.logout()
+                    }
                 } else {
                     swal("OK! el rol NO se ha eliminado");
                     this.setState({

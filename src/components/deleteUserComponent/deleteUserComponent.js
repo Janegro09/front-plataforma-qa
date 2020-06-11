@@ -21,59 +21,66 @@ export default class deleteUserComponent extends Component {
             return <Redirect to={'/'} />
         }
 
-        let id = this.props.location.state.userSelected.id
-        const config = {
-            headers: { Authorization: `Bearer ${token}` }
-        };
+        if (this.props.location.state) {
+            let id = this.props.location.state.userSelected.id
+            const config = {
+                headers: { Authorization: `Bearer ${token}` }
+            };
 
-        swal({
-            title: "¿Estás seguro?",
-            text: "Una vez borrado el usuario, no podrás recuperarlo",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    axios.delete(Global.getUsers + '/' + id, config)
-                        .then(response => {
-                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-                            swal("El usuario ha sido borrado", {
-                                icon: "success",
-                            });
-
-                            // Seteo de estado para el redirect
-                            this.setState({
-                                redirect: true
-                            })
-                        })
-                        .catch(e => {
-                            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                                HELPER_FUNCTIONS.logout()
-                            } else {
-                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                                swal("Error!", "Hubo un problema", "error");
+            swal({
+                title: "¿Estás seguro?",
+                text: "Una vez borrado el usuario, no podrás recuperarlo",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        axios.delete(Global.getUsers + '/' + id, config)
+                            .then(response => {
+                                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                                swal("El usuario ha sido borrado", {
+                                    icon: "success",
+                                });
 
                                 // Seteo de estado para el redirect
                                 this.setState({
                                     redirect: true
                                 })
-                            }
-                            console.log("Error: ", e)
+                            })
+                            .catch(e => {
+                                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                                    HELPER_FUNCTIONS.logout()
+                                } else {
+                                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                    swal("Error!", "Hubo un problema", "error");
+
+                                    // Seteo de estado para el redirect
+                                    this.setState({
+                                        redirect: true
+                                    })
+                                }
+                                console.log("Error: ", e)
+                            })
+
+                    } else {
+                        swal("Casi! El usuario NO ha sido borrado", {
+                            icon: "info",
+                        });
+
+                        // Seteo de estado para el redirect
+                        this.setState({
+                            redirect: true
                         })
 
-                } else {
-                    swal("Casi! El usuario NO ha sido borrado", {
-                        icon: "info",
-                    });
-
-                    // Seteo de estado para el redirect
-                    this.setState({
-                        redirect: true
-                    })
-
-                }
-            });
+                    }
+                });
+        } else {
+            this.setState({
+                redirect: true
+            })
+            return HELPER_FUNCTIONS.logout()
+        }
     }
 
     render() {

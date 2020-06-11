@@ -28,28 +28,39 @@ export default class editUserComponent extends Component {
         if (token === null) {
             return <Redirect to={'/'} />
         }
-        let id = this.props.location.state.userSelected.id
-        const config = {
-            headers: { Authorization: `Bearer ${token}` }
-        };
 
-        axios.get(Global.getUsers + '/' + id, config)
-            .then(response => {
-                console.log("user: ", response.data.Data[0])
-                this.setState({
-                    userInfo: response.data.Data[0]
+        if (this.props.location.state) {  
+            let id = this.props.location.state.userSelected.id
+            const config = {
+                headers: { Authorization: `Bearer ${token}` }
+            };
+    
+            axios.get(Global.getUsers + '/' + id, config)
+                .then(response => {
+                    console.log("user: ", response.data.Data[0])
+                    this.setState({
+                        userInfo: response.data.Data[0]
+                    })
+                    sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 })
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                .catch(e => {
+                    if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                        HELPER_FUNCTIONS.logout()
+                    } else {
+                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        swal("Error!", "Hubo un problema", "error");
+                        this.setState({
+                            redirect: true
+                        })
+                    }
+                    console.log("Error: ", e)
+                })
+        } else {
+            this.setState({
+                redirect: true
             })
-            .catch(e => {
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema", "error");
-                }
-                console.log("Error: ", e)
-            })
+            return HELPER_FUNCTIONS.logout()
+        }
     }
 
     handleChange(event) {

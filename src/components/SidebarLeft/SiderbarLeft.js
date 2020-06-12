@@ -23,21 +23,19 @@ export default class SiderbarLeft extends Component {
                         <hr></hr>
                         {/* USERS */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("users") &&
-                            <li><NavLink to="/users" activeClassName="active"><PersonIcon className="IconoMenu" /></NavLink></li>
+                            <li className="nameMenu"><NavLink to="/users" activeClassName="active"><PersonIcon className="IconoMenu" /></NavLink>Usuarios</li>
                         }
                         {/* GROUPS */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("groups") &&
-                            <li><NavLink to="/groups" activeClassName="active"><PeopleIcon className="IconoMenu" /></NavLink></li>
+                            <li className="nameMenu"><NavLink to="/groups" activeClassName="active"><PeopleIcon className="IconoMenu" /></NavLink>Grupos</li>
                         }
                         {/* ROLES */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("roles") &&
-                            <li><NavLink to="/roles" activeClassName="active"><SecurityIcon className="IconoMenu" /></NavLink></li>
+                            <li className="nameMenu"><NavLink to="/roles" activeClassName="active"><SecurityIcon className="IconoMenu" /></NavLink>Roles</li>
                         }
                         {/* BACKOFFICE */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("") &&
-                            <li><NavLink to="/backoffice" activeClassName="active"><SettingsIcon className="IconoMenu" />
-                             
-                            </NavLink>
+                            <li className="nameMenu"><NavLink to="/backoffice" activeClassName="active"><SettingsIcon className="IconoMenu" /></NavLink>Nómina
                             </li>
                         }
                     </ul>

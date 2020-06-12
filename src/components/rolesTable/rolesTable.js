@@ -8,6 +8,7 @@ import swal from 'sweetalert'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import AddIcon from '@material-ui/icons/Add';
 
 
 export default class RolesTable extends Component {
@@ -267,7 +268,7 @@ export default class RolesTable extends Component {
 
                         {
                             // HELPER_FUNCTIONS.checkPermission("POST|roles/new") &&
-                            <button onClick={e => this.addRole(e)}><PersonAddIcon style={{ fontSize: 33 }} /></button>
+                            <button onClick={e => this.addRole(e)}><AddIcon style={{ fontSize: 33 }} /></button>
                         }
 
 

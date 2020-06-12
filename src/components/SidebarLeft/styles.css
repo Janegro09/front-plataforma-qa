@@ -219,3 +219,8 @@ hr {
 li:hover {
   background: -webkit-linear-gradient(left, rgba(41,184,229,0.13) 0%, rgba(188,224,238,0) 100%);
 }
+
+.active {
+
+  color: white;
+}

@@ -28,11 +28,10 @@
     flex-direction: row;
     justify-content: space-between;
     font-size: 15px;
-    padding: 15px;
+    padding: 9px;
     border: none;
     float: right;
-    margin-right: 5px;
-    width: 240px;
+ 
 }
 
 .containerIn:focus {
@@ -41,4 +40,8 @@
     box-shadow: none;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
+}
+
+.iconsUser {
+    margin: 0 10px;
 }

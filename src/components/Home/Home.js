@@ -7,6 +7,8 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import swal from 'sweetalert'
 import Global from '../../Global'
 import axios from 'axios'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 export default class UsersComponent extends Component {
     constructor(props) {
@@ -14,7 +16,7 @@ export default class UsersComponent extends Component {
         this.changePass = this.changePass.bind(this)
 
         this.state = {
-            value: 'user'
+            value: 'pass'
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -96,12 +98,19 @@ export default class UsersComponent extends Component {
                 </div>
 
                 {HELPER_FUNCTIONS.checkPermission("POST|users/passchange/:id") && userData &&
-                    <div>
-                        <select className="container" value={this.state.value} onChange={this.handleChange}>
-                            <option value="user">Bienvenido {userData.name}</option>
+                    <div className="containerIn">
+                        <p>Bienvenido {userData.name}</p>
+                        {/* <select className="container" value={this.state.value} onChange={this.handleChange}>
+        
                             <option value="pass">Cambiar contraseña</option>
                             <option value="exit">Salir</option>
-                        </select>
+                        </select> */}
+
+                        <SettingsIcon className="IconoMenu" />
+                        
+                        <button onClick={() => {return HELPER_FUNCTIONS.logout()}}><ExitToAppIcon className="IconoMenu" /></button>
+                        
+                    
                     </div>
                 }
             </div>

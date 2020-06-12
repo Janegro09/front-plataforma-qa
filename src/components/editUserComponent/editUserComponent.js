@@ -154,13 +154,15 @@ export default class editUserComponent extends Component {
                     {/* BOTON DE SALIDA */}
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
+                    {this.state.userInfo !== null &&
+                         <ChangePassword user={this.state.userInfo} />
+                         }
                 </div>
-                {this.state.userInfo !== null &&
-                    <ChangePassword user={this.state.userInfo} />
-                }
+
 
                 {user !== null &&
                     <form className="inputsEditUser" onSubmit={this.modifyUser}>
+                        
                         <input className="form-control" type="text" placeholder="id" name="id" ref={(c) => this.id = c} defaultValue={user.id ? user.id : ''} disabled />
                         <input className="form-control" type="text" placeholder="name" name="name" ref={(c) => this.name = c} defaultValue={user.name ? user.name : ''} />
                         <input className="form-control" type="text" placeholder="lastName" name="lastName" ref={(c) => this.lastName = c} defaultValue={user.lastName ? user.lastName : ''} />
@@ -210,7 +212,7 @@ export default class editUserComponent extends Component {
                         </select>
                         {/* <input type="text" placeholder="imagen" ref={(c) => this.imagen = c} defaultValue={user.imagen ? user.imagen : ''} /> */}
                         {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                        <button  className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Guardar cambios</button>
+                        <button  className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Guardar cambios</button>
                     
                          
                         }

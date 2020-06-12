@@ -54,3 +54,13 @@
   align-items: center;
   color: white;
 }
+
+.confirmar {
+  margin: auto;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+#root {
+  margin-left: 60px;
+}

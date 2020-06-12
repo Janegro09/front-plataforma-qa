@@ -128,7 +128,7 @@ export default class editRoleComponent extends Component {
                         <input className="form-control" type="text" placeholder="description" name="description" ref={(c) => this.description = c} defaultValue={group.description ? group.description : ''} />
                         <SelectGroup getValue={(c) => this.assign = c} defaultValue={group.permissionAssign ? group.permissionAssign : ''} />
                         {HELPER_FUNCTIONS.checkPermission("PUT|roles/:id") &&
-                        <button  className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Guardar cambios</button>
+                        <button  className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Guardar cambios</button>
                     
                         }
                     </form>

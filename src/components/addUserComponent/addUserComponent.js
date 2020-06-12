@@ -194,7 +194,7 @@ export default class addUserComponent extends Component {
                     </select>
                     {/* <input type="text" placeholder="turno" ref={(c) => this.turno = c} /> */}
                     {/* <input type="text" placeholder="imagen" ref={(c) => this.imagen = c} /> */}
-                    <button  className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Crear Usuario</button>
+                    <button  className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Usuario</button>
                     
                
 

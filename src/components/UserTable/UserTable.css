@@ -104,7 +104,7 @@ table svg:hover {
     text-align: left;
   }
   td:not(:first-child):before {
-    color: #91ced4;
+    color: #2d9dca;
     content: '';
     display: block;
     left: 0;
@@ -435,7 +435,7 @@ button:focus {
 }
 
 .inputsEditUser {
-  width: 50%;
+  width: 70%;
   margin: auto;
 }
 
@@ -490,4 +490,9 @@ svg {
   height: 600px;
   opacity: 0.2;
   border-radius: 0;
+}
+
+.cantUsuarios {
+  margin-top: 20px;
+  font-size: 14px;
 }

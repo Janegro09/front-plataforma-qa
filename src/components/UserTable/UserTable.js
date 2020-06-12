@@ -251,7 +251,7 @@ export default class UserTable extends Component {
                         }
 
                         {HELPER_FUNCTIONS.checkPermission("POST|users/new") &&
-                            <button className="addItem" onClick={e => this.addUser(e)}><PersonAddIcon style={{ fontSize: 25 }} /></button>
+                            <button className="addItem" onClick={e => this.addUser(e)}><PersonAddIcon style={{ fontSize: 38 }} /></button>
                         }
 
 
@@ -333,7 +333,7 @@ export default class UserTable extends Component {
                     </div>
                     
                     {this.state.allUsers &&
-                        <div>Cantidad de usuarios {this.state.allUsers.length}</div>
+                        <div className="cantUsuarios">Cantidad de usuarios: {this.state.allUsers.length}</div>
                     }
                 </div>
             </div>

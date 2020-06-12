@@ -1252,3 +1252,11 @@ fieldset[disabled] .form-control {
 .loginForm {
   background-color: transparent !important;
 }
+
+.alert-danger {
+  color: #d02232;
+  float: right;
+  background-color: none; 
+  border-color: none; 
+  font-size: 12px;
+}

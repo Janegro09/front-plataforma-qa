@@ -88,18 +88,21 @@ export default class createRoleComponent extends Component {
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
                 </div>
-                <form onSubmit={this.modifyUser}>
+                <form className="inputsEditUser" onSubmit={this.modifyUser}>
                     {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
-                        <input type="text" placeholder="role" name="group" ref={(c) => this.role = c} required />
+                        <input className="form-control" type="text" placeholder="role" name="group" ref={(c) => this.role = c} required />
                     }
                     {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
-                        <input type="text" placeholder="description" name="description" ref={(c) => this.description = c} required />
+                        <input className="form-control" type="text" placeholder="description" name="description" ref={(c) => this.description = c} required />
                     }
-                    {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
-                        <input type="submit" value="Agregar" />
-                    }
-                </form>
+
                 <SelectGroup getValue={(c) => this.permissions = c} />
+
+                {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
+                    <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Guardar cambios</button>
+
+                }
+                </form>
 
             </div>
         )

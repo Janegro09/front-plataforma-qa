@@ -122,7 +122,7 @@ table svg:hover {
         content: 'Phone:';
    }
       td:nth-child(5):before {
-        content: 'Comments:';
+        content: '';
    }
     tr {
         padding: 10px 0;

@@ -108,7 +108,9 @@ export default class UsersComponent extends Component {
                         <button onClick={this.salir}><ExitToAppIcon className="IconoMenu iconsUser" style={{ fontSize: 27 }}/></button>
 
                     </div>
+
                 }
+                
             </div>
 
         )

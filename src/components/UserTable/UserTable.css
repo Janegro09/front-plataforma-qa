@@ -463,7 +463,7 @@ svg {
   background-color: #f9f9f9;
   border-radius: 4px !important;
   margin-right: 8px;
-  border-bottom: 1px solid #bfbfbf;
+  border-bottom: 1px solid #e4e4e4;
 }
 
 .edit {
@@ -490,6 +490,7 @@ svg {
   height: 600px;
   opacity: 0.2;
   border-radius: 0;
+  
 }
 
 .cantUsuarios {

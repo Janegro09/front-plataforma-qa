@@ -16,7 +16,28 @@
     height: 600px;
     opacity: 0.3;
     border-radius: 0;
+    
 }
+
+
+.Logo2 {
+    animation: rotate 3s infinite;
+    animation-name: rotate;
+    animation-duration: 2s;
+    animation-timing-function: ease-in;
+    animation-delay: 0s;
+    animation-iteration-count: 1;
+
+    }
+    @keyframes rotate {
+    0%, 30% {
+    transform: rotate(-0deg);
+    }
+    0% {
+    transform: rotate(-10deg);
+    opacity: 0.7;
+    }
+    }
 
 .welcome-message {
     text-align: center;

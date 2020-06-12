@@ -10,6 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 
+
 export default class UserTable extends Component {
     constructor(props) {
         super(props)
@@ -251,7 +252,7 @@ export default class UserTable extends Component {
                         }
 
                         {HELPER_FUNCTIONS.checkPermission("POST|users/new") &&
-                            <button className="addItem" onClick={e => this.addUser(e)}><PersonAddIcon style={{ fontSize: 38 }} /></button>
+                            <button className="addItem" onClick={e => this.addUser(e)}><PersonAddIcon style={{ fontSize: 33 }} /></button>
                         }
 
 

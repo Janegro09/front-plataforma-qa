@@ -64,7 +64,7 @@ table td, table th {
 table td {
     text-align: center;
     vertical-align: middle;
-    
+    font-size: 12px;
 }
 table td:last-child {
     font-size: 0.95em;

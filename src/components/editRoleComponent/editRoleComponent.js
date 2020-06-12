@@ -122,13 +122,14 @@ export default class editRoleComponent extends Component {
                     <SiderbarLeft />
                 </div>
                 {group !== null &&
-                    <form onSubmit={this.modifyUser}>
-                        <input type="text" placeholder="id" name="id" ref={(c) => this.id = c} defaultValue={group.id ? group.id : ''} disabled />
-                        <input type="text" placeholder="group" name="group" ref={(c) => this.role = c} defaultValue={group.role ? group.role : ''} />
-                        <input type="text" placeholder="description" name="description" ref={(c) => this.description = c} defaultValue={group.description ? group.description : ''} />
+                    <form className="inputsEditUser" onSubmit={this.modifyUser}>
+                        <input className="form-control" type="text" placeholder="id" name="id" ref={(c) => this.id = c} defaultValue={group.id ? group.id : ''} disabled />
+                        <input className="form-control" type="text" placeholder="group" name="group" ref={(c) => this.role = c} defaultValue={group.role ? group.role : ''} />
+                        <input className="form-control" type="text" placeholder="description" name="description" ref={(c) => this.description = c} defaultValue={group.description ? group.description : ''} />
                         <SelectGroup getValue={(c) => this.assign = c} defaultValue={group.permissionAssign ? group.permissionAssign : ''} />
                         {HELPER_FUNCTIONS.checkPermission("PUT|roles/:id") &&
-                            <input type="submit" value="modificar usuario" />
+                        <button  className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Guardar cambios</button>
+                    
                         }
                     </form>
                 }

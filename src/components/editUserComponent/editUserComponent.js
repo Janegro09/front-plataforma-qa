@@ -210,7 +210,9 @@ export default class editUserComponent extends Component {
                         </select>
                         {/* <input type="text" placeholder="imagen" ref={(c) => this.imagen = c} defaultValue={user.imagen ? user.imagen : ''} /> */}
                         {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                            <input type="submit" value="modificar usuario" className="button-change-pass" />
+                        <button  className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Guardar cambios</button>
+                    
+                         
                         }
                     </form>
                 }

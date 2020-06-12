@@ -146,47 +146,47 @@ export default class addUserComponent extends Component {
                     <SiderbarLeft />
                 </div>
 
-                <form onSubmit={this.addUser} className="addUserForm">
-                    <input type="text" placeholder="id" name="id" ref={(c) => this.id = c} required />
+                <form onSubmit={this.addUser} className="inputsEditUser">
+                    <input className="form-control" type="text" placeholder="id" name="id" ref={(c) => this.id = c} required />
                     <div className="error">
                         {
                             this.validator.message('title', this.id, 'required')
                         }
                     </div>
-                    <input type="text" placeholder="dni" name="dni" ref={(c) => this.dni = c} required />
-                    <input type="text" placeholder="name" name="name" ref={(c) => this.name = c} required />
-                    <input type="text" placeholder="lastName" name="lastName" ref={(c) => this.lastName = c} required />
+                    <input className="form-control" type="text" placeholder="dni" name="dni" ref={(c) => this.dni = c} required />
+                    <input className="form-control" type="text" placeholder="name" name="name" ref={(c) => this.name = c} required />
+                    <input className="form-control" type="text" placeholder="lastName" name="lastName" ref={(c) => this.lastName = c} required />
                     <SelectRoles getValue={(c) => this.role = c} />
 
-                    <input type="text" placeholder="legajo" ref={(c) => this.legajo = c} />
-                    <input type="email" placeholder="email" ref={(c) => this.email = c} required />
-                    <input type="tel" placeholder="phone" ref={(c) => this.phone = c} />
+                    <input className="form-control" type="text" placeholder="legajo" ref={(c) => this.legajo = c} />
+                    <input className="form-control" type="email" placeholder="email" ref={(c) => this.email = c} required />
+                    <input className="form-control" type="tel" placeholder="phone" ref={(c) => this.phone = c} />
                     <select onChange={this.handleChange}>
                         <option value="MASCULINO">Hombre</option>
                         <option value="FEMENINO">Mujer</option>
                         <option value="OTRO">Otro</option>
                     </select>
-                    <input type="date" placeholder="fechaIngresoLinea" ref={(c) => this.fechaIngresoLinea = c} />
-                    <input type="date" placeholder="fechaBaja" ref={(c) => this.fechaBaja = c} />
-                    <input type="text" placeholder="motivoBaja" ref={(c) => this.motivoBaja = c} />
-                    <input type="text" placeholder="propiedad" ref={(c) => this.propiedad = c} />
-                    <input type="text" placeholder="canal" ref={(c) => this.canal = c} />
-                    <input type="text" placeholder="negocio" ref={(c) => this.negocio = c} />
-                    <input type="text" placeholder="razonSocial" ref={(c) => this.razonSocial = c} />
-                    <input type="text" placeholder="edificioLaboral" ref={(c) => this.edificioLaboral = c} />
-                    <input type="text" placeholder="gerencia1" ref={(c) => this.gerencia1 = c} />
-                    <input type="text" placeholder="nameG1" ref={(c) => this.nameG1 = c} />
-                    <input type="text" placeholder="gerencia2" ref={(c) => this.gerencia2 = c} />
-                    <input type="text" placeholder="nameG2" ref={(c) => this.nameG2 = c} />
-                    <input type="text" placeholder="jefeCoordinador" ref={(c) => this.jefeCoordinador = c} />
-                    <input type="text" placeholder="responsable" ref={(c) => this.responsable = c} />
-                    <input type="text" placeholder="supervisor" ref={(c) => this.supervisor = c} />
-                    <input type="text" placeholder="lider" ref={(c) => this.lider = c} />
-                    <input type="text" placeholder="provincia" ref={(c) => this.provincia = c} />
-                    <input type="text" placeholder="region" ref={(c) => this.region = c} />
-                    <input type="text" placeholder="subregion" ref={(c) => this.subregion = c} />
-                    <input type="text" placeholder="equipoEspecifico" ref={(c) => this.equipoEspecifico = c} />
-                    <input type="text" placeholder="puntoVenta" ref={(c) => this.puntoVenta = c} />
+                    <input className="form-control" type="date" placeholder="fechaIngresoLinea" ref={(c) => this.fechaIngresoLinea = c} />
+                    <input className="form-control" type="date" placeholder="fechaBaja" ref={(c) => this.fechaBaja = c} />
+                    <input className="form-control" type="text" placeholder="motivoBaja" ref={(c) => this.motivoBaja = c} />
+                    <input className="form-control" type="text" placeholder="propiedad" ref={(c) => this.propiedad = c} />
+                    <input className="form-control" type="text" placeholder="canal" ref={(c) => this.canal = c} />
+                    <input className="form-control" type="text" placeholder="negocio" ref={(c) => this.negocio = c} />
+                    <input className="form-control" type="text" placeholder="razonSocial" ref={(c) => this.razonSocial = c} />
+                    <input className="form-control" type="text" placeholder="edificioLaboral" ref={(c) => this.edificioLaboral = c} />
+                    <input className="form-control" type="text" placeholder="gerencia1" ref={(c) => this.gerencia1 = c} />
+                    <input className="form-control" type="text" placeholder="nameG1" ref={(c) => this.nameG1 = c} />
+                    <input className="form-control" type="text" placeholder="gerencia2" ref={(c) => this.gerencia2 = c} />
+                    <input className="form-control" type="text" placeholder="nameG2" ref={(c) => this.nameG2 = c} />
+                    <input className="form-control" type="text" placeholder="jefeCoordinador" ref={(c) => this.jefeCoordinador = c} />
+                    <input className="form-control" type="text" placeholder="responsable" ref={(c) => this.responsable = c} />
+                    <input className="form-control" type="text" placeholder="supervisor" ref={(c) => this.supervisor = c} />
+                    <input className="form-control" type="text" placeholder="lider" ref={(c) => this.lider = c} />
+                    <input className="form-control" type="text" placeholder="provincia" ref={(c) => this.provincia = c} />
+                    <input className="form-control" type="text" placeholder="region" ref={(c) => this.region = c} />
+                    <input className="form-control" type="text" placeholder="subregion" ref={(c) => this.subregion = c} />
+                    <input className="form-control" type="text" placeholder="equipoEspecifico" ref={(c) => this.equipoEspecifico = c} />
+                    <input className="form-control" type="text" placeholder="puntoVenta" ref={(c) => this.puntoVenta = c} />
                     <SelectGroup getValue={(c) => this.group = c} />
                     <select onChange={this.handleTurno}>
                         <option value="TT">TT</option>
@@ -194,7 +194,11 @@ export default class addUserComponent extends Component {
                     </select>
                     {/* <input type="text" placeholder="turno" ref={(c) => this.turno = c} /> */}
                     {/* <input type="text" placeholder="imagen" ref={(c) => this.imagen = c} /> */}
-                    <input type="submit" value="Crear usuario" />
+                    <button  className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Crear Usuario</button>
+                    
+               
+
+                    
                 </form>
             </div>
         )

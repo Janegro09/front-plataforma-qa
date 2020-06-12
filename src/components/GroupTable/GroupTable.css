@@ -106,7 +106,7 @@ table svg:hover {
         text-align: left;
    }
     td:not(:first-child):before {
-        color: #91ced4;
+        color: #2d93bb;
         content: '';
         display: block;
         left: 0;
@@ -121,7 +121,7 @@ table svg:hover {
     td:nth-child(4):before {
         content: 'Phone:';
    }
-    td:nth-child(5):before {
+      td:nth-child(5):before {
         content: 'Comments:';
    }
     tr {

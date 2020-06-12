@@ -99,7 +99,7 @@ export default class UsersComponent extends Component {
                     <img src={Logo} alt="Logo" title="Logo" className="Logo2" />
                 </div>
 
-                {HELPER_FUNCTIONS.checkPermission("POST|users/passchange/:id") && userData &&
+                {/* {HELPER_FUNCTIONS.checkPermission("POST|users/passchange/:id") && userData && */}
 
                     <div className="containerIn">
                        
@@ -108,7 +108,7 @@ export default class UsersComponent extends Component {
                         <button onClick={this.salir}><ExitToAppIcon className="IconoMenu iconsUser" style={{ fontSize: 27 }}/></button>
 
                     </div>
-                }
+                {/* } */}
             </div>
 
         )

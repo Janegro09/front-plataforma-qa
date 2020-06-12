@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import SiderBarLeft from '../SidebarLeft/SiderbarLeft'
 import RolesInfoContainer from '../RolesInfoContainer/RolesInfoContainer'
+import Logo from '../Home/logo_background.png';
 
 export default class Home extends Component {
     constructor(props) {
@@ -24,6 +25,10 @@ export default class Home extends Component {
 
         return (
             <div>
+                <div className="logoBackground">
+                    <img src={Logo} alt="Logo" title="Logo" className="Logo2" />
+                </div>
+
                 <div className="header">
                     {/* BOTON DE SALIDA */}
                     {/* BARRA LATERAL IZQUIERDA */}

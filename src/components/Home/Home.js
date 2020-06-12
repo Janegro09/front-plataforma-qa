@@ -14,10 +14,12 @@ export default class UsersComponent extends Component {
         this.changePass = this.changePass.bind(this)
 
         this.state = {
-            value: 'user'
+            value: 'user',
+            redirect: false
         }
 
-        this.handleChange = this.handleChange.bind(this);
+        this.changePass = this.changePass.bind(this)
+        this.salir = this.salir.bind(this);
     }
 
     changePass() {
@@ -65,19 +67,17 @@ export default class UsersComponent extends Component {
             });
     }
 
-    handleChange(event) {
-        this.setState({ value: event.target.value });
-        // console.log(this.state.value)
-        if (event.target.value === 'pass') {
-            this.changePass()
-        }
-
-        if (event.target.value === 'exit') {
-            return HELPER_FUNCTIONS.logout()
-        }
+    salir() {
+        this.setState({
+            redirect: true
+        })
+        return HELPER_FUNCTIONS.logout()
     }
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={'/'} />
+        }
         // Protección de rutas
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const userData = JSON.parse(sessionStorage.getItem("userData"))
@@ -85,6 +85,8 @@ export default class UsersComponent extends Component {
         if (tokenUser === null) {
             return <Redirect to={'/'} />
         }
+
+
         return (
             <div>
                 <div>
@@ -96,12 +98,10 @@ export default class UsersComponent extends Component {
                 </div>
 
                 {HELPER_FUNCTIONS.checkPermission("POST|users/passchange/:id") && userData &&
-                    <div>
-                        <select className="container" value={this.state.value} onChange={this.handleChange}>
-                            <option value="user">Bienvenido {userData.name}</option>
-                            <option value="pass">Cambiar contraseña</option>
-                            <option value="exit">Salir</option>
-                        </select>
+                    <div className="bienvenido">
+                        <p>Bienvenido {userData.name}</p>
+                        <button onClick={this.changePass}>Cambiar contraseña</button>
+                        <button onClick={this.salir}>Salir</button>
                     </div>
                 }
             </div>

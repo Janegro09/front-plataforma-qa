@@ -31,11 +31,11 @@
     }
     @keyframes rotate {
     0%, 50% {
-    /* transform: rotate(-0deg); */
+    transform: rotate(-0deg);
     }
     0% {
-    /* transform: rotate(-10deg); */
-    opacity: 0.5;
+    transform: rotate(-10deg);
+    opacity: 0.8;
     }
     }
 

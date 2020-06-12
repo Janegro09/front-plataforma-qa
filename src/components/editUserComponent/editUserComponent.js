@@ -162,14 +162,19 @@ export default class editUserComponent extends Component {
 
                 {user !== null &&
                     <form className="inputsEditUser" onSubmit={this.modifyUser}>
-                        
+                        <span className="Label">ID</span>
                         <input className="form-control" type="text" placeholder="id" name="id" ref={(c) => this.id = c} defaultValue={user.id ? user.id : ''} disabled />
+                        <span className="Label">Nombre</span>
                         <input className="form-control" type="text" placeholder="name" name="name" ref={(c) => this.name = c} defaultValue={user.name ? user.name : ''} />
+                        <span className="Label">Apellido</span>
                         <input className="form-control" type="text" placeholder="lastName" name="lastName" ref={(c) => this.lastName = c} defaultValue={user.lastName ? user.lastName : ''} />
                         {/* <input type="text" placeholder="role" ref={(c) => this.role = c} defaultValue={user.role ? user.role : ''} /> */}
                         <SelectRoles getValue={(c) => this.role = c} defaultValue={user.role.id ? user.role.id : ''} />
+                        <span className="Label">Legajo</span>
                         <input className="form-control" type="text" placeholder="legajo" ref={(c) => this.legajo = c} defaultValue={user.legajo ? user.legajo : ''} />
+                        <span className="Label">Email</span>
                         <input className="form-control" type="text" placeholder="email" ref={(c) => this.email = c} defaultValue={user.email ? user.email : ''} />
+                        <span className="Label">Telefono</span>
                         <input className="form-control" type="text" placeholder="phone" ref={(c) => this.phone = c} defaultValue={user.phone ? user.phone : ''} />
                         {/* <input type="text" placeholder="sexo" ref={(c) => this.sexo = c} defaultValue={user.sexo ? user.sexo : ''} /> */}
                         <select onChange={this.handleChange} selected="OTRO">
@@ -183,26 +188,47 @@ export default class editUserComponent extends Component {
                             <option value={user.userActive}>{user.userActive ? "Activo" : "Inactivo"}</option>
                             <option value={!user.userActive}>{user.userActive ? "Inactivo" : "Activo"}</option>
                         </select>
+                        <span className="Label">Fecha Ingreso</span>
                         <input className="form-control" type="date" placeholder="fechaIngresoLinea" ref={(c) => this.fechaIngresoLinea = c} defaultValue={user.fechaIngresoLinea ? user.fechaIngresoLinea : ''} />
+                        <span className="Label">Fecha de baja</span>
                         <input className="form-control" type="date" placeholder="fechaBaja" ref={(c) => this.fechaBaja = c} defaultValue={user.fechaBaja ? user.fechaBaja : ''} />
+                        <span className="Label">Motivo de baja</span>
                         <input className="form-control" type="text" placeholder="motivoBaja" ref={(c) => this.motivoBaja = c} defaultValue={user.motivoBaja ? user.motivoBaja : ''} />
+                        <span className="Label">Propiedad</span>
                         <input className="form-control" type="text" placeholder="propiedad" ref={(c) => this.propiedad = c} defaultValue={user.propiedad ? user.propiedad : ''} />
+                        <span className="Label">Canal</span>
                         <input className="form-control" type="text" placeholder="canal" ref={(c) => this.canal = c} defaultValue={user.canal ? user.canal : ''} />
+                        <span className="Label">Negocio</span>
                         <input className="form-control" type="text" placeholder="negocio" ref={(c) => this.negocio = c} defaultValue={user.negocio ? user.negocio : ''} />
+                        <span className="Label">Razón social</span>
                         <input className="form-control" type="text" placeholder="razonSocial" ref={(c) => this.razonSocial = c} defaultValue={user.razonSocial ? user.razonSocial : ''} />
+                        <span className="Label">Edificio laboral</span>
                         <input className="form-control" type="text" placeholder="edificioLaboral" ref={(c) => this.edificioLaboral = c} defaultValue={user.edificioLaboral ? user.edificioLaboral : ''} />
+                        <span className="Label">Gerencia</span>
                         <input className="form-control" type="text" placeholder="gerencia1" ref={(c) => this.gerencia1 = c} defaultValue={user.gerencia1 ? user.gerencia1 : ''} />
+                        <span className="Label">Gerente</span>
                         <input className="form-control" type="text" placeholder="nameG1" ref={(c) => this.nameG1 = c} defaultValue={user.nameG1 ? user.nameG1 : ''} />
+                        <span className="Label">Nombre Gerencia</span>
                         <input className="form-control" type="text" placeholder="gerencia2" ref={(c) => this.gerencia2 = c} defaultValue={user.gerencia2 ? user.gerencia2 : ''} />
+                        <span className="Label">Coordinador</span>
                         <input className="form-control" type="text" placeholder="nameG2" ref={(c) => this.nameG2 = c} defaultValue={user.nameG2 ? user.nameG2 : ''} />
+                        <span className="Label">Jefe Coordinador</span>
                         <input className="form-control" type="text" placeholder="jefeCoordinador" ref={(c) => this.jefeCoordinador = c} defaultValue={user.jefeCoordinador ? user.jefeCoordinador : ''} />
+                        <span className="Label">Responsable</span>
                         <input className="form-control" type="text" placeholder="responsable" ref={(c) => this.responsable = c} defaultValue={user.responsable ? user.responsable : ''} />
+                        <span className="Label">Supervisor</span>
                         <input className="form-control" type="text" placeholder="supervisor" ref={(c) => this.supervisor = c} defaultValue={user.supervisor ? user.supervisor : ''} />
+                        <span className="Label">Líder</span>
                         <input className="form-control" type="text" placeholder="lider" ref={(c) => this.lider = c} defaultValue={user.lider ? user.lider : ''} />
+                        <span className="Label">Provincia</span>
                         <input className="form-control" type="text" placeholder="provincia" ref={(c) => this.provincia = c} defaultValue={user.provincia ? user.provincia : ''} />
+                        <span className="Label">Región</span>
                         <input className="form-control" type="text" placeholder="region" ref={(c) => this.region = c} defaultValue={user.region ? user.region : ''} />
+                        <span className="Label">Subregión</span>
                         <input className="form-control" type="text" placeholder="subregion" ref={(c) => this.subregion = c} defaultValue={user.subregion ? user.subregion : ''} />
+                        <span className="Label">Equipo específico</span>
                         <input className="form-control" type="text" placeholder="equipoEspecifico" ref={(c) => this.equipoEspecifico = c} defaultValue={user.equipoEspecifico ? user.equipoEspecifico : ''} />
+                        <span className="Label">Punto Venta</span>
                         <input className="form-control" type="text" placeholder="puntoVenta" ref={(c) => this.puntoVenta = c} defaultValue={user.puntoVenta ? user.puntoVenta : ''} />
                         {/* <input type="text" placeholder="group" ref={(c) => this.group = c} defaultValue={user.group ? user.group : ''} /> */}
                         <SelectGroup getValue={(c) => this.group = c} defaultValue={user.group ? user.group : ''} />

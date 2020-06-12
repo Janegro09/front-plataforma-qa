@@ -147,17 +147,21 @@ export default class addUserComponent extends Component {
                 </div>
 
                 <form onSubmit={this.addUser} className="inputsEditUser">
+                    <span className="Label">ID</span>
                     <input className="form-control" type="text" placeholder="id" name="id" ref={(c) => this.id = c} required />
                     <div className="error">
                         {
                             this.validator.message('title', this.id, 'required')
                         }
                     </div>
+                    <span className="Label">DNI</span>
                     <input className="form-control" type="text" placeholder="dni" name="dni" ref={(c) => this.dni = c} required />
+                    <span className="Label">Nombre</span>
                     <input className="form-control" type="text" placeholder="name" name="name" ref={(c) => this.name = c} required />
+                    <span className="Label">Apellido</span>
                     <input className="form-control" type="text" placeholder="lastName" name="lastName" ref={(c) => this.lastName = c} required />
                     <SelectRoles getValue={(c) => this.role = c} />
-
+                    <span className="Label">Apellido</span>
                     <input className="form-control" type="text" placeholder="legajo" ref={(c) => this.legajo = c} />
                     <input className="form-control" type="email" placeholder="email" ref={(c) => this.email = c} required />
                     <input className="form-control" type="tel" placeholder="phone" ref={(c) => this.phone = c} />

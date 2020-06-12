@@ -498,3 +498,14 @@ svg {
   margin-top: 20px;
   font-size: 14px;
 }
+
+.Label {
+  font-size: 13px;
+  color: #6f6f6f;
+  height: 21px;
+  /* font-weight: 500; */
+  margin: 0px 0px 4px 11px;
+  /* margin-bottom: 7px; */
+  padding: 0px;
+  position: relative;
+}

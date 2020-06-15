@@ -31,7 +31,8 @@ tr:hover .edit {
 }
 
 tr:hover {
-  background-color: #e8e7e7 !important;
+  background-color: #e8e7e76b !important;
+  
 }
 
 img {

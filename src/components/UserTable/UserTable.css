@@ -53,6 +53,8 @@ table {
   width: 100%;
   border-bottom: 0.2px solid #dedede;
   margin-bottom: 11px;
+  background-color: #ffffff30;
+  border-radius: 6px;
 }
 
 table td, table th {

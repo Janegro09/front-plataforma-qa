@@ -7,8 +7,14 @@
 .logoBackground {
     display: flex;
     height: 100vh;
+    position: fixed;
+    /* flex-direction: column; */
+    /* margin: auto; */
     justify-content: center;
+    width: 100%;
     align-items: center;
+    margin-left: 37px;
+    z-index: -1;
 }
 
 .Logo2 {
@@ -16,11 +22,6 @@
     height: 600px;
     opacity: 0.3;
     border-radius: 0;
-    
-}
-
-
-.Logo2 {
     animation: rotate 3s infinite;
     animation-name: rotate;
     animation-duration: 2s;
@@ -37,7 +38,10 @@
     transform: rotate(-10deg);
     opacity: 0.8;
     }
-    }
+    
+}
+
+
 
 .welcome-message {
     text-align: center;

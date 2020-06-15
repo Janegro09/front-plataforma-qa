@@ -8,6 +8,7 @@ import ChangePassword from '../changePassword/ChangePassword'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import { Redirect } from 'react-router-dom'
 import swal from 'sweetalert'
+import Logo from '../Home/logo_background.png';
 
 export default class editUserComponent extends Component {
     constructor(props) {
@@ -159,11 +160,19 @@ export default class editUserComponent extends Component {
                          }
                 </div>
 
+                <div className="logoBackground">
+                    <img src={Logo} alt="Logo" title="Logo" className="logoFixed" />
+                </div>
+
 
                 {user !== null &&
                     <form className="inputsEditUser" onSubmit={this.modifyUser}>
                         <span className="Label">ID</span>
-                        <input className="form-control" type="text" placeholder="id" name="id" ref={(c) => this.id = c} defaultValue={user.id ? user.id : ''} disabled />
+                        <select onChange={this.handleChangeStatus}>
+                            <option value={user.userActive}>{user.userActive ? "Activo" : "Inactivo"}</option>
+                            <option value={!user.userActive}>{user.userActive ? "Inactivo" : "Activo"}</option>
+                        </select>
+                        <input className={`form-control ${!user.userActive ? "Inactivo " : 'Activo'}`} type="text" placeholder="id" name="id" ref={(c) => this.id = c} defaultValue={user.id ? user.id : ''} disabled />        
                         <span className="Label">Nombre</span>
                         <input className="form-control" type="text" placeholder="name" name="name" ref={(c) => this.name = c} defaultValue={user.name ? user.name : ''} />
                         <span className="Label">Apellido</span>
@@ -184,10 +193,7 @@ export default class editUserComponent extends Component {
                             <option value="OTRO">Otro</option>
                         </select>
                         {/* <input type="text" placeholder="status" ref={(c) => this.status = c} defaultValue={user.status ? user.status : ''} /> */}
-                        <select onChange={this.handleChangeStatus}>
-                            <option value={user.userActive}>{user.userActive ? "Activo" : "Inactivo"}</option>
-                            <option value={!user.userActive}>{user.userActive ? "Inactivo" : "Activo"}</option>
-                        </select>
+
                         <span className="Label">Fecha Ingreso</span>
                         <input className="form-control" type="date" placeholder="fechaIngresoLinea" ref={(c) => this.fechaIngresoLinea = c} defaultValue={user.fechaIngresoLinea ? user.fechaIngresoLinea : ''} />
                         <span className="Label">Fecha de baja</span>

@@ -37,6 +37,7 @@ export default class UserTable extends Component {
         this.deleteUser = this.deleteUser.bind(this)
         this.logout = this.logout.bind(this)
         this.getUsersPage = this.getUsersPage.bind(this)
+        
     }
 
     buscar() {
@@ -273,10 +274,11 @@ export default class UserTable extends Component {
 
                         <thead className="encabezadoTabla">
                             <tr>
-                                <th>id</th>
+                                {/* <th>id</th> */}
                                 <th>Nombre y apellido</th>
                                 <th>Mail</th>
                                 <th>Sector</th>
+                                <th>Estado</th>
                                 <th>Editar</th>
                                 <th>Eliminar</th>
                             </tr>
@@ -288,10 +290,11 @@ export default class UserTable extends Component {
                                 totalUsuarios.map(user => {
                                     return (
                                         <tr key={user.idDB}>
-                                            <td>{user.id}</td>
+                                            {/* <td >{user.id}</td> */}
                                             <td>{user.name} {user.lastName}</td>
                                             <td>{user.email}</td>
                                             <td>{user.equipoEspecifico}</td>
+                                            <td><div className={` ${!user.userActive ? "estadoInactivo " : 'estadoActivo'}`}></div></td>
                                             {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
                                                 <td onClick={e => this.editUser(e, user)}><EditIcon style={{ fontSize: 15 }} /></td>
                                             }

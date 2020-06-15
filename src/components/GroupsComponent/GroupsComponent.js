@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import SiderBarLeft from '../SidebarLeft/SiderbarLeft'
-// import './UserTable.css'
 import GroupInfoContainer from '../GroupInfoContainer/GroupInfoContainer'
 import Logo from '../Home/logo_background.png';
 
@@ -32,7 +31,7 @@ export default class Home extends Component {
             <div>
 
                 <div className="logoBackground">
-                    <img src={Logo} alt="Logo" title="Logo" className="Logo2" />
+                    <img src={Logo} alt="Logo" title="Logo" className="logoFixed" />
                 </div>
                 <div className="header">
                     {/* BOTON DE SALIDA */}

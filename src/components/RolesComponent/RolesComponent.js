@@ -26,7 +26,7 @@ export default class Home extends Component {
         return (
             <div>
                 <div className="logoBackground">
-                    <img src={Logo} alt="Logo" title="Logo" className="Logo2" />
+                    <img src={Logo} alt="Logo" title="Logo" className="logoFixed" />
                 </div>
 
                 <div className="header">

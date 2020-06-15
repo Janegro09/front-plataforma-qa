@@ -40,13 +40,11 @@ img {
     width: 60px;
 }
 .table-users {
-    /* border-top: 1px solid #313131; */
-    /* border-radius: 10px; */
-
-    max-width: calc(100% - 2em);
-    margin: 1em auto;
-    overflow: hidden;
-    width: 1000px;
+  max-width: calc(100% - 2em);
+  margin: auto;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
 }
 table {
 
@@ -101,7 +99,7 @@ table svg:hover {
     td:not(:first-child) {
         clear: both;
         margin-left: 100px;
-        padding: 4px 20px 4px 90px;
+        padding: 4px 20px 4px 40px;
         position: relative;
         text-align: left;
    }
@@ -119,10 +117,10 @@ table svg:hover {
         content: 'Email:';
    }
     td:nth-child(4):before {
-        content: 'Phone:';
+        content: ':';
    }
     td:nth-child(5):before {
-        content: 'Comments:';
+        content: ':';
    }
     tr {
         padding: 10px 0;
@@ -132,7 +130,7 @@ table svg:hover {
         display: none;
    }
 }
-@media screen and (max-width: 500px) {
+/* @media screen and (max-width: 500px) {
     .table-header {
         background-color: transparent;
         color: #fff;
@@ -142,7 +140,6 @@ table svg:hover {
         text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
    }
     img {
-        border: 3px solid;
         border-color: #daeff1;
         height: 100px;
         margin: 0.5rem 0;
@@ -183,7 +180,7 @@ table svg:hover {
         box-shadow: none;
         overflow: visible;
    }
-}
+} */
 
 /* BOTON VER MAS */
 
@@ -429,7 +426,7 @@ svg {
 }
 
 .form-control{
-  background-color: #f9f9f9;
+  background-color: #f9f9f969;
   border-radius: 4px !important;
   margin-right: 8px;
   border-bottom: 1px solid #e4e4e4;

@@ -8,6 +8,7 @@ import SimpleReactValidator from 'simple-react-validator'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import swal from 'sweetalert'
 import { Redirect } from 'react-router-dom'
+import Logo from '../Home/logo_background.png';
 
 export default class addUserComponent extends Component {
     constructor(props) {
@@ -144,6 +145,10 @@ export default class addUserComponent extends Component {
                     {/* BOTON DE SALIDA */}
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
+                </div>
+
+                <div className="logoBackground">
+                    <img src={Logo} alt="Logo" title="Logo" className="logoFixed" />
                 </div>
 
                 <form onSubmit={this.addUser} className="inputsEditUser">

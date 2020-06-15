@@ -1256,7 +1256,8 @@ fieldset[disabled] .form-control {
 .alert-danger {
   color: #d02232;
   float: right;
-  background-color: none; 
-  border-color: none; 
+  background-color: transparent !important; 
+  border-color: transparent !important; 
   font-size: 12px;
+  padding: 2px;
 }

@@ -13,7 +13,8 @@ export default class ChangePassword extends Component {
         this.changePass = this.changePass.bind(this)
     }
 
-    changePass() {
+    changePass(e) {
+        e.preventDefault()
         swal(`Cambiando contraseña de ${this.props.user.email}, ingresá: `, {
             content: {
                 element: "input",

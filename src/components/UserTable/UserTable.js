@@ -38,7 +38,7 @@ export default class UserTable extends Component {
         this.deleteUser = this.deleteUser.bind(this)
         this.logout = this.logout.bind(this)
         this.getUsersPage = this.getUsersPage.bind(this)
-        
+
     }
 
     buscar() {
@@ -59,6 +59,23 @@ export default class UserTable extends Component {
                         returnData.push(user)
                     } else if (nameLastName.indexOf(searched) >= 0) {
                         returnData.push(user)
+                    } else if (user.legajo.indexOf(searched) >= 0) {
+                        returnData.push(user)
+                    } else {
+                        // Generamos parametros de busqueda 
+                        let nameDividido = nameLastName.split(' ');
+                        let busquedaDividida = searched.split(' ');
+                        let coincide = 0;
+                        for (let x = 0; x < nameDividido.length; x++) {
+                            for (let y = 0; y < busquedaDividida.length; y++) {
+                                if (nameDividido[x].indexOf(busquedaDividida[y]) >= 0) {
+                                    coincide++;
+                                }
+                            }
+                        }
+                        if (coincide === busquedaDividida.length) {
+                            returnData.push(user);
+                        }
                     }
                 }
             } else {
@@ -275,9 +292,10 @@ export default class UserTable extends Component {
 
                         <thead className="encabezadoTabla">
                             <tr>
-                                {/* <th>id</th> */}
+                                <th>ID</th>
                                 <th>Nombre y apellido</th>
                                 <th>Mail</th>
+                                <th>Legajo</th>
                                 <th>Sector</th>
                                 <th className="tableIcons">Estado</th>
                                 <th className="tableIcons">Editar</th>
@@ -291,9 +309,10 @@ export default class UserTable extends Component {
                                 totalUsuarios.map(user => {
                                     return (
                                         <tr key={user.idDB}>
-                                            {/* <td >{user.id}</td> */}
+                                            <td >{user.id}</td>
                                             <td className="capitalize-complete-name">{user.name} {user.lastName}</td>
                                             <td>{user.email}</td>
+                                            <td>{user.legajo}</td>
                                             <td>{user.equipoEspecifico}</td>
                                             <td className="tablaVariables"><div className={` ${!user.userActive ? "estadoInactivo " : 'estadoActivo'}`}></div></td>
                                             {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
@@ -336,7 +355,7 @@ export default class UserTable extends Component {
                         }
 
                     </div>
-                    
+
                     {this.state.allUsers &&
                         <div className="cantUsuarios">Cantidad de usuarios: {this.state.allUsers.length}</div>
                     }

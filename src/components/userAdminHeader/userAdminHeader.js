@@ -86,8 +86,8 @@ export default class UserAdminHeader extends Component {
         return (
             <div className="containerIn">
                 <p className="iconsUser">Bienvenido {userData.name}</p>
-                <button onClick={this.changePass}><SettingsIcon className="IconoMenu iconsUser" style={{ fontSize: 27 }} /></button>
-                <button onClick={this.salir}><ExitToAppIcon className="IconoMenu iconsUser" style={{ fontSize: 27 }} /></button>
+                <button onClick={this.changePass}><SettingsIcon className="IconoMenu iconsUser" style={{ fontSize: 23 }} /></button>
+                <button onClick={this.salir}><ExitToAppIcon className="IconoMenu iconsUser" style={{ fontSize: 23 }} /></button>
             </div>
         )
     }

@@ -8,7 +8,7 @@ import swal from 'sweetalert'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import UserAdminHeader from '../userAdminHeader/userAdminHeader'
+
 
 
 export default class GroupsTable extends Component {
@@ -247,7 +247,7 @@ export default class GroupsTable extends Component {
                         {HELPER_FUNCTIONS.backgroundLoading()}
                     </React.Fragment>
                 }
-                <UserAdminHeader />
+                
                 <div className="table-users">
 
                     <div className="flex-input-add">
@@ -315,10 +315,10 @@ export default class GroupsTable extends Component {
 
                                             <td>{group.group}</td>
                                             {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                                                <td onClick={e => this.editUser(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                <td className="tablaVariables" onClick={e => this.editUser(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                                                <td disabled><EditIcon></EditIcon></td>
+                                                <td className="tablaVariables" disabled><EditIcon></EditIcon></td>
                                             }
                                             {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
                                                 <td onClick={e => this.deleteUser(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>

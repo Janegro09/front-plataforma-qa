@@ -8,7 +8,7 @@ import swal from 'sweetalert'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import UserAdminHeader from '../userAdminHeader/userAdminHeader'
+
 
 
 
@@ -253,7 +253,7 @@ export default class UserTable extends Component {
 
         return (
             <div>
-                <UserAdminHeader />
+                
                 <div className="table-users">
 
                     <div className="flex-input-add">

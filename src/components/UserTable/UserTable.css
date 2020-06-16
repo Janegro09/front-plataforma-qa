@@ -463,6 +463,7 @@ button:focus {
 
 .section-content {
   padding: 50px;
+  padding-top: 71px;
   margin-left: 44px;
 }
 
@@ -563,11 +564,11 @@ svg {
   margin-bottom: 20px;
 }
 
-.pepe {
+/* .pepe {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-}
+} */
 
 .headEditUser {
   display: flex;
@@ -579,8 +580,8 @@ svg {
 }
 
 .tablaVariables {
-  /* border-left: 1px solid #e4e4e4;
-  border-right: 1px solid #e4e4e4; */
+  border-left: 1px solid #e4e4e4;
+  /* border-right: 1px solid #e4e4e4; */
 }
 
 .addUserPadding {

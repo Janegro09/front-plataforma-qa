@@ -50,12 +50,10 @@
 .containerIn {
     display: flex;
     background-color: transparent;
-    flex-direction: row;
-    justify-content: space-between;
     font-size: 15px;
-    padding: 9px;
-    border: none;
     float: right;
+    padding: 9px;
+    align-items: baseline;
  
 }
 
@@ -69,6 +67,7 @@
 
 .iconsUser {
     margin: 0 10px;
+    font-size: 12px;
 }
 
 .css-yk16xz-control {

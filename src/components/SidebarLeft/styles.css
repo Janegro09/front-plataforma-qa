@@ -64,20 +64,19 @@ display: none;
 
  */
 
-
- *{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: sans-serif;
 }
 
-.side__bar_inverse{
+.side__bar_inverse {
   background-color: #333;
-    border-color: #080808;
+  border-color: #080808;
 }
 
-.side__bar{
+.side__bar {
   /*width: 360px;*/
   /*background-color: #f3f3f3;*/
   height: 100vh;
@@ -88,26 +87,27 @@ display: none;
   left: 0;
   z-index: 1;
 }
+
 /* 
 .side__bar:hover{
   width: 360px;
 } */
 
-.side__bar::-webkit-scrollbar { width: 0 !important }
+.side__bar::-webkit-scrollbar {
+  width: 0 !important
+}
 
-.side__bar_container{
+.side__bar_container {
   width: 60px;
   height: 100vh;
   z-index: 999;
 }
 
-
-
-.parent__menu_holder{
+.parent__menu_holder {
   list-style: none;
 }
 
-.parent__menu_holder > li {
+.parent__menu_holder>li {
   position: relative;
   color: #fff;
   font-size: 27px;
@@ -116,17 +116,15 @@ display: none;
   transition: all 0.15s ease-in;
 }
 
-.parent__menu_holder > li:hover,
-.parent__menu_holder > li:hover .child__menu > li,
-.child__list > li:hover a{
+.parent__menu_holder>li:hover, .parent__menu_holder>li:hover .child__menu>li, .child__list>li:hover a {
   background-color: #1d1d1d;
 }
 
-.parent__menu_holder > li:hover .child__menu{
+.parent__menu_holder>li:hover .child__menu {
   display: block;
 }
 
-.parent__menu_holder > li:hover::after{
+.parent__menu_holder>li:hover::after {
   content: '';
   position: absolute;
   height: 100%;
@@ -136,11 +134,11 @@ display: none;
   left: 0;
 }
 
-.parent__menu_holder > li:hover i{
+.parent__menu_holder>li:hover i {
   text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6, 0 0 25px #0073e6, 0 0 30px #0073e6, 0 0 35px #0073e6;
 }
 
-.child__menu{
+.child__menu {
   display: none;
   position: absolute;
   list-style: none;
@@ -150,14 +148,14 @@ display: none;
   left: 100%;
 }
 
-.child__list{
+.child__list {
   list-style: none;
   overflow: auto;
   height: 160px;
   overflow: auto;
 }
 
-.child__list > li > a{
+.child__list>li>a {
   font-size: 15px;
   color: #fff;
   text-decoration: none;
@@ -165,7 +163,7 @@ display: none;
   padding: 6px 12px;
 }
 
-.child__menu > li{
+.child__menu>li {
   font-size: 18px;
   color: #fff;
   text-decoration: none;
@@ -175,17 +173,19 @@ display: none;
   width: 240px;
 }
 
-.child__menu > li:hover a{
+.child__menu>li:hover a {
   background-color: #080808;
 }
 
 /*Just For Test*/
-div.content{
+
+div.content {
   background-color: #999;
   width: 100%;
   height: 100vh;
   padding: 120px;
 }
+
 /*Test*/
 
 .IconoMenu {
@@ -196,12 +196,11 @@ div.content{
   color: #5d5d5d;
 }
 
-
 .LogoIn {
   border-radius: 0;
   height: 40px;
   width: 40px;
-  opacity:0.3;
+  opacity: 0.3;
   margin: 10px 5px 5px 9px;
 }
 
@@ -210,21 +209,29 @@ div.content{
 }
 
 hr {
-    margin-top: 0.45rem;
-    margin-bottom: 0;
-    border: 0;
-    border-top: 1px solid rgba(171, 171, 171, 0.1);
+  margin-top: 0.45rem;
+  margin-bottom: 0;
+  border: 0;
+  border-top: 1px solid rgba(171, 171, 171, 0.1);
 }
 
 li:hover {
-  background: -webkit-linear-gradient(left, rgba(41,184,229,0.13) 0%, rgba(188,224,238,0) 100%);
+  background: -webkit-linear-gradient(left, rgba(41, 184, 229, 0.13) 0%, rgba(188, 224, 238, 0) 100%);
 }
 
-.active > svg {
-
+.active>svg {
   color: white;
 }
 
 .nameMenu {
   font-size: 9px !important;
+}
+
+.version {
+  color: white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 13px;
+  font-size: 10px;
 }

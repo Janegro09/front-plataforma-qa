@@ -3,6 +3,7 @@ import './styles.css'
 import { NavLink } from 'react-router-dom';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import LogoIn from './qa_logo2.png';
+import { version } from '../../../package.json';
 
 // Íconos de Material UI
 import PersonIcon from '@material-ui/icons/Person';
@@ -39,6 +40,7 @@ export default class SiderbarLeft extends Component {
                             </li>
                         }
                     </ul>
+                    <span className="version">V{version}</span>
                 </div>
             </div>
         )

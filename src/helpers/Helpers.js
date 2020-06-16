@@ -75,7 +75,7 @@ export const HELPER_FUNCTIONS = {
     backgroundLoading: () => {
         return (
             <div className="background-loading">
-                <CircularProgress color="secondary" /><br></br>
+                <CircularProgress color="secondary" />
                 <h4>Aguarde, por favor...</h4>
             </div>
         )

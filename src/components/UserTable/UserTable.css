@@ -590,3 +590,7 @@ svg {
 .capitalize-complete-name {
   text-transform: capitalize;
 }
+
+.active {
+  font-weight: bold;
+}

@@ -586,3 +586,7 @@ svg {
 .addUserPadding {
   padding-top: 30px;
 }
+
+.capitalize-complete-name {
+  text-transform: capitalize;
+}

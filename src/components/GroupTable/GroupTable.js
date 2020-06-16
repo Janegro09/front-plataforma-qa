@@ -8,6 +8,7 @@ import swal from 'sweetalert'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import UserAdminHeader from '../userAdminHeader/userAdminHeader'
 
 
 export default class GroupsTable extends Component {
@@ -246,6 +247,7 @@ export default class GroupsTable extends Component {
                         {HELPER_FUNCTIONS.backgroundLoading()}
                     </React.Fragment>
                 }
+                <UserAdminHeader />
                 <div className="table-users">
 
                     <div className="flex-input-add">

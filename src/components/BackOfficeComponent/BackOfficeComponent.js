@@ -5,6 +5,7 @@ import axios from 'axios'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import Global from '../../Global'
 import './BackOfficeComponent.css'
+import UserAdminHeader from '../userAdminHeader/userAdminHeader'
 
 export default class BackOfficeComponent extends Component {
     state = {
@@ -34,7 +35,7 @@ export default class BackOfficeComponent extends Component {
             })
                 .then((willDelete) => {
                     if (willDelete) {
-                        
+
                         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
                         const token = tokenUser
                         const bearer = `Bearer ${token}`
@@ -87,6 +88,7 @@ export default class BackOfficeComponent extends Component {
                     {/* BOTON DE SALIDA */}
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
+                    <UserAdminHeader />
                 </div>
                 {this.state.loading &&
                     HELPER_FUNCTIONS.backgroundLoading()

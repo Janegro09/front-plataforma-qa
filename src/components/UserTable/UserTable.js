@@ -8,6 +8,7 @@ import swal from 'sweetalert'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import UserAdminHeader from '../userAdminHeader/userAdminHeader'
 
 
 
@@ -235,7 +236,7 @@ export default class UserTable extends Component {
 
         return (
             <div>
-
+                <UserAdminHeader />
                 <div className="table-users">
 
                     <div className="flex-input-add">
@@ -291,7 +292,7 @@ export default class UserTable extends Component {
                                     return (
                                         <tr key={user.idDB}>
                                             {/* <td >{user.id}</td> */}
-                                            <td>{user.name} {user.lastName}</td>
+                                            <td className="capitalize-complete-name">{user.name} {user.lastName}</td>
                                             <td>{user.email}</td>
                                             <td>{user.equipoEspecifico}</td>
                                             <td className="tablaVariables"><div className={` ${!user.userActive ? "estadoInactivo " : 'estadoActivo'}`}></div></td>

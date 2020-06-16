@@ -88,10 +88,10 @@ display: none;
   left: 0;
   z-index: 1;
 }
-
+/* 
 .side__bar:hover{
   width: 360px;
-}
+} */
 
 .side__bar::-webkit-scrollbar { width: 0 !important }
 

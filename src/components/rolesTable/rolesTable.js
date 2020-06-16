@@ -261,7 +261,7 @@ export default class RolesTable extends Component {
                                 ref={(c) => {
                                     this.title = c
                                 }}
-                                placeholder="Buscar"
+                                placeholder="Buscar rol"
                                 onChange={this.buscar}
                             />
                         }
@@ -281,8 +281,8 @@ export default class RolesTable extends Component {
                         <thead className="encabezadoTabla">
                             <tr>
                                 <th>Rol</th>
-                                <th>Editar</th>
-                                <th>Eliminar</th>
+                                <th className="tableIcons">Editar</th>
+                                <th className="tableIcons">Eliminar</th>
                             </tr>
                         </thead>
 

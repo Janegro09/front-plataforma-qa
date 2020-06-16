@@ -278,9 +278,9 @@ export default class UserTable extends Component {
                                 <th>Nombre y apellido</th>
                                 <th>Mail</th>
                                 <th>Sector</th>
-                                <th>Estado</th>
-                                <th>Editar</th>
-                                <th>Eliminar</th>
+                                <th className="tableIcons">Estado</th>
+                                <th className="tableIcons">Editar</th>
+                                <th className="tableIcons">Eliminar</th>
                             </tr>
                         </thead>
 
@@ -294,7 +294,7 @@ export default class UserTable extends Component {
                                             <td>{user.name} {user.lastName}</td>
                                             <td>{user.email}</td>
                                             <td>{user.equipoEspecifico}</td>
-                                            <td><div className={` ${!user.userActive ? "estadoInactivo " : 'estadoActivo'}`}></div></td>
+                                            <td className="tablaVariables"><div className={` ${!user.userActive ? "estadoInactivo " : 'estadoActivo'}`}></div></td>
                                             {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
                                                 <td onClick={e => this.editUser(e, user)}><EditIcon style={{ fontSize: 15 }} /></td>
                                             }

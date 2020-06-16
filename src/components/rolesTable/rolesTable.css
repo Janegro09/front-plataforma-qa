@@ -32,7 +32,7 @@ td {
 
   tr:hover {
     background-color: #e8e7e76b !important;
-    
+    border-bottom: 1px solid #e2e2e2;
   }
 
 img {
@@ -87,6 +87,10 @@ table svg:hover {
   cursor: pointer;
 }
 
+.tableIcons {
+  width: 73px;
+}
+
 @media screen and (max-width: 700px) {
     table, tr, td {
         display: block;
@@ -112,13 +116,13 @@ table svg:hover {
         position: absolute;
    }
     td:nth-child(2):before {
-        content: 'Name:';
-   }
-    td:nth-child(3):before {
         content: 'Email:';
    }
+    td:nth-child(3):before {
+        content: 'Sector:';
+   }
     td:nth-child(4):before {
-        content: ':';
+        content: '';
    }
     td:nth-child(5):before {
         content: ':';
@@ -410,6 +414,7 @@ button:focus {
 .inputsEditUser {
   width: 50%;
   margin: auto;
+  
 }
 
 .inputsEditUser > input {

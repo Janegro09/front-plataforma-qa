@@ -13,7 +13,7 @@
     justify-content: center;
     width: 100%;
     align-items: center;
-    margin-left: 37px;
+    /* margin-left: 37px; */
     z-index: -1;
 }
 
@@ -69,4 +69,17 @@
 
 .iconsUser {
     margin: 0 10px;
+}
+
+.css-yk16xz-control {
+    background-color: #f9f9f969 !important;
+}
+
+select {
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    color: #717171;
+    background-color: #f9f9f969 !important;
 }

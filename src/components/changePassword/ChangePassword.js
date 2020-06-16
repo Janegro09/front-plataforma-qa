@@ -62,7 +62,7 @@ export default class ChangePassword extends Component {
             return <Redirect to={'/'} />
         }
         return (
-            <div className="container">
+            <div className="container_password">
                 {HELPER_FUNCTIONS.checkPermission("POST|users/passchange/:id") &&
                     <button onClick={this.changePass} className="button-change-pass">Cambiar contraseña</button>
                 }

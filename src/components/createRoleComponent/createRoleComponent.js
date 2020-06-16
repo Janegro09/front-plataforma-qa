@@ -88,12 +88,15 @@ export default class createRoleComponent extends Component {
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
                 </div>
-                <form className="inputsEditUser" onSubmit={this.modifyUser}>
+                <form className="inputsEditUser addUserPadding" onSubmit={this.modifyUser}>
+                <span className="Label">Rol</span>
                     {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
-                        <input className="form-control" type="text" placeholder="role" name="group" ref={(c) => this.role = c} required />
+                     
+                     <input className="form-control" type="text" placeholder="" name="group" ref={(c) => this.role = c} required />
                     }
+                    <span className="Label">Descripción</span>
                     {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
-                        <input className="form-control" type="text" placeholder="description" name="description" ref={(c) => this.description = c} required />
+                        <input className="form-control" type="text" placeholder="" name="description" ref={(c) => this.description = c} required />
                     }
 
                 <SelectGroup getValue={(c) => this.permissions = c} />

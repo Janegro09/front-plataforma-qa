@@ -1,6 +1,7 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom';
 import '../App.css'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export const HELPER_FUNCTIONS = {
     logout: () => {
@@ -74,7 +75,8 @@ export const HELPER_FUNCTIONS = {
     backgroundLoading: () => {
         return (
             <div className="background-loading">
-                <h1>Cargando...</h1>
+                <CircularProgress color="secondary" /><br></br>
+                <h4>Aguarde, por favor...</h4>
             </div>
         )
     }

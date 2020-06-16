@@ -24,6 +24,7 @@ td {
 
 th {
   font-weight: 500 !important;
+  /* width: 33%; */
 }
 
 tr:hover .edit {
@@ -32,7 +33,7 @@ tr:hover .edit {
 
 tr:hover {
   background-color: #e8e7e76b !important;
-  
+  border-bottom: 1px solid #e2e2e2;
 }
 
 img {
@@ -53,7 +54,7 @@ table {
   width: 100%;
   border-bottom: 0.2px solid #dedede;
   margin-bottom: 11px;
-  background-color: #ffffff30;
+  /* background-color: #ffffff30; */
   border-radius: 6px;
 }
 
@@ -89,6 +90,10 @@ table svg:hover {
   cursor: pointer;
 }
 
+.tableIcons {
+  width: 73px;
+}
+
 @media screen and (max-width: 700px) {
   table, tr, td {
     display: block;
@@ -114,10 +119,10 @@ table svg:hover {
     position: absolute;
   }
   td:nth-child(2):before {
-    content: 'Name:';
+    content: 'Email:';
   }
   td:nth-child(3):before {
-    content: 'Email:';
+    content: 'Canal:';
   }
   td:nth-child(4):before {
     content: 'Phone:';
@@ -135,6 +140,13 @@ table svg:hover {
   .idCampo {
     display: none;
   }
+  table td:last-child{
+    text-align: left !important;
+  }
+  .estadoActivo, .estadoInactivo {
+    margin: initial !important;
+  }
+
 }
 
 /* @media screen and (max-width: 500px) {
@@ -442,6 +454,7 @@ button:focus {
 .inputsEditUser {
   width: 70%;
   margin: auto;
+  
 }
 
 .inputsEditUser>input {
@@ -507,7 +520,7 @@ svg {
   color: #6f6f6f;
   height: 21px;
   /* font-weight: 500; */
-  margin: 0px 0px 4px 11px;
+  margin: 0px 7px 4px 11px;
   /* margin-bottom: 7px; */
   padding: 0px;
   position: relative;
@@ -515,16 +528,19 @@ svg {
 
 .Inactivo{
   color: white;
-  background-color: #ff000078 !important;
-  margin-top: 14px;
-  width: auto;
+  background-color: #ff00003d !important;
+  /* margin-top: 14px; */
+  width: 126px;
+  text-align: center;
+  margin-left: 10px;
 
 }
 .Activo {
   color: white;
-  background-color: #0080009e!important; 
+  background-color: #00800052!important;
   margin-top: 14px;
-  width: auto;
+  width: 126px;
+  margin-left: 10px;
 }
 
 .estadoActivo {
@@ -541,4 +557,32 @@ svg {
   border-radius: 50px;
   background-color: #ff000078!important;
   margin: auto;
+}
+
+.css-2b097c-container {
+  margin-bottom: 20px;
+}
+
+.pepe {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.headEditUser {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: baseline;
+  height: 107px;
+  border-bottom: 1px solid #e4e4e4;
+  margin-bottom: 20px;
+}
+
+.tablaVariables {
+  /* border-left: 1px solid #e4e4e4;
+  border-right: 1px solid #e4e4e4; */
+}
+
+.addUserPadding {
+  padding-top: 30px;
 }

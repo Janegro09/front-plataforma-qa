@@ -257,7 +257,7 @@ export default class GroupsTable extends Component {
                                 ref={(c) => {
                                     this.title = c
                                 }}
-                                placeholder="Ingrese el nombre del grupo"
+                                placeholder="Buscar grupo"
                                 onChange={this.buscar}
                             />
                         }
@@ -298,8 +298,8 @@ export default class GroupsTable extends Component {
                             <tr>
 
                                 <th>Nombre</th>
-                                <th>Editar</th>
-                                <th>Eliminar</th>
+                                <th className="tableIcons">Editar</th>
+                                <th className="tableIcons">Eliminar</th>
                             </tr>
                         </thead>
 

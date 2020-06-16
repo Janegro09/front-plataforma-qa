@@ -23,10 +23,11 @@
   color: #ebebeb;
   cursor: pointer;
   right: 10px;
-  position: absolute;
+  /* position: absolute; */
   font-weight: 500;
   float: right;
   transition: 0.3s;
+  min-width: 138px;
 }
 
 .button-change-pass:hover {
@@ -49,7 +50,7 @@
   left: 0;
   opacity: 0.8;
   display: flex;
-  flex-flow: row nowrap;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   color: white;

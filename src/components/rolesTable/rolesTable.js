@@ -176,34 +176,18 @@ export default class RolesTable extends Component {
         let pagina = this.getUsersPage(this.state.actualPage, allGroups)
         let totalUsuarios = pagina.total
         let botones = []
-        for (let index = 0; index < pagina.cantOfPages; index++) {
-            if (botones.length < 4) {
-                botones.push(
-                    <button key={index} onClick={() => {
-                        this.setState({
-                            actualPage: index + 1
-                        })
-                    }}>
-                        {index + 1}
-                    </button>
-                )
-            } else {
-                botones.push(
-                    <button key={index - 1} disabled> ... </button>
-                )
-                break
-            }
-        }
-        if (botones.length < pagina.cantOfPages) {
-            botones.push(
-                <button key={botones.length} onClick={() => {
-                    this.setState({
-                        actualPage: pagina.cantOfPages
-                    })
-                }}>
-                    {pagina.cantOfPages}
-                </button>
-            )
+        for (let index = this.state.actualPage - 1; index < pagina.cantOfPages; index++) {
+                if (botones.length < 4) {
+                    botones.push(
+                        <button className={this.state.actualPage === index + 1 ? 'active' : ''} key={index} onClick={() => {
+                            this.setState({
+                                actualPage: index + 1
+                            })
+                        }}>
+                            {index + 1}
+                        </button>
+                    )
+                }
         }
 
         if (this.state.createRole) {

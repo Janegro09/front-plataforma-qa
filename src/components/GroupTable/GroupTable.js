@@ -169,10 +169,10 @@ export default class GroupsTable extends Component {
         let pagina = this.getUsersPage(this.state.actualPage, allGroups)
         let totalUsuarios = pagina.total
         let botones = []
-        for (let index = this.state.actualPage - 1; index < pagina.cantOfPages; index++) {
+        for (let index = 0; index < pagina.cantOfPages; index++) {
             if (botones.length < 4) {
                 botones.push(
-                    <button className={this.state.actualPage === index + 1 ? 'active' : ''} key={index} onClick={() => {
+                    <button key={index} onClick={() => {
                         this.setState({
                             actualPage: index + 1
                         })
@@ -180,7 +180,23 @@ export default class GroupsTable extends Component {
                         {index + 1}
                     </button>
                 )
+            } else {
+                botones.push(
+                    <button key={index - 1} disabled> ... </button>
+                )
+                break
             }
+        }
+        if (botones.length < pagina.cantOfPages) {
+            botones.push(
+                <button key={botones.length} onClick={() => {
+                    this.setState({
+                        actualPage: pagina.cantOfPages
+                    })
+                }}>
+                    {pagina.cantOfPages}
+                </button>
+            )
         }
 
         if (this.state.redirect) {
@@ -299,10 +315,10 @@ export default class GroupsTable extends Component {
 
                                             <td>{group.group}</td>
                                             {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                                                <td className="tablaVariables" onClick={e => this.editUser(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                <td onClick={e => this.editUser(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                                                <td className="tablaVariables" disabled><EditIcon></EditIcon></td>
+                                                <td disabled><EditIcon></EditIcon></td>
                                             }
                                             {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
                                                 <td onClick={e => this.deleteUser(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>

@@ -8,7 +8,6 @@ import swal from 'sweetalert'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
-import UserAdminHeader from '../userAdminHeader/userAdminHeader'
 
 
 export default class RolesTable extends Component {

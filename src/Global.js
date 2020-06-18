@@ -1,4 +1,4 @@
-const BASE = 'http://200.89.175.2:8000/api/v1'
+const BASE = 'https://api_plataformaqa.solucionesdigitalesteco.com.ar/api/v1'
 
 let Global = {
     login: `${BASE}/login`,

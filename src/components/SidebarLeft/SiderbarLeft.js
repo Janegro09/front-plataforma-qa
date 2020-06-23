@@ -10,6 +10,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import PeopleIcon from '@material-ui/icons/People';
 import SecurityIcon from '@material-ui/icons/Security';
 import SettingsIcon from '@material-ui/icons/Settings';
+import GroupWorkIcon from '@material-ui/icons/GroupWork';
 
 
 export default class SiderbarLeft extends Component {
@@ -37,6 +38,11 @@ export default class SiderbarLeft extends Component {
                         {/* BACKOFFICE */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("") &&
                             <li className="nameMenu"><NavLink to="/backoffice" activeClassName="active"><SettingsIcon className="IconoMenu" /></NavLink>Nómina
+                            </li>
+                        }
+                        {/* PROGRAMAS */}
+                        {HELPER_FUNCTIONS.checkPermissionGroup("") &&
+                            <li className="nameMenu"><NavLink to="/programas" activeClassName="active"><GroupWorkIcon className="IconoMenu" /></NavLink>Programas
                             </li>
                         }
                     </ul>

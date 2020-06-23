@@ -17,6 +17,7 @@ import RolesComponent from './components/RolesComponent/RolesComponent'
 import createRoleComponent from './components/createRoleComponent/createRoleComponent'
 import deleteRoleComponent from './components/deleteRoleComponent/deleteRoleComponent'
 import BackOfficeComponent from './components/BackOfficeComponent/BackOfficeComponent'
+import ProgramasComponent from './components/ProgramasComponent/ProgramasComponent'
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path="/groups" component={GroupsComponent} />
         <Route path="/roles" component={RolesComponent} />
         <Route path="/backoffice" component={BackOfficeComponent} />
+        <Route path="/programas" component={ProgramasComponent} />
       </Switch>
     </BrowserRouter>
   );

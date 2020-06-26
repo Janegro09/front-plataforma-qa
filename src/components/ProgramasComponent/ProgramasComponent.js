@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
-import SiderbarLeft from '../SidebarLeft/SiderbarLeft'
-import UserAdminHeader from '../userAdminHeader/userAdminHeader'
-import swal from 'sweetalert'
+// import './GroupTable.css'
+import { Redirect } from 'react-router-dom'
+import Global from '../../Global'
 import axios from 'axios'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
-import Global from '../../Global'
+import swal from 'sweetalert'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import './ProgramsComponent.css';
+import SiderBarLeft from '../SidebarLeft/SiderbarLeft'
 
-export default class ProgramasComponent extends Component {
+
+
+export default class GroupsTable extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -20,7 +22,7 @@ export default class ProgramasComponent extends Component {
             addUser: false,
             deleteUser: false,
             userSelected: null,
-            allGroups: null,
+            allPrograms: null,
             searched: false,
             error: false,
             redirect: false,
@@ -46,9 +48,10 @@ export default class ProgramasComponent extends Component {
             searched = this.title.value.toUpperCase()
         }
         let returnData = []
-        this.state.allGroups.map(group => {
+        this.state.allPrograms.map(group => {
+            console.log(`Programa en map: ${group}`)
             if (searched !== undefined) {
-                group.group = group.group.toUpperCase()
+                group.group = group.name.toUpperCase()
                 if (group.group.indexOf(searched) >= 0) {
                     returnData.push(group)
                 }
@@ -106,20 +109,20 @@ export default class ProgramasComponent extends Component {
         this.setState({ redirect: true })
     }
 
-    getUsersPage(page, allGroups) {
+    getUsersPage(page, allPrograms) {
         let total = []
         let cantOfPages = 0
-        if (allGroups !== null) {
+        if (allPrograms !== null) {
             const cantPerPage = 25
-            cantOfPages = Math.ceil(allGroups.length / cantPerPage)
+            cantOfPages = Math.ceil(allPrograms.length / cantPerPage)
 
             let index = (page - 1) * cantPerPage
             let acum = index + cantPerPage
-            if (acum > allGroups.length) {
-                acum = allGroups.length
+            if (acum > allPrograms.length) {
+                acum = allPrograms.length
             }
             while (index < acum) {
-                total.push(allGroups[index])
+                total.push(allPrograms[index])
                 index++
             }
         }
@@ -135,29 +138,124 @@ export default class ProgramasComponent extends Component {
             createGroup: true
         })
     }
+
+    componentDidMount() {
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
+        axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
+            this.setState({
+                allPrograms: response.data.Data
+            })
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            this.buscar()
+        })
+            .catch((e) => {
+                // Si hay algún error en el request lo deslogueamos
+                this.setState({
+                    error: true,
+                    redirect: true
+                })
+                // if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                //     HELPER_FUNCTIONS.logout()
+                // } else {
+                //     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                //     swal("Error!", "Hubo un problema", "error");
+                // }
+                console.log("Error: ", e)
+            });
+    }
+
     render() {
-        const allGroups = this.state.searchedUsers
-        let pagina = this.getUsersPage(this.state.actualPage, allGroups)
+        const allPrograms = this.state.searchedUsers
+        let pagina = this.getUsersPage(this.state.actualPage, allPrograms)
         let totalUsuarios = pagina.total
         let botones = []
+        for (let index = 0; index < pagina.cantOfPages; index++) {
+            if (botones.length < 4) {
+                botones.push(
+                    <button key={index} onClick={() => {
+                        this.setState({
+                            actualPage: index + 1
+                        })
+                    }}>
+                        {index + 1}
+                    </button>
+                )
+            } else {
+                botones.push(
+                    <button key={index - 1} disabled> ... </button>
+                )
+                break
+            }
+        }
+        if (botones.length < pagina.cantOfPages) {
+            botones.push(
+                <button key={botones.length} onClick={() => {
+                    this.setState({
+                        actualPage: pagina.cantOfPages
+                    })
+                }}>
+                    {pagina.cantOfPages}
+                </button>
+            )
+        }
+
+        if (this.state.redirect) {
+            return <Redirect to={'/home'} />
+        }
+        // Si se selecciono editar usuario lo envío a la página editUser con los datos del usuario
+        if (this.state.editUser) {
+            return <Redirect to={{
+                pathname: '/editGroup',
+                state: { userSelected: this.state.userSelected }
+            }}
+            />
+        }
+
+        // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
+        // if (this.state.addUser) {
+        //     return <Redirect to="/addUser"
+        //     />
+        // }
+
+        // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
+        if (this.state.changePassword) {
+            return <Redirect to="/changePassword"
+            />
+        }
+
+        // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
+        if (this.state.deleteUser) {
+            return <Redirect to={{
+                pathname: '/deleteGroup',
+                state: { userSelected: this.state.userSelected }
+            }}
+            />
+        }
+
+        if (this.state.createGroup) {
+            return <Redirect to={{
+                pathname: '/createGroup',
+                state: { userSelected: this.state.userSelected }
+            }}
+            />
+        }
+
         return (
             <div>
-                <div className="header">
-                    {/* BOTON DE SALIDA */}
-                    {/* BARRA LATERAL IZQUIERDA */}
-                    <SiderbarLeft />
-                    <UserAdminHeader />
-                </div>
-                {/* {this.state.loading &&
-                    HELPER_FUNCTIONS.backgroundLoading()
-                } */}
+                <SiderBarLeft />
+                {!this.state.allPrograms &&
+                    <React.Fragment>
+                        {HELPER_FUNCTIONS.backgroundLoading()}
+                    </React.Fragment>
+                }
+                
+                <div className="table-users">
 
-                <div className="section-content">
-                    <div className="table-users">
-
-                        <div className="flex-input-add">
-                            {/* Buscador */}
-                            {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}
+                    <div className="flex-input-add">
+                        {/* Buscador */}
+                        {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") &&
                             <input
                                 className="form-control"
                                 type="text"
@@ -167,22 +265,22 @@ export default class ProgramasComponent extends Component {
                                 placeholder="Buscar programa"
                                 onChange={this.buscar}
                             />
-                            {/* } */}
+                        }
 
-                            {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
-                            <button onClick={e => this.createGroup(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
-                            {/* } */}
+                        {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
+                        <button onClick={e => this.createGroup(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                        {/* } */}
 
 
 
-                            {this.state.error &&
-                                <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1>
-                            }
-                        </div>
+                        {this.state.error &&
+                            <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1>
+                        }
+                    </div>
 
-                        <table cellSpacing="0">
+                    <table cellSpacing="0">
 
-                            {/* {this.state.allUsers === null &&
+                        {this.state.allUsers === null &&
                             <div className="sk-fading-circle">
                                 <div className="sk-circle1 sk-circle"></div>
                                 <div className="sk-circle2 sk-circle"></div>
@@ -195,23 +293,23 @@ export default class ProgramasComponent extends Component {
                                 <div className="sk-circle9 sk-circle"></div>
                                 <div className="sk-circle10 sk-circle"></div>
                                 <div className="sk-circle11 sk-while (true) {
-                                <h1>Hola</h1>
-                                }circle"></div>
+                    <h1>Hola</h1>
+                }circle"></div>
                                 <div className="sk-circle12 sk-circle"></div>
                             </div>
-                        } */}
+                        }
 
-                            <thead className="encabezadoTabla">
-                                <tr>
+                        <thead className="encabezadoTabla">
+                            <tr>
 
-                                    <th>Nombre</th>
-                                    <th className="tableIcons">Editar</th>
-                                    <th className="tableIcons">Eliminar</th>
-                                </tr>
-                            </thead>
+                                <th>Nombre</th>
+                                <th className="tableIcons">Editar</th>
+                                <th className="tableIcons">Eliminar</th>
+                            </tr>
+                        </thead>
 
-                            <tbody>
-                                {/* {totalUsuarios &&
+                        <tbody>
+                            {totalUsuarios &&
 
                                 totalUsuarios.map((group, index) => {
 
@@ -235,78 +333,31 @@ export default class ProgramasComponent extends Component {
                                         </tr>
                                     )
                                 })
-                            } */}
-
-                                <tr key="{1}">
-
-                                    <td>dsadssad</td>
-                                    {/* {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") && */}
-                                    <td><EditIcon style={{ fontSize: 15 }} /></td>
-                                    {/* }   */}
-                                    {/* {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") && */}
-                                    <td disabled><DeleteIcon></DeleteIcon></td>
-                                    {/* } */}
-
-                                </tr>
-                                <tr key="{1}">
-
-                                    <td>dsadssad</td>
-                                    {/* {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") && */}
-                                    <td><EditIcon style={{ fontSize: 15 }} /></td>
-                                    {/* }   */}
-                                    {/* {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") && */}
-                                    <td disabled><DeleteIcon></DeleteIcon></td>
-                                    {/* } */}
-
-                                </tr>
-                                <tr key="{1}">
-
-                                    <td>dsadssad</td>
-                                    {/* {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") && */}
-                                    <td><EditIcon style={{ fontSize: 15 }} /></td>
-                                    {/* }   */}
-                                    {/* {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") && */}
-                                    <td disabled><DeleteIcon></DeleteIcon></td>
-                                    {/* } */}
-
-                                </tr>
-                                <tr key="{1}">
-
-                                    <td>dsadssad</td>
-                                    {/* {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") && */}
-                                    <td><EditIcon style={{ fontSize: 15 }} /></td>
-                                    {/* }   */}
-                                    {/* {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") && */}
-                                    <td disabled><DeleteIcon></DeleteIcon></td>
-                                    {/* } */}
-
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <div className="botones">
-                            {this.state.actualPage > 1 &&
-                                <button onClick={() => {
-                                    this.setState({
-                                        actualPage: this.state.actualPage - 1
-                                    })
-                                }}>◄</button>
                             }
+                        </tbody>
+                    </table>
 
-                            {botones}
+                    <div className="botones">
+                        {this.state.actualPage > 1 &&
+                            <button onClick={() => {
+                                this.setState({
+                                    actualPage: this.state.actualPage - 1
+                                })
+                            }}>◄</button>
+                        }
 
-                            {this.state.actualPage !== pagina.cantOfPages &&
-                                <button onClick={() => {
-                                    this.setState({
-                                        actualPage: this.state.actualPage + 1
-                                    })
-                                }}>►</button>
-                            }
+                        {botones}
 
-                        </div>
+                        {this.state.actualPage !== pagina.cantOfPages &&
+                            <button onClick={() => {
+                                this.setState({
+                                    actualPage: this.state.actualPage + 1
+                                })
+                            }}>►</button>
+                        }
+
                     </div>
                 </div>
-                {/* section */}
             </div>
         )
     }

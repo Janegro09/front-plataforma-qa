@@ -12,7 +12,8 @@ let Global = {
     frontUtilities: `${BASE}/frontUtilities`,
     getGroups: `${BASE}/groups`,
     getRoles: `${BASE}/roles`,
-    sendNomina: `${BASE}/backoffice/nomina` 
+    sendNomina: `${BASE}/backoffice/nomina`,
+    getAllPrograms: `${BASE}/programs`
 }
 
 export default Global;

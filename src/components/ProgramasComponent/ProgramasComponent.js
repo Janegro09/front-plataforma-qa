@@ -48,15 +48,15 @@ export default class GroupsTable extends Component {
             searched = this.title.value.toUpperCase()
         }
         let returnData = []
-        this.state.allPrograms.map(group => {
-            console.log(`Programa en map: ${group}`)
+        this.state.allPrograms.map(program => {
+            // console.log(`Programa en map: ${group.group}`)
             if (searched !== undefined) {
-                group.group = group.name.toUpperCase()
-                if (group.group.indexOf(searched) >= 0) {
-                    returnData.push(group)
+                program.group = program.name.toUpperCase()
+                if (program.group.indexOf(searched) >= 0) {
+                    returnData.push(program)
                 }
             } else {
-                returnData.push(group)
+                returnData.push(program)
             }
             return true
         })
@@ -250,12 +250,13 @@ export default class GroupsTable extends Component {
                         {HELPER_FUNCTIONS.backgroundLoading()}
                     </React.Fragment>
                 }
-                
-                <div className="table-users">
 
-                    <div className="flex-input-add">
-                        {/* Buscador */}
-                        {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") &&
+                <div className="section-content">
+                    <div className="table-users">
+
+                        <div className="flex-input-add">
+                            {/* Buscador */}
+                            {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}
                             <input
                                 className="form-control"
                                 type="text"
@@ -265,97 +266,98 @@ export default class GroupsTable extends Component {
                                 placeholder="Buscar programa"
                                 onChange={this.buscar}
                             />
-                        }
+                            {/* } */}
 
-                        {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
-                        <button onClick={e => this.createGroup(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
-                        {/* } */}
+                            {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
+                            <button onClick={e => this.createGroup(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                            {/* } */}
 
 
 
-                        {this.state.error &&
-                            <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1>
-                        }
-                    </div>
+                            {this.state.error &&
+                                <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1>
+                            }
+                        </div>
 
-                    <table cellSpacing="0">
+                        <table cellSpacing="0">
 
-                        {this.state.allUsers === null &&
-                            <div className="sk-fading-circle">
-                                <div className="sk-circle1 sk-circle"></div>
-                                <div className="sk-circle2 sk-circle"></div>
-                                <div className="sk-circle3 sk-circle"></div>
-                                <div className="sk-circle4 sk-circle"></div>
-                                <div className="sk-circle5 sk-circle"></div>
-                                <div className="sk-circle6 sk-circle"></div>
-                                <div className="sk-circle7 sk-circle"></div>
-                                <div className="sk-circle8 sk-circle"></div>
-                                <div className="sk-circle9 sk-circle"></div>
-                                <div className="sk-circle10 sk-circle"></div>
-                                <div className="sk-circle11 sk-while (true) {
+                            {this.state.allUsers === null &&
+                                <div className="sk-fading-circle">
+                                    <div className="sk-circle1 sk-circle"></div>
+                                    <div className="sk-circle2 sk-circle"></div>
+                                    <div className="sk-circle3 sk-circle"></div>
+                                    <div className="sk-circle4 sk-circle"></div>
+                                    <div className="sk-circle5 sk-circle"></div>
+                                    <div className="sk-circle6 sk-circle"></div>
+                                    <div className="sk-circle7 sk-circle"></div>
+                                    <div className="sk-circle8 sk-circle"></div>
+                                    <div className="sk-circle9 sk-circle"></div>
+                                    <div className="sk-circle10 sk-circle"></div>
+                                    <div className="sk-circle11 sk-while (true) {
                     <h1>Hola</h1>
                 }circle"></div>
-                                <div className="sk-circle12 sk-circle"></div>
-                            </div>
-                        }
-
-                        <thead className="encabezadoTabla">
-                            <tr>
-
-                                <th>Nombre</th>
-                                <th className="tableIcons">Editar</th>
-                                <th className="tableIcons">Eliminar</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {totalUsuarios &&
-
-                                totalUsuarios.map((group, index) => {
-
-                                    return (
-                                        <tr key={index}>
-
-                                            <td>{group.group}</td>
-                                            {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                                                <td onClick={e => this.editUser(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
-                                            }
-                                            {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                                                <td disabled><EditIcon></EditIcon></td>
-                                            }
-                                            {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
-                                                <td onClick={e => this.deleteUser(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>
-                                            }
-                                            {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
-                                                <td disabled><DeleteIcon></DeleteIcon></td>
-                                            }
-
-                                        </tr>
-                                    )
-                                })
+                                    <div className="sk-circle12 sk-circle"></div>
+                                </div>
                             }
-                        </tbody>
-                    </table>
 
-                    <div className="botones">
-                        {this.state.actualPage > 1 &&
-                            <button onClick={() => {
-                                this.setState({
-                                    actualPage: this.state.actualPage - 1
-                                })
-                            }}>◄</button>
-                        }
+                            <thead className="encabezadoTabla">
+                                <tr>
 
-                        {botones}
+                                    <th>Nombre</th>
+                                    <th className="tableIcons">Editar</th>
+                                    <th className="tableIcons">Eliminar</th>
+                                </tr>
+                            </thead>
 
-                        {this.state.actualPage !== pagina.cantOfPages &&
-                            <button onClick={() => {
-                                this.setState({
-                                    actualPage: this.state.actualPage + 1
-                                })
-                            }}>►</button>
-                        }
+                            <tbody>
+                                {totalUsuarios &&
 
+                                    totalUsuarios.map((group, index) => {
+
+                                        return (
+                                            <tr key={index}>
+
+                                                <td>{group.group}</td>
+                                                {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
+                                                    <td onClick={e => this.editUser(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                }
+                                                {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
+                                                    <td disabled><EditIcon></EditIcon></td>
+                                                }
+                                                {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
+                                                    <td onClick={e => this.deleteUser(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                                }
+                                                {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
+                                                    <td disabled><DeleteIcon></DeleteIcon></td>
+                                                }
+
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </table>
+
+                        <div className="botones">
+                            {this.state.actualPage > 1 &&
+                                <button onClick={() => {
+                                    this.setState({
+                                        actualPage: this.state.actualPage - 1
+                                    })
+                                }}>◄</button>
+                            }
+
+                            {botones}
+
+                            {this.state.actualPage !== pagina.cantOfPages &&
+                                <button onClick={() => {
+                                    this.setState({
+                                        actualPage: this.state.actualPage + 1
+                                    })
+                                }}>►</button>
+                            }
+
+                        </div>
                     </div>
                 </div>
             </div>

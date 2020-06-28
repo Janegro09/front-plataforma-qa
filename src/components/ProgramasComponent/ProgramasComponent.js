@@ -236,7 +236,7 @@ export default class GroupsTable extends Component {
 
         if (this.state.createGroup) {
             return <Redirect to={{
-                pathname: '/createGroup',
+                pathname: '/createProgram',
                 state: { userSelected: this.state.userSelected }
             }}
             />

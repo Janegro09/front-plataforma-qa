@@ -85,22 +85,37 @@ export default class GroupsTable extends Component {
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        axios.delete(Global.getAllPrograms + '/' + userInfo.id, config).then(response => {
-            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-            if (response.data.Success) {
-                swal("Genial! el programa se ha eliminado correctamente", {
-                    icon: "success",
-                });
-            }
-        }).catch(e => {
-            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                HELPER_FUNCTIONS.logout()
-            } else {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                swal("Error!", "Hubo un problema al agregar el usuario", "error");
-            }
-            console.log("Error: ", e)
+
+        swal({
+            title: "Estás seguro?",
+            text: "Una vez borrado el programa, no podrás recuperarlo!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
         })
+            .then((willDelete) => {
+                if (willDelete) {
+                    axios.delete(Global.getAllPrograms + '/' + userInfo.id, config).then(response => {
+                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                        if (response.data.Success) {
+                            swal("Genial! el programa se ha eliminado correctamente", {
+                                icon: "success",
+                            });
+                        }
+                    }).catch(e => {
+                        if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                            HELPER_FUNCTIONS.logout()
+                        } else {
+                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                            swal("Error!", "Hubo un problema al agregar el usuario", "error");
+                        }
+                        console.log("Error: ", e)
+                    })
+                } else {
+                    swal("Ok, no has borrado nada");
+                }
+            });
+
 
     }
 
@@ -161,6 +176,8 @@ export default class GroupsTable extends Component {
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
+            console.log("ramagon")
+            console.log(response)
             this.setState({
                 allPrograms: response.data.Data
             })
@@ -177,10 +194,9 @@ export default class GroupsTable extends Component {
     }
 
     render() {
-        const allPrograms = this.state.searchedUsers
+        const { allPrograms } = this.state
         let pagina = this.getUsersPage(this.state.actualPage, allPrograms)
         let totalUsuarios = pagina.total
-        console.log('total: ', totalUsuarios)
         let botones = []
         for (let index = 0; index < pagina.cantOfPages; index++) {
             if (botones.length < 4) {
@@ -311,22 +327,22 @@ export default class GroupsTable extends Component {
                             </thead>
 
                             <tbody>
-                                {totalUsuarios &&
+                                {allPrograms &&
 
-                                    totalUsuarios.map((group, index) => {
+                                    allPrograms.map((program, index) => {
 
                                         return (
                                             <tr key={index}>
 
-                                                <td>{group.group}</td>
+                                                <td>{program.name}</td>
                                                 {/* {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") && */}
-                                                <td onClick={e => this.editProgram(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                <td onClick={e => this.editProgram(e, program)}><EditIcon style={{ fontSize: 15 }} /></td>
                                                 {/* } */}
                                                 {/* {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
                                                     <td disabled><EditIcon></EditIcon></td>
                                                 } */}
                                                 {/* {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") && */}
-                                                <td onClick={e => this.deleteProgram(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                                <td onClick={e => this.deleteProgram(e, program)}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                                 {/* } */}
                                                 {/* {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
                                                     <td disabled><DeleteIcon></DeleteIcon></td>

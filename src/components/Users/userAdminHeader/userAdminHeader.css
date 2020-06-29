@@ -1,0 +1,25 @@
+.containerIn {
+    display: flex;
+    background-color: transparent;
+    font-size: 15px;
+    float: right;
+    padding: 9px;
+    align-items: baseline;
+ 
+}
+
+.containerIn:focus {
+    outline:none !important;
+    outline-width: 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+.iconsUser {
+    margin: 0 10px;
+}
+
+.css-yk16xz-control {
+    background-color: #f9f9f969 !important;
+}

@@ -5,7 +5,7 @@ import axios from 'axios'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import Global from '../../Global'
 import './BackOfficeComponent.css'
-import UserAdminHeader from '../userAdminHeader/userAdminHeader'
+import UserAdminHeader from '../Users/userAdminHeader/userAdminHeader'
 
 export default class BackOfficeComponent extends Component {
     state = {

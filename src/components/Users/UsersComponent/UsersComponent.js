@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import SiderbarLeft from '../SidebarLeft/SiderbarLeft'
+import SiderbarLeft from '../../SidebarLeft/SiderbarLeft'
 import UserInfoContainer from '../UserInfoContainer/UserInfoContainer'
 import { Redirect } from 'react-router-dom'
 // import './Home.css'
-import Logo from '../Home/logo_background.png';
+import Logo from '../../Home/logo_background.png';
 import UserAdminHeader from '../userAdminHeader/userAdminHeader'
 
 

@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import SiderbarLeft from '../SidebarLeft/SiderbarLeft'
+import SiderbarLeft from '../../SidebarLeft/SiderbarLeft'
 import axios from 'axios'
-import Global from '../../Global'
+import Global from '../../../Global'
 import swal from "sweetalert"
-import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
+import { HELPER_FUNCTIONS } from '../../../helpers/Helpers'
 import { Redirect } from 'react-router-dom'
 
 export default class deleteUserComponent extends Component {

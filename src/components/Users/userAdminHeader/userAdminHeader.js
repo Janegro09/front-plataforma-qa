@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import './userAdminHeader.css'
 import { Redirect } from 'react-router-dom'
-import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
+import { HELPER_FUNCTIONS } from '../../../helpers/Helpers'
 import swal from 'sweetalert'
-import Global from '../../Global'
+import Global from '../../../Global'
 import axios from 'axios'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SettingsIcon from '@material-ui/icons/Settings';

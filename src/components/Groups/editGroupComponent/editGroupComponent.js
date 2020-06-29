@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import SiderbarLeft from '../SidebarLeft/SiderbarLeft'
+import SiderbarLeft from '../../SidebarLeft/SiderbarLeft'
 import axios from 'axios'
-import Global from '../../Global'
-import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
+import Global from '../../../Global'
+import { HELPER_FUNCTIONS } from '../../../helpers/Helpers'
 import swal from 'sweetalert'
 import { Redirect } from 'react-router-dom'
 

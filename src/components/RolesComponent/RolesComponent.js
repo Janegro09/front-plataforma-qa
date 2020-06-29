@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import SiderBarLeft from '../SidebarLeft/SiderbarLeft'
 import RolesInfoContainer from '../RolesInfoContainer/RolesInfoContainer'
 import Logo from '../Home/logo_background.png';
-import UserAdminHeader from '../userAdminHeader/userAdminHeader'
+// import UserAdminHeader from '../userAdminHeader/userAdminHeader'
+import UserAdminHeader from '../Users/userAdminHeader/userAdminHeader'
 
 export default class Home extends Component {
     constructor(props) {

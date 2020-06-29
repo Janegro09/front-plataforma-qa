@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import SiderBarLeft from '../SidebarLeft/SiderbarLeft'
+import SiderBarLeft from '../../SidebarLeft/SiderbarLeft'
 import GroupInfoContainer from '../GroupInfoContainer/GroupInfoContainer'
-import Logo from '../Home/logo_background.png';
-import UserAdminHeader from '../userAdminHeader/userAdminHeader'
+import Logo from '../../Home/logo_background.png';
+// import UserAdminHeader from '../userAdminHeader/userAdminHeader'
+import UserAdminHeader from '../../Users/userAdminHeader/userAdminHeader'
 
 
 

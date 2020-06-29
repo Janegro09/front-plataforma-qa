@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import SidebarLeft from '../SidebarLeft/SiderbarLeft'
-import UserAdminHeader from '../userAdminHeader/userAdminHeader'
+import UserAdminHeader from '../Users/userAdminHeader/userAdminHeader'
 import { Redirect } from 'react-router-dom'
 import './Home.css';
 import Logo from '../Home/logo_background.png';

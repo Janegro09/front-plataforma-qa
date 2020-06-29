@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Select from "react-select";
 import axios from 'axios'
-import Global from '../../Global'
+import Global from '../../../Global'
 import swal from 'sweetalert'
-import {HELPER_FUNCTIONS} from '../../helpers/Helpers'
+import {HELPER_FUNCTIONS} from '../../../helpers/Helpers'
 
 class SelectGroup extends Component {
     constructor(props) {

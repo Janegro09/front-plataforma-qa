@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Select from "react-select";
 import axios from 'axios'
-import Global from '../../Global'
-import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
+import Global from '../../../Global'
+import { HELPER_FUNCTIONS } from '../../../helpers/Helpers'
 import swal from 'sweetalert'
 
 class SelectRoles extends Component {

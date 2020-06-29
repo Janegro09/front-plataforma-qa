@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
-import SiderbarLeft from '../SidebarLeft/SiderbarLeft'
+import SiderbarLeft from '../../SidebarLeft/SiderbarLeft'
 import axios from 'axios'
-import Global from '../../Global'
+import Global from '../../../Global'
 import SelectGroup from '../addUserComponent/SelectGroup'
 import SelectRoles from '../addUserComponent/SelectRoles'
-import ChangePassword from '../changePassword/ChangePassword'
-import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
+import ChangePassword from '../../changePassword/ChangePassword'
+import { HELPER_FUNCTIONS } from '../../../helpers/Helpers'
 import { Redirect } from 'react-router-dom'
 import swal from 'sweetalert'
-import Logo from '../Home/logo_background.png';
+import Logo from '../../Home/logo_background.png';
 
 export default class editUserComponent extends Component {
     constructor(props) {

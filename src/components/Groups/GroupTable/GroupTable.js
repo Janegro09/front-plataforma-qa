@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import './GroupTable.css'
 import { Redirect } from 'react-router-dom'
-import Global from '../../Global'
+import Global from '../../../Global'
 import axios from 'axios'
-import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
+import { HELPER_FUNCTIONS } from '../../../helpers/Helpers'
 import swal from 'sweetalert'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';

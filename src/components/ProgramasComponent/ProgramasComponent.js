@@ -9,6 +9,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import SiderBarLeft from '../SidebarLeft/SiderbarLeft'
+import ProgramsGroupComponent from './ProgramsGroupComponent'
 
 
 
@@ -377,6 +378,7 @@ export default class GroupsTable extends Component {
                         </div>
                     </div>
                 </div>
+                <ProgramsGroupComponent />
             </div>
         )
     }

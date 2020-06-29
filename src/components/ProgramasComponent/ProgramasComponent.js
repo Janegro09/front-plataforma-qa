@@ -18,9 +18,9 @@ export default class GroupsTable extends Component {
         this.state = {
             term: '',
             encontrado: null,
-            editUser: false,
+            editProgram: false,
             addUser: false,
-            deleteUser: false,
+            deleteProgram: false,
             userSelected: null,
             allPrograms: null,
             searched: false,
@@ -29,17 +29,17 @@ export default class GroupsTable extends Component {
             changePassword: false,
             actualPage: 1,
             searchedUsers: [],
-            createGroup: false
+            createProgram: false
         }
 
         this.buscar = this.buscar.bind(this)
-        this.editUser = this.editUser.bind(this)
+        this.editProgram = this.editProgram.bind(this)
         this.addUser = this.addUser.bind(this)
         this.changePassword = this.changePassword.bind(this)
-        this.deleteUser = this.deleteUser.bind(this)
+        this.deleteProgram = this.deleteProgram.bind(this)
         this.logout = this.logout.bind(this)
         this.getUsersPage = this.getUsersPage.bind(this)
-        this.createGroup = this.createGroup.bind(this)
+        this.createProgram = this.createProgram.bind(this)
     }
 
     buscar() {
@@ -67,21 +67,22 @@ export default class GroupsTable extends Component {
         })
     }
 
-    editUser(event, userInfo) {
+    editProgram(event, userInfo) {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
+        // alert("Editar programa");
         this.setState({
-            editUser: true,
+            editProgram: true,
             userSelected: userInfo
         })
 
     }
 
-    deleteUser(event, userInfo) {
+    deleteProgram(event, userInfo) {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         this.setState({
-            deleteUser: true,
+            deleteProgram: true,
             userSelected: userInfo
         })
 
@@ -132,10 +133,10 @@ export default class GroupsTable extends Component {
         }
     }
 
-    createGroup() {
+    createProgram() {
         console.log("Crear grupo")
         this.setState({
-            createGroup: true
+            createProgram: true
         })
     }
 
@@ -204,39 +205,39 @@ export default class GroupsTable extends Component {
         if (this.state.redirect) {
             return <Redirect to={'/home'} />
         }
-        // Si se selecciono editar usuario lo envío a la página editUser con los datos del usuario
-        if (this.state.editUser) {
+        // Si se selecciono editar usuario lo envío a la página editProgram con los datos del usuario
+        if (this.state.editProgram) {
             return <Redirect to={{
-                pathname: '/editGroup',
+                pathname: '/editarPrograma',
                 state: { userSelected: this.state.userSelected }
             }}
             />
         }
 
-        // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
+        // Si se selecciono borrar usuario lo envío a la página deleteProgram con los datos del usuario
         // if (this.state.addUser) {
         //     return <Redirect to="/addUser"
         //     />
         // }
 
-        // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
+        // Si se selecciono borrar usuario lo envío a la página deleteProgram con los datos del usuario
         if (this.state.changePassword) {
             return <Redirect to="/changePassword"
             />
         }
 
-        // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
-        if (this.state.deleteUser) {
+        // Si se selecciono borrar usuario lo envío a la página deleteProgram con los datos del usuario
+        if (this.state.deleteProgram) {
             return <Redirect to={{
-                pathname: '/deleteGroup',
+                pathname: '/borrarPrograma',
                 state: { userSelected: this.state.userSelected }
             }}
             />
         }
 
-        if (this.state.createGroup) {
+        if (this.state.createProgram) {
             return <Redirect to={{
-                pathname: '/createProgram',
+                pathname: '/crearPrograma',
                 state: { userSelected: this.state.userSelected }
             }}
             />
@@ -269,7 +270,7 @@ export default class GroupsTable extends Component {
                             {/* } */}
 
                             {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
-                            <button onClick={e => this.createGroup(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                            <button onClick={e => this.createProgram(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
                             {/* } */}
 
 
@@ -318,18 +319,18 @@ export default class GroupsTable extends Component {
                                             <tr key={index}>
 
                                                 <td>{group.group}</td>
-                                                {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                                                    <td onClick={e => this.editUser(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
-                                                }
-                                                {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
+                                                {/* {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") && */}
+                                                    <td onClick={e => this.editProgram(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                {/* } */}
+                                                {/* {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
                                                     <td disabled><EditIcon></EditIcon></td>
-                                                }
-                                                {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
-                                                    <td onClick={e => this.deleteUser(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>
-                                                }
-                                                {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
+                                                } */}
+                                                {/* {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") && */}
+                                                    <td onClick={e => this.deleteProgram(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                                {/* } */}
+                                                {/* {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
                                                     <td disabled><DeleteIcon></DeleteIcon></td>
-                                                }
+                                                } */}
 
                                             </tr>
                                         )

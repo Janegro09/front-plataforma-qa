@@ -19,6 +19,8 @@ import deleteRoleComponent from './components/deleteRoleComponent/deleteRoleComp
 import BackOfficeComponent from './components/BackOfficeComponent/BackOfficeComponent'
 import ProgramasComponent from './components/ProgramasComponent/ProgramasComponent'
 import CreateProgramComponent from './components/CreateProgramComponent/CreateProgramComponent'
+import EditProgramComponent from './components/EditProgramComponent/EditProgramComponent'
+import DeleteProgramComponent from './components/DeleteProgramComponent/DeleteProgramComponent'
 
 function App() {
   return (
@@ -34,7 +36,9 @@ function App() {
         <Route path="/editRole" component={editRoleComponent} />
         <Route path="/deleteUser" component={deleteUserComponent} />
         <Route path="/createGroup" component={createGroupComponent} />
-        <Route path="/createProgram" component={CreateProgramComponent} />
+        <Route path="/crearPrograma" component={CreateProgramComponent} />
+        <Route path="/editarPrograma" component={EditProgramComponent} />
+        <Route path="/borrarPrograma" component={DeleteProgramComponent} />
         <Route path="/createRole" component={createRoleComponent} />
         <Route path="/deleteRole" component={deleteRoleComponent} />
         <Route path="/deleteGroup" component={deleteGroupComponent} />

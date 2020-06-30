@@ -16,7 +16,8 @@ export default class ProgramsGroupComponent extends Component {
             searchedGroups: null,
             actualPage: 1,
             grupoBorrado: false,
-            crearGrupoProgramas: false
+            crearGrupoProgramas: false,
+            editProgramGroup: false
         }
         this.buscar = this.buscar.bind(this);
         this.getUsersPage = this.getUsersPage.bind(this);
@@ -84,10 +85,10 @@ export default class ProgramsGroupComponent extends Component {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         console.log(userInfo)
-        // this.setState({
-        //     editUser: true,
-        //     userSelected: userInfo
-        // })
+        this.setState({
+            editProgramGroup: true,
+            userSelected: userInfo
+        })
 
     }
 
@@ -143,8 +144,6 @@ export default class ProgramsGroupComponent extends Component {
             const token = tokenUser
             const bearer = `Bearer ${token}`
             axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
-                console.log("ramagon2")
-                console.log(response)
                 this.setState({
                     searchedGroups: response.data.Data
                 })
@@ -172,6 +171,13 @@ export default class ProgramsGroupComponent extends Component {
 
         if (this.state.crearGrupoProgramas) {
             return <Redirect to={'/crearGrupoProgramas'} />
+        }
+
+        if (this.state.editProgramGroup) {
+            return <Redirect to={{
+                pathname: '/editarGrupoProgramas',
+                state: this.state.userSelected
+            }} />
         }
 
 

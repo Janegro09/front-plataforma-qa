@@ -7,6 +7,7 @@ import Global from '../../Global';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import swal from 'sweetalert'
 import { Redirect } from 'react-router-dom'
+import CreateProgramsGroupComponent from './CreateProgramsGroupComponent'
 
 export default class ProgramsGroupComponent extends Component {
     constructor(props) {
@@ -16,7 +17,9 @@ export default class ProgramsGroupComponent extends Component {
             searchedGroups: null,
             actualPage: 1,
             grupoBorrado: false,
-            crearGrupoProgramas: false
+            crearGrupoProgramas: false,
+            editProgramGroup: false,
+            addGroup: false
         }
         this.buscar = this.buscar.bind(this);
         this.getUsersPage = this.getUsersPage.bind(this);
@@ -84,10 +87,10 @@ export default class ProgramsGroupComponent extends Component {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         console.log(userInfo)
-        // this.setState({
-        //     editUser: true,
-        //     userSelected: userInfo
-        // })
+        this.setState({
+            editProgramGroup: true,
+            userSelected: userInfo
+        })
 
     }
 
@@ -143,12 +146,12 @@ export default class ProgramsGroupComponent extends Component {
             const token = tokenUser
             const bearer = `Bearer ${token}`
             axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
-                console.log("ramagon2")
-                console.log(response)
                 this.setState({
                     searchedGroups: response.data.Data
                 })
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+
+                // console.log("El token en grupos: ", JSON.parse(sessionStorage.getItem('token')))
                 // this.buscar()
             })
                 .catch((e) => {
@@ -174,70 +177,104 @@ export default class ProgramsGroupComponent extends Component {
             return <Redirect to={'/crearGrupoProgramas'} />
         }
 
+        if (this.state.editProgramGroup) {
+            return <Redirect to={{
+                pathname: '/editarGrupoProgramas',
+                state: this.state.userSelected
+            }} />
+        }
+
 
         return (
             <div>
-                <div className="flex-input-add">
-                    {/* Buscador */}
-                    {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}
-                    <input
-                        className="form-control"
-                        type="text"
-                        ref={(c) => {
-                            this.title = c
-                        }}
-                        placeholder="Buscar grupo de programas"
-                        onChange={this.buscar}
-                    />
-                    {/* } */}
+                {!this.state.addGroup &&
+                    <div>
+                        <div className="flex-input-add">
+                            {/* Buscador */}
+                            {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}
+                            <input
+                                className="form-control"
+                                type="text"
+                                ref={(c) => {
+                                    this.title = c
+                                }}
+                                placeholder="Buscar grupo de programa"
+                                onChange={this.buscar}
+                            />
+                            {/* } */}
 
-                    {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
-                    <button onClick={e => this.createGroupProgram(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
-                    {/* } */}
+                            {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
+                            <button
+                                // onClick={e => this.createGroupProgram(e)}
+                                onClick={
+                                    () => {
+                                        this.setState({
+                                            addGroup: true
+                                        })
+                                    }
+                                }
+                            ><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                            {/* } */}
 
 
 
-                    {/* {this.state.error && */}
-                    {/* <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1> */}
-                    {/* // } */}
-                </div>
-                <table cellSpacing="0">
-                    <thead className="encabezadoTabla">
-                        <tr>
-                            <th>Nombre</th>
-                            <th className="tableIcons">Editar</th>
-                            <th className="tableIcons">Eliminar</th>
-                        </tr>
-                    </thead>
+                            {/* {this.state.error && */}
+                            {/* <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1> */}
+                            {/* // } */}
+                        </div>
+                        <table cellSpacing="0">
+                            <thead className="encabezadoTabla">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th className="tableIcons">Editar</th>
+                                    <th className="tableIcons">Eliminar</th>
+                                </tr>
+                            </thead>
 
-                    <tbody>
-                        {totalUsuarios &&
+                            <tbody>
+                                {totalUsuarios &&
 
-                            totalUsuarios.map((group, index) => {
+                                    totalUsuarios.map((group, index) => {
 
-                                return (
-                                    <tr key={index}>
+                                        return (
+                                            <tr key={index}>
 
-                                        <td>{group.name}</td>
-                                        {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                                            <td onClick={e => this.editGroup(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
-                                        }
-                                        {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                                            <td disabled><EditIcon></EditIcon></td>
-                                        }
-                                        {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
-                                            <td onClick={e => this.deleteGroup(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>
-                                        }
-                                        {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
-                                            <td disabled><DeleteIcon></DeleteIcon></td>
-                                        }
+                                                <td>{group.name}</td>
+                                                {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
+                                                    <td onClick={e => this.editGroup(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                }
+                                                {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
+                                                    <td disabled><EditIcon></EditIcon></td>
+                                                }
+                                                {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
+                                                    <td onClick={e => this.deleteGroup(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                                }
+                                                {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
+                                                    <td disabled><DeleteIcon></DeleteIcon></td>
+                                                }
 
-                                    </tr>
-                                )
-                            })
-                        }
-                    </tbody>
-                </table>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+                {this.state.addGroup &&
+                    <div>
+                        <CreateProgramsGroupComponent />
+                        <button
+                            onClick={() => {
+                                this.setState({
+                                    addGroup: false
+                                })
+                            }}
+                        >Cancelar</button>
+                    </div>
+                }
+
             </div>
         )
     }

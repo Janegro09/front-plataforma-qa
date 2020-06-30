@@ -33,7 +33,8 @@ export default class GroupsTable extends Component {
             actualPage: 1,
             searchedUsers: [],
             createProgram: false,
-            ok: false
+            ok: false,
+            buscando: false
         }
 
         this.buscar = this.buscar.bind(this)
@@ -51,23 +52,8 @@ export default class GroupsTable extends Component {
         if (this.title && this.title !== undefined) {
             searched = this.title.value.toUpperCase()
         }
-        let returnData = []
-        this.state.allPrograms.map(program => {
-            // console.log(`Programa en map: ${group.group}`)
-            if (searched !== undefined) {
-                program.group = program.name.toUpperCase()
-                if (program.group.indexOf(searched) >= 0) {
-                    returnData.push(program)
-                }
-            } else {
-                returnData.push(program)
-            }
-            return true
-        })
-
         this.setState({
-            searchedUsers: returnData,
-            actualPage: 1
+            buscando: true
         })
     }
 
@@ -265,14 +251,6 @@ export default class GroupsTable extends Component {
             />
         }
 
-        // if (this.state.createProgram) {
-        //     return <Redirect to={{
-        //         pathname: '/crearPrograma',
-        //         state: { userSelected: this.state.userSelected }
-        //     }}
-        //     />
-        // }
-
         return (
             <div>
                 <div className="logoBackground">
@@ -347,7 +325,13 @@ export default class GroupsTable extends Component {
                                 <tbody>
                                     {allPrograms &&
 
-                                        allPrograms.map((program, index) => {
+                                        allPrograms.filter(program => {
+                                            if (this.title.value === '') {
+                                                return true;
+                                            } else {
+                                                return program.name.toUpperCase().indexOf(this.title.value.toUpperCase()) >= 0;
+                                            }
+                                        }).map((program, index) => {
 
                                             return (
                                                 <tr key={index}>

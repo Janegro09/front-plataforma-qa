@@ -19,7 +19,8 @@ export default class ProgramsGroupComponent extends Component {
             grupoBorrado: false,
             crearGrupoProgramas: false,
             editProgramGroup: false,
-            addGroup: false
+            addGroup: false,
+            buscando: false
         }
         this.buscar = this.buscar.bind(this);
         this.getUsersPage = this.getUsersPage.bind(this);
@@ -33,31 +34,9 @@ export default class ProgramsGroupComponent extends Component {
         if (this.title && this.title !== undefined) {
             searched = this.title.value.toUpperCase()
         }
-        console.log(searched);
-        let returnData = []
-
-        if (this.state.allGroups) {
-
-            this.state.allGroups.map(group => {
-                // console.log("a: ", group)
-                if (searched !== undefined) {
-                    group.name = group.name.toUpperCase()
-                    if (group.name.indexOf(searched) >= 0) {
-                        returnData.push(group)
-                    }
-                } else {
-                    returnData.push(group)
-                }
-                return true
-            })
-
-            console.log("La data: ", returnData);
-            this.setState({
-                searchedGroups: returnData,
-                actualPage: 1
-            })
-        }
-
+        this.setState({
+            buscando: true
+        })
     }
 
     getUsersPage(page, allGroups) {
@@ -138,9 +117,7 @@ export default class ProgramsGroupComponent extends Component {
     }
 
     componentDidMount() {
-        // console.log("La prop: ", this.props)
         const { ok } = this.props
-        /**Se le agrega delay de 1 seg para que no se pise el token con el request de programas */
         if (ok) {
             const tokenUser = JSON.parse(sessionStorage.getItem("token"))
             const token = tokenUser
@@ -150,9 +127,6 @@ export default class ProgramsGroupComponent extends Component {
                     searchedGroups: response.data.Data
                 })
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-
-                // console.log("El token en grupos: ", JSON.parse(sessionStorage.getItem('token')))
-                // this.buscar()
             })
                 .catch((e) => {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
@@ -234,7 +208,13 @@ export default class ProgramsGroupComponent extends Component {
                             <tbody>
                                 {totalUsuarios &&
 
-                                    totalUsuarios.map((group, index) => {
+                                    totalUsuarios.filter(group => {
+                                        if (this.title === '') {
+                                            return true;
+                                        } else {
+                                            return group.name.toUpperCase().indexOf(this.title.value.toUpperCase()) >= 0;
+                                        }
+                                    }).map((group, index) => {
 
                                         return (
                                             <tr key={index}>

@@ -33,7 +33,8 @@ export default class GroupsTable extends Component {
             actualPage: 1,
             searchedUsers: [],
             createProgram: false,
-            ok: false
+            ok: false,
+            buscando: false
         }
 
         this.buscar = this.buscar.bind(this)
@@ -51,24 +52,30 @@ export default class GroupsTable extends Component {
         if (this.title && this.title !== undefined) {
             searched = this.title.value.toUpperCase()
         }
-        let returnData = []
-        this.state.allPrograms.map(program => {
-            // console.log(`Programa en map: ${group.group}`)
-            if (searched !== undefined) {
-                program.group = program.name.toUpperCase()
-                if (program.group.indexOf(searched) >= 0) {
-                    returnData.push(program)
-                }
-            } else {
-                returnData.push(program)
-            }
-            return true
-        })
-
         this.setState({
-            searchedUsers: returnData,
-            actualPage: 1
+            buscando: true
         })
+        console.log(searched)
+        // let returnData = []
+        console.log(this.state.allPrograms)
+
+        // this.state.allPrograms.map(program => {
+        //     // console.log(`Programa en map: ${group.group}`)
+        //     if (searched !== undefined) {
+        //         program.group = program.name.toUpperCase()
+        //         if (program.group.indexOf(searched) >= 0) {
+        //             returnData.push(program)
+        //         }
+        //     } else {
+        //         returnData.push(program)
+        //     }
+        //     return true
+        // })
+
+        // this.setState({
+        //     searchedUsers: returnData,
+        //     actualPage: 1
+        // })
     }
 
     editProgram(event, userInfo) {
@@ -185,13 +192,13 @@ export default class GroupsTable extends Component {
         axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
             console.log("ramagon")
             console.log(response)
-            
+
             // console.log("El token: ", response.data.loggedUser.token)
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                    this.setState({
-                        allPrograms: response.data.Data,
-                        ok: true
-                    })
+            this.setState({
+                allPrograms: response.data.Data,
+                ok: true
+            })
             console.log("El token: ", JSON.parse(sessionStorage.getItem('token')))
             // this.buscar()
         })
@@ -347,7 +354,13 @@ export default class GroupsTable extends Component {
                                 <tbody>
                                     {allPrograms &&
 
-                                        allPrograms.map((program, index) => {
+                                        allPrograms.filter(program => {
+                                            if (this.title.value === '') {
+                                                return true;
+                                            } else {
+                                                return program.name.toUpperCase().indexOf(this.title.value.toUpperCase()) >= 0;
+                                            }
+                                        }).map((program, index) => {
 
                                             return (
                                                 <tr key={index}>

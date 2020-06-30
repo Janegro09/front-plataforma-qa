@@ -326,14 +326,14 @@ export default class GroupsTable extends Component {
                                     {allPrograms &&
 
                                         allPrograms.filter(program => {
-                                            if (this.title) {   
-                                                if (this.title.value === '') {
+                                            if (this.title) {
+                                                if (this.title.value === '' || this.title.value === null) {
                                                     return true;
                                                 } else {
                                                     return program.name.toUpperCase().indexOf(this.title.value.toUpperCase()) >= 0;
                                                 }
                                             } else {
-                                                return false;
+                                                return true;
                                             }
                                         }).map((program, index) => {
 

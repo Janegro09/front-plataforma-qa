@@ -209,7 +209,7 @@ export default class ProgramsGroupComponent extends Component {
                                 {totalUsuarios &&
 
                                     totalUsuarios.filter(group => {
-                                        if (this.title === '') {
+                                        if (this.title === '' || this.title === null) {
                                             return true;
                                         } else {
                                             if (this.title) {

@@ -11,6 +11,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import SiderBarLeft from '../SidebarLeft/SiderbarLeft'
 import ProgramsGroupComponent from './ProgramsGroupComponent'
+import Logo from '../Home/logo_background.png';
 
 
 
@@ -264,6 +265,9 @@ export default class GroupsTable extends Component {
 
         return (
             <div>
+                <div className="logoBackground">
+                    <img src={Logo} alt="Logo" title="Logo" className="logoFixed" />
+                </div>
                 <SiderBarLeft />
                 {!this.state.allPrograms &&
                     <React.Fragment>
@@ -274,7 +278,7 @@ export default class GroupsTable extends Component {
                 <div className="section-content doble-section">
 
                     <div className="table-users">
-                    <h3 className="marginBotton15">Programas</h3>
+                        <h3 className="marginBotton15">Programas</h3>
                         <div className="flex-input-add">
                             {/* Buscador */}
                             {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}
@@ -382,8 +386,8 @@ export default class GroupsTable extends Component {
                     </div>
                     <hr></hr>
                     <div className="table-users">
-                    <h3 className="marginBotton15">Grupos</h3>
-                    <div></div>
+                        <h3 className="marginBotton15">Grupos</h3>
+                        <div></div>
                         <ProgramsGroupComponent />
                     </div>
                 </div>

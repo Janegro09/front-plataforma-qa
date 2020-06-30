@@ -212,7 +212,11 @@ export default class ProgramsGroupComponent extends Component {
                                         if (this.title === '') {
                                             return true;
                                         } else {
-                                            return group.name.toUpperCase().indexOf(this.title.value.toUpperCase()) >= 0;
+                                            if (this.title) {
+                                                return group.name.toUpperCase().indexOf(this.title.value.toUpperCase()) >= 0;
+                                            } else {
+                                                return false;
+                                            }
                                         }
                                     }).map((group, index) => {
 

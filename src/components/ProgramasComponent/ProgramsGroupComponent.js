@@ -134,10 +134,11 @@ export default class ProgramsGroupComponent extends Component {
 
     }
 
-
     componentDidMount() {
+        // console.log("La prop: ", this.props)
+        const { ok } = this.props
         /**Se le agrega delay de 1 seg para que no se pise el token con el request de programas */
-        setTimeout(() => {
+        if (ok) {
             const tokenUser = JSON.parse(sessionStorage.getItem("token"))
             const token = tokenUser
             const bearer = `Bearer ${token}`
@@ -157,7 +158,7 @@ export default class ProgramsGroupComponent extends Component {
                     })
                     console.log("Error: ", e)
                 });
-        }, 1000);
+        }
     }
 
     render() {

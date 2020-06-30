@@ -32,7 +32,8 @@ export default class GroupsTable extends Component {
             changePassword: false,
             actualPage: 1,
             searchedUsers: [],
-            createProgram: false
+            createProgram: false,
+            ok: false
         }
 
         this.buscar = this.buscar.bind(this)
@@ -183,7 +184,8 @@ export default class GroupsTable extends Component {
             console.log("ramagon")
             console.log(response)
             this.setState({
-                allPrograms: response.data.Data
+                allPrograms: response.data.Data,
+                ok: true
             })
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             // this.buscar()
@@ -191,7 +193,8 @@ export default class GroupsTable extends Component {
             .catch((e) => {
                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
-                    allPrograms: []
+                    allPrograms: [],
+                    ok: true
                 })
                 console.log("Error: ", e)
             });
@@ -389,7 +392,10 @@ export default class GroupsTable extends Component {
                     <div className="table-users">
                         <h3 className="marginBotton15">Grupos</h3>
                         <div></div>
-                        <ProgramsGroupComponent />
+                        {this.state.ok &&
+
+                            <ProgramsGroupComponent ok={this.state.ok} />
+                        }
                     </div>
                 </div>
 

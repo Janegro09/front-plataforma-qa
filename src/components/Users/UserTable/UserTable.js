@@ -240,7 +240,7 @@ export default class UserTable extends Component {
             <div>
                 
                 <div className="table-users">
-
+                    <h4 className="marginBotton15">USUARIOS</h4>
                     <div className="flex-input-add">
                         {/* Buscador */}
                         {HELPER_FUNCTIONS.checkPermission("GET|users/:id") &&

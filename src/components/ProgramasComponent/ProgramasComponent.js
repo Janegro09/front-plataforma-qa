@@ -265,7 +265,7 @@ export default class GroupsTable extends Component {
 
                 <div className="section-content doble-section">
                     {!this.state.createProgram &&
-                        <div className="table-users">
+                        <div className="table-users ">
                             <h3 className="marginBotton15">Programas</h3>
                             <div className="flex-input-add">
                                 {/* Buscador */}
@@ -374,15 +374,17 @@ export default class GroupsTable extends Component {
                     }
 
                     {this.state.createProgram &&
-                        <div className="table-users">
-                            <h3>Cesar soler</h3>
-                            <button onClick={
-                                () => {
-                                    this.setState({
-                                        createProgram: false
-                                    })
-                                }
-                            }>Cancelar</button>
+                        <div className="table-users table-users-edit">
+                            <div className="table-users-edit">
+                                <h3>Cesar soler</h3>
+                                <button onClick={
+                                    () => {
+                                        this.setState({
+                                            createProgram: false
+                                        })
+                                    }
+                                }>Cancelar</button>
+                            </div>
                         </div>
                     }
 
@@ -390,12 +392,12 @@ export default class GroupsTable extends Component {
 
                     <hr></hr>
                     <div className="table-users">
-                        <h3 className="marginBotton15">Grupos</h3>
-                        <div></div>
-                        {this.state.ok &&
+                        <h4 className="marginBotton15">Grupos</h4>
+                        <div className="table-users-edit">
+                            {this.state.ok &&
 
-                            <ProgramsGroupComponent ok={this.state.ok} />
-                        }
+                                <ProgramsGroupComponent ok={this.state.ok} />
+                            }</div>
                     </div>
                 </div>
 

@@ -13,7 +13,8 @@ export default class EditProgramsGroupComponent extends Component {
         this.state = {
             ok: false,
             modeloUsuario: null,
-            searchString: ''
+            searchString: '',
+            usuariosBuscados: []
         }
     }
 
@@ -50,6 +51,12 @@ export default class EditProgramsGroupComponent extends Component {
         });
 
 
+    }
+
+    results = (e) => {
+        /**Acá llegan los usuarios buscados */
+        // console.log("La data: ", e)
+        console.log("Datos en el padre: ", e)
     }
 
     buscarUsuarios = (e) => {
@@ -113,7 +120,7 @@ export default class EditProgramsGroupComponent extends Component {
                         <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Buscar</button>
                     </form>
                     {this.state.searchString !== '' &&
-                        <Searched searchString={this.state.searchString} />
+                        <Searched searchString={this.state.searchString} results={this.results} />
                     }
                     <form onSubmit={this.addUser} className="inputsEditUser addUserPadding">
                         <span className="Label">Nombre</span>

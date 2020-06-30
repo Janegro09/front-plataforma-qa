@@ -12,6 +12,11 @@ export default class Searched extends Component {
         }
     }
 
+    agregarUsuario = (data) => {
+        console.log("agregar", data);
+        this.props.results(data)
+    }
+
     componentDidMount() {
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
@@ -29,18 +34,18 @@ export default class Searched extends Component {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         })
             .catch((e) => {
-                console.log(e)
-                // Si hay algún error en el request lo deslogueamos
-                this.setState({
-                    error: true,
-                    redirect: true
-                })
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema", "error");
-                }
+                // console.log(e)
+                // // Si hay algún error en el request lo deslogueamos
+                // this.setState({
+                //     error: true,
+                //     redirect: true
+                // })
+                // if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                //     HELPER_FUNCTIONS.logout()
+                // } else {
+                //     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                //     swal("Error!", "Hubo un problema", "error");
+                // }
                 console.log("Error: ", e)
             });
     }
@@ -54,7 +59,7 @@ export default class Searched extends Component {
                                 <div>
                                     {usuario.id} - {usuario.name} {usuario.lastName}
                                 </div>
-                                <div>Agregar</div>
+                                <div onClick={this.agregarUsuario(usuario)}>Agregar</div>
                                 <hr />
                             </div>
                         )

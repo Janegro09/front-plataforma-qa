@@ -174,9 +174,10 @@ export default class GroupsTable extends Component {
     }
 
     componentDidMount() {
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-        const token = tokenUser
-        const bearer = `Bearer ${token}`
+        let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let token = tokenUser
+        console.log("toke 1: ", token)
+        let bearer = `Bearer ${token}`
         axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
             console.log("ramagon")
             console.log(response)
@@ -274,7 +275,7 @@ export default class GroupsTable extends Component {
                 <div className="section-content doble-section">
 
                     <div className="table-users">
-                    <h3 className="marginBotton15">Programas</h3>
+                        <h3 className="marginBotton15">Programas</h3>
                         <div className="flex-input-add">
                             {/* Buscador */}
                             {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}
@@ -382,8 +383,8 @@ export default class GroupsTable extends Component {
                     </div>
                     <hr></hr>
                     <div className="table-users">
-                    <h3 className="marginBotton15">Grupos</h3>
-                    <div></div>
+                        <h3 className="marginBotton15">Grupos</h3>
+                        <div></div>
                         <ProgramsGroupComponent />
                     </div>
                 </div>

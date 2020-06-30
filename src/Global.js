@@ -13,7 +13,8 @@ let Global = {
     getGroups: `${BASE}/groups`,
     getRoles: `${BASE}/roles`,
     sendNomina: `${BASE}/backoffice/nomina`,
-    getAllPrograms: `${BASE}/programs`
+    getAllPrograms: `${BASE}/programs`,
+    getAllProgramsGroups: `${BASE}/programs/groups`,
 }
 
 export default Global;

@@ -282,7 +282,7 @@ export default class GroupsTable extends Component {
                 <div className="section-content doble-section">
 
                     <div className="table-users">
-                        <h3 className="marginBotton15">Programas</h3>
+                        <h4 className="marginBotton15">Programas</h4>
                         <div className="flex-input-add">
                             {/* Buscador */}
                             {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}
@@ -332,6 +332,8 @@ export default class GroupsTable extends Component {
                             <thead className="encabezadoTabla">
                                 <tr>
 
+                                    <th>id</th>
+                                    <th>Creado por</th>
                                     <th>Nombre</th>
                                     <th className="tableIcons">Editar</th>
                                     <th className="tableIcons">Eliminar</th>
@@ -345,8 +347,10 @@ export default class GroupsTable extends Component {
 
                                         return (
                                             <tr key={index}>
-
+                                                <td>{program.id}</td>
+                                                <td>{program.createdBy}</td>
                                                 <td>{program.name}</td>
+
                                                 {/* {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") && */}
                                                 <td onClick={e => this.editProgram(e, program)}><EditIcon style={{ fontSize: 15 }} /></td>
                                                 {/* } */}
@@ -390,7 +394,7 @@ export default class GroupsTable extends Component {
                     </div>
                     <hr></hr>
                     <div className="table-users">
-                        <h3 className="marginBotton15">Grupos</h3>
+                        <h4 className="marginBotton15">Grupos</h4>
                         <div></div>
                         {this.state.ok &&
 

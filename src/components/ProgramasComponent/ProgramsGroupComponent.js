@@ -186,7 +186,7 @@ export default class ProgramsGroupComponent extends Component {
                         ref={(c) => {
                             this.title = c
                         }}
-                        placeholder="Buscar grupo de programa"
+                        placeholder="Buscar grupo de programas"
                         onChange={this.buscar}
                     />
                     {/* } */}

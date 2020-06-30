@@ -55,27 +55,6 @@ export default class GroupsTable extends Component {
         this.setState({
             buscando: true
         })
-        console.log(searched)
-        // let returnData = []
-        console.log(this.state.allPrograms)
-
-        // this.state.allPrograms.map(program => {
-        //     // console.log(`Programa en map: ${group.group}`)
-        //     if (searched !== undefined) {
-        //         program.group = program.name.toUpperCase()
-        //         if (program.group.indexOf(searched) >= 0) {
-        //             returnData.push(program)
-        //         }
-        //     } else {
-        //         returnData.push(program)
-        //     }
-        //     return true
-        // })
-
-        // this.setState({
-        //     searchedUsers: returnData,
-        //     actualPage: 1
-        // })
     }
 
     editProgram(event, userInfo) {
@@ -271,14 +250,6 @@ export default class GroupsTable extends Component {
             }}
             />
         }
-
-        // if (this.state.createProgram) {
-        //     return <Redirect to={{
-        //         pathname: '/crearPrograma',
-        //         state: { userSelected: this.state.userSelected }
-        //     }}
-        //     />
-        // }
 
         return (
             <div>

@@ -17,7 +17,8 @@ export default class ProgramsGroupComponent extends Component {
             actualPage: 1,
             grupoBorrado: false,
             crearGrupoProgramas: false,
-            editProgramGroup: false
+            editProgramGroup: false,
+            addGroup: false
         }
         this.buscar = this.buscar.bind(this);
         this.getUsersPage = this.getUsersPage.bind(this);
@@ -185,67 +186,94 @@ export default class ProgramsGroupComponent extends Component {
 
         return (
             <div>
-                <div className="flex-input-add">
-                    {/* Buscador */}
-                    {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}
-                    <input
-                        className="form-control"
-                        type="text"
-                        ref={(c) => {
-                            this.title = c
-                        }}
-                        placeholder="Buscar grupo de programa"
-                        onChange={this.buscar}
-                    />
-                    {/* } */}
+                {!this.state.addGroup &&
+                    <div>
+                        <div className="flex-input-add">
+                            {/* Buscador */}
+                            {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}
+                            <input
+                                className="form-control"
+                                type="text"
+                                ref={(c) => {
+                                    this.title = c
+                                }}
+                                placeholder="Buscar grupo de programa"
+                                onChange={this.buscar}
+                            />
+                            {/* } */}
 
-                    {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
-                    <button onClick={e => this.createGroupProgram(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
-                    {/* } */}
+                            {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
+                            <button
+                                // onClick={e => this.createGroupProgram(e)}
+                                onClick={
+                                    () => {
+                                        this.setState({
+                                            addGroup: true
+                                        })
+                                    }
+                                }
+                            ><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                            {/* } */}
 
 
 
-                    {/* {this.state.error && */}
-                    {/* <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1> */}
-                    {/* // } */}
-                </div>
-                <table cellSpacing="0">
-                    <thead className="encabezadoTabla">
-                        <tr>
-                            <th>Nombre</th>
-                            <th className="tableIcons">Editar</th>
-                            <th className="tableIcons">Eliminar</th>
-                        </tr>
-                    </thead>
+                            {/* {this.state.error && */}
+                            {/* <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1> */}
+                            {/* // } */}
+                        </div>
+                        <table cellSpacing="0">
+                            <thead className="encabezadoTabla">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th className="tableIcons">Editar</th>
+                                    <th className="tableIcons">Eliminar</th>
+                                </tr>
+                            </thead>
 
-                    <tbody>
-                        {totalUsuarios &&
+                            <tbody>
+                                {totalUsuarios &&
 
-                            totalUsuarios.map((group, index) => {
+                                    totalUsuarios.map((group, index) => {
 
-                                return (
-                                    <tr key={index}>
+                                        return (
+                                            <tr key={index}>
 
-                                        <td>{group.name}</td>
-                                        {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                                            <td onClick={e => this.editGroup(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
-                                        }
-                                        {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                                            <td disabled><EditIcon></EditIcon></td>
-                                        }
-                                        {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
-                                            <td onClick={e => this.deleteGroup(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>
-                                        }
-                                        {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
-                                            <td disabled><DeleteIcon></DeleteIcon></td>
-                                        }
+                                                <td>{group.name}</td>
+                                                {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
+                                                    <td onClick={e => this.editGroup(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                }
+                                                {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
+                                                    <td disabled><EditIcon></EditIcon></td>
+                                                }
+                                                {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
+                                                    <td onClick={e => this.deleteGroup(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                                }
+                                                {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
+                                                    <td disabled><DeleteIcon></DeleteIcon></td>
+                                                }
 
-                                    </tr>
-                                )
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+                {this.state.addGroup &&
+                    <div>
+                        <h3>Cesar soler</h3>
+                        <button
+                        onClick={() => {
+                            this.setState({
+                                addGroup: false
                             })
-                        }
-                    </tbody>
-                </table>
+                        }}
+                        >Cancelar</button>
+                    </div>
+                }
+
             </div>
         )
     }

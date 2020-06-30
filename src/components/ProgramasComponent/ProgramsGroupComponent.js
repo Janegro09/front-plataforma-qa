@@ -15,12 +15,14 @@ export default class ProgramsGroupComponent extends Component {
             programs: null,
             searchedGroups: null,
             actualPage: 1,
-            grupoBorrado: false
+            grupoBorrado: false,
+            crearGrupoProgramas: false
         }
         this.buscar = this.buscar.bind(this);
         this.getUsersPage = this.getUsersPage.bind(this);
         this.editGroup = this.editGroup.bind(this);
         this.deleteGroup = this.deleteGroup.bind(this);
+        this.createGroupProgram = this.createGroupProgram.bind(this);
     }
 
     buscar() {
@@ -87,6 +89,13 @@ export default class ProgramsGroupComponent extends Component {
         //     userSelected: userInfo
         // })
 
+    }
+
+    createGroupProgram(e) {
+        e.preventDefault()
+        this.setState({
+            crearGrupoProgramas: true
+        })
     }
 
     deleteGroup(event, userInfo) {
@@ -159,6 +168,12 @@ export default class ProgramsGroupComponent extends Component {
         if (this.state.grupoBorrado) {
             return <Redirect to={'/programas'} />
         }
+
+        if (this.state.crearGrupoProgramas) {
+            return <Redirect to={'/crearGrupoProgramas'} />
+        }
+
+
         return (
             <div>
                 <div className="flex-input-add">
@@ -176,7 +191,7 @@ export default class ProgramsGroupComponent extends Component {
                     {/* } */}
 
                     {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
-                    <button onClick={e => this.createProgram(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                    <button onClick={e => this.createGroupProgram(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
                     {/* } */}
 
 

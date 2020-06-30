@@ -82,9 +82,12 @@ export default class GroupsTable extends Component {
 
     }
 
-    deleteProgram(event, userInfo) {
+    deleteProgram = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
+        console.log(event)
         event.preventDefault()
+        console.log(userInfo)
+        // event.preventDefault()
         let token = JSON.parse(sessionStorage.getItem('token'));
         const config = {
             headers: { Authorization: `Bearer ${token}` }
@@ -182,11 +185,14 @@ export default class GroupsTable extends Component {
         axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
             console.log("ramagon")
             console.log(response)
-            this.setState({
-                allPrograms: response.data.Data,
-                ok: true
-            })
+            
+            // console.log("El token: ", response.data.loggedUser.token)
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                    this.setState({
+                        allPrograms: response.data.Data,
+                        ok: true
+                    })
+            console.log("El token: ", JSON.parse(sessionStorage.getItem('token')))
             // this.buscar()
         })
             .catch((e) => {
@@ -347,19 +353,8 @@ export default class GroupsTable extends Component {
                                                 <tr key={index}>
 
                                                     <td>{program.name}</td>
-                                                    {/* {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") && */}
                                                     <td onClick={e => this.editProgram(e, program)}><EditIcon style={{ fontSize: 15 }} /></td>
-                                                    {/* } */}
-                                                    {/* {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                                                    <td disabled><EditIcon></EditIcon></td>
-                                                } */}
-                                                    {/* {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") && */}
                                                     <td onClick={e => this.deleteProgram(e, program)}><DeleteIcon style={{ fontSize: 15 }} /></td>
-                                                    {/* } */}
-                                                    {/* {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
-                                                    <td disabled><DeleteIcon></DeleteIcon></td>
-                                                } */}
-
                                                 </tr>
                                             )
                                         })

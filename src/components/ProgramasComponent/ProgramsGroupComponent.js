@@ -148,6 +148,8 @@ export default class ProgramsGroupComponent extends Component {
                     searchedGroups: response.data.Data
                 })
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+
+                // console.log("El token en grupos: ", JSON.parse(sessionStorage.getItem('token')))
                 // this.buscar()
             })
                 .catch((e) => {

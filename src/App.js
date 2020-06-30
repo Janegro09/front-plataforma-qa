@@ -21,6 +21,7 @@ import ProgramasComponent from './components/ProgramasComponent/ProgramasCompone
 import CreateProgramComponent from './components/CreateProgramComponent/CreateProgramComponent'
 import EditProgramComponent from './components/EditProgramComponent/EditProgramComponent'
 import DeleteProgramComponent from './components/DeleteProgramComponent/DeleteProgramComponent'
+import CreateProgramsGroupComponent from './components/ProgramasComponent/CreateProgramsGroupComponent'
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/deleteUser" component={deleteUserComponent} />
         <Route path="/createGroup" component={createGroupComponent} />
         <Route path="/crearPrograma" component={CreateProgramComponent} />
+        <Route path="/crearGrupoProgramas" component={CreateProgramsGroupComponent} />
         <Route path="/editarPrograma" component={EditProgramComponent} />
         <Route path="/borrarPrograma" component={DeleteProgramComponent} />
         <Route path="/createRole" component={createRoleComponent} />

@@ -7,6 +7,7 @@ import Global from '../../Global';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import swal from 'sweetalert'
 import { Redirect } from 'react-router-dom'
+import CreateProgramsGroupComponent from './CreateProgramsGroupComponent'
 
 export default class ProgramsGroupComponent extends Component {
     constructor(props) {
@@ -263,13 +264,13 @@ export default class ProgramsGroupComponent extends Component {
 
                 {this.state.addGroup &&
                     <div>
-                        <h3>Cesar soler</h3>
+                        <CreateProgramsGroupComponent />
                         <button
-                        onClick={() => {
-                            this.setState({
-                                addGroup: false
-                            })
-                        }}
+                            onClick={() => {
+                                this.setState({
+                                    addGroup: false
+                                })
+                            }}
                         >Cancelar</button>
                     </div>
                 }

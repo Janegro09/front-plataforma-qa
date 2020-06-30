@@ -102,6 +102,7 @@ export default class createRoleComponent extends Component {
                 <SelectGroup getValue={(c) => this.permissions = c} />
 
                 {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
+                
                     <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Guardar cambios</button>
 
                 }

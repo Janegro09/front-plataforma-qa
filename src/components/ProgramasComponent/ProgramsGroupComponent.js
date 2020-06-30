@@ -7,6 +7,30 @@ export default class ProgramsGroupComponent extends Component {
     render() {
         return (
             <div>
+                <div className="flex-input-add">
+                    {/* Buscador */}
+                    {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}
+                    <input
+                        className="form-control"
+                        type="text"
+                        ref={(c) => {
+                            this.title = c
+                        }}
+                        placeholder="Buscar programa"
+                        onChange={this.buscar}
+                    />
+                    {/* } */}
+
+                    {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
+                    <button onClick={e => this.createProgram(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                    {/* } */}
+
+
+
+                    {/* {this.state.error && */}
+                        {/* <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1> */}
+                    {/* // } */}
+                </div>
                 <table cellSpacing="0">
                     <thead className="encabezadoTabla">
                         <tr>

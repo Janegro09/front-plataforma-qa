@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 // import './GroupTable.css'
 import { Redirect } from 'react-router-dom'
+import './ProgramsComponent.css';
 import Global from '../../Global'
 import axios from 'axios'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
@@ -269,9 +270,11 @@ export default class GroupsTable extends Component {
                         {HELPER_FUNCTIONS.backgroundLoading()}
                     </React.Fragment>
                 }
-                <div className="section-content">
-                    <div className="table-users">
 
+                <div className="section-content doble-section">
+
+                    <div className="table-users">
+                    <h3 className="marginBotton15">Programas</h3>
                         <div className="flex-input-add">
                             {/* Buscador */}
                             {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}
@@ -377,8 +380,14 @@ export default class GroupsTable extends Component {
 
                         </div>
                     </div>
+                    <hr></hr>
+                    <div className="table-users">
+                    <h3 className="marginBotton15">Grupos</h3>
+                    <div></div>
+                        <ProgramsGroupComponent />
+                    </div>
                 </div>
-                <ProgramsGroupComponent />
+
             </div>
         )
     }

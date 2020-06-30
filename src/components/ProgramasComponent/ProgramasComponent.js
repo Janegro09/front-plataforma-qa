@@ -11,6 +11,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import SiderBarLeft from '../SidebarLeft/SiderbarLeft'
 import ProgramsGroupComponent from './ProgramsGroupComponent'
+import Logo from '../Home/logo_background.png';
 
 
 
@@ -265,6 +266,9 @@ export default class GroupsTable extends Component {
 
         return (
             <div>
+                <div className="logoBackground">
+                    <img src={Logo} alt="Logo" title="Logo" className="logoFixed" />
+                </div>
                 <SiderBarLeft />
                 {!this.state.allPrograms &&
                     <React.Fragment>

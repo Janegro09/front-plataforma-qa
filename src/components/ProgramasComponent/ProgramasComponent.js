@@ -66,8 +66,6 @@ export default class GroupsTable extends Component {
     editProgram(event, userInfo) {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
-        console.log("Programa info: ", userInfo)
-        // alert("Editar programa");
         this.setState({
             editProgram: true,
             userSelected: userInfo
@@ -77,10 +75,7 @@ export default class GroupsTable extends Component {
 
     deleteProgram = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
-        console.log(event)
         event.preventDefault()
-        console.log(userInfo)
-        // event.preventDefault()
         let token = JSON.parse(sessionStorage.getItem('token'));
         const config = {
             headers: { Authorization: `Bearer ${token}` }
@@ -170,7 +165,6 @@ export default class GroupsTable extends Component {
         let token = tokenUser
         let bearer = `Bearer ${token}`
         axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
-            console.log("jajaja")
             const { Data } = response.data
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             // debugger;
@@ -184,7 +178,6 @@ export default class GroupsTable extends Component {
             // })
         })
             .catch((e) => {
-                console.log("Error")
                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
                     allPrograms: [],
@@ -200,19 +193,11 @@ export default class GroupsTable extends Component {
 
     handleTurno = (event) => {
         event.preventDefault()
-        console.log(event.target.value)
         this.turno = event.target.value
     }
 
     crearPrograma = (e) => {
         e.preventDefault()
-        console.log("Crear lanzado")
-
-        console.log("name: ", this.name.value)
-        console.log("parentProgram: ", this.parentProgram)
-        console.log("handleTurno: ", this.turno)
-        console.log("usersAssign: ", this.usersAssign)
-        console.log("description: ", this.description.value)
 
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
@@ -253,20 +238,13 @@ export default class GroupsTable extends Component {
         let token = tokenUser
         let bearer = `Bearer ${token}`
         axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
-            console.log("ramagon")
-            console.log(response)
-
-            // console.log("El token: ", response.data.loggedUser.token)
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 allPrograms: response.data.Data,
                 ok: true
             })
-            console.log("El token: ", JSON.parse(sessionStorage.getItem('token')))
-            // this.buscar()
         })
             .catch((e) => {
-                console.log("Error")
                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
                     allPrograms: [],
@@ -278,7 +256,6 @@ export default class GroupsTable extends Component {
 
     render() {
         const { allPrograms, userSelected } = this.state
-        console.log("El state: ", this.state.allPrograms)
         let pagina = this.getUsersPage(this.state.actualPage, allPrograms)
         let totalUsuarios = pagina.total
         let botones = []
@@ -316,8 +293,6 @@ export default class GroupsTable extends Component {
 
                 rows.push(tempData)
                 for (let j = 0; j < data.length; j++) {
-                    // console.log("a: ", data[j].programParent)
-                    // console.log("b: ", data[index].id)
 
                     if (data[j].programParent == data[index].id) {
 
@@ -352,14 +327,9 @@ export default class GroupsTable extends Component {
 
                 }
 
-
-
-
                 arrayDiv.push(rows)
                 assignedPrograms.push(data[index].id)
             }
-
-            console.log(arrayDiv)
         }
 
         for (let index = 0; index < pagina.cantOfPages; index++) {
@@ -524,7 +494,8 @@ export default class GroupsTable extends Component {
                                             <span className="Label">Nombre</span>
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={userSelected.name ? userSelected.name : ''} />
                                             <span className="Label">Parent program</span>
-                                            <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} defaultValue={userSelected.parentProgram ? userSelected.parentProgram : ''} />
+                                            {/* <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} defaultValue={userSelected.parentProgram ? userSelected.parentProgram : ''} /> */}
+                                            <SelectGroupEdit getValue={(c) => this.usersAssign = c} data={userSelected} />
                                             <span className="Label">Section</span>
                                             <select onChange={this.handleTurno}>
                                                 <option value="M" selected={userSelected.section === 'M'}>M</option>
@@ -590,7 +561,6 @@ export default class GroupsTable extends Component {
                         <h4 className="marginBotton15">Grupos</h4>
                         <div>
                             {this.state.ok &&
-
                                 <ProgramsGroupComponent ok={this.state.ok} />
                             }</div>
                     </div>

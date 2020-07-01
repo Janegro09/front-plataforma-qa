@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom'
 // import './Home.css'
 import Logo from '../../Home/logo_background.png';
 import UserAdminHeader from '../userAdminHeader/userAdminHeader'
+import PublishIcon from '@material-ui/icons/Publish';
 
 
 export default class Home extends Component {
@@ -46,7 +47,7 @@ export default class Home extends Component {
                 <div className="section-content">
                     <UserInfoContainer userInfo={userInfo} />
                 </div>
-
+                <div className="uploadNomina"><div>Nómina actual 30/06/2020</div> <button>Actualizar<PublishIcon /></button></div>
             </div>
         )
     }

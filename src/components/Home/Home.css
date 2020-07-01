@@ -28,20 +28,17 @@
     animation-timing-function: ease-in;
     animation-delay: 0s;
     animation-iteration-count: 1;
-
-    }
-    @keyframes rotate {
-    0%, 50% {
-    transform: rotate(-0deg);
-    }
-    0% {
-    transform: rotate(-10deg);
-    opacity: 0.8;
-    }
-    
 }
 
-
+@keyframes rotate {
+    0%, 50% {
+        transform: rotate(-0deg);
+    }
+    0% {
+        transform: rotate(-10deg);
+        opacity: 0.8;
+    }
+}
 
 .welcome-message {
     text-align: center;
@@ -54,11 +51,10 @@
     float: right;
     padding: 9px;
     align-items: baseline;
- 
 }
 
 .containerIn:focus {
-    outline:none !important;
+    outline: none !important;
     outline-width: 0 !important;
     box-shadow: none;
     -moz-box-shadow: none;
@@ -81,4 +77,41 @@ select {
     margin-bottom: 20px;
     color: #717171;
     background-color: #f9f9f969 !important;
+}
+
+.uploadNomina {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    padding: 20px;
+    color: white;
+    width: auto;
+    height: 50px;
+    background-color: #333333;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.20);
+    -moz-box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.20);
+    box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.20);
+}
+
+.uploadNomina>button {
+    background-color: #ff6a00;
+    padding: 4px 7px 4px 10px;
+    border-radius: 3px;
+    margin-left: 7px;
+    width: auto;
+    color: white;
+    transition: all 0.15s ease-in-out;
+}
+
+.uploadNomina>button:hover {
+    background-color: #d45902;
+}
+
+.uploadNomina>button>svg {
+    color: white;
+    height: 16px;
 }

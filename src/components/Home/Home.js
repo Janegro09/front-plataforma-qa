@@ -40,6 +40,7 @@ export default class UsersComponent extends Component {
                 {/* {HELPER_FUNCTIONS.checkPermission("POST|users/passchange/:id") && userData && */}
                     <UserAdminHeader />
                 {/* } */}
+                
             </div>
 
         )

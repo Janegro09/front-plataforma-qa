@@ -209,7 +209,7 @@ export default class GroupsTable extends Component {
         console.log("Crear lanzado")
 
         console.log("name: ", this.name.value)
-        console.log("parentProgram: ", this.parentProgram.value)
+        console.log("parentProgram: ", this.parentProgram)
         console.log("handleTurno: ", this.turno)
         console.log("usersAssign: ", this.usersAssign)
         console.log("description: ", this.description.value)
@@ -278,7 +278,7 @@ export default class GroupsTable extends Component {
 
     render() {
         const { allPrograms, userSelected } = this.state
-        console.log("Programa: ", this.state.userSelected)
+        console.log("El state: ", this.state.allPrograms)
         let pagina = this.getUsersPage(this.state.actualPage, allPrograms)
         let totalUsuarios = pagina.total
         let botones = []
@@ -490,34 +490,6 @@ export default class GroupsTable extends Component {
                                                 })
                                             }
                                         </tbody>
-                                        {/* <tbody>
-                                            {allPrograms &&
-                                                
-                                                allPrograms.filter(program => {
-                                                    if (this.title) {
-                                                        if (this.title.value === '' || this.title.value === null) {
-                                                            return true;
-                                                        } else {
-                                                            return program.name.toUpperCase().indexOf(this.title.value.toUpperCase()) >= 0;
-                                                        }
-                                                    } else {
-                                                        return true;
-                                                    }
-                                                })
-                                                .map((program, index) => {
-                                                    console.log("x: ", allPrograms.sort())
-                                                    
-                                                    return (
-                                                        <tr key={index}>
-
-                                                            <td>{program.name}</td>
-                                                            <td className="celdaBtnHover" onClick={e => this.editProgram(e, program)}><EditIcon style={{ fontSize: 15 }} /></td>
-                                                            <td className="celdaBtnHover" onClick={e => this.deleteProgram(e, program)}><DeleteIcon style={{ fontSize: 15 }} /></td>
-                                                        </tr>
-                                                    )
-                                                })
-                                            }
-                                        </tbody> */}
                                     </table>
 
                                     <div className="botones">
@@ -589,7 +561,7 @@ export default class GroupsTable extends Component {
                                     <span className="Label">Nombre</span>
                                     <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />
                                     <span className="Label">Parent program (select con ids de programas)</span>
-                                    <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} />
+                                    <SelectGroupCreate getValue={(c) => this.parentProgram = c} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''} />
                                     <span className="Label">Section</span>
                                     <select onChange={this.handleTurno}>
                                         <option value="M">M</option>

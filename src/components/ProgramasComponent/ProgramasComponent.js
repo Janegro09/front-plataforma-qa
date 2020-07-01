@@ -60,6 +60,7 @@ export default class GroupsTable extends Component {
     editProgram(event, userInfo) {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
+        console.log("Programa info: ", userInfo)
         // alert("Editar programa");
         this.setState({
             editProgram: true,
@@ -227,14 +228,14 @@ export default class GroupsTable extends Component {
             )
         }
 
-        // Si se selecciono editar usuario lo envío a la página editProgram con los datos del usuario
-        if (this.state.editProgram) {
-            return <Redirect to={{
-                pathname: '/editarPrograma',
-                state: { userSelected: this.state.userSelected }
-            }}
-            />
-        }
+        // // Si se selecciono editar usuario lo envío a la página editProgram con los datos del usuario
+        // if (this.state.editProgram) {
+        //     return <Redirect to={{
+        //         pathname: '/editarPrograma',
+        //         state: { userSelected: this.state.userSelected }
+        //     }}
+        //     />
+        // }
 
         // Si se selecciono borrar usuario lo envío a la página deleteProgram con los datos del usuario
         if (this.state.changePassword) {
@@ -264,120 +265,145 @@ export default class GroupsTable extends Component {
                 }
 
                 <div className="section-content doble-section">
-                    {!this.state.createProgram &&
+                    {!this.state.createProgram  &&
                         <div className="table-users ">
                             <h4 className="marginBotton15">Programas</h4>
-                            <div className="flex-input-add">
-                                {/* Buscador */}
-                                {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    ref={(c) => {
-                                        this.title = c
-                                    }}
-                                    placeholder="Buscar programa"
-                                    onChange={this.buscar}
-                                />
-                                {/* } */}
+                            {!this.state.editProgram &&
+                                <div>
+                                    <div className="flex-input-add">
+                                        {/* Buscador */}
+                                        {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}
+                                        <input
+                                            className="form-control"
+                                            type="text"
+                                            ref={(c) => {
+                                                this.title = c
+                                            }}
+                                            placeholder="Buscar programa"
+                                            onChange={this.buscar}
+                                        />
+                                        {/* } */}
 
-                                {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
-                                <button onClick={e => this.createProgram(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
-                                {/* } */}
+                                        {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
+                                        <button onClick={e => this.createProgram(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                                        {/* } */}
 
 
 
-                                {this.state.error &&
-                                    <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1>
-                                }
-                            </div>
+                                        {this.state.error &&
+                                            <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1>
+                                        }
+                                    </div>
 
-                            <table cellSpacing="0">
+                                    <table cellSpacing="0">
 
-                                {this.state.allUsers === null &&
-                                    <div className="sk-fading-circle">
-                                        <div className="sk-circle1 sk-circle"></div>
-                                        <div className="sk-circle2 sk-circle"></div>
-                                        <div className="sk-circle3 sk-circle"></div>
-                                        <div className="sk-circle4 sk-circle"></div>
-                                        <div className="sk-circle5 sk-circle"></div>
-                                        <div className="sk-circle6 sk-circle"></div>
-                                        <div className="sk-circle7 sk-circle"></div>
-                                        <div className="sk-circle8 sk-circle"></div>
-                                        <div className="sk-circle9 sk-circle"></div>
-                                        <div className="sk-circle10 sk-circle"></div>
-                                        <div className="sk-circle11 sk-while (true) {
+                                        {this.state.allUsers === null &&
+                                            <div className="sk-fading-circle">
+                                                <div className="sk-circle1 sk-circle"></div>
+                                                <div className="sk-circle2 sk-circle"></div>
+                                                <div className="sk-circle3 sk-circle"></div>
+                                                <div className="sk-circle4 sk-circle"></div>
+                                                <div className="sk-circle5 sk-circle"></div>
+                                                <div className="sk-circle6 sk-circle"></div>
+                                                <div className="sk-circle7 sk-circle"></div>
+                                                <div className="sk-circle8 sk-circle"></div>
+                                                <div className="sk-circle9 sk-circle"></div>
+                                                <div className="sk-circle10 sk-circle"></div>
+                                                <div className="sk-circle11 sk-while (true) {
                     <h1>Hola</h1>
                 }circle"></div>
-                                        <div className="sk-circle12 sk-circle"></div>
-                                    </div>
-                                }
+                                                <div className="sk-circle12 sk-circle"></div>
+                                            </div>
+                                        }
 
-                                <thead className="encabezadoTabla">
-                                    <tr>
+                                        <thead className="encabezadoTabla">
+                                            <tr>
 
-                                        <th>Nombre</th>
-                                        <th className="tableIcons">Editar</th>
-                                        <th className="tableIcons">Eliminar</th>
-                                    </tr>
-                                </thead>
+                                                <th>Nombre</th>
+                                                <th className="tableIcons">Editar</th>
+                                                <th className="tableIcons">Eliminar</th>
+                                            </tr>
+                                        </thead>
 
-                                <tbody>
-                                    {allPrograms &&
+                                        <tbody>
+                                            {allPrograms &&
 
-                                        allPrograms.filter(program => {
-                                            if (this.title) {
-                                                if (this.title.value === '' || this.title.value === null) {
-                                                    return true;
-                                                } else {
-                                                    return program.name.toUpperCase().indexOf(this.title.value.toUpperCase()) >= 0;
-                                                }
-                                            } else {
-                                                return true;
+                                                allPrograms.filter(program => {
+                                                    if (this.title) {
+                                                        if (this.title.value === '' || this.title.value === null) {
+                                                            return true;
+                                                        } else {
+                                                            return program.name.toUpperCase().indexOf(this.title.value.toUpperCase()) >= 0;
+                                                        }
+                                                    } else {
+                                                        return true;
+                                                    }
+                                                }).map((program, index) => {
+
+                                                    return (
+                                                        <tr key={index}>
+
+                                                            <td>{program.name}</td>
+                                                            <td onClick={e => this.editProgram(e, program)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                            <td onClick={e => this.deleteProgram(e, program)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                                        </tr>
+                                                    )
+                                                })
                                             }
-                                        }).map((program, index) => {
+                                        </tbody>
+                                    </table>
 
-                                            return (
-                                                <tr key={index}>
+                                    <div className="botones">
+                                        {this.state.actualPage > 1 &&
+                                            <button onClick={() => {
+                                                this.setState({
+                                                    actualPage: this.state.actualPage - 1
+                                                })
+                                            }}>◄</button>
+                                        }
 
-                                                    <td>{program.name}</td>
-                                                    <td onClick={e => this.editProgram(e, program)}><EditIcon style={{ fontSize: 15 }} /></td>
-                                                    <td onClick={e => this.deleteProgram(e, program)}><DeleteIcon style={{ fontSize: 15 }} /></td>
-                                                </tr>
-                                            )
-                                        })
-                                    }
-                                </tbody>
-                            </table>
+                                        {botones}
 
-                            <div className="botones">
-                                {this.state.actualPage > 1 &&
-                                    <button onClick={() => {
-                                        this.setState({
-                                            actualPage: this.state.actualPage - 1
-                                        })
-                                    }}>◄</button>
-                                }
+                                        {this.state.actualPage !== pagina.cantOfPages &&
+                                            <button onClick={() => {
+                                                this.setState({
+                                                    actualPage: this.state.actualPage + 1
+                                                })
+                                            }}>►</button>
+                                        }
 
-                                {botones}
+                                    </div>
+                                </div>
+                            }
 
-                                {this.state.actualPage !== pagina.cantOfPages &&
-                                    <button onClick={() => {
-                                        this.setState({
-                                            actualPage: this.state.actualPage + 1
-                                        })
-                                    }}>►</button>
-                                }
+                            {this.state.editProgram &&
+                                <div>
+                                    <div>
+                                        Cesar soler
+                                    </div>
 
-                            </div>
+                                    <button
+                                        onClick={() => {
+                                            this.setState({
+                                                editProgram: false
+                                            })
+                                        }}
+                                    >
+                                        Cancelar
+                                    </button>
+                                </div>
+                            }
+
                         </div>
                     }
 
+
+
                     {this.state.createProgram &&
                         <div className="table-users">
-                            
-                                <h4>Crear programa</h4>
-                                <div className="table-users-edit">
+
+                            <h4>Crear programa</h4>
+                            <div className="table-users-edit">
                                 <button onClick={
                                     () => {
                                         this.setState({

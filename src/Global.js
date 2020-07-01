@@ -15,6 +15,7 @@ let Global = {
     sendNomina: `${BASE}/backoffice/nomina`,
     getAllPrograms: `${BASE}/programs`,
     getAllProgramsGroups: `${BASE}/programs/groups`,
+    newPrograms: `${BASE}/programs/new`,
 }
 
 export default Global;

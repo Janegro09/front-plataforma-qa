@@ -13,7 +13,7 @@ import SiderBarLeft from '../SidebarLeft/SiderbarLeft'
 import ProgramsGroupComponent from './ProgramsGroupComponent'
 import Logo from '../Home/logo_background.png';
 import SelectGroup from './SelectGroup'
-import PublishIcon from '@material-ui/icons/Publish';
+import SelectGroupCreate from './SelectGroupCreate'
 
 
 
@@ -36,7 +36,9 @@ export default class GroupsTable extends Component {
             searchedUsers: [],
             createProgram: false,
             ok: false,
-            buscando: false
+            okProgramas: false,
+            buscando: false,
+            gruposDeProgramas: null
         }
 
         this.buscar = this.buscar.bind(this)
@@ -162,15 +164,86 @@ export default class GroupsTable extends Component {
 
     createProgram(e) {
         e.preventDefault()
-        console.log("Crear programaaaaaa")
+        let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let token = tokenUser
+        let bearer = `Bearer ${token}`
+        axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
+            console.log("jajaja")
+            const { Data } = response.data
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            // debugger;
+            this.setState({
+                gruposDeProgramas: Data,
+                okProgramas: true
+            })
+            // this.setState({
+            //     allPrograms: response.data.Data,
+            //     ok: true
+            // })
+        })
+            .catch((e) => {
+                console.log("Error")
+                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                this.setState({
+                    allPrograms: [],
+                    ok: true
+                })
+                console.log("Error: ", e)
+            });
         this.setState({
             createProgram: true
         })
     }
 
 
-    handleTurno(event) {
+    handleTurno = (event) => {
+        event.preventDefault()
+        console.log(event.target.value)
         this.turno = event.target.value
+    }
+
+    crearPrograma = (e) => {
+        e.preventDefault()
+        console.log("Crear lanzado")
+
+        console.log("name: ", this.name.value)
+        console.log("parentProgram: ", this.parentProgram.value)
+        console.log("handleTurno: ", this.turno)
+        console.log("usersAssign: ", this.usersAssign)
+        console.log("description: ", this.description.value)
+
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
+        const bodyParameters = {
+            name: this.name.value,
+            parentProgram: this.parentProgram.value,
+            section: this.turno,
+            syncGroups: this.usersAssign,
+            description: this.description.value
+        }
+
+        axios.post(
+            Global.newPrograms,
+            bodyParameters,
+            config
+        ).then(response => {
+            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+            this.setState({
+                redirect: true
+            })
+            swal("Programa creado!", "Ya se encuentra registrado", "success");
+        }).catch(e => {
+            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                HELPER_FUNCTIONS.logout()
+            } else {
+                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                swal("Error!", "Hubo un problema al crear el programa", "error");
+            }
+            console.log("Error: ", e)
+        });
     }
 
     componentDidMount() {
@@ -235,15 +308,6 @@ export default class GroupsTable extends Component {
                 </button>
             )
         }
-
-        // // Si se selecciono editar usuario lo envío a la página editProgram con los datos del usuario
-        // if (this.state.editProgram) {
-        //     return <Redirect to={{
-        //         pathname: '/editarPrograma',
-        //         state: { userSelected: this.state.userSelected }
-        //     }}
-        //     />
-        // }
 
         // Si se selecciono borrar usuario lo envío a la página deleteProgram con los datos del usuario
         if (this.state.changePassword) {
@@ -402,7 +466,7 @@ export default class GroupsTable extends Component {
                                             <SelectGroup getValue={(c) => this.usersAssign = c} />
                                             <span className="Label">Description</span>
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} required />
-                                            <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Programas</button>
+                                            <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Editar Programas</button>
                                         </form>
                                     </div>
 
@@ -421,22 +485,22 @@ export default class GroupsTable extends Component {
                         </div>
                     }
 
-                    {this.state.createProgram &&
+                    {this.state.createProgram && this.state.okProgramas &&
                         <div className="table-users">
                             <h4>Crear programa</h4>
                             {/* <CreateProgramsGroupComponent /> */}
                             <div className="table-users-edit">
-                                <form onSubmit={this.createProgram} className="inputsEditUser addUserPadding">
+                                <form onSubmit={this.crearPrograma} className="inputsEditUser addUserPadding">
                                     <span className="Label">Nombre</span>
                                     <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />
-                                    <span className="Label">Parent program</span>
-                                    <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} required />
+                                    <span className="Label">Parent program (select con ids de programas)</span>
+                                    <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} />
                                     <span className="Label">Section</span>
                                     <select onChange={this.handleTurno}>
                                         <option value="M">M</option>
                                         <option value="T">T</option>
                                     </select>
-                                    <SelectGroup getValue={(c) => this.usersAssign = c} />
+                                    <SelectGroupCreate getValue={(c) => this.usersAssign = c} defaultValue={this.state.gruposDeProgramas ? this.state.gruposDeProgramas : ''} />
                                     <span className="Label">Description</span>
                                     <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} required />
                                     <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Programas</button>
@@ -463,8 +527,6 @@ export default class GroupsTable extends Component {
                                 <ProgramsGroupComponent ok={this.state.ok} />
                             }</div>
                     </div>
-                    <div className="uploadNomina"><div>Nómina actual 30/06/2020</div> <button>Actualizar<PublishIcon /></button></div>
-
                 </div>
 
             </div>

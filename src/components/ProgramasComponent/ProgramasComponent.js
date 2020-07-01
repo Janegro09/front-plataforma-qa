@@ -266,7 +266,7 @@ export default class GroupsTable extends Component {
                 <div className="section-content doble-section">
                     {!this.state.createProgram &&
                         <div className="table-users ">
-                            <h3 className="marginBotton15">Programas</h3>
+                            <h4 className="marginBotton15">Programas</h4>
                             <div className="flex-input-add">
                                 {/* Buscador */}
                                 {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}
@@ -374,9 +374,10 @@ export default class GroupsTable extends Component {
                     }
 
                     {this.state.createProgram &&
-                        <div className="table-users table-users-edit">
-                            <div className="table-users-edit">
-                                <h3>Cesar soler</h3>
+                        <div className="table-users">
+                            
+                                <h4>Crear programa</h4>
+                                <div className="table-users-edit">
                                 <button onClick={
                                     () => {
                                         this.setState({
@@ -393,7 +394,7 @@ export default class GroupsTable extends Component {
                     <hr></hr>
                     <div className="table-users">
                         <h4 className="marginBotton15">Grupos</h4>
-                        <div className="table-users-edit">
+                        <div>
                             {this.state.ok &&
 
                                 <ProgramsGroupComponent ok={this.state.ok} />

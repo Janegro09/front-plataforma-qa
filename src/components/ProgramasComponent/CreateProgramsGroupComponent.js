@@ -44,8 +44,8 @@ export default class CreateProgramsGroupComponent extends Component {
     render() {
         return (
             <div>
-                <SidebarLeft />
-                <div>
+     
+                <div className="table-users-edit">
                     <form onSubmit={this.addUser} className="inputsEditUser addUserPadding">
                         <span className="Label">Nombre</span>
                         <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />

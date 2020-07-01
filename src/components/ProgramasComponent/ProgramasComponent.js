@@ -12,6 +12,7 @@ import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import SiderBarLeft from '../SidebarLeft/SiderbarLeft'
 import ProgramsGroupComponent from './ProgramsGroupComponent'
 import Logo from '../Home/logo_background.png';
+import SelectGroup from './SelectGroup'
 
 
 
@@ -158,11 +159,17 @@ export default class GroupsTable extends Component {
         }
     }
 
-    createProgram() {
-        console.log("Crear grupo")
+    createProgram(e) {
+        e.preventDefault()
+        console.log("Crear programaaaaaa")
         this.setState({
             createProgram: true
         })
+    }
+
+
+    handleTurno(event) {
+        this.turno = event.target.value
     }
 
     componentDidMount() {
@@ -265,7 +272,7 @@ export default class GroupsTable extends Component {
                 }
 
                 <div className="section-content doble-section">
-                    {!this.state.createProgram  &&
+                    {!this.state.createProgram &&
                         <div className="table-users ">
                             <h4 className="marginBotton15">Programas</h4>
                             {!this.state.editProgram &&
@@ -310,8 +317,8 @@ export default class GroupsTable extends Component {
                                                 <div className="sk-circle9 sk-circle"></div>
                                                 <div className="sk-circle10 sk-circle"></div>
                                                 <div className="sk-circle11 sk-while (true) {
-                    <h1>Hola</h1>
-                }circle"></div>
+                                                                                                <h1>Hola</h1>
+                                                                                            }circle"></div>
                                                 <div className="sk-circle12 sk-circle"></div>
                                             </div>
                                         }
@@ -378,8 +385,24 @@ export default class GroupsTable extends Component {
 
                             {this.state.editProgram &&
                                 <div>
-                                    <div>
-                                        Cesar soler
+                                    <h4>Editar programa</h4>
+                                    {/* <CreateProgramsGroupComponent /> */}
+                                    <div className="table-users-edit">
+                                        <form onSubmit={this.createProgram} className="inputsEditUser addUserPadding">
+                                            <span className="Label">Nombre</span>
+                                            <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />
+                                            <span className="Label">Parent program</span>
+                                            <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} required />
+                                            <span className="Label">Section</span>
+                                            <select onChange={this.handleTurno}>
+                                                <option value="M">M</option>
+                                                <option value="T">T</option>
+                                            </select>
+                                            <SelectGroup getValue={(c) => this.usersAssign = c} />
+                                            <span className="Label">Description</span>
+                                            <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} required />
+                                            <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Programas</button>
+                                        </form>
                                     </div>
 
                                     <button
@@ -397,13 +420,26 @@ export default class GroupsTable extends Component {
                         </div>
                     }
 
-
-
                     {this.state.createProgram &&
                         <div className="table-users">
-
                             <h4>Crear programa</h4>
+                            {/* <CreateProgramsGroupComponent /> */}
                             <div className="table-users-edit">
+                                <form onSubmit={this.createProgram} className="inputsEditUser addUserPadding">
+                                    <span className="Label">Nombre</span>
+                                    <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />
+                                    <span className="Label">Parent program</span>
+                                    <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} required />
+                                    <span className="Label">Section</span>
+                                    <select onChange={this.handleTurno}>
+                                        <option value="M">M</option>
+                                        <option value="T">T</option>
+                                    </select>
+                                    <SelectGroup getValue={(c) => this.usersAssign = c} />
+                                    <span className="Label">Description</span>
+                                    <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} required />
+                                    <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Programas</button>
+                                </form>
                                 <button onClick={
                                     () => {
                                         this.setState({

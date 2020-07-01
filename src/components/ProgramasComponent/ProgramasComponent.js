@@ -13,6 +13,7 @@ import SiderBarLeft from '../SidebarLeft/SiderbarLeft'
 import ProgramsGroupComponent from './ProgramsGroupComponent'
 import Logo from '../Home/logo_background.png';
 import SelectGroup from './SelectGroup'
+import SelectGroupCreate from './SelectGroupCreate'
 
 
 
@@ -35,7 +36,9 @@ export default class GroupsTable extends Component {
             searchedUsers: [],
             createProgram: false,
             ok: false,
-            buscando: false
+            okProgramas: false,
+            buscando: false,
+            gruposDeProgramas: null
         }
 
         this.buscar = this.buscar.bind(this)
@@ -161,7 +164,32 @@ export default class GroupsTable extends Component {
 
     createProgram(e) {
         e.preventDefault()
-        console.log("Crear programaaaaaa")
+        let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let token = tokenUser
+        let bearer = `Bearer ${token}`
+        axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
+            console.log("jajaja")
+            const { Data } = response.data
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            // debugger;
+            this.setState({
+                gruposDeProgramas: Data,
+                okProgramas: true
+            })
+            // this.setState({
+            //     allPrograms: response.data.Data,
+            //     ok: true
+            // })
+        })
+            .catch((e) => {
+                console.log("Error")
+                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                this.setState({
+                    allPrograms: [],
+                    ok: true
+                })
+                console.log("Error: ", e)
+            });
         this.setState({
             createProgram: true
         })
@@ -234,15 +262,6 @@ export default class GroupsTable extends Component {
                 </button>
             )
         }
-
-        // // Si se selecciono editar usuario lo envío a la página editProgram con los datos del usuario
-        // if (this.state.editProgram) {
-        //     return <Redirect to={{
-        //         pathname: '/editarPrograma',
-        //         state: { userSelected: this.state.userSelected }
-        //     }}
-        //     />
-        // }
 
         // Si se selecciono borrar usuario lo envío a la página deleteProgram con los datos del usuario
         if (this.state.changePassword) {
@@ -420,7 +439,7 @@ export default class GroupsTable extends Component {
                         </div>
                     }
 
-                    {this.state.createProgram &&
+                    {this.state.createProgram && this.state.okProgramas &&
                         <div className="table-users">
                             <h4>Crear programa</h4>
                             {/* <CreateProgramsGroupComponent /> */}
@@ -435,7 +454,7 @@ export default class GroupsTable extends Component {
                                         <option value="M">M</option>
                                         <option value="T">T</option>
                                     </select>
-                                    <SelectGroup getValue={(c) => this.usersAssign = c} />
+                                    <SelectGroupCreate getValue={(c) => this.usersAssign = c} defaultValue={this.state.gruposDeProgramas ? this.state.gruposDeProgramas : ''} ok={this.state.okProgramas} />
                                     <span className="Label">Description</span>
                                     <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} required />
                                     <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Programas</button>

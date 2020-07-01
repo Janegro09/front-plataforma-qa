@@ -320,30 +320,30 @@ export default class GroupsTable extends Component {
                     // console.log("b: ", data[index].id)
 
                     if (data[j].programParent == data[index].id) {
-                        
+
                         let tempData = (
-                            <tr key={index+1+j}>
+                            <tr key={index + 1 + j}>
                                 <td>va la flecha {data[j].name}</td>
                                 <td onClick={e => this.editProgram(e, data[j])}><EditIcon style={{ fontSize: 15 }} /></td>
                                 <td onClick={e => this.deleteProgram(e, data[j])}><DeleteIcon style={{ fontSize: 15 }} /></td>
                             </tr>
                         )
-                    
+
                         rows.push(tempData)
                         assignedPrograms.push(data[j].id)
 
 
                         for (let k = 0; k < data.length; k++) {
-    
+
                             if (data[j].id === data[k].programParent) {
                                 let tempData = (
-                                    <tr key={index+3+k}>
+                                    <tr key={index + 3 + k}>
                                         <td>    va la flecha {data[k].name}</td>
                                         <td onClick={e => this.editProgram(e, data[k])}><EditIcon style={{ fontSize: 15 }} /></td>
                                         <td onClick={e => this.deleteProgram(e, data[k])}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                     </tr>
                                 )
-    
+
                                 rows.push(tempData)
                                 assignedPrograms.push(data[k].id)
                             }
@@ -352,9 +352,9 @@ export default class GroupsTable extends Component {
 
                 }
 
-                
 
-                
+
+
                 arrayDiv.push(rows)
                 assignedPrograms.push(data[index].id)
             }
@@ -560,7 +560,7 @@ export default class GroupsTable extends Component {
                                 <form onSubmit={this.crearPrograma} className="inputsEditUser addUserPadding">
                                     <span className="Label">Nombre</span>
                                     <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />
-                                    <span className="Label">Parent program (select con ids de programas)</span>
+                                    <span className="Label">Parent program</span>
                                     <SelectGroupCreate getValue={(c) => this.parentProgram = c} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''} />
                                     <span className="Label">Section</span>
                                     <select onChange={this.handleTurno}>

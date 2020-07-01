@@ -41,7 +41,7 @@ class SelectGroup extends Component {
         if (this.state.groupSelect.length > 0 && this.props.defaultValue && this.state.groupsToSend === '') {
             this.props.defaultValue.map(v => {
                 this.state.groupSelect.map(value => {
-                    if (value.value === v.id) {
+                    if (value.value === v.idDB) {
                         groupData.push(value)
                     }
                     return true;
@@ -79,7 +79,7 @@ class SelectGroup extends Component {
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
-        axios.get(Global.getUsers+'?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
+        axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
             let usuarios = []
             response.data.Data.map(user => {
                 let temp = {
@@ -115,7 +115,7 @@ class SelectGroup extends Component {
 
     render() {
         let options = this.state.groupSelect
-        console.log("groups to send: ", this.state.groupsToSend.split('|'))
+        console.log("groups to send: ", this.props.defaultValue)
         this.props.getValue(this.state.groupsToSend.split('|'))
         return (
             <Select

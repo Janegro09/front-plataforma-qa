@@ -7,6 +7,12 @@ import axios from 'axios'
 import swal from 'sweetalert'
 
 export default class EditProgramsGroupComponent extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            specific: []
+        }
+    }
     addUser = (event) => {
         event.preventDefault()
         let token = JSON.parse(sessionStorage.getItem('token'))
@@ -41,9 +47,34 @@ export default class EditProgramsGroupComponent extends Component {
 
 
     }
+
+    componentDidMount() {
+        // console.log("Componente de prueba", this.props.edit.id)
+        const id = this.props.edit.id
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
+        axios.get(Global.getAllProgramsGroups + '/' + id, { headers: { Authorization: bearer } }).then(response => {
+            console.log("Specific: ", response.data.Data[0].assignedUsers)
+            if (response.data.Data[0].assignedUsers.length > 0) {
+                this.setState({
+                    specific: response.data.Data[0].assignedUsers
+                })
+            }
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+        })
+            .catch((e) => {
+                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                this.setState({
+                    searchedGroups: []
+                })
+                console.log("Error: ", e)
+            });
+    }
     render() {
-        console.log("La prop: ", this.props.edit)
         const { edit } = this.props
+        const { specific } = this.state
+        console.log("Especificos: ", specific)
         return (
             <div>
                 <div className="table-users-edit">
@@ -53,7 +84,8 @@ export default class EditProgramsGroupComponent extends Component {
                         <span className="Label">Descripción</span>
                         <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} defaultValue={edit.description ? edit.description : ''} />
                         <span className="Label">Usuarios asignados</span>
-                        <SelectGroup getValue={(c) => this.usersAssign = c} />
+                        {/* enviar defaultValue={user.group ? user.group : ''}  */}
+                        <SelectGroup getValue={(c) => this.usersAssign = c} defaultValue={specific ? specific : ''} />
                         <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Editar Grupo de Programas</button>
                     </form>
                 </div>

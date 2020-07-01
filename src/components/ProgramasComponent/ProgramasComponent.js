@@ -14,6 +14,7 @@ import ProgramsGroupComponent from './ProgramsGroupComponent'
 import Logo from '../Home/logo_background.png';
 import SelectGroup from './SelectGroup'
 import SelectGroupCreate from './SelectGroupCreate'
+import SelectGroupEdit from './SelectGroupEdit'
 
 
 
@@ -275,10 +276,91 @@ export default class GroupsTable extends Component {
     }
 
     render() {
-        const { allPrograms } = this.state
+        const { allPrograms, userSelected } = this.state
+        console.log("Programa: ", this.state.userSelected)
         let pagina = this.getUsersPage(this.state.actualPage, allPrograms)
         let totalUsuarios = pagina.total
         let botones = []
+        let arrayDiv = []
+        let assignedPrograms = []
+
+        if (allPrograms) {
+
+            const data = allPrograms.filter(program => {
+                if (this.title) {
+                    if (this.title.value === '' || this.title.value === null) {
+                        return true;
+                    } else {
+                        return program.name.toUpperCase().indexOf(this.title.value.toUpperCase()) >= 0;
+                    }
+                } else {
+                    return true;
+                }
+            })
+
+            for (let index = 0; index < data.length; index++) {
+                if (assignedPrograms.indexOf(data[index].id) >= 0 || data[index].programParent !== '') {
+                    continue
+                }
+
+
+                let rows = []
+                let tempData = (
+                    <tr key={index}>
+                        <td>{data[index].name}</td>
+                        <td onClick={e => this.editProgram(e, data[index])}><EditIcon style={{ fontSize: 15 }} /></td>
+                        <td onClick={e => this.deleteProgram(e, data[index])}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                    </tr>
+                )
+
+                rows.push(tempData)
+                for (let j = 0; j < data.length; j++) {
+                    // console.log("a: ", data[j].programParent)
+                    // console.log("b: ", data[index].id)
+
+                    if (data[j].programParent == data[index].id) {
+                        
+                        let tempData = (
+                            <tr key={index+1+j}>
+                                <td>va la flecha {data[j].name}</td>
+                                <td onClick={e => this.editProgram(e, data[j])}><EditIcon style={{ fontSize: 15 }} /></td>
+                                <td onClick={e => this.deleteProgram(e, data[j])}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                            </tr>
+                        )
+                    
+                        rows.push(tempData)
+                        assignedPrograms.push(data[j].id)
+
+
+                        for (let k = 0; k < data.length; k++) {
+    
+                            if (data[j].id === data[k].programParent) {
+                                let tempData = (
+                                    <tr key={index+3+k}>
+                                        <td>    va la flecha {data[k].name}</td>
+                                        <td onClick={e => this.editProgram(e, data[k])}><EditIcon style={{ fontSize: 15 }} /></td>
+                                        <td onClick={e => this.deleteProgram(e, data[k])}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                    </tr>
+                                )
+    
+                                rows.push(tempData)
+                                assignedPrograms.push(data[k].id)
+                            }
+                        }
+                    }
+
+                }
+
+                
+
+                
+                arrayDiv.push(rows)
+                assignedPrograms.push(data[index].id)
+            }
+
+            console.log(arrayDiv)
+        }
+
         for (let index = 0; index < pagina.cantOfPages; index++) {
             if (botones.length < 4) {
                 botones.push(
@@ -398,8 +480,18 @@ export default class GroupsTable extends Component {
                                         </thead>
 
                                         <tbody>
+                                            {arrayDiv.length > 0 &&
+                                                arrayDiv.map(data => {
+                                                    data.map(row => {
+                                                        return row;
+                                                    })
+                                                    return data;
+                                                })
+                                            }
+                                        </tbody>
+                                        {/* <tbody>
                                             {allPrograms &&
-
+                                                
                                                 allPrograms.filter(program => {
                                                     if (this.title) {
                                                         if (this.title.value === '' || this.title.value === null) {
@@ -410,19 +502,25 @@ export default class GroupsTable extends Component {
                                                     } else {
                                                         return true;
                                                     }
-                                                }).map((program, index) => {
-
+                                                })
+                                                .map((program, index) => {
+                                                    console.log("x: ", allPrograms.sort())
+                                                    
                                                     return (
                                                         <tr key={index}>
-
-                                                            <td>{program.name}</td>
+                                                            {program.programParent !== '' &&
+                                                                <td> flecha {program.name}</td>
+                                                            }
+                                                            {program.programParent === '' &&
+                                                                <td>{program.name}</td>
+                                                            }
                                                             <td onClick={e => this.editProgram(e, program)}><EditIcon style={{ fontSize: 15 }} /></td>
                                                             <td onClick={e => this.deleteProgram(e, program)}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                                         </tr>
                                                     )
                                                 })
                                             }
-                                        </tbody>
+                                        </tbody> */}
                                     </table>
 
                                     <div className="botones">
@@ -455,17 +553,17 @@ export default class GroupsTable extends Component {
                                     <div className="table-users-edit">
                                         <form onSubmit={this.createProgram} className="inputsEditUser addUserPadding">
                                             <span className="Label">Nombre</span>
-                                            <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />
+                                            <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={userSelected.name ? userSelected.name : ''} />
                                             <span className="Label">Parent program</span>
-                                            <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} required />
+                                            <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} defaultValue={userSelected.parentProgram ? userSelected.parentProgram : ''} />
                                             <span className="Label">Section</span>
                                             <select onChange={this.handleTurno}>
-                                                <option value="M">M</option>
-                                                <option value="T">T</option>
+                                                <option value="M" selected={userSelected.section === 'M'}>M</option>
+                                                <option value="P" selected={userSelected.section === 'P'}>P</option>
                                             </select>
-                                            <SelectGroup getValue={(c) => this.usersAssign = c} />
+                                            <SelectGroupEdit getValue={(c) => this.usersAssign = c} data={userSelected} />
                                             <span className="Label">Description</span>
-                                            <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} required />
+                                            <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} defaultValue={userSelected.description ? userSelected.description : ''} />
                                             <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Editar Programas</button>
                                         </form>
                                     </div>
@@ -498,7 +596,7 @@ export default class GroupsTable extends Component {
                                     <span className="Label">Section</span>
                                     <select onChange={this.handleTurno}>
                                         <option value="M">M</option>
-                                        <option value="T">T</option>
+                                        <option value="P">P</option>
                                     </select>
                                     <SelectGroupCreate getValue={(c) => this.usersAssign = c} defaultValue={this.state.gruposDeProgramas ? this.state.gruposDeProgramas : ''} />
                                     <span className="Label">Description</span>

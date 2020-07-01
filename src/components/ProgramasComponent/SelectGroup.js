@@ -79,10 +79,9 @@ class SelectGroup extends Component {
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
-        axios.get(Global.getUsers, { headers: { Authorization: bearer } }).then(response => {
+        axios.get(Global.getUsers+'?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
             let usuarios = []
             response.data.Data.map(user => {
-                // console.log(user)
                 let temp = {
                     value: user.idDB,
                     label: `${user.id} - ${user.name} ${user.lastName}`

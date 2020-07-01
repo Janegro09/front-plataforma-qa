@@ -13,7 +13,11 @@ import SiderBarLeft from '../SidebarLeft/SiderbarLeft'
 import ProgramsGroupComponent from './ProgramsGroupComponent'
 import Logo from '../Home/logo_background.png';
 import SelectGroup from './SelectGroup'
+<<<<<<< HEAD
 import SelectGroupCreate from './SelectGroupCreate'
+=======
+import PublishIcon from '@material-ui/icons/Publish';
+>>>>>>> 73a913b81eaa3259a532d51e0d0298ec973f7cde
 
 
 
@@ -481,6 +485,8 @@ export default class GroupsTable extends Component {
                                 <ProgramsGroupComponent ok={this.state.ok} />
                             }</div>
                     </div>
+                    <div className="uploadNomina"><div>Nómina actual 30/06/2020</div> <button>Actualizar<PublishIcon /></button></div>
+
                 </div>
 
             </div>

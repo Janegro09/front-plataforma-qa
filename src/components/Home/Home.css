@@ -83,23 +83,26 @@ select {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
+    position: fixed;
     bottom: 20px;
     right: 20px;
     padding: 20px;
     color: white;
+    font-size: 13px;
+    font-weight: 400;
     width: auto;
     height: 50px;
     background-color: #333333;
     border-radius: 5px;
+    box-shadow: 0px 0px 1px 3px rgba(0, 0, 0, 0.20);
     -webkit-box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.20);
     -moz-box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.20);
-    box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.20);
+
 }
 
 .uploadNomina>button {
     background-color: #ff6a00;
-    padding: 4px 7px 4px 10px;
+    padding: 4px 5px 4px 10px;
     border-radius: 3px;
     margin-left: 7px;
     width: auto;

@@ -97,6 +97,7 @@ class SelectGroup extends Component {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         })
             .catch((e) => {
+                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 console.log(e)
                 // Si hay algún error en el request lo deslogueamos
                 this.setState({

@@ -64,10 +64,18 @@ export default class EditProgramsGroupComponent extends Component {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         })
             .catch((e) => {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                console.log(e)
+                // Si hay algún error en el request lo deslogueamos
                 this.setState({
-                    searchedGroups: []
+                    error: true,
+                    redirect: true
                 })
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
+                }
                 console.log("Error: ", e)
             });
     }

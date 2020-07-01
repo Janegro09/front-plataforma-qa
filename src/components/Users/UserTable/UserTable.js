@@ -240,7 +240,7 @@ export default class UserTable extends Component {
             <div>
                 
                 <div className="table-users">
-                    <h4 className="marginBotton15">USUARIOS</h4>
+                    <h4>USUARIOS</h4>
                     <div className="flex-input-add">
                         {/* Buscador */}
                         {HELPER_FUNCTIONS.checkPermission("GET|users/:id") &&
@@ -301,13 +301,13 @@ export default class UserTable extends Component {
                                             <td>{user.equipoEspecifico}</td>
                                             <td className="tablaVariables"><div className={` ${!user.userActive ? "estadoInactivo " : 'estadoActivo'}`}></div></td>
                                             {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                                                <td onClick={e => this.editUser(e, user)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                <td className="celdaBtnHover" onClick={e => this.editUser(e, user)}><EditIcon style={{ fontSize: 15 }} /></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
                                                 <td disabled><EditIcon></EditIcon></td>
                                             }
                                             {HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
-                                                <td onClick={e => this.deleteUser(e, user)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                                <td className="celdaBtnHover" onClick={e => this.deleteUser(e, user)}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
                                                 <td disabled><DeleteIcon></DeleteIcon></td>

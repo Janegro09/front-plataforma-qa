@@ -16,6 +16,7 @@ import SelectGroup from './SelectGroup'
 import SelectGroupCreate from './SelectGroupCreate'
 import SelectGroupEdit from './SelectGroupEdit'
 
+import PublishIcon from '@material-ui/icons/Publish';
 
 
 export default class GroupsTable extends Component {
@@ -508,14 +509,10 @@ export default class GroupsTable extends Component {
                                                     
                                                     return (
                                                         <tr key={index}>
-                                                            {program.programParent !== '' &&
-                                                                <td> flecha {program.name}</td>
-                                                            }
-                                                            {program.programParent === '' &&
-                                                                <td>{program.name}</td>
-                                                            }
-                                                            <td onClick={e => this.editProgram(e, program)}><EditIcon style={{ fontSize: 15 }} /></td>
-                                                            <td onClick={e => this.deleteProgram(e, program)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+
+                                                            <td>{program.name}</td>
+                                                            <td className="celdaBtnHover" onClick={e => this.editProgram(e, program)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                            <td className="celdaBtnHover" onClick={e => this.deleteProgram(e, program)}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                                         </tr>
                                                     )
                                                 })
@@ -626,6 +623,8 @@ export default class GroupsTable extends Component {
                             }</div>
                     </div>
                 </div>
+                <div className="uploadNomina"><div>Nómina actual 30/06/2020</div> <button>Actualizar<PublishIcon /></button></div>
+
 
             </div>
         )

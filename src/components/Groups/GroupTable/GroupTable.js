@@ -315,13 +315,13 @@ export default class GroupsTable extends Component {
 
                                             <td>{group.group}</td>
                                             {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                                                <td onClick={e => this.editUser(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                <td className="celdaBtnHover" onClick={e => this.editUser(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
                                                 <td disabled><EditIcon></EditIcon></td>
                                             }
                                             {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
-                                                <td onClick={e => this.deleteUser(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                                <td className="celdaBtnHover" onClick={e => this.deleteUser(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
                                                 <td disabled><DeleteIcon></DeleteIcon></td>

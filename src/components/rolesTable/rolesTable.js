@@ -277,13 +277,13 @@ export default class RolesTable extends Component {
                                         <tr key={index}>
                                             <td>{role.role}</td>
                                             {HELPER_FUNCTIONS.checkPermission("PUT|roles/:id") &&
-                                                <td onClick={e => this.editUser(e, role)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                <td className="celdaBtnHover" onClick={e => this.editUser(e, role)}><EditIcon style={{ fontSize: 15 }} /></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("PUT|roles/:id") &&
                                                 <td disabled><EditIcon></EditIcon></td>
                                             }
                                             {HELPER_FUNCTIONS.checkPermission("DELETE|roles/:id") &&
-                                                <td onClick={e => this.deleteUser(e, role)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                                <td className="celdaBtnHover" onClick={e => this.deleteUser(e, role)}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("DELETE|roles/:id") &&
                                                 <td disabled><DeleteIcon></DeleteIcon></td>

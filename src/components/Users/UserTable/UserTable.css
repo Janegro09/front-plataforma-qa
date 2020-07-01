@@ -147,6 +147,7 @@ table svg:hover {
     margin: initial !important;
   }
 
+
 }
 
 /* @media screen and (max-width: 500px) {
@@ -463,17 +464,13 @@ button:focus {
 
 .section-content {
   padding: 50px;
-  padding-top: 71px;
   margin-left: 44px;
 }
 
 svg {
   color: #5d5d5d;
 }
-/* svg > button {
-  box-shadow: 0 8px 11px rgba(0,0,0,0.2);
-  border: 1px solid #25a3e0;
-} */
+
 
 
 
@@ -594,4 +591,13 @@ svg {
 
 .active {
   font-weight: bold;
+}
+
+.celdaBtnHover{
+  transition: all 0.15s ease-in-out;
+}
+
+.celdaBtnHover:hover {
+  background: -webkit-linear-gradient(left, rgba(216, 216, 216, 0.14) 0%, rgba(216, 216, 216, 0.4) 50%, rgba(216, 216, 216, 0.14) 100%);
+  cursor: pointer;
 }

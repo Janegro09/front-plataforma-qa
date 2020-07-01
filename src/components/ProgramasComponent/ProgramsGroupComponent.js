@@ -227,13 +227,13 @@ export default class ProgramsGroupComponent extends Component {
 
                                                     <td>{group.name}</td>
                                                     {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
-                                                        <td onClick={e => this.editGroup(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                        <td className="celdaBtnHover" onClick={e => this.editGroup(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
                                                     }
                                                     {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
                                                         <td disabled><EditIcon></EditIcon></td>
                                                     }
                                                     {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
-                                                        <td onClick={e => this.deleteGroup(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                                        <td className="celdaBtnHover" onClick={e => this.deleteGroup(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                                     }
                                                     {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
                                                         <td disabled><DeleteIcon></DeleteIcon></td>

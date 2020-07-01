@@ -352,8 +352,8 @@ export default class GroupsTable extends Component {
                                                         <tr key={index}>
 
                                                             <td>{program.name}</td>
-                                                            <td onClick={e => this.editProgram(e, program)}><EditIcon style={{ fontSize: 15 }} /></td>
-                                                            <td onClick={e => this.deleteProgram(e, program)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                                            <td className="celdaBtnHover" onClick={e => this.editProgram(e, program)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                            <td className="celdaBtnHover" onClick={e => this.deleteProgram(e, program)}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                                         </tr>
                                                     )
                                                 })

@@ -196,8 +196,54 @@ export default class GroupsTable extends Component {
     }
 
 
-    handleTurno(event) {
+    handleTurno = (event) => {
+        event.preventDefault()
+        console.log(event.target.value)
         this.turno = event.target.value
+    }
+
+    crearPrograma = (e) => {
+        e.preventDefault()
+        console.log("Crear lanzado")
+
+        console.log("name: ", this.name.value)
+        console.log("parentProgram: ", this.parentProgram.value)
+        console.log("handleTurno: ", this.turno)
+        console.log("usersAssign: ", this.usersAssign)
+        console.log("description: ", this.description.value)
+
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
+        const bodyParameters = {
+            name: this.name.value,
+            parentProgram: this.parentProgram.value,
+            section: this.turno,
+            syncGroups: this.usersAssign,
+            description: this.description.value
+        }
+
+        axios.post(
+            Global.newPrograms,
+            bodyParameters,
+            config
+        ).then(response => {
+            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+            this.setState({
+                redirect: true
+            })
+            swal("Programa creado!", "Ya se encuentra registrado", "success");
+        }).catch(e => {
+            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                HELPER_FUNCTIONS.logout()
+            } else {
+                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                swal("Error!", "Hubo un problema al crear el programa", "error");
+            }
+            console.log("Error: ", e)
+        });
     }
 
     componentDidMount() {
@@ -420,7 +466,7 @@ export default class GroupsTable extends Component {
                                             <SelectGroup getValue={(c) => this.usersAssign = c} />
                                             <span className="Label">Description</span>
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} required />
-                                            <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Programas</button>
+                                            <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Editar Programas</button>
                                         </form>
                                     </div>
 
@@ -444,11 +490,11 @@ export default class GroupsTable extends Component {
                             <h4>Crear programa</h4>
                             {/* <CreateProgramsGroupComponent /> */}
                             <div className="table-users-edit">
-                                <form onSubmit={this.createProgram} className="inputsEditUser addUserPadding">
+                                <form onSubmit={this.crearPrograma} className="inputsEditUser addUserPadding">
                                     <span className="Label">Nombre</span>
                                     <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />
-                                    <span className="Label">Parent program</span>
-                                    <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} required />
+                                    <span className="Label">Parent program (select con ids de programas)</span>
+                                    <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} />
                                     <span className="Label">Section</span>
                                     <select onChange={this.handleTurno}>
                                         <option value="M">M</option>

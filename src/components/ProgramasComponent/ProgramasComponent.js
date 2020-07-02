@@ -15,6 +15,7 @@ import Logo from '../Home/logo_background.png';
 import SelectGroup from './SelectGroup'
 import SelectGroupCreate from './SelectGroupCreate'
 import SelectGroupEdit from './SelectGroupEdit'
+import SelectGroupParent from './SelectGroupParent'
 
 import PublishIcon from '@material-ui/icons/Publish';
 
@@ -66,8 +67,6 @@ export default class GroupsTable extends Component {
     editProgram(event, userInfo) {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
-        console.log("Programa info: ", userInfo)
-        // alert("Editar programa");
         this.setState({
             editProgram: true,
             userSelected: userInfo
@@ -77,10 +76,7 @@ export default class GroupsTable extends Component {
 
     deleteProgram = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
-        console.log(event)
         event.preventDefault()
-        console.log(userInfo)
-        // event.preventDefault()
         let token = JSON.parse(sessionStorage.getItem('token'));
         const config = {
             headers: { Authorization: `Bearer ${token}` }
@@ -170,7 +166,6 @@ export default class GroupsTable extends Component {
         let token = tokenUser
         let bearer = `Bearer ${token}`
         axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
-            console.log("jajaja")
             const { Data } = response.data
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             // debugger;
@@ -184,7 +179,6 @@ export default class GroupsTable extends Component {
             // })
         })
             .catch((e) => {
-                console.log("Error")
                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
                     allPrograms: [],
@@ -200,19 +194,11 @@ export default class GroupsTable extends Component {
 
     handleTurno = (event) => {
         event.preventDefault()
-        console.log(event.target.value)
         this.turno = event.target.value
     }
 
     crearPrograma = (e) => {
         e.preventDefault()
-        console.log("Crear lanzado")
-
-        console.log("name: ", this.name.value)
-        console.log("parentProgram: ", this.parentProgram.value)
-        console.log("handleTurno: ", this.turno)
-        console.log("usersAssign: ", this.usersAssign)
-        console.log("description: ", this.description.value)
 
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
@@ -253,20 +239,13 @@ export default class GroupsTable extends Component {
         let token = tokenUser
         let bearer = `Bearer ${token}`
         axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
-            console.log("ramagon")
-            console.log(response)
-
-            // console.log("El token: ", response.data.loggedUser.token)
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 allPrograms: response.data.Data,
                 ok: true
             })
-            console.log("El token: ", JSON.parse(sessionStorage.getItem('token')))
-            // this.buscar()
         })
             .catch((e) => {
-                console.log("Error")
                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
                     allPrograms: [],
@@ -278,7 +257,6 @@ export default class GroupsTable extends Component {
 
     render() {
         const { allPrograms, userSelected } = this.state
-        console.log("Programa: ", this.state.userSelected)
         let pagina = this.getUsersPage(this.state.actualPage, allPrograms)
         let totalUsuarios = pagina.total
         let botones = []
@@ -316,34 +294,32 @@ export default class GroupsTable extends Component {
 
                 rows.push(tempData)
                 for (let j = 0; j < data.length; j++) {
-                    // console.log("a: ", data[j].programParent)
-                    // console.log("b: ", data[index].id)
 
                     if (data[j].programParent == data[index].id) {
-                        
+
                         let tempData = (
-                            <tr key={index+1+j}>
+                            <tr key={index + 1 + j}>
                                 <td>va la flecha {data[j].name}</td>
                                 <td onClick={e => this.editProgram(e, data[j])}><EditIcon style={{ fontSize: 15 }} /></td>
                                 <td onClick={e => this.deleteProgram(e, data[j])}><DeleteIcon style={{ fontSize: 15 }} /></td>
                             </tr>
                         )
-                    
+
                         rows.push(tempData)
                         assignedPrograms.push(data[j].id)
 
 
                         for (let k = 0; k < data.length; k++) {
-    
+
                             if (data[j].id === data[k].programParent) {
                                 let tempData = (
-                                    <tr key={index+3+k}>
+                                    <tr key={index + 3 + k}>
                                         <td>    va la flecha {data[k].name}</td>
                                         <td onClick={e => this.editProgram(e, data[k])}><EditIcon style={{ fontSize: 15 }} /></td>
                                         <td onClick={e => this.deleteProgram(e, data[k])}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                     </tr>
                                 )
-    
+
                                 rows.push(tempData)
                                 assignedPrograms.push(data[k].id)
                             }
@@ -352,14 +328,9 @@ export default class GroupsTable extends Component {
 
                 }
 
-                
-
-                
                 arrayDiv.push(rows)
                 assignedPrograms.push(data[index].id)
             }
-
-            console.log(arrayDiv)
         }
 
         for (let index = 0; index < pagina.cantOfPages; index++) {
@@ -492,34 +463,6 @@ export default class GroupsTable extends Component {
                                                 })
                                             }
                                         </tbody>
-                                        {/* <tbody>
-                                            {allPrograms &&
-                                                
-                                                allPrograms.filter(program => {
-                                                    if (this.title) {
-                                                        if (this.title.value === '' || this.title.value === null) {
-                                                            return true;
-                                                        } else {
-                                                            return program.name.toUpperCase().indexOf(this.title.value.toUpperCase()) >= 0;
-                                                        }
-                                                    } else {
-                                                        return true;
-                                                    }
-                                                })
-                                                .map((program, index) => {
-                                                    console.log("x: ", allPrograms.sort())
-                                                    
-                                                    return (
-                                                        <tr key={index}>
-
-                                                            <td>{program.name}</td>
-                                                            <td className="celdaBtnHover" onClick={e => this.editProgram(e, program)}><EditIcon style={{ fontSize: 15 }} /></td>
-                                                            <td className="celdaBtnHover" onClick={e => this.deleteProgram(e, program)}><DeleteIcon style={{ fontSize: 15 }} /></td>
-                                                        </tr>
-                                                    )
-                                                })
-                                            }
-                                        </tbody> */}
                                     </table>
 
                                     <div className="botones">
@@ -554,7 +497,8 @@ export default class GroupsTable extends Component {
                                             <span className="Label">Nombre</span>
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={userSelected.name ? userSelected.name : ''} />
                                             <span className="Label">Parent program</span>
-                                            <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} defaultValue={userSelected.parentProgram ? userSelected.parentProgram : ''} />
+                                            {/* <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} defaultValue={userSelected.parentProgram ? userSelected.parentProgram : ''} /> */}
+                                            <SelectGroupParent getValue={(c) => this.usersAssign = c} data={userSelected} defaultValue={userSelected ? userSelected : ''} />
                                             <span className="Label">Section</span>
                                             <select onChange={this.handleTurno}>
                                                 <option value="M" selected={userSelected.section === 'M'}>M</option>
@@ -590,8 +534,8 @@ export default class GroupsTable extends Component {
                                 <form onSubmit={this.crearPrograma} className="inputsEditUser addUserPadding">
                                     <span className="Label">Nombre</span>
                                     <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />
-                                    <span className="Label">Parent program (select con ids de programas)</span>
-                                    <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} />
+                                    <span className="Label">Parent program</span>
+                                    <SelectGroupParent getValue={(c) => this.parentProgram = c} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''} />
                                     <span className="Label">Section</span>
                                     <select onChange={this.handleTurno}>
                                         <option value="M">M</option>
@@ -620,8 +564,7 @@ export default class GroupsTable extends Component {
                         <h4 className="marginBotton15">Grupos</h4>
                         <div >
                             {this.state.ok &&
-
-                                <ProgramsGroupComponent  ok={this.state.ok} />
+                                <ProgramsGroupComponent ok={this.state.ok} />
                             }</div>
                     </div>
                 </div>

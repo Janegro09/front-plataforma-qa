@@ -35,17 +35,12 @@ class SelectGroup extends Component {
     };
 
     componentDidMount() {
-        /**Acá se cargan las opciones */
-
-
-        // setTimeout(() => {
             let usuarios = []
             let tokenUser = JSON.parse(sessionStorage.getItem("token"))
             let token = tokenUser
             let bearer = `Bearer ${token}`
             axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
                 const { Data } = response.data
-                console.log("DATA: ", Data)
                 Data.map(grupo => {
                     let temp = {
                         value: grupo.id,
@@ -55,6 +50,7 @@ class SelectGroup extends Component {
                     // console.log(value)
                     return true;
                 })
+                HELPER_FUNCTIONS.backgroundLoading()
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             })
                 .catch((e) => {

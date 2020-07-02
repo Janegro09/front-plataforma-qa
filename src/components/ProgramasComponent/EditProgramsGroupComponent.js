@@ -65,6 +65,7 @@ export default class EditProgramsGroupComponent extends Component {
         })
             .catch((e) => {
                 console.log(e)
+                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 // Si hay algún error en el request lo deslogueamos
                 this.setState({
                     error: true,

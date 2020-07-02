@@ -44,7 +44,7 @@ export default class UserTable extends Component {
     buscar() {
         let searched
         if (this.title && this.title !== undefined) {
-            searched = this.title.value
+            searched = this.title.value.toLocaleLowerCase()
         }
         let returnData = []
         this.state.allUsers.map(user => {

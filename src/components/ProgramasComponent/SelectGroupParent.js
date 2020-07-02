@@ -31,11 +31,15 @@ class SelectGroupParent extends Component {
         let groupData = []
         if (this.state.groupSelect.length > 0 && this.props.defaultValue && this.state.groupsToSend === '') {
             this.state.groupSelect.map(value => {
+                console.log("value: ", value)
+                console.log("la prop: ", this.props.defaultValue)
                 if (value.value === this.props.defaultValue.id) {
                     groupData.push(value)
                 }
                 return true;
             })
+
+            // Acá tengo que meter el especifico
             return groupData
         } else if (this.state.groupsToSend) {
             let temp
@@ -43,23 +47,12 @@ class SelectGroupParent extends Component {
             console.log("El error: ", this.state.groupSelect)
 
             this.state.groupSelect.map(value => {
+                console.log("value: ", value)
                 if (value.value === this.state.groupsToSend.value) {
                     groupData.push(value)
                 }
                 return true;
             })
-            // temp = this.state.groupsToSend.split("|")
-            // temp.map(v => {
-            //     console.log(temp)
-            //     this.state.groupSelect.map(value => {
-            //         if (value.value === v) {
-            //             groupData.push(value)
-            //         }
-            //         return true;
-            //     })
-            //     return true;
-            // })
-            // console.log("dasdadsa: ", groupData);
 
             return groupData
         } else {
@@ -102,8 +95,12 @@ class SelectGroupParent extends Component {
     }
 
     render() {
+        /**En options debo listar todos los programas
+         * 
+         * en searchdefault debo buscar el especifico
+         */
         let options = this.state.groupSelect
-        console.log("Options: ", options)
+        console.log("Options: ", this.state)
         this.props.getValue(this.state.groupsToSend)
         return (
             <Select

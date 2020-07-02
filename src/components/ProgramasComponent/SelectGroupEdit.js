@@ -35,6 +35,8 @@ class SelectGroup extends Component {
     };
 
     componentDidMount() {
+        setTimeout(() => {
+            
             let usuarios = []
             let tokenUser = JSON.parse(sessionStorage.getItem("token"))
             let token = tokenUser
@@ -61,6 +63,7 @@ class SelectGroup extends Component {
                 this.setState({
                     groupSelect: usuarios
                 })
+        }, 1000);
         // }, 2000);
 
         

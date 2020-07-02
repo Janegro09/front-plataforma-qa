@@ -21,7 +21,8 @@ export default class ProgramsGroupComponent extends Component {
             crearGrupoProgramas: false,
             editProgramGroup: false,
             addGroup: false,
-            buscando: false
+            buscando: false,
+            ok: false
         }
         this.buscar = this.buscar.bind(this);
         this.getUsersPage = this.getUsersPage.bind(this);
@@ -120,22 +121,27 @@ export default class ProgramsGroupComponent extends Component {
     componentDidMount() {
         const { ok } = this.props
         if (ok) {
-            const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-            const token = tokenUser
-            const bearer = `Bearer ${token}`
-            axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
-                this.setState({
-                    searchedGroups: response.data.Data
-                })
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            })
-                .catch((e) => {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+            // setTimeout(() => {
+                
+                const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+                const token = tokenUser
+                const bearer = `Bearer ${token}`
+                axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
                     this.setState({
-                        searchedGroups: []
+                        searchedGroups: response.data.Data,
+                        ok: true
                     })
-                    console.log("Error: ", e)
-                });
+                    sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                })
+                    .catch((e) => {
+                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        this.setState({
+                            searchedGroups: [],
+                            ok: true
+                        })
+                        console.log("Error: ", e)
+                    });
+            // }, 1000);
         }
     }
 
@@ -263,7 +269,7 @@ export default class ProgramsGroupComponent extends Component {
 
                 </div>
 
-                {this.state.editProgramGroup &&
+                {this.state.editProgramGroup && this.state.ok &&
                     <div>
                         <EditProgramsGroupComponent edit={this.state.userSelected} />
                         <button

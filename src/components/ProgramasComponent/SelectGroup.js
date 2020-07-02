@@ -76,42 +76,45 @@ class SelectGroup extends Component {
     }
 
     componentDidMount() {
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-        const token = tokenUser
-        const bearer = `Bearer ${token}`
-        axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
-            let usuarios = []
-            response.data.Data.map(user => {
-                let temp = {
-                    value: user.idDB,
-                    label: `${user.id} - ${user.name} ${user.lastName}`
-                }
-                usuarios.push(temp)
-                return true;
-            })
-
-            console.log(usuarios)
-            this.setState({
-                groupSelect: usuarios
-            })
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-        })
-            .catch((e) => {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                console.log(e)
-                // Si hay algún error en el request lo deslogueamos
-                this.setState({
-                    error: true,
-                    redirect: true
+        setTimeout(() => {
+            const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+            const token = tokenUser
+            const bearer = `Bearer ${token}`
+            axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
+                let usuarios = []
+                response.data.Data.map(user => {
+                    let temp = {
+                        value: user.idDB,
+                        label: `${user.id} - ${user.name} ${user.lastName}`
+                    }
+                    usuarios.push(temp)
+                    return true;
                 })
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
+    
+                console.log(usuarios)
+                this.setState({
+                    groupSelect: usuarios
+                })
+                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            })
+                .catch((e) => {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema", "error");
-                }
-                console.log("Error: ", e)
-            });
+                    console.log(e)
+                    // Si hay algún error en el request lo deslogueamos
+                    this.setState({
+                        error: true,
+                        redirect: true
+                    })
+                    if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                        HELPER_FUNCTIONS.logout()
+                    } else {
+                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        swal("Error!", "Hubo un problema", "error");
+                    }
+                    console.log("Error: ", e)
+                });
+        }, 1000);
+    
     }
 
     render() {

@@ -39,18 +39,27 @@ class SelectGroupParent extends Component {
             return groupData
         } else if (this.state.groupsToSend) {
             let temp
-            temp = this.state.groupsToSend.split("|")
-            temp.map(v => {
-                console.log(temp)
-                this.state.groupSelect.map(value => {
-                    if (value.value === v) {
-                        groupData.push(value)
-                    }
-                    return true;
-                })
+            console.log("el que viene: ", this.state.groupsToSend)
+            console.log("El error: ", this.state.groupSelect)
+
+            this.state.groupSelect.map(value => {
+                if (value.value === this.state.groupsToSend.value) {
+                    groupData.push(value)
+                }
                 return true;
             })
-            console.log("dasdadsa: ", groupData);
+            // temp = this.state.groupsToSend.split("|")
+            // temp.map(v => {
+            //     console.log(temp)
+            //     this.state.groupSelect.map(value => {
+            //         if (value.value === v) {
+            //             groupData.push(value)
+            //         }
+            //         return true;
+            //     })
+            //     return true;
+            // })
+            // console.log("dasdadsa: ", groupData);
 
             return groupData
         } else {

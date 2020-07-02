@@ -5,10 +5,10 @@ import Global from '../../Global'
 import swal from 'sweetalert'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 
-class SelectGroup extends Component {
+class SelectGroupParent extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props.defaultValue)
+        console.log("Default: ", this.props)
         this.state = {
             value: "",
             groups: null,
@@ -24,17 +24,56 @@ class SelectGroup extends Component {
         })
     };
 
+    searchDefault() {
+        /**Acá es donde se arma la lógica de los preseleccionados del select en caso de 
+         * querer editar
+         */
+        let groupData = []
+        if (this.state.groupSelect.length > 0 && this.props.defaultValue && this.state.groupsToSend === '') {
+            this.state.groupSelect.map(value => {
+                if (value.value === this.props.defaultValue.id) {
+                    groupData.push(value)
+                }
+                return true;
+            })
+            return groupData
+        } else if (this.state.groupsToSend) {
+            let temp
+            temp = this.state.groupsToSend.split("|")
+            temp.map(v => {
+                console.log(temp)
+                this.state.groupSelect.map(value => {
+                    if (value.value === v) {
+                        groupData.push(value)
+                    }
+                    return true;
+                })
+                return true;
+            })
+            console.log("dasdadsa: ", groupData);
+
+            return groupData
+        } else {
+            return {
+                label: "Seleccionar usuarios...",
+                value: ""
+            }
+        }
+
+
+    }
+
     componentDidMount() {
         /**Acá se cargan las opciones */
         const { defaultValue } = this.props
-        console.log("Default: ", defaultValue.length)
+        console.log("Default: ", defaultValue)
         let usuarios = []
 
         if (defaultValue.length) {
             defaultValue.map(value => {
                 let temp = {
                     value: value.id,
-                    label: `${value.id} - ${value.name}`
+                    label: `${value.name}`
                 }
                 usuarios.push(temp)
                 console.log(value)
@@ -43,7 +82,7 @@ class SelectGroup extends Component {
         } else {
             let temp = {
                 value: defaultValue.id,
-                label: `${defaultValue.id} - ${defaultValue.name}`
+                label: `${defaultValue.name}`
             }
             usuarios.push(temp)
         }
@@ -55,6 +94,7 @@ class SelectGroup extends Component {
 
     render() {
         let options = this.state.groupSelect
+        console.log("Options: ", options)
         this.props.getValue(this.state.groupsToSend)
         return (
             <Select
@@ -66,8 +106,9 @@ class SelectGroup extends Component {
                 closeMenuOnSelect={false}
                 onChange={this.handleInputChange}
                 inputValue={this.state.value}
+                value={this.searchDefault()}
             />
         );
     }
 }
-export default SelectGroup;
+export default SelectGroupParent;

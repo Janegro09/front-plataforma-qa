@@ -496,7 +496,7 @@ export default class GroupsTable extends Component {
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={userSelected.name ? userSelected.name : ''} />
                                             <span className="Label">Parent program</span>
                                             {/* <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} defaultValue={userSelected.parentProgram ? userSelected.parentProgram : ''} /> */}
-                                            <SelectGroupParent getValue={(c) => this.usersAssign = c} data={userSelected} />
+                                            <SelectGroupParent getValue={(c) => this.usersAssign = c} data={userSelected} defaultValue={userSelected ? userSelected : ''} />
                                             <span className="Label">Section</span>
                                             <select onChange={this.handleTurno}>
                                                 <option value="M" selected={userSelected.section === 'M'}>M</option>

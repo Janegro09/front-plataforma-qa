@@ -19,16 +19,15 @@ class SelectGroup extends Component {
 
     handleInputChange = (value) => {
         /**Aca es donde se arma el array a enviar */
-        let concatenada = []
-        concatenada.push(value)
         this.setState({
-            groupsToSend: concatenada
+            groupsToSend: value
         })
     };
 
     componentDidMount() {
         /**Acá se cargan las opciones */
         const { defaultValue } = this.props
+        console.log("Default: ", defaultValue)
         let usuarios = []
         defaultValue.map(value => {
             let temp = {

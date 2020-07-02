@@ -13,7 +13,8 @@ class SelectGroupParent extends Component {
             value: "",
             groups: null,
             groupSelect: [],
-            groupsToSend: ""
+            groupsToSend: "",
+            especifico: null
         };
     }
 
@@ -29,7 +30,7 @@ class SelectGroupParent extends Component {
          * querer editar
          */
         let groupData = []
-        if (this.state.groupSelect.length > 0 && this.props.defaultValue && this.state.groupsToSend === '') {
+        if (this.state.groupSelect.length > 0 && this.props.defaultValue && this.state.groupsToSend === '' && this.props.data) {
             this.state.groupSelect.map(value => {
                 console.log("value: ", value)
                 console.log("la prop: ", this.props.defaultValue)
@@ -39,7 +40,19 @@ class SelectGroupParent extends Component {
                 return true;
             })
 
-            // Acá tengo que meter el especifico
+            // Acá tengo que meter el especifico, debo lograr este resultado (conviene mandarlo como prop?)
+            // groupData.push({
+            //     label: "test",
+            //     value: "5efd75db4c5dc9339f273a28"
+            // });
+
+            if (this.state.especifico) {
+                groupData.push({
+                    label: this.state.especifico.label,
+                    value: this.state.especifico.value
+                });
+            }
+
             return groupData
         } else if (this.state.groupsToSend) {
             let temp
@@ -92,6 +105,44 @@ class SelectGroupParent extends Component {
         this.setState({
             groupSelect: usuarios
         })
+
+
+        if (this.props.data) {
+            // Request para especifico
+            let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+            let token = tokenUser
+            let bearer = `Bearer ${token}`
+    
+            console.log("EL QUE TENGOOO: ", this.props.data)
+            
+            axios.get(Global.getAllPrograms+'/'+this.props.data.programParent, { headers: { Authorization: bearer } }).then(response => {
+                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                console.log("ESPECIFICOOOO: ", response.data.Data)
+                // this.setState({
+                //     allPrograms: response.data.Data,
+                //     ok: true
+                // })
+                // groupData.push({
+                //     label: "test",
+                //     value: "5efd75db4c5dc9339f273a28"
+                // });
+    
+                this.setState({
+                    especifico: {
+                        label: response.data.Data[0].name,
+                        value: response.data.Data[0].id
+                    }
+                })
+            })
+                .catch((e) => {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    // this.setState({
+                    //     allPrograms: [],
+                    //     ok: true
+                    // })
+                    console.log("Error: ", e)
+                });
+        }
     }
 
     render() {

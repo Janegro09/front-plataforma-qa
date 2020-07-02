@@ -18,108 +18,61 @@ class SelectGroup extends Component {
     }
 
     handleInputChange = (value) => {
-        let contacatenada = ""
+        /**Aca es donde se arma el array a enviar */
+        let contacatenada = []
 
         if (value !== null) {
             value.map(v => {
-                if (contacatenada === "") {
-                    contacatenada += v.value
-                } else {
-                    contacatenada += `|${v.value}`
-                }
+                contacatenada.push(v.value)
                 return true;
             })
         }
 
+        console.log("Concatenada: ", contacatenada)
         this.setState({
             groupsToSend: contacatenada
         })
     };
 
-    searchDefault() {
-        let groupData = []
-        if (this.state.groupSelect.length > 0 && this.props.defaultValue && this.state.groupsToSend === '') {
-            this.props.defaultValue.map(v => {
-                this.state.groupSelect.map(value => {
-                    if (value.value === v.idDB) {
-                        groupData.push(value)
-                    }
-                    return true;
-                })
-                return true;
-            })
-            return groupData
-        } else if (this.state.groupsToSend) {
-            let temp
-            temp = this.state.groupsToSend.split("|")
-            temp.map(v => {
-                console.log(temp)
-                this.state.groupSelect.map(value => {
-                    if (value.value === v) {
-                        groupData.push(value)
-                    }
-                    return true;
-                })
-                return true;
-            })
-            console.log("dasdadsa: ", groupData);
-
-            return groupData
-        } else {
-            return {
-                label: "Seleccionar usuarios...",
-                value: ""
-            }
-        }
-
-
-    }
-
     componentDidMount() {
-        console.log("Editar lanzado")
-        console.log(this.props)
-        // const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-        // const token = tokenUser
-        // const bearer = `Bearer ${token}`
-        // axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
-        //     let usuarios = []
-        //     response.data.Data.map(user => {
-        //         let temp = {
-        //             value: user.idDB,
-        //             label: `${user.id} - ${user.name} ${user.lastName}`
-        //         }
-        //         usuarios.push(temp)
-        //         return true;
-        //     })
+        /**Acá se cargan las opciones */
 
-        //     console.log(usuarios)
-        //     this.setState({
-        //         groupSelect: usuarios
-        //     })
-        //     sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-        // })
-        //     .catch((e) => {
-        //         sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-        //         console.log(e)
-        //         // Si hay algún error en el request lo deslogueamos
-        //         this.setState({
-        //             error: true,
-        //             redirect: true
-        //         })
-        //         if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-        //             HELPER_FUNCTIONS.logout()
-        //         } else {
-        //             sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-        //             swal("Error!", "Hubo un problema", "error");
-        //         }
-        //         console.log("Error: ", e)
-        //     });
+
+        // setTimeout(() => {
+            let usuarios = []
+            let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+            let token = tokenUser
+            let bearer = `Bearer ${token}`
+            axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
+                const { Data } = response.data
+                console.log("DATA: ", Data)
+                Data.map(grupo => {
+                    let temp = {
+                        value: grupo.id,
+                        label: `${grupo.id} - ${grupo.name}`
+                    }
+                    usuarios.push(temp)
+                    // console.log(value)
+                    return true;
+                })
+                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            })
+                .catch((e) => {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    console.log("Error: ", e)
+                });
+
+                this.setState({
+                    groupSelect: usuarios
+                })
+        // }, 2000);
+
+        
     }
 
     render() {
         let options = this.state.groupSelect
-        console.log("groups to send: ", this.props.defaultValue)
-        this.props.getValue(this.state.groupsToSend.split('|'))
+        this.props.getValue(this.state.groupsToSend)
         return (
             <Select
                 isMulti
@@ -130,7 +83,6 @@ class SelectGroup extends Component {
                 closeMenuOnSelect={false}
                 onChange={this.handleInputChange}
                 inputValue={this.state.value}
-                value={this.searchDefault()}
             />
         );
     }

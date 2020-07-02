@@ -488,7 +488,7 @@ export default class GroupsTable extends Component {
                                 </div>
                             }
 
-                            {this.state.editProgram &&
+                            {this.state.editProgram && this.state.ok &&
                                 <div>
                                     <h4>Editar programa</h4>
                                     {/* <CreateProgramsGroupComponent /> */}
@@ -504,7 +504,7 @@ export default class GroupsTable extends Component {
                                                 <option value="M" selected={userSelected.section === 'M'}>M</option>
                                                 <option value="P" selected={userSelected.section === 'P'}>P</option>
                                             </select>
-                                            <SelectGroupEdit getValue={(c) => this.usersAssign = c} data={userSelected} />
+                                            <SelectGroupEdit getValue={(c) => this.usersAssign = c} defaultValue={this.state.gruposDeProgramas ? this.state.gruposDeProgramas : ''} />
                                             <span className="Label">Description</span>
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} defaultValue={userSelected.description ? userSelected.description : ''} />
                                             <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Editar Programas</button>

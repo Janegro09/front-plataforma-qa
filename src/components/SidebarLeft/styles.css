@@ -215,9 +215,9 @@ hr {
   border-top: 1px solid rgba(171, 171, 171, 0.1);
 }
 
-li:hover {
+/* li:hover {
   background: -webkit-linear-gradient(left, rgba(41, 184, 229, 0.13) 0%, rgba(188, 224, 238, 0) 100%);
-}
+} */
 
 .active>svg {
   color: white;
@@ -234,4 +234,103 @@ li:hover {
   left: 0;
   padding: 13px;
   font-size: 10px;
+}
+
+.BtnInProgramas {
+  display: none;
+}
+
+@media screen and (max-width: 700px) {
+  .table-users {
+    overflow: scroll !important;
+  }  
+  .side__bar_container {
+    width: 100vw;
+    height: 57px;
+    bottom: 0;
+    position: fixed;
+    z-index: 999;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  }
+  .parent__menu_holder {
+    display: flex;
+    justify-content: space-evenly;
+    list-style: none;
+  }
+  .parent__menu_holder>li {
+    position: relative;
+    color: #fff;
+    font-size: 27px;
+    display: flex;
+    width: 16vw;
+    flex-direction: column;
+    padding: 9px;
+    text-align: center;
+    transition: all 0.15s ease-in;
+  }
+  .parent__menu_holder>li:hover::after {
+    content: '';
+    position: absolute;
+    height: 1px;
+    width: 100%;
+    background-color: #4b9cba;
+    top: 0;
+    left: 0;
+  }
+  .uploadNomina {
+    display: none !important;
+  }
+  .section-content {
+    padding-top: 53px;
+    padding: 0px !important;
+    margin: 0 !important;
+  }
+
+
+
+
+  .table-users>h4 {
+    display: none;
+  }
+  .BtnInProgramas {
+    width: 100vw;
+    height: 48px;
+    position: fixed;
+    color: white;
+    bottom: 57px;
+    background-color: #333333;
+    display: flex;
+    justify-content: space-evenly;
+    z-index: 1;
+  }
+
+  .BtnInProgramas > button > a {
+    color: #747474;
+  }
+  
+  .active>a {
+    color: white !important
+  ;
+  }
+
+
+  .BtnInProgramas > button:hover {
+    color: white;
+  }
+
+  .BtnInProgramas > hr {
+    height: 71%;
+    color: white;
+    width: 1px;
+    background-color: #747474;
+  }
+  .side__bar {
+    z-index: 2;
+  }
+
+  body {
+    overflow: hidden;
+  }
+  
+  
 }

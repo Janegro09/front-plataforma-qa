@@ -413,6 +413,8 @@ export default class GroupsTable extends Component {
                     <img src={Logo} alt="Logo" title="Logo" className="logoFixed" />
                 </div>
                 <SiderBarLeft />
+               
+                <div className="BtnInProgramas"> <button><a href="#programasSection">Programas</a></button> <hr></hr><button><a href="#gruposProgSection">Grupos</a></button></div>
                 {!this.state.allPrograms &&
                     <React.Fragment>
                         {HELPER_FUNCTIONS.backgroundLoading()}
@@ -421,7 +423,7 @@ export default class GroupsTable extends Component {
 
                 <div className="section-content doble-section">
                     {!this.state.createProgram &&
-                        <div className="table-users ">
+                        <div id="programasSection" className="table-users ">
                             <h4 className="marginBotton15">Programas</h4>
                             {!this.state.editProgram &&
                                 <div>
@@ -614,12 +616,12 @@ export default class GroupsTable extends Component {
 
 
                     <hr></hr>
-                    <div className="table-users">
+                    <div className="table-users" id="gruposProgSection">
                         <h4 className="marginBotton15">Grupos</h4>
-                        <div>
+                        <div >
                             {this.state.ok &&
 
-                                <ProgramsGroupComponent ok={this.state.ok} />
+                                <ProgramsGroupComponent  ok={this.state.ok} />
                             }</div>
                     </div>
                 </div>

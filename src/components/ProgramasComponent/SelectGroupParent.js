@@ -27,17 +27,26 @@ class SelectGroup extends Component {
     componentDidMount() {
         /**Acá se cargan las opciones */
         const { defaultValue } = this.props
-        console.log("Default: ", defaultValue)
+        console.log("Default: ", defaultValue.length)
         let usuarios = []
-        defaultValue.map(value => {
+
+        if (defaultValue.length) {
+            defaultValue.map(value => {
+                let temp = {
+                    value: value.id,
+                    label: `${value.id} - ${value.name}`
+                }
+                usuarios.push(temp)
+                console.log(value)
+                return true;
+            })
+        } else {
             let temp = {
-                value: value.id,
-                label: `${value.id} - ${value.name}`
+                value: defaultValue.id,
+                label: `${defaultValue.id} - ${defaultValue.name}`
             }
             usuarios.push(temp)
-            console.log(value)
-            return true;
-        })
+        }
 
         this.setState({
             groupSelect: usuarios

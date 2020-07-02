@@ -15,6 +15,7 @@ import Logo from '../Home/logo_background.png';
 import SelectGroup from './SelectGroup'
 import SelectGroupCreate from './SelectGroupCreate'
 import SelectGroupEdit from './SelectGroupEdit'
+import SelectGroupParent from './SelectGroupParent'
 
 import PublishIcon from '@material-ui/icons/Publish';
 
@@ -495,7 +496,7 @@ export default class GroupsTable extends Component {
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={userSelected.name ? userSelected.name : ''} />
                                             <span className="Label">Parent program</span>
                                             {/* <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} defaultValue={userSelected.parentProgram ? userSelected.parentProgram : ''} /> */}
-                                            <SelectGroupEdit getValue={(c) => this.usersAssign = c} data={userSelected} />
+                                            <SelectGroupParent getValue={(c) => this.usersAssign = c} data={userSelected} />
                                             <span className="Label">Section</span>
                                             <select onChange={this.handleTurno}>
                                                 <option value="M" selected={userSelected.section === 'M'}>M</option>
@@ -532,7 +533,7 @@ export default class GroupsTable extends Component {
                                     <span className="Label">Nombre</span>
                                     <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />
                                     <span className="Label">Parent program</span>
-                                    <SelectGroupCreate getValue={(c) => this.parentProgram = c} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''} />
+                                    <SelectGroupParent getValue={(c) => this.parentProgram = c} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''} />
                                     <span className="Label">Section</span>
                                     <select onChange={this.handleTurno}>
                                         <option value="M">M</option>

@@ -34,7 +34,7 @@ export default class Home extends Component {
             <div>
 
                 <div className="logoBackground">
-                    <img src={Logo} alt="Logo" title="Logo" className="logoFixed" />
+                    <img src={Logo} alt="" title="Logo" className="logoFixed" />
                 </div>
                 <UserAdminHeader />
                 <div className="header">

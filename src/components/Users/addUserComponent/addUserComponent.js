@@ -148,7 +148,7 @@ export default class addUserComponent extends Component {
                 </div>
 
                 <div className="logoBackground">
-                    <img src={Logo} alt="Logo" title="Logo" className="logoFixed" />
+                    <img src={Logo} alt="" title="Logo" className="logoFixed" />
                 </div>
 
                 <form onSubmit={this.addUser} className="inputsEditUser addUserPadding">

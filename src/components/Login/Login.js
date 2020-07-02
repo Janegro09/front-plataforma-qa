@@ -99,7 +99,7 @@ export default class Login extends Component {
             <div className="container">
                 <div id="login" className="signin-card">
                     <div className="logo-image">
-                        <img src={Logo} alt="Logo" title="Logo" className="Logo" />
+                        <img src={Logo} alt="" title="Logo" className="Logo" />
                     </div>
                     <form onSubmit={this.login}>
                         <div id="form-login-username" className="form-group">

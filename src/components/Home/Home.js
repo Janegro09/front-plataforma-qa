@@ -34,7 +34,7 @@ export default class UsersComponent extends Component {
                 </div>
 
                 <div className="logoBackground">
-                    <img src={Logo} alt="Logo" title="Logo" className="Logo2" />
+                    <img src={Logo} alt="" title="" className="Logo2" />
                 </div>
 
                 {/* {HELPER_FUNCTIONS.checkPermission("POST|users/passchange/:id") && userData && */}

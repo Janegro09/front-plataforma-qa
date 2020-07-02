@@ -159,7 +159,7 @@ export default class editUserComponent extends Component {
                 </div>
 
                 <div className="logoBackground">
-                    <img src={Logo} alt="Logo" title="Logo" className="logoFixed" />
+                    <img src={Logo} alt="" title="Logo" className="logoFixed" />
                 </div>
 
 

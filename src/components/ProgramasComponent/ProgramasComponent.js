@@ -41,7 +41,11 @@ export default class GroupsTable extends Component {
             ok: false,
             okProgramas: false,
             buscando: false,
-            gruposDeProgramas: null
+            gruposDeProgramas: null,
+            specificGroup: null,
+            componenteSelectGrupos: null,
+            componenteSelectUsuarios: null,
+            programaPadre: null
         }
 
         this.buscar = this.buscar.bind(this)
@@ -64,8 +68,69 @@ export default class GroupsTable extends Component {
         })
     }
 
+    desasignarGrupo = (idGrupo) => {
+        console.log(this.state.specificGroup[0].id)
+        let idPrograma = this.state.specificGroup[0].id
+
+
+        let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let token = tokenUser
+        let bearer = `Bearer ${token}`
+        axios.delete(Global.getAllPrograms + '/' + idPrograma + '/' + idGrupo, { headers: { Authorization: bearer } }).then(response => {
+            const respuesta = response.data.Success
+            if (respuesta) {
+                swal("Genial!", "Grupo borrado correctamente!", "success");
+            } else {
+                swal("Atención!", "No se pudo borrar!", "info");
+            }
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            console.log("GRUPO BORRADO: ", respuesta)
+        })
+            .catch((e) => {
+                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                swal("Atención!", "No se pudo borrar!", "info");
+                console.log("Error: ", e)
+            });
+
+    }
+
     editProgram(event, userInfo) {
         // Cargo en el estado la información del usuario seleccionado
+        let id = userInfo.id
+        let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let token = tokenUser
+        let bearer = `Bearer ${token}`
+        axios.get(Global.getAllPrograms + '/' + id, { headers: { Authorization: bearer } }).then(response => {
+            const { Data } = response.data
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+
+            let componente2;
+
+            let programaPadre = this.state.specificGroup[0].programParent
+            
+            let componente = <SelectGroupEdit end={() => {
+                componente2 = <SelectGroupParent defaultValue={this.state.specificGroup[0].programParent} getValue={(data) => {
+                    console.log("La data que viene: ", data)
+                    // this.setState({
+                    //     programaPadre: data.value
+                    // })
+                }} />
+                this.setState({
+                    componenteSelectGrupos: componente,
+                    componenteSelectUsuarios: componente2
+                })
+
+            }} />
+            this.setState({
+                specificGroup: Data,
+                componenteSelectGrupos: componente,
+                componenteSelectUsuarios: componente2
+            })
+        })
+            .catch((e) => {
+                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                console.log("Error: ", e)
+            });
         event.preventDefault()
         this.setState({
             editProgram: true,
@@ -240,10 +305,13 @@ export default class GroupsTable extends Component {
         let bearer = `Bearer ${token}`
         axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+
             this.setState({
                 allPrograms: response.data.Data,
                 ok: true
             })
+
+
         })
             .catch((e) => {
                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
@@ -384,7 +452,7 @@ export default class GroupsTable extends Component {
                     <img src={Logo} alt="" title="Logo" className="logoFixed" />
                 </div>
                 <SiderBarLeft />
-               
+
                 <div className="BtnInProgramas"> <button><a href="#programasSection">Programas</a></button> <hr></hr><button><a href="#gruposProgSection">Grupos</a></button></div>
                 {!this.state.allPrograms &&
                     <React.Fragment>
@@ -498,13 +566,34 @@ export default class GroupsTable extends Component {
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={userSelected.name ? userSelected.name : ''} />
                                             <span className="Label">Parent program</span>
                                             {/* <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} defaultValue={userSelected.parentProgram ? userSelected.parentProgram : ''} /> */}
-                                            <SelectGroupParent getValue={(c) => this.usersAssign = c} data={userSelected} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''} />
+                                            {this.state.componenteSelectUsuarios !== null &&
+
+                                                this.state.componenteSelectUsuarios
+                                            }
                                             <span className="Label">Section</span>
                                             <select onChange={this.handleTurno}>
                                                 <option value="M" selected={userSelected.section === 'M'}>M</option>
                                                 <option value="P" selected={userSelected.section === 'P'}>P</option>
                                             </select>
-                                            <SelectGroupEdit getValue={(c) => this.usersAssign = c} defaultValue={this.state.gruposDeProgramas ? this.state.gruposDeProgramas : ''} />
+                                            <div>
+                                                {this.state.specificGroup && this.state.componenteSelectGrupos !== null &&
+                                                    this.state.specificGroup[0].assignedGroups.map(grupo => {
+                                                        return (
+                                                            <div>
+                                                                <p>{grupo.name}</p>
+                                                                <button onClick={(e) => {
+                                                                    e.preventDefault()
+                                                                    this.desasignarGrupo(grupo.id)
+                                                                }}>x</button>
+                                                            </div>
+                                                        )
+                                                    })
+                                                    // <p>Nombre</p>
+                                                }
+                                            </div>
+                                            {this.state.componenteSelectGrupos !== null &&
+                                                this.state.componenteSelectGrupos
+                                            }
                                             <span className="Label">Description</span>
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} defaultValue={userSelected.description ? userSelected.description : ''} />
                                             <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Editar Programas</button>

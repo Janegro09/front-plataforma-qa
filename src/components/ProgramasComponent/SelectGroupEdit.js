@@ -8,7 +8,6 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 class SelectGroup extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props.defaultValue)
         this.state = {
             value: "",
             groups: null,
@@ -28,15 +27,12 @@ class SelectGroup extends Component {
             })
         }
 
-        console.log("Concatenada: ", contacatenada)
         this.setState({
             groupsToSend: contacatenada
         })
     };
 
     componentDidMount() {
-        setTimeout(() => {
-            
             let usuarios = []
             let tokenUser = JSON.parse(sessionStorage.getItem("token"))
             let token = tokenUser
@@ -49,11 +45,11 @@ class SelectGroup extends Component {
                         label: `${grupo.id} - ${grupo.name}`
                     }
                     usuarios.push(temp)
-                    // console.log(value)
                     return true;
                 })
                 HELPER_FUNCTIONS.backgroundLoading()
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                
             })
                 .catch((e) => {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
@@ -63,26 +59,24 @@ class SelectGroup extends Component {
                 this.setState({
                     groupSelect: usuarios
                 })
-        }, 1000);
-        // }, 2000);
-
-        
     }
 
     render() {
         let options = this.state.groupSelect
-        this.props.getValue(this.state.groupsToSend)
+        this.props.end()
+        // this.props.getValue(this.state.groupsToSend)
         return (
-            <Select
-                isMulti
-                name="colors"
-                options={options}
-                className="basic-multi-select"
-                classNamePrefix="select"
-                closeMenuOnSelect={false}
-                onChange={this.handleInputChange}
-                inputValue={this.state.value}
-            />
+
+                <Select
+                    isMulti
+                    name="colors"
+                    options={options}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    closeMenuOnSelect={false}
+                    onChange={this.handleInputChange}
+                    inputValue={this.state.value}
+                />
         );
     }
 }

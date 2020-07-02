@@ -8,7 +8,6 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 class SelectGroupParent extends Component {
     constructor(props) {
         super(props);
-        console.log("Default: ", this.props)
         this.state = {
             value: "",
             groups: null,
@@ -25,124 +24,62 @@ class SelectGroupParent extends Component {
         })
     };
 
-    searchDefault() {
+    searchDefault = (value = undefined) => {
         /**Acá es donde se arma la lógica de los preseleccionados del select en caso de 
          * querer editar
          */
-        let groupData = []
-        if (this.state.groupSelect.length > 0 && this.props.defaultValue && this.state.groupsToSend === '' && this.props.data) {
-            this.state.groupSelect.map(value => {
-                console.log("value: ", value)
-                console.log("la prop: ", this.props.defaultValue)
-                if (value.value === this.props.defaultValue.id) {
-                    groupData.push(value)
+        console.log("El value: ", value)
+        let returnData = {
+            label: "Selecciona...",
+            value: ''
+        }
+        
+        if (this.state.especifico) {
+            this.state.especifico.map(e => {
+                if (e.value === this.props.defaultValue) {
+                    returnData = e
                 }
-                return true;
             })
-
-            // Acá tengo que meter el especifico, debo lograr este resultado (conviene mandarlo como prop?)
-            // groupData.push({
-            //     label: "test",
-            //     value: "5efd75db4c5dc9339f273a28"
-            // });
-
-            if (this.state.especifico) {
-                groupData.push({
-                    label: this.state.especifico.label,
-                    value: this.state.especifico.value
-                });
-            }
-
-            return groupData
-        } else if (this.state.groupsToSend) {
-            let temp
-            console.log("el que viene: ", this.state.groupsToSend)
-            console.log("El error: ", this.state.groupSelect)
-
-            this.state.groupSelect.map(value => {
-                console.log("value: ", value)
-                if (value.value === this.state.groupsToSend.value) {
-                    groupData.push(value)
-                }
-                return true;
-            })
-
-            return groupData
-        } else {
-            return {
-                label: "Seleccionar usuarios...",
-                value: ""
-            }
         }
 
+        if (value) {
+            this.props.getData(value);
+        }
+
+        return returnData
 
     }
 
     componentDidMount() {
         /**Acá se cargan las opciones */
-        const { defaultValue } = this.props
-        console.log("Default: ", defaultValue)
-        let usuarios = []
+        let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let token = tokenUser
+        let bearer = `Bearer ${token}`
+        
+        axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
-        if (defaultValue.length) {
-            defaultValue.map(value => {
+            let arrayData = []
+            response.data.Data.map(value => {
                 let temp = {
-                    value: value.id,
-                    label: `${value.name}`
+                    label: value.name,
+                    value: value.id
                 }
-                usuarios.push(temp)
-                console.log(value)
-                return true;
+                arrayData.push(temp)
             })
-        } else {
-            let temp = {
-                value: defaultValue.id,
-                label: `${defaultValue.name}`
-            }
-            usuarios.push(temp)
-        }
 
-        this.setState({
-            groupSelect: usuarios
+            this.setState({
+                especifico: arrayData
+            })
         })
-
-
-        if (this.props.data) {
-            // Request para especifico
-            let tokenUser = JSON.parse(sessionStorage.getItem("token"))
-            let token = tokenUser
-            let bearer = `Bearer ${token}`
-    
-            console.log("EL QUE TENGOOO: ", this.props.data)
-            
-            axios.get(Global.getAllPrograms+'/'+this.props.data.programParent, { headers: { Authorization: bearer } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                console.log("ESPECIFICOOOO: ", response.data.Data)
+            .catch((e) => {
+                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 // this.setState({
-                //     allPrograms: response.data.Data,
+                //     allPrograms: [],
                 //     ok: true
                 // })
-                // groupData.push({
-                //     label: "test",
-                //     value: "5efd75db4c5dc9339f273a28"
-                // });
-    
-                this.setState({
-                    especifico: {
-                        label: response.data.Data[0].name,
-                        value: response.data.Data[0].id
-                    }
-                })
-            })
-                .catch((e) => {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    // this.setState({
-                    //     allPrograms: [],
-                    //     ok: true
-                    // })
-                    console.log("Error: ", e)
-                });
-        }
+                console.log("Error: ", e)
+            });
     }
 
     render() {
@@ -150,8 +87,8 @@ class SelectGroupParent extends Component {
          * 
          * en searchdefault debo buscar el especifico
          */
-        let options = this.state.groupSelect
-        console.log("Options: ", this.state)
+        let options = this.state.especifico
+        console.log("LAS PROPS: ", this.props.defaultValue.programParent)
         this.props.getValue(this.state.groupsToSend)
         return (
             <Select

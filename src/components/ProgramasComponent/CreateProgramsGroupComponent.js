@@ -24,10 +24,11 @@ export default class CreateProgramsGroupComponent extends Component {
             config
         ).then(response => {
             sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-            // this.setState({
-            //     redirect: true
-            // })
-            swal("Grupo de programas creado!", "Ya se encuentra registrado", "success");
+            swal("Grupo de programas creado!", "Ya se encuentra registrado", "success").then(value => {
+                if (value) {     
+                    window.location.reload(window.location.href);
+                }
+            })
         }).catch(e => {
             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                 HELPER_FUNCTIONS.logout()

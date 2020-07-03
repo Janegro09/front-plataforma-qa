@@ -115,7 +115,7 @@ export default class EditProgramsGroupComponent extends Component {
                             <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} defaultValue={edit.description ? edit.description : ''} />
                             <span className="Label">Usuarios asignados</span>
                             {/* enviar defaultValue={user.group ? user.group : ''}  */}
-                            <SelectGroup getValue={(c) => this.usersAssign = c} defaultValue={specific ? specific : ''} />
+                            <SelectGroup getValue={(c) => this.usersAssign = c} defaultValue={specific ? specific : ''} idGroup={edit.id} />
                             <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Editar Grupo de Programas</button>
                         </form>
                     </div>

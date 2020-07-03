@@ -99,12 +99,25 @@ export default class ProgramsGroupComponent extends Component {
                         })
                         swal("El grupo ha sido eliminado!", {
                             icon: "success",
+                        }).then(value => {
+                            if (value) {
+                                window.location.reload(window.location.href);
+                            }
                         });
-                    })
+                    }).catch(e => {
+                        // Si hay algún error en el request lo deslogueamos
+                        if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                            HELPER_FUNCTIONS.logout()
+                        } else {
+                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                            swal("Error!", "Hubo un problema", "error");
+                        }
+                        console.log("Error: ", e)
+                    });
                 } else {
                     swal("No has cambiado nada!");
                 }
-            });
+            })
 
     }
 

@@ -40,39 +40,26 @@ class SelectGroup extends Component {
     };
 
     searchDefault() {
-        let groupData = []
-        if (this.state.groupSelect.length > 0 && this.props.defaultValue && this.state.groupsToSend === '') {
-            this.props.defaultValue.map(v => {
-                this.state.groupSelect.map(value => {
-                    if (value.value === v.idDB) {
-                        groupData.push(value)
+        let { allUsers } = this.state
+        let { defaultValue } = this.props
+
+        let defaultUsuarios = []
+
+        if (defaultValue) {
+            allUsers.map(user => {
+                for (let i = 0; i < defaultValue.length; i++) {
+                    if (user.idDB === defaultValue[i].idDB) {
+                        defaultUsuarios.push(user);
                     }
-                    return true;
-                })
-                return true;
-            })
-            return groupData
-        } else if (this.state.groupsToSend) {
-            let temp
-            temp = this.state.groupsToSend.split("|")
-            temp.map(v => {
-                this.state.groupSelect.map(value => {
-                    if (value.value === v) {
-                        groupData.push(value)
-                    }
-                    return true;
-                })
+                }
+
                 return true;
             })
 
-            return groupData
-        } else {
-            return {
-                label: "Seleccionar usuarios...",
-                value: ""
-            }
+            this.setState({
+                usuariosSeleccionados: defaultUsuarios
+            })
         }
-
 
     }
 
@@ -86,6 +73,7 @@ class SelectGroup extends Component {
 
     quitarUsuario = (usuario) => {
         let { usuariosSeleccionados } = this.state
+        let { idGroup } = this.props
         let newArray = []
         usuariosSeleccionados.map(user => {
             if (user.id !== usuario.id) {
@@ -93,6 +81,33 @@ class SelectGroup extends Component {
             }
             return true;
         })
+
+        if (idGroup) {
+            let token = JSON.parse(sessionStorage.getItem('token'))
+            const config = {
+                headers: { Authorization: `Bearer ${token}` }
+            };
+
+            axios.delete(
+                Global.getAllProgramsGroups + '/' + idGroup + '/' + usuario.idDB,
+                config
+            ).then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                // this.setState({
+                //     redirect: true
+                // })
+                swal("Genial!", "Usuario desasignado", "success");
+            }).catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
+                }
+                console.log("Error: ", e)
+            });
+        }
+
         this.setState({
             usuariosSeleccionados: newArray
         })
@@ -166,21 +181,7 @@ class SelectGroup extends Component {
                     loading: false
                 })
 
-
-                // console.log(usuarios)
-                // response.data.Data.map(user => {
-                //     let temp = {
-                //         value: user.idDB,
-                //         label: `${user.id} - ${user.name} ${user.lastName}`
-                //     }
-                //     usuarios.push(temp)
-                //     return true;
-                // })
-
-                // this.setState({
-                //     groupSelect: usuarios,
-                //     loading: false
-                // })
+                this.searchDefault()
 
             })
                 .catch((e) => {

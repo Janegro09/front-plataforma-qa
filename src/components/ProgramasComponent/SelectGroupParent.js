@@ -48,6 +48,10 @@ class SelectGroupParent extends Component {
 
     }
 
+    componentWillUnmount() {
+        window.location.href = document.location.href;
+    }
+
     componentDidMount() {
         /**Acá se cargan las opciones */
         let tokenUser = JSON.parse(sessionStorage.getItem("token"))

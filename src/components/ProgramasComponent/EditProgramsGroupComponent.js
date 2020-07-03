@@ -10,7 +10,8 @@ export default class EditProgramsGroupComponent extends Component {
         super(props)
         this.state = {
             specific: [],
-            ok: false
+            ok: false,
+            loading: false
         }
     }
     addUser = (event) => {
@@ -25,20 +26,26 @@ export default class EditProgramsGroupComponent extends Component {
             usersAssign: this.usersAssign
         }
 
+        this.setState({
+            loading: true
+        })
         axios.post(
             Global.getAllProgramsGroups + '/new',
             bodyParameters,
             config
         ).then(response => {
             sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-            // this.setState({
-            //     redirect: true
-            // })
+            this.setState({
+                loading: false
+            })
             swal("Grupo de programas creado!", "Ya se encuentra registrado", "success");
         }).catch(e => {
             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                 HELPER_FUNCTIONS.logout()
             } else {
+                this.setState({
+                    loading: false
+                })
                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 swal("Error!", "Hubo un problema", "error");
             }
@@ -49,17 +56,20 @@ export default class EditProgramsGroupComponent extends Component {
     }
 
     componentDidMount() {
-        // console.log("Componente de prueba", this.props.edit.id)
         setTimeout(() => {
             const id = this.props.edit.id
             const tokenUser = JSON.parse(sessionStorage.getItem("token"))
             const token = tokenUser
             const bearer = `Bearer ${token}`
+            this.setState({
+                loading: true
+            })
             axios.get(Global.getAllProgramsGroups + '/' + id, { headers: { Authorization: bearer } }).then(response => {
                 if (response.data.Data[0].assignedUsers.length > 0) {
                     this.setState({
                         specific: response.data.Data[0].assignedUsers,
-                        ok: true
+                        ok: true,
+                        loading: false
                     })
                 }
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
@@ -72,7 +82,8 @@ export default class EditProgramsGroupComponent extends Component {
                         this.setState({
                             error: true,
                             redirect: true,
-                            ok: true
+                            ok: true,
+                            loading: false
                         })
                         sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                         swal("Error!", "Hubo un problema", "error");
@@ -86,6 +97,9 @@ export default class EditProgramsGroupComponent extends Component {
         const { specific } = this.state
         return (
             <div>
+                {this.state.loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
                 {this.state.ok && HELPER_FUNCTIONS.checkPermission("GET|programs/groups/:id") &&
                     <div className="table-users-edit">
                         <form onSubmit={this.addUser} className="inputsEditUser addUserPadding">

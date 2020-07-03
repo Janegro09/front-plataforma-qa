@@ -55,7 +55,6 @@ export default class GroupsTable extends Component {
         this.addUser = this.addUser.bind(this)
         this.changePassword = this.changePassword.bind(this)
         this.deleteProgram = this.deleteProgram.bind(this)
-        this.logout = this.logout.bind(this)
         this.getUsersPage = this.getUsersPage.bind(this)
         this.createProgram = this.createProgram.bind(this)
     }
@@ -67,7 +66,6 @@ export default class GroupsTable extends Component {
     }
 
     desasignarGrupo = (idGrupo) => {
-        console.log(this.state.specificGroup[0].id)
         let idPrograma = this.state.specificGroup[0].id
         let tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
@@ -112,8 +110,8 @@ export default class GroupsTable extends Component {
             loading: true
         })
         axios.get(Global.getAllPrograms + '/' + id, { headers: { Authorization: bearer } }).then(response => {
-            const { Data } = response.data
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            const { Data } = response.data
             this.setState({
                 loading: false
             })
@@ -121,16 +119,16 @@ export default class GroupsTable extends Component {
             let componente = <SelectGroupEdit end={() => {
                 if (this.state.specificGroup && this.state.specificGroup.length > 0) {
                     let idParentProgram = this.state.specificGroup[0].programParent;
-                    componente2 = <SelectGroupParent defaultValue={idParentProgram} getValue={(d) => {
+                        componente2 = <SelectGroupParent defaultValue={idParentProgram} getValue={(d) => {
+                            this.setState({
+                                programEditReq: {
+                                    parentProgram: d.value
+                                }
+                            })
+                        }} />
                         this.setState({
-                            programEditReq: {
-                                parentProgram: d.value
-                            }
+                            componenteSelectUsuarios: componente2
                         })
-                    }} />
-                    this.setState({
-                        componenteSelectUsuarios: componente2
-                    })
                 }
 
             }} getValue={(d) => {
@@ -151,10 +149,10 @@ export default class GroupsTable extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
@@ -188,10 +186,10 @@ export default class GroupsTable extends Component {
                         loading: true
                     })
                     axios.delete(Global.getAllPrograms + '/' + userInfo.id, config).then(response => {
+                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                         this.setState({
                             loading: false
                         })
-                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                         if (response.data.Success) {
                             swal("Genial! el programa se ha eliminado correctamente", {
                                 icon: "success",
@@ -204,10 +202,10 @@ export default class GroupsTable extends Component {
                         if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                             HELPER_FUNCTIONS.logout()
                         } else {
+                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                             this.setState({
                                 loading: false
                             })
-                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                             swal("Error!", "Hubo un problema al borrar el programa", "error");
                         }
                         console.log("Error: ", e)
@@ -233,13 +231,6 @@ export default class GroupsTable extends Component {
         this.setState({
             changePassword: true
         })
-    }
-
-    logout() {
-        sessionStorage.setItem("userData", '')
-        sessionStorage.setItem("token", '')
-        sessionStorage.clear()
-        this.setState({ redirect: true })
     }
 
     getUsersPage(page, allPrograms) {
@@ -283,7 +274,6 @@ export default class GroupsTable extends Component {
             }
         }
 
-        console.log(dataSend)
         let id = this.state.specificGroup[0].id || false
 
         let tokenUser = JSON.parse(sessionStorage.getItem("token"))

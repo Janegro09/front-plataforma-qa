@@ -8,6 +8,7 @@ export const HELPER_FUNCTIONS = {
         sessionStorage.setItem("userData", '')
         sessionStorage.setItem("token", '')
         sessionStorage.clear()
+        // window.location.href = document.location.origin;
         return (<Redirect to='/' />)
     },
     checkPermissionGroup: (grupo) => {

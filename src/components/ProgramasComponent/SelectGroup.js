@@ -12,7 +12,8 @@ class SelectGroup extends Component {
             value: "",
             groups: null,
             groupSelect: [],
-            groupsToSend: ""
+            groupsToSend: "",
+            loading: false
         };
     }
 
@@ -77,6 +78,9 @@ class SelectGroup extends Component {
             const tokenUser = JSON.parse(sessionStorage.getItem("token"))
             const token = tokenUser
             const bearer = `Bearer ${token}`
+            this.setState({
+                loading: true
+            })
             axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
                 let usuarios = []
                 response.data.Data.map(user => {
@@ -89,7 +93,8 @@ class SelectGroup extends Component {
                 })
 
                 this.setState({
-                    groupSelect: usuarios
+                    groupSelect: usuarios,
+                    loading: false
                 })
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             })
@@ -101,14 +106,15 @@ class SelectGroup extends Component {
                     } else {
                         this.setState({
                             error: true,
-                            redirect: true
+                            redirect: true,
+                            loading: false
                         })
                         sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                         swal("Error!", "Hubo un problema", "error");
                     }
                     console.log("Error: ", e)
                 });
-        }, 2000);
+        }, 1000);
 
     }
 
@@ -116,17 +122,22 @@ class SelectGroup extends Component {
         let options = this.state.groupSelect
         this.props.getValue(this.state.groupsToSend.split('|'))
         return (
-            <Select
-                isMulti
-                name="colors"
-                options={options}
-                className="basic-multi-select"
-                classNamePrefix="select"
-                closeMenuOnSelect={false}
-                onChange={this.handleInputChange}
-                inputValue={this.state.value}
-                value={this.searchDefault()}
-            />
+            <div>
+                {this.state.loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
+                <Select
+                    isMulti
+                    name="colors"
+                    options={options}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    closeMenuOnSelect={false}
+                    onChange={this.handleInputChange}
+                    inputValue={this.state.value}
+                    value={this.searchDefault()}
+                />
+            </div>
         );
     }
 }

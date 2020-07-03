@@ -132,7 +132,6 @@ export default class GroupsTable extends Component {
                 componenteSelectUsuarios: componente2
             })
 
-            console.log("la data de maxa_: ", Data)
         })
         .catch((e) => {
             console.log("Error: ", e)

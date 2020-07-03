@@ -5,7 +5,6 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 class SelectGroup extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props.defaultValue)
         this.state = {
             value: "",
             groups: null,
@@ -25,7 +24,6 @@ class SelectGroup extends Component {
             })
         }
 
-        console.log("Concatenada: ", contacatenada)
         this.setState({
             groupsToSend: contacatenada
         })
@@ -41,7 +39,6 @@ class SelectGroup extends Component {
                 label: `${value.id} - ${value.name}`
             }
             usuarios.push(temp)
-            console.log(value)
             return true;
         })
 

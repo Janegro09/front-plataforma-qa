@@ -38,7 +38,6 @@ export default class editUserComponent extends Component {
     
             axios.get(Global.getUsers + '/' + id, config)
                 .then(response => {
-                    console.log("user: ", response.data.Data[0])
                     this.setState({
                         userInfo: response.data.Data[0]
                     })

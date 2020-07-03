@@ -8,7 +8,6 @@ import {HELPER_FUNCTIONS} from '../../../helpers/Helpers'
 class SelectGroup extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props.defaultValue)
         this.state = {
             value: "",
             groups: null,

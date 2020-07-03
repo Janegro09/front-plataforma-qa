@@ -32,10 +32,6 @@ export default class ProgramsGroupComponent extends Component {
     }
 
     buscar() {
-        // let searched
-        // if (this.title && this.title !== undefined) {
-        //     searched = this.title.value.toUpperCase()
-        // }
         this.setState({
             buscando: true
         })
@@ -67,7 +63,6 @@ export default class ProgramsGroupComponent extends Component {
     editGroup(event, userInfo) {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
-        console.log("El usuario a editar: ", userInfo)
         this.setState({
             editProgramGroup: true,
             userSelected: userInfo

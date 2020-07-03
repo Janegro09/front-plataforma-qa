@@ -45,7 +45,9 @@ export default class GroupsTable extends Component {
             componenteSelectGrupos: null,
             componenteSelectUsuarios: null,
             programaPadre: null,
-            programEditReq: {}
+            programEditReq: {},
+            loading: false,
+            redireccion: false
         }
 
         this.buscar = this.buscar.bind(this)
@@ -67,11 +69,12 @@ export default class GroupsTable extends Component {
     desasignarGrupo = (idGrupo) => {
         console.log(this.state.specificGroup[0].id)
         let idPrograma = this.state.specificGroup[0].id
-
-
         let tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
+        this.setState({
+            loading: true
+        })
         axios.delete(Global.getAllPrograms + '/' + idPrograma + '/' + idGrupo, { headers: { Authorization: bearer } }).then(response => {
             const respuesta = response.data.Success
             if (respuesta) {
@@ -79,6 +82,9 @@ export default class GroupsTable extends Component {
             } else {
                 swal("Atención!", "No se pudo borrar!", "info");
             }
+            this.setState({
+                loading: false
+            })
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         })
             .catch((e) => {
@@ -86,6 +92,9 @@ export default class GroupsTable extends Component {
                     HELPER_FUNCTIONS.logout()
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    this.setState({
+                        loading: false
+                    })
                     swal("Error!", "Hubo un problema al borrar el grupo", "error");
                 }
                 console.log("Error: ", e)
@@ -99,10 +108,15 @@ export default class GroupsTable extends Component {
         let tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
+        this.setState({
+            loading: true
+        })
         axios.get(Global.getAllPrograms + '/' + id, { headers: { Authorization: bearer } }).then(response => {
             const { Data } = response.data
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-
+            this.setState({
+                loading: false
+            })
             let componente2;
             let componente = <SelectGroupEdit end={() => {
                 if (this.state.specificGroup && this.state.specificGroup.length > 0) {
@@ -137,6 +151,9 @@ export default class GroupsTable extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
+                    this.setState({
+                        loading: false
+                    })
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
@@ -167,17 +184,29 @@ export default class GroupsTable extends Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
+                    this.setState({
+                        loading: true
+                    })
                     axios.delete(Global.getAllPrograms + '/' + userInfo.id, config).then(response => {
+                        this.setState({
+                            loading: false
+                        })
                         sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                         if (response.data.Success) {
                             swal("Genial! el programa se ha eliminado correctamente", {
                                 icon: "success",
                             });
+                            this.setState({
+                                redireccion: true
+                            })
                         }
                     }).catch(e => {
                         if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                             HELPER_FUNCTIONS.logout()
                         } else {
+                            this.setState({
+                                loading: false
+                            })
                             sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                             swal("Error!", "Hubo un problema al borrar el programa", "error");
                         }
@@ -238,8 +267,6 @@ export default class GroupsTable extends Component {
 
     createProgram(e) {
         e.preventDefault()
-        console.log(this.state.createProgram)
-
         const bodyParameters = {
             name: this.name.value,
             parentProgram: this.state.programEditReq.parentProgram,
@@ -262,13 +289,23 @@ export default class GroupsTable extends Component {
         let tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
+        this.setState({
+            loading: true,
+            redireccion: true
+        })
         axios.put(Global.getAllPrograms + '/' + id, dataSend, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            this.setState({
+                loading: false
+            })
         })
             .catch((e) => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
+                    this.setState({
+                        loading: false
+                    })
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
@@ -284,8 +321,14 @@ export default class GroupsTable extends Component {
         let tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
+        this.setState({
+            loading: true
+        })
         axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
             const { Data } = response.data
+            this.setState({
+                loading: false
+            })
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 gruposDeProgramas: Data,
@@ -296,6 +339,9 @@ export default class GroupsTable extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
+                    this.setState({
+                        loading: false
+                    })
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
@@ -327,7 +373,9 @@ export default class GroupsTable extends Component {
             syncGroups: this.usersAssign.length > 0 ? this.usersAssign : [],
             description: this.description.value
         }
-
+        this.setState({
+            loading: true
+        })
         axios.post(
             Global.newPrograms,
             bodyParameters,
@@ -335,13 +383,18 @@ export default class GroupsTable extends Component {
         ).then(response => {
             sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
             this.setState({
-                redirect: true
+                redirect: true,
+                loading: false,
+                redireccion: true
             })
             swal("Programa creado!", "Ya se encuentra registrado", "success");
         }).catch(e => {
             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                 HELPER_FUNCTIONS.logout()
             } else {
+                this.setState({
+                    loading: false
+                })
                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 swal("Error!", "Hubo un problema", "error");
             }
@@ -353,12 +406,16 @@ export default class GroupsTable extends Component {
         let tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
+        this.setState({
+            loading: true
+        })
         axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
             this.setState({
                 allPrograms: response.data.Data,
-                ok: true
+                ok: true,
+                loading: false
             })
 
 
@@ -367,6 +424,9 @@ export default class GroupsTable extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
+                    this.setState({
+                        loading: false
+                    })
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
@@ -484,6 +544,15 @@ export default class GroupsTable extends Component {
             )
         }
 
+        if (this.state.redireccion) {
+            /**Si veo esto en algún momento
+             * investigar como recargar el componente y no toda la página
+             * atte: el soga
+             */
+            window.location.reload();
+            /** Esto lo hizo el animal de max, pero sin duda, aguante JS papaaaaa soga  */
+        }
+
         // Si se selecciono borrar usuario lo envío a la página deleteProgram con los datos del usuario
         if (this.state.changePassword) {
             return <Redirect to="/changePassword"
@@ -501,6 +570,9 @@ export default class GroupsTable extends Component {
 
         return (
             <div>
+                {this.state.loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
                 <div className="logoBackground">
                     <img src={Logo} alt="" title="Logo" className="logoFixed" />
                 </div>

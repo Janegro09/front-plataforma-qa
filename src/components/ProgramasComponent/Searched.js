@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Global from '../../Global'
-import {HELPER_FUNCTIONS} from '../../helpers/Helpers'
+import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import swal from 'sweetalert'
 
 export default class Searched extends Component {
@@ -34,28 +34,22 @@ export default class Searched extends Component {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         })
             .catch((e) => {
-                // console.log(e)
-                // // Si hay algún error en el request lo deslogueamos
-                // this.setState({
-                //     error: true,
-                //     redirect: true
-                // })
-                // if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                //     HELPER_FUNCTIONS.logout()
-                // } else {
-                //     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                //     swal("Error!", "Hubo un problema", "error");
-                // }
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
+                }
                 console.log("Error: ", e)
             });
     }
-    render() { 
+    render() {
         return (
             <div>
                 {this.state.result &&
                     this.state.result.map((usuario, key) => {
                         return (
-                            <div key={key} style={{textAlignVertical: "center",textAlign: "center",}}>
+                            <div key={key} style={{ textAlignVertical: "center", textAlign: "center", }}>
                                 <div>
                                     {usuario.id} - {usuario.name} {usuario.lastName}
                                 </div>

@@ -33,7 +33,7 @@ export default class CreateProgramsGroupComponent extends Component {
                 HELPER_FUNCTIONS.logout()
             } else {
                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                swal("Error!", "Hubo un problema al agregar el usuario", "error");
+                swal("Error!", "Hubo un problema", "error");
             }
             console.log("Error: ", e)
         });

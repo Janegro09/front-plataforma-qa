@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Select from "react-select";
-import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 
 class SelectGroup extends Component {
     constructor(props) {

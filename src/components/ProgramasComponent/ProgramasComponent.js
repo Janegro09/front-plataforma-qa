@@ -80,11 +80,14 @@ export default class GroupsTable extends Component {
                 swal("Atención!", "No se pudo borrar!", "info");
             }
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            console.log("GRUPO BORRADO: ", respuesta)
         })
             .catch((e) => {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                swal("Atención!", "No se pudo borrar!", "info");
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema al borrar el grupo", "error");
+                }
                 console.log("Error: ", e)
             });
 
@@ -101,11 +104,8 @@ export default class GroupsTable extends Component {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
             let componente2;
-
-            // let programaPadre = this.state.specificGroup[0].programParent
-            
             let componente = <SelectGroupEdit end={() => {
-                if(this.state.specificGroup && this.state.specificGroup.length > 0){
+                if (this.state.specificGroup && this.state.specificGroup.length > 0) {
                     let idParentProgram = this.state.specificGroup[0].programParent;
                     componente2 = <SelectGroupParent defaultValue={idParentProgram} getValue={(d) => {
                         this.setState({
@@ -113,7 +113,7 @@ export default class GroupsTable extends Component {
                                 parentProgram: d.value
                             }
                         })
-                    }}/>
+                    }} />
                     this.setState({
                         componenteSelectUsuarios: componente2
                     })
@@ -125,7 +125,7 @@ export default class GroupsTable extends Component {
                         groupAssign: d
                     }
                 })
-            }}/>
+            }} />
             this.setState({
                 specificGroup: Data,
                 componenteSelectGrupos: componente,
@@ -133,10 +133,15 @@ export default class GroupsTable extends Component {
             })
 
         })
-        .catch((e) => {
-            console.log("Error: ", e)
-            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-        });
+            .catch((e) => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
+                }
+                console.log("Error: ", e)
+            });
         event.preventDefault()
         this.setState({
             editProgram: true,
@@ -244,13 +249,13 @@ export default class GroupsTable extends Component {
         }
 
         let dataSend = {};
-        
+
         for (let i in bodyParameters) {
             if (bodyParameters[i]) {
                 dataSend[i] = bodyParameters[i]
             }
         }
-        
+
         console.log(dataSend)
         let id = this.state.specificGroup[0].id || false
 
@@ -260,14 +265,15 @@ export default class GroupsTable extends Component {
         axios.put(Global.getAllPrograms + '/' + id, dataSend, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         })
-        .catch((e) => {
-            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-            this.setState({
-                allPrograms: [],
-                ok: true
-            })
-            console.log("Error: ", e)
-        });
+            .catch((e) => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
+                }
+                console.log("Error: ", e)
+            });
         this.setState({
             createProgram: true
         })
@@ -281,22 +287,18 @@ export default class GroupsTable extends Component {
         axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
             const { Data } = response.data
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            // debugger;
             this.setState({
                 gruposDeProgramas: Data,
                 okProgramas: true
             })
-            // this.setState({
-            //     allPrograms: response.data.Data,
-            //     ok: true
-            // })
         })
             .catch((e) => {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                this.setState({
-                    allPrograms: [],
-                    ok: true
-                })
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
+                }
                 console.log("Error: ", e)
             });
         this.setState({
@@ -317,7 +319,7 @@ export default class GroupsTable extends Component {
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        
+
         const bodyParameters = {
             name: this.name.value,
             parentProgram: this.parentProgram ? this.parentProgram.value : '',
@@ -341,7 +343,7 @@ export default class GroupsTable extends Component {
                 HELPER_FUNCTIONS.logout()
             } else {
                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                swal("Error!", "Hubo un problema al crear el programa", "error");
+                swal("Error!", "Hubo un problema", "error");
             }
             console.log("Error: ", e)
         });
@@ -362,11 +364,12 @@ export default class GroupsTable extends Component {
 
         })
             .catch((e) => {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                this.setState({
-                    allPrograms: [],
-                    ok: true
-                })
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
+                }
                 console.log("Error: ", e)
             });
     }
@@ -397,13 +400,16 @@ export default class GroupsTable extends Component {
                     continue
                 }
 
-
                 let rows = []
                 let tempData = (
                     <tr key={index}>
                         <td>{data[index].name}</td>
-                        <td onClick={e => this.editProgram(e, data[index])}><EditIcon style={{ fontSize: 15 }} /></td>
-                        <td onClick={e => this.deleteProgram(e, data[index])}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                        {HELPER_FUNCTIONS.checkPermission("PUT|programs/:id") &&
+                            <td onClick={e => this.editProgram(e, data[index])}><EditIcon style={{ fontSize: 15 }} /></td>
+                        }
+                        {HELPER_FUNCTIONS.checkPermission("DELETE|programs/:id") &&
+                            <td onClick={e => this.deleteProgram(e, data[index])}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                        }
                     </tr>
                 )
 
@@ -515,21 +521,21 @@ export default class GroupsTable extends Component {
                                 <div>
                                     <div className="flex-input-add">
                                         {/* Buscador */}
-                                        {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}
-                                        <input
-                                            className="form-control"
-                                            type="text"
-                                            ref={(c) => {
-                                                this.title = c
-                                            }}
-                                            placeholder="Buscar programa"
-                                            onChange={this.buscar}
-                                        />
-                                        {/* } */}
+                                        {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") &&
+                                            <input
+                                                className="form-control"
+                                                type="text"
+                                                ref={(c) => {
+                                                    this.title = c
+                                                }}
+                                                placeholder="Buscar programa"
+                                                onChange={this.buscar}
+                                            />
+                                        }
 
-                                        {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
-                                        <button onClick={e => this.newProgram(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
-                                        {/* } */}
+                                        {HELPER_FUNCTIONS.checkPermission("POST|programs/new") &&
+                                            <button onClick={e => this.newProgram(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                                        }
 
 
 
@@ -612,7 +618,7 @@ export default class GroupsTable extends Component {
                                             <span className="Label">Nombre</span>
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={userSelected.name ? userSelected.name : ''} />
                                             <span className="Label">Parent program</span>
-    
+
                                             {this.state.componenteSelectUsuarios !== null &&
 
                                                 this.state.componenteSelectUsuarios
@@ -635,7 +641,6 @@ export default class GroupsTable extends Component {
                                                             </div>
                                                         )
                                                     })
-                                                    // <p>Nombre</p>
                                                 }
                                             </div>
                                             {this.state.componenteSelectGrupos !== null &&

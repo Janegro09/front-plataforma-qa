@@ -3,6 +3,7 @@ import Select from "react-select";
 import axios from 'axios'
 import Global from '../../Global'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
+import swal from 'sweetalert'
 
 class SelectGroupParent extends Component {
     constructor(props) {
@@ -40,7 +41,7 @@ class SelectGroupParent extends Component {
                 }
                 return true;
             })
-        }else if(this.state.modificado){
+        } else if (this.state.modificado) {
             returnData = this.state.modificado
         }
         return returnData
@@ -52,7 +53,7 @@ class SelectGroupParent extends Component {
         let tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
-        
+
         axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
@@ -71,11 +72,12 @@ class SelectGroupParent extends Component {
             })
         })
             .catch((e) => {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                // this.setState({
-                //     allPrograms: [],
-                //     ok: true
-                // })
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
+                }
                 console.log("Error: ", e)
             });
     }

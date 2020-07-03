@@ -105,38 +105,30 @@ export default class ProgramsGroupComponent extends Component {
                     swal("No has cambiado nada!");
                 }
             });
-        // console.log(userInfo)
-        // this.setState({
-        //     deleteUser: true,
-        //     userSelected: userInfo
-        // })
 
     }
 
     componentDidMount() {
         const { ok } = this.props
         if (ok) {
-            // setTimeout(() => {
-                
-                const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-                const token = tokenUser
-                const bearer = `Bearer ${token}`
-                axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
+            const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+            const token = tokenUser
+            const bearer = `Bearer ${token}`
+            axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
+                this.setState({
+                    searchedGroups: response.data.Data,
+                    ok: true
+                })
+                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            })
+                .catch((e) => {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
-                        searchedGroups: response.data.Data,
+                        searchedGroups: [],
                         ok: true
                     })
-                    sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                })
-                    .catch((e) => {
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                        this.setState({
-                            searchedGroups: [],
-                            ok: true
-                        })
-                        console.log("Error: ", e)
-                    });
-            // }, 1000);
+                    console.log("Error: ", e)
+                });
         }
     }
 
@@ -152,13 +144,6 @@ export default class ProgramsGroupComponent extends Component {
         if (this.state.crearGrupoProgramas) {
             return <Redirect to={'/crearGrupoProgramas'} />
         }
-
-        // if (this.state.editProgramGroup) {
-        //     return <Redirect to={{
-        //         pathname: '/editarGrupoProgramas',
-        //         state: this.state.userSelected
-        //     }} />
-        // }
 
 
         return (
@@ -180,24 +165,18 @@ export default class ProgramsGroupComponent extends Component {
                                 />
                                 {/* } */}
 
-                                {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
-                                <button
-                                    // onClick={e => this.createGroupProgram(e)}
-                                    onClick={
-                                        () => {
-                                            this.setState({
-                                                addGroup: true
-                                            })
+                                {HELPER_FUNCTIONS.checkPermission("POST|programs/groups/new") &&
+                                    <button
+                                        onClick={
+                                            () => {
+                                                this.setState({
+                                                    addGroup: true
+                                                })
+                                            }
                                         }
-                                    }
-                                ><GroupAddIcon style={{ fontSize: 33 }} /></button>
-                                {/* } */}
+                                    ><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                                }
 
-
-
-                                {/* {this.state.error && */}
-                                {/* <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1> */}
-                                {/* // } */}
                             </div>
                             <table cellSpacing="0">
                                 <thead className="encabezadoTabla">
@@ -227,16 +206,16 @@ export default class ProgramsGroupComponent extends Component {
                                                 <tr key={index}>
 
                                                     <td>{group.name}</td>
-                                                    {HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
+                                                    {HELPER_FUNCTIONS.checkPermission("PUT|programs/groups/:id") &&
                                                         <td className="celdaBtnHover" onClick={e => this.editGroup(e, group)}><EditIcon style={{ fontSize: 15 }} /></td>
                                                     }
-                                                    {!HELPER_FUNCTIONS.checkPermission("PUT|groups/:id") &&
+                                                    {!HELPER_FUNCTIONS.checkPermission("PUT|programs/groups/:id") &&
                                                         <td disabled><EditIcon></EditIcon></td>
                                                     }
-                                                    {HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
+                                                    {HELPER_FUNCTIONS.checkPermission("DELETE|programs/groups/:id") &&
                                                         <td className="celdaBtnHover" onClick={e => this.deleteGroup(e, group)}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                                     }
-                                                    {!HELPER_FUNCTIONS.checkPermission("DELETE|groups/:id") &&
+                                                    {!HELPER_FUNCTIONS.checkPermission("DELETE|programs/groups/:id") &&
                                                         <td disabled><DeleteIcon></DeleteIcon></td>
                                                     }
 

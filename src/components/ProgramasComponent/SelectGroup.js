@@ -87,29 +87,29 @@ class SelectGroup extends Component {
                     usuarios.push(temp)
                     return true;
                 })
-    
+
                 this.setState({
                     groupSelect: usuarios
                 })
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             })
                 .catch((e) => {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     // Si hay algún error en el request lo deslogueamos
-                    this.setState({
-                        error: true,
-                        redirect: true
-                    })
+
                     if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                         HELPER_FUNCTIONS.logout()
                     } else {
+                        this.setState({
+                            error: true,
+                            redirect: true
+                        })
                         sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                         swal("Error!", "Hubo un problema", "error");
                     }
                     console.log("Error: ", e)
                 });
         }, 2000);
-    
+
     }
 
     render() {

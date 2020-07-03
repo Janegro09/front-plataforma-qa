@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import SidebarLeft from '../SidebarLeft/SiderbarLeft'
 import SelectGroup from './SelectGroup'
 import Global from '../../Global'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Select from "react-select";
 import axios from 'axios'
 import Global from '../../Global'
-import swal from 'sweetalert'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 
 class SelectGroupParent extends Component {
@@ -39,6 +38,7 @@ class SelectGroupParent extends Component {
                 if (e.value === this.props.defaultValue) {
                     returnData = e
                 }
+                return true;
             })
         }else if(this.state.modificado){
             returnData = this.state.modificado
@@ -63,6 +63,7 @@ class SelectGroupParent extends Component {
                     value: value.id
                 }
                 arrayData.push(temp)
+                return true;
             })
 
             this.setState({

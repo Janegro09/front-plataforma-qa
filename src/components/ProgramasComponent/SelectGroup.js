@@ -8,7 +8,6 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 class SelectGroup extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props.defaultValue)
         this.state = {
             value: "",
             groups: null,
@@ -53,7 +52,6 @@ class SelectGroup extends Component {
             let temp
             temp = this.state.groupsToSend.split("|")
             temp.map(v => {
-                console.log(temp)
                 this.state.groupSelect.map(value => {
                     if (value.value === v) {
                         groupData.push(value)
@@ -62,7 +60,6 @@ class SelectGroup extends Component {
                 })
                 return true;
             })
-            console.log("dasdadsa: ", groupData);
 
             return groupData
         } else {
@@ -91,7 +88,6 @@ class SelectGroup extends Component {
                     return true;
                 })
     
-                console.log(usuarios)
                 this.setState({
                     groupSelect: usuarios
                 })
@@ -99,7 +95,6 @@ class SelectGroup extends Component {
             })
                 .catch((e) => {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    console.log(e)
                     // Si hay algún error en el request lo deslogueamos
                     this.setState({
                         error: true,
@@ -113,13 +108,12 @@ class SelectGroup extends Component {
                     }
                     console.log("Error: ", e)
                 });
-        }, 1000);
+        }, 2000);
     
     }
 
     render() {
         let options = this.state.groupSelect
-        console.log("groups to send: ", this.props.defaultValue)
         this.props.getValue(this.state.groupsToSend.split('|'))
         return (
             <Select

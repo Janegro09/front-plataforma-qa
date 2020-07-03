@@ -12,7 +12,6 @@ import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import SiderBarLeft from '../SidebarLeft/SiderbarLeft'
 import ProgramsGroupComponent from './ProgramsGroupComponent'
 import Logo from '../Home/logo_background.png';
-import SelectGroup from './SelectGroup'
 import SelectGroupCreate from './SelectGroupCreate'
 import SelectGroupEdit from './SelectGroupEdit'
 import SelectGroupParent from './SelectGroupParent'
@@ -60,10 +59,6 @@ export default class GroupsTable extends Component {
     }
 
     buscar() {
-        let searched
-        if (this.title && this.title !== undefined) {
-            searched = this.title.value.toUpperCase()
-        }
         this.setState({
             buscando: true
         })
@@ -264,13 +259,7 @@ export default class GroupsTable extends Component {
         let token = tokenUser
         let bearer = `Bearer ${token}`
         axios.put(Global.getAllPrograms + '/' + id, dataSend, { headers: { Authorization: bearer } }).then(response => {
-            const { Data } = response.data
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            // // debugger;
-            // this.setState({
-            //     gruposDeProgramas: Data,
-            //     okProgramas: true
-            // })
         })
         .catch((e) => {
             sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
@@ -386,7 +375,6 @@ export default class GroupsTable extends Component {
     render() {
         const { allPrograms, userSelected } = this.state
         let pagina = this.getUsersPage(this.state.actualPage, allPrograms)
-        let totalUsuarios = pagina.total
         let botones = []
         let arrayDiv = []
         let assignedPrograms = []
@@ -423,7 +411,7 @@ export default class GroupsTable extends Component {
                 rows.push(tempData)
                 for (let j = 0; j < data.length; j++) {
 
-                    if (data[j].programParent == data[index].id) {
+                    if (data[j].programParent === data[index].id) {
 
                         let tempData = (
                             <tr key={index + 1 + j}>

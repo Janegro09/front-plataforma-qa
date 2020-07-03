@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import SidebarLeft from '../SidebarLeft/SiderbarLeft'
 import SelectGroup from './SelectGroup'
 import Global from '../../Global'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
@@ -57,7 +56,6 @@ export default class EditProgramsGroupComponent extends Component {
             const token = tokenUser
             const bearer = `Bearer ${token}`
             axios.get(Global.getAllProgramsGroups + '/' + id, { headers: { Authorization: bearer } }).then(response => {
-                console.log("Specific: ", response.data.Data[0].assignedUsers)
                 if (response.data.Data[0].assignedUsers.length > 0) {
                     this.setState({
                         specific: response.data.Data[0].assignedUsers,
@@ -67,7 +65,6 @@ export default class EditProgramsGroupComponent extends Component {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             })
                 .catch((e) => {
-                    console.log(e)
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     // Si hay algún error en el request lo deslogueamos
                     this.setState({
@@ -88,7 +85,6 @@ export default class EditProgramsGroupComponent extends Component {
     render() {
         const { edit } = this.props
         const { specific } = this.state
-        console.log("Especificos: ", specific)
         return (
             <div>
                 {this.state.ok &&

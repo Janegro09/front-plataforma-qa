@@ -32,10 +32,10 @@ export default class ProgramsGroupComponent extends Component {
     }
 
     buscar() {
-        let searched
-        if (this.title && this.title !== undefined) {
-            searched = this.title.value.toUpperCase()
-        }
+        // let searched
+        // if (this.title && this.title !== undefined) {
+        //     searched = this.title.value.toUpperCase()
+        // }
         this.setState({
             buscando: true
         })

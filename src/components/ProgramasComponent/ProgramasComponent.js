@@ -180,7 +180,7 @@ export default class GroupsTable extends Component {
                             HELPER_FUNCTIONS.logout()
                         } else {
                             sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                            swal("Error!", "Hubo un problema al agregar el usuario", "error");
+                            swal("Error!", "Hubo un problema al borrar el programa", "error");
                         }
                         console.log("Error: ", e)
                     })
@@ -266,12 +266,11 @@ export default class GroupsTable extends Component {
         axios.put(Global.getAllPrograms + '/' + id, dataSend, { headers: { Authorization: bearer } }).then(response => {
             const { Data } = response.data
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            alert("Creado")
             // // debugger;
-            this.setState({
-                gruposDeProgramas: Data,
-                okProgramas: true
-            })
+            // this.setState({
+            //     gruposDeProgramas: Data,
+            //     okProgramas: true
+            // })
         })
         .catch((e) => {
             sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
@@ -281,6 +280,37 @@ export default class GroupsTable extends Component {
             })
             console.log("Error: ", e)
         });
+        this.setState({
+            createProgram: true
+        })
+    }
+
+    newProgram = (e) => {
+        e.preventDefault()
+        let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let token = tokenUser
+        let bearer = `Bearer ${token}`
+        axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
+            const { Data } = response.data
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            // debugger;
+            this.setState({
+                gruposDeProgramas: Data,
+                okProgramas: true
+            })
+            // this.setState({
+            //     allPrograms: response.data.Data,
+            //     ok: true
+            // })
+        })
+            .catch((e) => {
+                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                this.setState({
+                    allPrograms: [],
+                    ok: true
+                })
+                console.log("Error: ", e)
+            });
         this.setState({
             createProgram: true
         })
@@ -302,9 +332,9 @@ export default class GroupsTable extends Component {
         
         const bodyParameters = {
             name: this.name.value,
-            parentProgram: this.parentProgram.value,
+            parentProgram: this.parentProgram ? this.parentProgram.value : '',
             section: this.turno,
-            syncGroups: this.usersAssign,
+            syncGroups: this.usersAssign.length > 0 ? this.usersAssign : [],
             description: this.description.value
         }
 
@@ -511,7 +541,7 @@ export default class GroupsTable extends Component {
                                         {/* } */}
 
                                         {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
-                                        <button onClick={e => this.createProgram(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                                        <button onClick={e => this.newProgram(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
                                         {/* } */}
 
 

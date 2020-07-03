@@ -29,8 +29,9 @@ export default class EditProgramsGroupComponent extends Component {
         this.setState({
             loading: true
         })
-        axios.post(
-            Global.getAllProgramsGroups + '/new',
+        let id = this.props.edit.id
+        axios.put(
+            Global.getAllProgramsGroups + '/' + id,
             bodyParameters,
             config
         ).then(response => {
@@ -38,7 +39,12 @@ export default class EditProgramsGroupComponent extends Component {
             this.setState({
                 loading: false
             })
-            swal("Grupo de programas creado!", "Ya se encuentra registrado", "success");
+            swal("Grupo de programas editado!", "Ya se encuentra registrado", "success")
+                .then((value) => {
+                    if (value) {
+                        window.location.reload(window.location.href)
+                    }
+                });
         }).catch(e => {
             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                 HELPER_FUNCTIONS.logout()

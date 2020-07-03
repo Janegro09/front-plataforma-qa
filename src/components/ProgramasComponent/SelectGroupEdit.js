@@ -20,6 +20,7 @@ class SelectGroup extends Component {
         /**Aca es donde se arma el array a enviar */
         let contacatenada = []
 
+
         if (value !== null) {
             value.map(v => {
                 contacatenada.push(v.value)
@@ -27,9 +28,7 @@ class SelectGroup extends Component {
             })
         }
 
-        this.setState({
-            groupsToSend: contacatenada
-        })
+        this.props.getValue(contacatenada)
     };
 
     componentDidMount() {
@@ -47,7 +46,6 @@ class SelectGroup extends Component {
                     usuarios.push(temp)
                     return true;
                 })
-                HELPER_FUNCTIONS.backgroundLoading()
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                 
             })

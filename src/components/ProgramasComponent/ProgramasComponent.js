@@ -45,7 +45,8 @@ export default class GroupsTable extends Component {
             specificGroup: null,
             componenteSelectGrupos: null,
             componenteSelectUsuarios: null,
-            programaPadre: null
+            programaPadre: null,
+            programEditReq: {}
         }
 
         this.buscar = this.buscar.bind(this)
@@ -106,31 +107,42 @@ export default class GroupsTable extends Component {
 
             let componente2;
 
-            let programaPadre = this.state.specificGroup[0].programParent
+            // let programaPadre = this.state.specificGroup[0].programParent
             
             let componente = <SelectGroupEdit end={() => {
-                componente2 = <SelectGroupParent defaultValue={this.state.specificGroup[0].programParent} getValue={(data) => {
-                    console.log("La data que viene: ", data)
-                    // this.setState({
-                    //     programaPadre: data.value
-                    // })
-                }} />
-                this.setState({
-                    componenteSelectGrupos: componente,
-                    componenteSelectUsuarios: componente2
-                })
+                if(this.state.specificGroup && this.state.specificGroup.length > 0){
+                    let idParentProgram = this.state.specificGroup[0].programParent;
+                    componente2 = <SelectGroupParent defaultValue={idParentProgram} getValue={(d) => {
+                        this.setState({
+                            programEditReq: {
+                                parentProgram: d.value
+                            }
+                        })
+                    }}/>
+                    this.setState({
+                        componenteSelectUsuarios: componente2
+                    })
+                }
 
-            }} />
+            }} getValue={(d) => {
+                this.setState({
+                    programEditReq: {
+                        groupAssign: d
+                    }
+                })
+            }}/>
             this.setState({
                 specificGroup: Data,
                 componenteSelectGrupos: componente,
                 componenteSelectUsuarios: componente2
             })
+
+            console.log("la data de maxa_: ", Data)
         })
-            .catch((e) => {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                console.log("Error: ", e)
-            });
+        .catch((e) => {
+            console.log("Error: ", e)
+            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+        });
         event.preventDefault()
         this.setState({
             editProgram: true,
@@ -227,30 +239,48 @@ export default class GroupsTable extends Component {
 
     createProgram(e) {
         e.preventDefault()
+        console.log(this.state.createProgram)
+
+        const bodyParameters = {
+            name: this.name.value,
+            parentProgram: this.state.programEditReq.parentProgram,
+            section: this.turno,
+            syncGroups: this.state.programEditReq.groupAssign,
+            description: this.description.value
+        }
+
+        let dataSend = {};
+        
+        for (let i in bodyParameters) {
+            if (bodyParameters[i]) {
+                dataSend[i] = bodyParameters[i]
+            }
+        }
+        
+        console.log(dataSend)
+        let id = this.state.specificGroup[0].id || false
+
         let tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
-        axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
+        axios.put(Global.getAllPrograms + '/' + id, dataSend, { headers: { Authorization: bearer } }).then(response => {
             const { Data } = response.data
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            // debugger;
+            alert("Creado")
+            // // debugger;
             this.setState({
                 gruposDeProgramas: Data,
                 okProgramas: true
             })
-            // this.setState({
-            //     allPrograms: response.data.Data,
-            //     ok: true
-            // })
         })
-            .catch((e) => {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                this.setState({
-                    allPrograms: [],
-                    ok: true
-                })
-                console.log("Error: ", e)
-            });
+        .catch((e) => {
+            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+            this.setState({
+                allPrograms: [],
+                ok: true
+            })
+            console.log("Error: ", e)
+        });
         this.setState({
             createProgram: true
         })
@@ -269,7 +299,7 @@ export default class GroupsTable extends Component {
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-
+        
         const bodyParameters = {
             name: this.name.value,
             parentProgram: this.parentProgram.value,
@@ -565,7 +595,7 @@ export default class GroupsTable extends Component {
                                             <span className="Label">Nombre</span>
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={userSelected.name ? userSelected.name : ''} />
                                             <span className="Label">Parent program</span>
-                                            {/* <input className="form-control" type="text" placeholder="" ref={(c) => this.parentProgram = c} defaultValue={userSelected.parentProgram ? userSelected.parentProgram : ''} /> */}
+    
                                             {this.state.componenteSelectUsuarios !== null &&
 
                                                 this.state.componenteSelectUsuarios

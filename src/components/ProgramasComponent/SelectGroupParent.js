@@ -13,14 +13,16 @@ class SelectGroupParent extends Component {
             groups: null,
             groupSelect: [],
             groupsToSend: "",
-            especifico: null
+            especifico: null,
+            modificado: null,
         };
     }
 
     handleInputChange = (value) => {
         /**Aca es donde se arma el array a enviar */
+        this.props.getValue(value)
         this.setState({
-            groupsToSend: value
+            modificado: value
         })
     };
 
@@ -28,24 +30,19 @@ class SelectGroupParent extends Component {
         /**Acá es donde se arma la lógica de los preseleccionados del select en caso de 
          * querer editar
          */
-        console.log("El value: ", value)
         let returnData = {
             label: "Selecciona...",
             value: ''
         }
-        
-        if (this.state.especifico) {
+        if (this.state.especifico && !this.state.modificado) {
             this.state.especifico.map(e => {
                 if (e.value === this.props.defaultValue) {
                     returnData = e
                 }
             })
+        }else if(this.state.modificado){
+            returnData = this.state.modificado
         }
-
-        if (value) {
-            this.props.getData(value);
-        }
-
         return returnData
 
     }
@@ -88,8 +85,8 @@ class SelectGroupParent extends Component {
          * en searchdefault debo buscar el especifico
          */
         let options = this.state.especifico
-        console.log("LAS PROPS: ", this.props.defaultValue.programParent)
-        this.props.getValue(this.state.groupsToSend)
+
+        // this.props.getValue(this.state.groupsToSend)
         return (
             <Select
                 // isMulti

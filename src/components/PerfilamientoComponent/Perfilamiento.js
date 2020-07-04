@@ -52,6 +52,29 @@ export default class Perfilamiento extends Component {
         })
     }
 
+    descargar = (id) => {
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
+        axios.get(Global.getAllFiles + '/' + id + '/download', { headers: { Authorization: bearer } }).then(response => {
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            let respuesta = response.data.Data
+            let win = window.open(Global.download + '/' + respuesta.idTemp, '_blank');
+            win.focus();
+
+        })
+            .catch((e) => {
+                // Si hay algún error en el request lo deslogueamos
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
+                }
+                console.log("Error: ", e)
+            });
+    }
+
     componentDidMount() {
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
@@ -130,6 +153,7 @@ export default class Perfilamiento extends Component {
 
                                             <button onClick={(e) => {
                                                 e.preventDefault()
+                                                this.descargar(row.id)
                                             }}>Descargar</button>
                                         </td>
                                     </tr>

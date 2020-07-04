@@ -45,6 +45,11 @@ export default class SiderbarLeft extends Component {
                             <li className="nameMenu"><NavLink to="/programas" activeClassName="active"><GroupWorkIcon className="IconoMenu" /></NavLink>Programas
                             </li>
                         }
+                        {/* PERFILAMIENTO */}
+                        {HELPER_FUNCTIONS.checkPermissionGroup("") &&
+                            <li className="nameMenu"><NavLink to="/perfilamiento" activeClassName="active"><GroupWorkIcon className="IconoMenu" /></NavLink>Perfilamiento
+                            </li>
+                        }
                     </ul>
                     <span className="version">V{version}</span>
                 </div>

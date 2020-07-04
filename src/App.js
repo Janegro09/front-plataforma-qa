@@ -23,6 +23,7 @@ import EditProgramComponent from './components/EditProgramComponent/EditProgramC
 import DeleteProgramComponent from './components/DeleteProgramComponent/DeleteProgramComponent'
 import CreateProgramsGroupComponent from './components/ProgramasComponent/CreateProgramsGroupComponent'
 import EditProgramsGroupComponent from './components/ProgramasComponent/EditProgramsGroupComponent'
+import PerfilamientoComponent from './components/PerfilamientoComponent/PerfilamientoComponent'
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
         <Route path="/roles" component={RolesComponent} />
         <Route path="/backoffice" component={BackOfficeComponent} />
         <Route path="/programas" component={ProgramasComponent} />
+        <Route path="/perfilamiento" component={PerfilamientoComponent} />
       </Switch>
     </BrowserRouter>
   );

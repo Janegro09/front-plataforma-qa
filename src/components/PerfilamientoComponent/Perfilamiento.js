@@ -75,6 +75,53 @@ export default class Perfilamiento extends Component {
             });
     }
 
+    borrar = (id) => {
+        swal({
+            title: "Estás seguro? 🤔",
+            text: "El archivo que se elimina no podrás recuperarlo...",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    const config = {
+                        headers: { Authorization: `Bearer ${token}` }
+                    };
+                    axios.delete(Global.getAllFiles + '/' + id, config)
+                        .then(response => {
+                            console.log(response.data.Success)
+                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+
+                            console.log("La response: ", response.data)
+                            if (response.data.Success) {
+                                swal("Ok! El archivo ha sido eliminado 😎", {
+                                    icon: "success",
+                                }).then(() => {
+                                    window.location.reload(window.location.href);
+                                })
+                            }
+                        })
+                        .catch(e => {
+                            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                                HELPER_FUNCTIONS.logout()
+                            } else {
+                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                swal("Error!", "Hubo un problema al intentar borrar el rol", "error");
+                                this.setState({
+                                    redirect: true
+                                })
+                            }
+                            console.log("Error: ", e)
+                        })
+
+                } else {
+                    swal("El archivo se encuentra a salvo 😎");
+                }
+            });
+    }
+
     componentDidMount() {
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
@@ -149,6 +196,7 @@ export default class Perfilamiento extends Component {
 
                                             <button onClick={(e) => {
                                                 e.preventDefault()
+                                                this.borrar(row.id)
                                             }}>Borrar</button>
 
                                             <button onClick={(e) => {

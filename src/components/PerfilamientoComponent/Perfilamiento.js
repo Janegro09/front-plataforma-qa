@@ -13,6 +13,27 @@ export default class Perfilamiento extends Component {
         }
 
     }
+
+    dynamicSort = (property) => {
+        var sortOrder = 1;
+        if (property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return (a, b) => {
+            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+            return result * sortOrder;
+        }
+    }
+
+    ascDesc = () => {
+        let { data } = this.state
+        let dataOrdenadaPorFecha = data.sort(this.dynamicSort("date"));
+        this.setState({
+            data: dataOrdenadaPorFecha
+        })
+    }
+
     componentDidMount() {
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
@@ -41,20 +62,24 @@ export default class Perfilamiento extends Component {
         let { data } = this.state;
         return (
             <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Fecha</th>
-                            <th>Archivo</th>
-                            <th>Programa</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
+                <input type="text" placeholder="Buscar" />
+                {data &&
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th onClick={(e) => {
+                                    e.preventDefault()
+                                    this.ascDesc()
+                                }}>Fecha</th>
+                                <th>Archivo</th>
+                                <th>Programa</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        {data &&
-                            data.map((row, key) => {
+                        <tbody>
+                            {data.map((row, key) => {
                                 return (
                                     <tr key={key}>
                                         <td>{row.id}</td>
@@ -64,10 +89,10 @@ export default class Perfilamiento extends Component {
                                         <td>Editar - Borrar</td>
                                     </tr>
                                 )
-                            })
-                        }
-                    </tbody>
-                </table>
+                            })}
+                        </tbody>
+                    </table>
+                }
             </div>
         )
     }

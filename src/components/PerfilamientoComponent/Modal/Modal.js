@@ -10,7 +10,8 @@ export default class Modal extends Component {
         super(props)
         this.state = {
             loading: false,
-            allPrograms: null
+            allPrograms: null,
+            programsFiltered: null
         }
     }
 
@@ -19,7 +20,13 @@ export default class Modal extends Component {
     }
 
     buscar = () => {
-        console.log(this.searched.value)
+        const { allPrograms } = this.state
+        let searched = this.searched.value.toLowerCase()
+        const result = allPrograms.filter(word => word.name.toLowerCase().includes(searched));
+
+        this.setState({
+            programsFiltered: result
+        })
     }
 
     componentDidMount() {
@@ -34,6 +41,7 @@ export default class Modal extends Component {
             console.log(response.data.Data)
             this.setState({
                 allPrograms: response.data.Data,
+                programsFiltered: response.data.Data,
                 loading: false
             })
 
@@ -54,6 +62,8 @@ export default class Modal extends Component {
     }
 
     render() {
+        const { programsFiltered } = this.state
+
         return (
             <div className="modal" id="modal-casero">
                 <div className="hijo">
@@ -65,20 +75,31 @@ export default class Modal extends Component {
                             }
                         }>x</button>
                     </div>
-                    
+
                     <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
+
+
                     <table>
                         <thead>
                             <tr>
                                 <th>Nombre</th>
                             </tr>
                         </thead>
-
                         <tbody>
-                            <tr>
-                                <td>aaa</td>
-                            </tr>
+                            {programsFiltered &&
+
+                                programsFiltered.map((program, key) => {
+                                    return (
+                                        <tr key={key}>
+                                            <td>{program.name}</td>
+                                        </tr>
+                                    )
+                                })
+
+
+                            }
                         </tbody>
+
                     </table>
                 </div>
             </div>

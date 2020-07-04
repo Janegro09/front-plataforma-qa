@@ -10,8 +10,8 @@ export default class Perfilamiento extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: [],
-            dataFiltered: []
+            data: null,
+            dataFiltered: null
         }
     }
 
@@ -100,7 +100,9 @@ export default class Perfilamiento extends Component {
         let { data, dataFiltered } = this.state;
         return (
             <div>
-                <Modal />
+                {data &&
+                    <Modal />
+                }
                 <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
                 {data &&
                     <table>

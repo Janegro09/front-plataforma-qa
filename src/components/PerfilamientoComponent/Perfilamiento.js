@@ -11,7 +11,8 @@ export default class Perfilamiento extends Component {
         super(props)
         this.state = {
             data: null,
-            dataFiltered: null
+            dataFiltered: null,
+            id: null
         }
     }
 
@@ -46,29 +47,9 @@ export default class Perfilamiento extends Component {
     }
 
     asignarPrograma = (id) => {
-        let token = JSON.parse(sessionStorage.getItem('token'))
-        const config = {
-            headers: { Authorization: `Bearer ${token}` }
-        };
-        const bodyParameters = {
-            group: this.group
-        }
-
-        axios.put(Global.reasignProgram + "/" + id, bodyParameters, config)
-            .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-                console.log(response.data)
-                swal("Felicidades!", "Has reasignado el programa", "success");
-            })
-            .catch(e => {
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Atención!", "No has cambiado nada", "info");
-                }
-                console.log("Error: ", e)
-            })
+        this.setState({
+            id
+        })
     }
 
     componentDidMount() {
@@ -97,11 +78,11 @@ export default class Perfilamiento extends Component {
     }
 
     render() {
-        let { data, dataFiltered } = this.state;
+        let { data, dataFiltered, id } = this.state;
         return (
             <div>
-                {data &&
-                    <Modal />
+                {data && id &&
+                    <Modal idFile={id} />
                 }
                 <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
                 {data &&

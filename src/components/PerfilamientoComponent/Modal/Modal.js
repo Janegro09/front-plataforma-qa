@@ -17,6 +17,7 @@ export default class Modal extends Component {
 
     cerrarModal = () => {
         document.getElementById("modal-casero").style.display = "none";
+        window.location.reload(window.location.href);
     }
 
     buscar = () => {
@@ -29,6 +30,35 @@ export default class Modal extends Component {
         })
     }
 
+    enviarPrograma = (programa) => {
+        let id = programa.id;
+        const { idFile } = this.props
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        const bodyParameters = {
+            program: id
+        }
+
+        axios.put(Global.reasignProgram + "/" + idFile, bodyParameters, config)
+            .then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                swal("Felicidades!", "Has reasignado el programa", "success").then(() => {
+                    this.cerrarModal()
+                })
+            })
+            .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Atención!", "No has cambiado nada", "info");
+                }
+                console.log("Error: ", e)
+            })
+    }
+
     componentDidMount() {
         let tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
@@ -38,7 +68,6 @@ export default class Modal extends Component {
         })
         axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            console.log(response.data.Data)
             this.setState({
                 allPrograms: response.data.Data,
                 programsFiltered: response.data.Data,
@@ -83,6 +112,7 @@ export default class Modal extends Component {
                         <thead>
                             <tr>
                                 <th>Nombre</th>
+                                <th>Acción</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -91,7 +121,18 @@ export default class Modal extends Component {
                                 programsFiltered.map((program, key) => {
                                     return (
                                         <tr key={key}>
-                                            <td>{program.name}</td>
+                                            <td>
+                                                {program.name}
+
+                                            </td>
+                                            <td>
+                                                <button onClick={
+                                                    (e) => {
+                                                        e.preventDefault()
+                                                        this.enviarPrograma(program)
+                                                    }
+                                                }>Asignar</button>
+                                            </td>
                                         </tr>
                                     )
                                 })

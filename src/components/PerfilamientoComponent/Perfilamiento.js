@@ -4,6 +4,7 @@ import swal from 'sweetalert'
 import Global from '../../Global'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import moment from 'moment'
+import Modal from './Modal/Modal'
 
 export default class Perfilamiento extends Component {
     constructor(props) {
@@ -44,6 +45,32 @@ export default class Perfilamiento extends Component {
         })
     }
 
+    asignarPrograma = (id) => {
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        const bodyParameters = {
+            group: this.group
+        }
+
+        axios.put(Global.reasignProgram + "/" + id, bodyParameters, config)
+            .then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                console.log(response.data)
+                swal("Felicidades!", "Has reasignado el programa", "success");
+            })
+            .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Atención!", "No has cambiado nada", "info");
+                }
+                console.log("Error: ", e)
+            })
+    }
+
     componentDidMount() {
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
@@ -73,6 +100,7 @@ export default class Perfilamiento extends Component {
         let { data, dataFiltered } = this.state;
         return (
             <div>
+                <Modal />
                 <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
                 {data &&
                     <table>
@@ -96,8 +124,31 @@ export default class Perfilamiento extends Component {
                                         <td>{row.id}</td>
                                         <td>{moment(row.date).format("DD-MM-YYYY")}</td>
                                         <td>{row.name}</td>
-                                        <td>programa</td>
-                                        <td>Editar - Borrar</td>
+                                        <td>{row.program ? row.program.name : 'Programa no asignado'}</td>
+                                        <td>
+                                            <button onClick={(e) => {
+                                                e.preventDefault()
+                                                // /analytics/file/:fileId/cuartiles
+                                            }}>Cuartiles</button>
+
+                                            <button onClick={(e) => {
+                                                e.preventDefault()
+                                                // /analytics/file/:fileId/perfilamiento
+                                            }}>Perfilamientos</button>
+
+                                            <button onClick={(e) => {
+                                                e.preventDefault()
+                                                this.asignarPrograma(row.id)
+                                            }}>Asignar programa</button>
+
+                                            <button onClick={(e) => {
+                                                e.preventDefault()
+                                            }}>Borrar</button>
+
+                                            <button onClick={(e) => {
+                                                e.preventDefault()
+                                            }}>Descargar</button>
+                                        </td>
                                     </tr>
                                 )
                             })}

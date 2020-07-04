@@ -17,6 +17,7 @@ let Global = {
     getAllProgramsGroups: `${BASE}/programs/groups`,
     newPrograms: `${BASE}/programs/new`,
     getAllFiles: `${BASE}/analytics/file`,
+    reasignProgram: `${BASE}/analytics/file`,
 }
 
 export default Global;

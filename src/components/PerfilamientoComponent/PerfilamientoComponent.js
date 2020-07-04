@@ -7,7 +7,7 @@ export default class PerfilamientoComponent extends Component {
         return (
             <div>
                 <SidebarLeft />
-                <div>
+                <div className="section-content">
                     <Perfilamiento />
                 </div>
             </div>

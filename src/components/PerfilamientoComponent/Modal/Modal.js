@@ -18,6 +18,10 @@ export default class Modal extends Component {
         document.getElementById("modal-casero").style.display = "none";
     }
 
+    buscar = () => {
+        console.log(this.searched.value)
+    }
+
     componentDidMount() {
         let tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
@@ -61,7 +65,21 @@ export default class Modal extends Component {
                             }
                         }>x</button>
                     </div>
-                    Modal
+                    
+                    <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>aaa</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         )

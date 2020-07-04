@@ -9,9 +9,9 @@ export default class Perfilamiento extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: []
+            data: [],
+            dataFiltered: []
         }
-
     }
 
     dynamicSort = (property) => {
@@ -34,6 +34,16 @@ export default class Perfilamiento extends Component {
         })
     }
 
+    buscar = () => {
+        const { data } = this.state
+        let searched = this.searched.value.toLowerCase()
+        const result = data.filter(word => word.name.toLowerCase().includes(searched));
+
+        this.setState({
+            dataFiltered: result
+        })
+    }
+
     componentDidMount() {
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
@@ -41,9 +51,10 @@ export default class Perfilamiento extends Component {
         axios.get(Global.getAllFiles, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             let respuesta = response.data.Data
-            console.log(respuesta)
+
             this.setState({
-                data: respuesta
+                data: respuesta,
+                dataFiltered: respuesta
             })
         })
             .catch((e) => {
@@ -59,10 +70,10 @@ export default class Perfilamiento extends Component {
     }
 
     render() {
-        let { data } = this.state;
+        let { data, dataFiltered } = this.state;
         return (
             <div>
-                <input type="text" placeholder="Buscar" />
+                <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
                 {data &&
                     <table>
                         <thead>
@@ -79,7 +90,7 @@ export default class Perfilamiento extends Component {
                         </thead>
 
                         <tbody>
-                            {data.map((row, key) => {
+                            {dataFiltered.map((row, key) => {
                                 return (
                                     <tr key={key}>
                                         <td>{row.id}</td>

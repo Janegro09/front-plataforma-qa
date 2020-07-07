@@ -76,6 +76,8 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                             <td>{`[${columna.VMin} - ${columna.VMax}]`}</td>
                                         </tr>
                                     )
+                                } else {
+                                    return true;
                                 }
                             })}
                         </tbody>

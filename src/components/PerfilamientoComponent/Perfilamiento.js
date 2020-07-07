@@ -7,6 +7,7 @@ import moment from 'moment'
 import Modal from './Modal/Modal'
 import ModalAgregarPerfilamiento from './Modal/ModalAgregarPerfilamiento'
 import './Perfilamiento.css'
+import { Redirect } from 'react-router-dom'
 
 export default class Perfilamiento extends Component {
     constructor(props) {
@@ -15,7 +16,8 @@ export default class Perfilamiento extends Component {
             data: null,
             dataFiltered: null,
             id: null,
-            agregarPerfilamiento: false
+            agregarPerfilamiento: false,
+            cuartiles: false
         }
     }
 
@@ -158,7 +160,12 @@ export default class Perfilamiento extends Component {
     }
 
     render() {
-        let { data, dataFiltered, id, agregarPerfilamiento } = this.state;
+        let { data, dataFiltered, id, agregarPerfilamiento, cuartiles } = this.state;
+
+        if (cuartiles) {
+            return <Redirect to={'/perfilamiento/cuartiles'} />
+        }
+
         return (
             <div>
                 <button className="boton-agregar" onClick={(e) => {
@@ -198,6 +205,7 @@ export default class Perfilamiento extends Component {
                                         <td>
                                             <button onClick={(e) => {
                                                 e.preventDefault()
+                                                this.setState({ cuartiles: true })
                                                 // /analytics/file/:fileId/cuartiles
                                             }}>Cuartiles</button>
 

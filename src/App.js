@@ -24,6 +24,7 @@ import DeleteProgramComponent from './components/DeleteProgramComponent/DeletePr
 import CreateProgramsGroupComponent from './components/ProgramasComponent/CreateProgramsGroupComponent'
 import EditProgramsGroupComponent from './components/ProgramasComponent/EditProgramsGroupComponent'
 import PerfilamientoComponent from './components/PerfilamientoComponent/PerfilamientoComponent'
+import PerfilamientoCuartilesComponent from './components/PerfilamientoComponent/PerfilamientoCuartilesComponent';
 
 function App() {
   return (
@@ -49,7 +50,8 @@ function App() {
         <Route path="/groups" component={GroupsComponent} />
         <Route path="/home" component={Home} />
         <Route path="/login" component={Login} />
-        <Route path="/perfilamiento" component={PerfilamientoComponent} />
+        <Route exact path="/perfilamiento" component={PerfilamientoComponent} />
+        <Route path="/perfilamiento/cuartiles" component={PerfilamientoCuartilesComponent} />
         <Route path="/programas" component={ProgramasComponent} />
         <Route path="/roles" component={RolesComponent} />
         <Route path="/users" component={UsersComponent} />

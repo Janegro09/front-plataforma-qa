@@ -28,8 +28,51 @@ export default class PerfilamientoCuartilesComponent extends Component {
         })
     }
 
-    seleccionarFila = (fila, orden) => {
-        console.log("La fila: ", fila, orden);
+    seleccionarFila = (fila, orden, obj = {}) => {
+        let { result } = this.state;
+
+        let temp = {
+            "QName": fila.columnName,
+            "Qorder": orden,
+            "Q1": {
+                "VMin": fila.VMin
+            },
+            "Q4": {
+                "VMax": fila.VMax
+            }
+        }
+
+        if (obj.VMax && obj.VMin) {
+            if (obj.VMax < fila.VMax && obj.VMax > obj.VMin) {
+                temp.Q3 = {
+                    VMax: obj.VMax
+                };
+            }
+
+            if (obj.VMin > fila.VMin && obj.VMin < obj.VMax && temp.Q3) {
+                temp.Q1.VMax = obj.VMin;
+            }
+        }
+
+        let indice = -1
+        for (let i = 0; i < result.length; i++) {
+            if (result[i].QName === fila.columnName) {
+                indice = i;
+                break;
+            }
+        }
+
+        if (indice === -1) {
+            this.setState({
+                result: [...result, temp]
+            })
+        } else {
+            result.splice(indice, 1);
+            this.setState({
+                result
+            })
+        }
+
     }
 
     setOrden = () => {
@@ -39,13 +82,9 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
     handleInputChange = (event) => {
         const target = event.target;
-        const value = target.name === 'ASC' ? target.checked : target.value;
-        let name = target.name;
-        if (name !== 'ASC') {
-            name = 'DESC';
-        }
+        console.log("target: ", target)
         this.setState({
-            [name]: value
+            [target]: target
         });
     }
 
@@ -84,7 +123,9 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
     render() {
 
-        const { nombreColumnas, dataFiltered, redirect } = this.state;
+        const { nombreColumnas, dataFiltered, redirect, result } = this.state;
+
+        console.log("res: ", result)
 
         if (redirect) {
             return <Redirect to="/perfilamiento" />
@@ -96,6 +137,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 <SideBarLeft />
 
                 <div className="section-content">
+                    <button>Dale</button>
                     <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
                     {nombreColumnas &&
                         <table>
@@ -107,12 +149,15 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                     <th>Objetivo VMin</th>
                                     <th>Objetivo VMax</th>
                                     <th>Seleccionar</th>
-                                    <th>Quitar</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {dataFiltered.map((columna, key) => {
-                                    let orden = 'ASC';
+                                    let orden = 'DESC';
+                                    let obj = {
+
+                                    }
+
                                     if (columna.VMax !== 0) {
                                         return (
                                             <tr key={key}>
@@ -125,18 +170,34 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                             let element = document.getElementById(key);
                                                             orden = element.value;
                                                         }
-                                                    }>
-                                                        <option value="ASC">ASC</option>
+                                                    }
+                                                    >
                                                         <option value="DESC">DESC</option>
+                                                        <option value="ASC">ASC</option>
                                                     </select>
                                                 </td>
-                                                <td> <input type="text" placeholder="VMin" /> </td>
-                                                <td><input type="text" placeholder="VMax" /></td>
-                                                <td> <button onClick={(e) => {
-                                                    e.preventDefault();
-                                                    this.seleccionarFila(columna, orden);
-                                                }}>Seleccionar</button> </td>
-                                                <td> <button>Quitar</button> </td>
+                                                <td> <input id={"VMin" + key} type="text" placeholder="VMin" onChange={() => {
+                                                    let element = document.getElementById("VMin" + key);
+                                                    obj.VMin = parseFloat(element.value)
+                                                }} /> </td>
+                                                <td><input id={"VMax" + key} type="text" placeholder="VMax" onChange={() => {
+                                                    let element = document.getElementById("VMax" + key);
+                                                    obj.VMax = parseFloat(element.value)
+                                                }} /></td>
+                                                <td>
+                                                    <input type="checkbox" onClick={() => {
+                                                        if (document.getElementById(key).disabled) {
+                                                            document.getElementById("VMin" + key).disabled = false;
+                                                            document.getElementById("VMax" + key).disabled = false;
+                                                            document.getElementById(key).disabled = false;
+                                                        } else {
+                                                            document.getElementById("VMin" + key).disabled = true;
+                                                            document.getElementById("VMax" + key).disabled = true;
+                                                            document.getElementById(key).disabled = true;
+                                                        }
+                                                        this.seleccionarFila(columna, orden, obj);
+                                                    }} />
+                                                </td>
                                             </tr>
                                         )
                                     } else {

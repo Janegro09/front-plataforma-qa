@@ -17,7 +17,8 @@ export default class Perfilamiento extends Component {
             dataFiltered: null,
             id: null,
             agregarPerfilamiento: false,
-            cuartiles: false
+            cuartiles: false,
+            cuartilSeleccionado: null
         }
     }
 
@@ -58,7 +59,6 @@ export default class Perfilamiento extends Component {
     }
 
     agregarPerfilamiento = () => {
-        console.log('Agregar lanzado');
         this.setState({
             agregarPerfilamiento: true
         })
@@ -103,10 +103,8 @@ export default class Perfilamiento extends Component {
                     };
                     axios.delete(Global.getAllFiles + '/' + id, config)
                         .then(response => {
-                            console.log(response.data.Success)
                             sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
 
-                            console.log("La response: ", response.data)
                             if (response.data.Success) {
                                 swal("Ok! El archivo ha sido eliminado 😎", {
                                     icon: "success",
@@ -132,6 +130,10 @@ export default class Perfilamiento extends Component {
                     swal("El archivo se encuentra a salvo 😎");
                 }
             });
+    }
+
+    cargarCuartil = (cuartilSeleccionado) => {
+        this.setState({ cuartiles: true, cuartilSeleccionado });
     }
 
     componentDidMount() {
@@ -160,10 +162,16 @@ export default class Perfilamiento extends Component {
     }
 
     render() {
-        let { data, dataFiltered, id, agregarPerfilamiento, cuartiles } = this.state;
+        let { data, dataFiltered, id, agregarPerfilamiento, cuartiles, cuartilSeleccionado } = this.state;
 
         if (cuartiles) {
-            return <Redirect to={'/perfilamiento/cuartiles'} />
+            return <Redirect 
+                        // to={'/perfilamiento/cuartiles'}
+                        to={{
+                            pathname: '/perfilamiento/cuartiles',
+                            cuartilSeleccionado
+                        }}
+                     />
         }
 
         return (
@@ -205,7 +213,8 @@ export default class Perfilamiento extends Component {
                                         <td>
                                             <button onClick={(e) => {
                                                 e.preventDefault()
-                                                this.setState({ cuartiles: true })
+                                                this.cargarCuartil(row);
+                                                
                                                 // /analytics/file/:fileId/cuartiles
                                             }}>Cuartiles</button>
 

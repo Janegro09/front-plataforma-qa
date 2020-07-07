@@ -14,7 +14,8 @@ export default class PerfilamientoCuartilesComponent extends Component {
             nombreColumnas: null,
             result: [],
             dataFiltered: null,
-            redirect: false
+            redirect: false,
+            id: null
         }
     }
 
@@ -88,6 +89,41 @@ export default class PerfilamientoCuartilesComponent extends Component {
         });
     }
 
+    enviar = (e) => {
+        e.preventDefault();
+        const { id, result } = this.state;
+
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
+        // PARAMETROS REQUERIDOS, SOLO PASSWORD
+        const bodyParameters = result
+
+        axios.post(Global.reasignProgram + '/' + id + '/cuartiles', bodyParameters, config)
+            .then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                if (response.data.Success) {
+                    swal("Felicidades!", "Cuartiles modificados!", "success").then(() => {
+                        window.location.reload(window.location.href);
+                    })
+                } else {
+                    swal("Error!", "Hubo un error al modificar cuartiles!", "error");
+                }
+                
+            })
+            .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Atención", "No has cambiado nada", "info");
+                }
+                console.log("Error: ", e)
+            })
+    }
+
     componentDidMount() {
         const { cuartilSeleccionado } = this.props.location;
         console.log(cuartilSeleccionado);
@@ -98,15 +134,21 @@ export default class PerfilamientoCuartilesComponent extends Component {
             return;
         }
         let id = cuartilSeleccionado.id;
+        this.setState({ id })
 
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
 
         axios.get(Global.reasignProgram + '/' + id + '/columns', { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            // sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             const { Data } = response.data;
             this.setState({ nombreColumnas: Data, dataFiltered: Data });
+            let token2 = response.data.loggedUser.token
+            axios.get(Global.reasignProgram + '/' + id + '/cuartiles', { headers: { Authorization: `Bearer ${token2}` } }).then(response => {
+                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                console.log("RAMAGOOON", response.data)
+            })
         })
             .catch((e) => {
                 // Si hay algún error en el request lo deslogueamos
@@ -137,7 +179,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 <SideBarLeft />
 
                 <div className="section-content">
-                    <button>Dale</button>
+                    <button onClick={this.enviar}>Dale</button>
                     <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
                     {nombreColumnas &&
                         <table>

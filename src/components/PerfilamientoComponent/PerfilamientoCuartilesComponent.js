@@ -53,7 +53,15 @@ export default class PerfilamientoCuartilesComponent extends Component {
             if (obj.VMin > fila.VMin && obj.VMin < obj.VMax && temp.Q3) {
                 temp.Q1.VMax = obj.VMin;
             }
+
+            if (temp.Q3 && temp.Q1.VMax) {
+                temp.Q2 = {
+                    VMax: (temp.Q3.VMax - temp.Q1.VMax) / 2
+                }
+            }
         }
+
+        console.log(temp)
 
         let indice = -1
         for (let i = 0; i < result.length; i++) {
@@ -111,7 +119,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 } else {
                     swal("Error!", "Hubo un error al modificar cuartiles!", "error");
                 }
-                
+
             })
             .catch(e => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
@@ -126,7 +134,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
     componentDidMount() {
         const { cuartilSeleccionado } = this.props.location;
-        console.log(cuartilSeleccionado);
         if (cuartilSeleccionado === undefined) {
             this.setState({
                 redirect: true
@@ -147,7 +154,32 @@ export default class PerfilamientoCuartilesComponent extends Component {
             let token2 = response.data.loggedUser.token
             axios.get(Global.reasignProgram + '/' + id + '/cuartiles', { headers: { Authorization: `Bearer ${token2}` } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                console.log("RAMAGOOON", response.data)
+                let final = [];
+                let result = response.data.Data.cuartiles
+                for (let index = 0; index < result.length; index++) {
+                    let element = result[index];
+                    let temp = {
+                        "QName": element.name,
+                        "Qorder": element.order,
+                        "Q1": {
+                            "VMin": element.Q1.VMin,
+                            "VMax": element.Q1.VMax
+                        },
+                        "Q2": {
+                            "VMax": element.Q2.VMax
+                        },
+                        "Q3": {
+                            "VMax": element.Q3.VMax
+                        },
+                        "Q4": {
+                            "VMax": element.Q4.VMax
+                        }
+                    }
+                    final.push(temp)
+                }
+                this.setState({
+                    result: final
+                })
             })
         })
             .catch((e) => {
@@ -166,8 +198,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
     render() {
 
         const { nombreColumnas, dataFiltered, redirect, result } = this.state;
-
-        console.log("res: ", result)
+        console.log("RESULT: ", result)
 
         if (redirect) {
             return <Redirect to="/perfilamiento" />
@@ -201,44 +232,101 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                     }
 
                                     if (columna.VMax !== 0) {
+                                        let exists = '';
+                                        result.map(v => {
+                                            if (v.QName === columna.columnName) {
+                                                orden = v.Qorder
+                                                exists = v
+                                            }
+
+                                            return true;
+                                        })
+                                        console.log(orden)
                                         return (
                                             <tr key={key}>
                                                 <td>{columna.columnName}</td>
                                                 <td>{`[${columna.VMin} - ${columna.VMax}]`}</td>
                                                 <td>
-                                                    <select id={key} onChange={
-                                                        (e) => {
-                                                            e.preventDefault();
-                                                            let element = document.getElementById(key);
-                                                            orden = element.value;
+                                                    <select
+                                                        id={key}
+                                                        onChange={
+                                                            (e) => {
+                                                                e.preventDefault();
+                                                                let element = document.getElementById(key);
+                                                                orden = element.value;
+                                                            }
                                                         }
-                                                    }
+                                                        disabled={exists !== ''}
+                                                        // defaultValue={exists.Qorder ? 'ASC' : 'DESC'}
                                                     >
                                                         <option value="DESC">DESC</option>
-                                                        <option value="ASC">ASC</option>
+                                                        <option value="ASC" selected={exists.Qorder && exists.Qorder === 'ASC' }>ASC</option>
                                                     </select>
                                                 </td>
-                                                <td> <input id={"VMin" + key} type="text" placeholder="VMin" onChange={() => {
-                                                    let element = document.getElementById("VMin" + key);
-                                                    obj.VMin = parseFloat(element.value)
-                                                }} /> </td>
-                                                <td><input id={"VMax" + key} type="text" placeholder="VMax" onChange={() => {
-                                                    let element = document.getElementById("VMax" + key);
-                                                    obj.VMax = parseFloat(element.value)
-                                                }} /></td>
                                                 <td>
-                                                    <input type="checkbox" onClick={() => {
-                                                        if (document.getElementById(key).disabled) {
-                                                            document.getElementById("VMin" + key).disabled = false;
-                                                            document.getElementById("VMax" + key).disabled = false;
-                                                            document.getElementById(key).disabled = false;
-                                                        } else {
-                                                            document.getElementById("VMin" + key).disabled = true;
-                                                            document.getElementById("VMax" + key).disabled = true;
-                                                            document.getElementById(key).disabled = true;
-                                                        }
-                                                        this.seleccionarFila(columna, orden, obj);
-                                                    }} />
+                                                    <input
+                                                        id={"VMin" + key}
+                                                        type="text"
+                                                        placeholder="VMin"
+                                                        onChange={(e) => {
+                                                            e.preventDefault()
+                                                            let element = document.getElementById("VMin" + key);
+                                                            obj.VMin = parseFloat(element.value)
+                                                        }}
+                                                        defaultValue={exists !== '' ? exists.Q1.VMax : ''}
+                                                        disabled={exists !== ''}
+                                                    />
+                                                </td>
+
+                                                <td>
+                                                    {exists.Q3 &&
+
+                                                    <input
+                                                        id={"VMax" + key}
+                                                        type="text"
+                                                        placeholder="VMax"
+                                                        onChange={(e) => {
+                                                            e.preventDefault()
+                                                            let element = document.getElementById("VMax" + key);
+                                                            obj.VMax = parseFloat(element.value)
+                                                        }}
+                                                        defaultValue={exists !== '' ? exists.Q3.VMax : ''}
+                                                        disabled={exists !== ''}
+                                                    />
+                                                    }
+                                                    {exists.Q3 === undefined &&
+
+                                                    <input
+                                                        id={"VMax" + key}
+                                                        type="text"
+                                                        placeholder="VMax"
+                                                        onChange={(e) => {
+                                                            e.preventDefault()
+                                                            let element = document.getElementById("VMax" + key);
+                                                            obj.VMax = parseFloat(element.value)
+                                                        }}
+                                                        disabled={exists !== ''}
+                                                    />
+                                                    }
+                                                </td>
+
+                                                <td>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={exists !== ''}
+                                                        onChange={() => {
+                                                            if (document.getElementById(key).disabled) {
+                                                                document.getElementById("VMin" + key).disabled = false;
+                                                                document.getElementById("VMax" + key).disabled = false;
+                                                                document.getElementById(key).disabled = false;
+                                                            } else {
+                                                                document.getElementById("VMin" + key).disabled = true;
+                                                                document.getElementById("VMax" + key).disabled = true;
+                                                                document.getElementById(key).disabled = true;
+                                                            }
+                                                            this.seleccionarFila(columna, orden, obj);
+                                                        }}
+                                                    />
                                                 </td>
                                             </tr>
                                         )

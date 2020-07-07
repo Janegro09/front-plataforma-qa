@@ -61,7 +61,7 @@ table td, table th {
 
 }
 table td {
-    text-align: center;
+    text-align: left;
     vertical-align: middle;
     font-size: 12px;
 }
@@ -73,7 +73,7 @@ table td:last-child {
 table th {
     /* background-color: #daeff1; */
     font-weight: 300;    
-    text-align: center;
+    text-align: left;
 
 }
 
@@ -89,6 +89,7 @@ table svg:hover {
 
 .tableIcons {
   width: 73px;
+  text-align: center;
 }
 
 @media screen and (max-width: 700px) {
@@ -351,6 +352,7 @@ table svg:hover {
     display: flex;
     margin-bottom: 20px;
     align-items: flex-end;
+    margin-top: 20px;
   }
 
 .btnCrear {

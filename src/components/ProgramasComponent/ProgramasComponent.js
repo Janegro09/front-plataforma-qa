@@ -673,7 +673,7 @@ export default class GroupsTable extends Component {
 
                             {this.state.editProgram && this.state.ok &&
                                 <div>
-                                    <h4>Editar programa</h4>
+                         
                                     {/* <CreateProgramsGroupComponent /> */}
                                     <div className="table-users-edit">
                                         <form onSubmit={this.createProgram} className="inputsEditUser addUserPadding">
@@ -731,7 +731,7 @@ export default class GroupsTable extends Component {
 
                     {this.state.createProgram && this.state.okProgramas &&
                         <div className="table-users">
-                            <h4>Crear programa</h4>
+                            <h4 className="marginBotton15">Crear programa</h4>
                             {/* <CreateProgramsGroupComponent /> */}
                             <div className="table-users-edit">
                                 <form onSubmit={this.crearPrograma} className="inputsEditUser addUserPadding">

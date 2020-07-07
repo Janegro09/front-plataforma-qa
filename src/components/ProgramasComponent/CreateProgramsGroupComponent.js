@@ -55,6 +55,13 @@ export default class CreateProgramsGroupComponent extends Component {
                         <SelectGroup getValue={(c) => this.usersAssign = c} />
                         <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Grupo de Programas</button>
                     </form>
+                                            <button
+                            onClick={() => {
+                                this.setState({
+                                    createGroupProgram: false
+                                })
+                            }}
+                        >Cancelar</button>  
                 </div>
             </div>
         )

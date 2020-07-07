@@ -70,7 +70,7 @@
   }
   
   table td {
-    text-align: center;
+    text-align: left;
     vertical-align: middle;
     font-size: 12px;
   }
@@ -84,7 +84,7 @@
   table th {
     /* background-color: #daeff1; */
     font-weight: 300;
-    text-align: center;
+    text-align: left;
   }
   
   table svg {
@@ -97,6 +97,7 @@
   
   .tableIcons {
     width: 73px;
+    text-align: center;
   }
   
   @media screen and (max-width: 700px) {
@@ -114,7 +115,7 @@
       margin-left: 100px;
       padding: 4px 20px 4px 40px;
       position: relative;
-      text-align: center;
+      text-align: left;
     }
     td:not(:first-child):before {
       color: #2d93bb;
@@ -399,6 +400,7 @@
     display: flex;
     margin-bottom: 20px;
     align-items: flex-end;
+    margin-top: 20px;
   }
   
   .btnCrear {
@@ -501,11 +503,11 @@
     height: 63vh;
     border-radius: 10px;
     margin-top: 0;
-    background-color: #8080800f;
+    background-color: #afafaf0f;
     transition: all 0.15s ease-in-out;
-    -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.05);
+    /* -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.05);
     -moz-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.05);
-    box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.05);
+    box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.05); */
   }
 
   

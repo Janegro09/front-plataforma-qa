@@ -176,6 +176,7 @@ export default class Perfilamiento extends Component {
 
         return (
             <div>
+                
                 <button className="boton-agregar" onClick={(e) => {
                     e.preventDefault();
                     this.agregarPerfilamiento();

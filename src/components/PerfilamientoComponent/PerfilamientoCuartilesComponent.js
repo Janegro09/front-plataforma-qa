@@ -81,7 +81,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 <SideBarLeft />
 
                 <div className="section-content">
-                    <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
+                    <input className="form-control" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
                     {nombreColumnas &&
                         <table>
                             <thead>
@@ -115,8 +115,8 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                         <option value="DESC">DESC</option>
                                                     </select>
                                                 </td>
-                                                <td> <input type="text" placeholder="VMin" /> </td>
-                                                <td><input type="text" placeholder="VMax" /></td>
+                                                <td> <input className="form-control" type="text" placeholder="VMin" /> </td>
+                                                <td><input className="form-control" type="text" placeholder="VMax" /></td>
                                                 <td> <button onClick={(e) => {
                                                     e.preventDefault();
                                                     this.seleccionarFila(columna, orden);

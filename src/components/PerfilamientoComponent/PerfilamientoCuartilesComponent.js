@@ -26,6 +26,27 @@ export default class PerfilamientoCuartilesComponent extends Component {
         })
     }
 
+    seleccionarFila = (fila, orden) => {
+        console.log("La fila: ", fila, orden);
+    }
+
+    setOrden = () => {
+        console.log("Orden: ", this.orden.value);
+
+    }
+
+    handleInputChange = (event) => {
+        const target = event.target;
+        const value = target.name === 'ASC' ? target.checked : target.value;
+        const name = target.name;
+        if (name !== 'ASC') {
+            name = 'DESC';
+        }
+        this.setState({
+            [name]: value
+        });
+    }
+
     componentDidMount() {
         const { cuartilSeleccionado } = this.props.location;
         let id = cuartilSeleccionado.id;
@@ -58,31 +79,60 @@ export default class PerfilamientoCuartilesComponent extends Component {
         return (
             <div>
                 <SideBarLeft />
-                <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
-                {nombreColumnas &&
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Rango [MIN-MAX]</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {dataFiltered.map((columna, key) => {
-                                if (columna.VMax !== 0) {
-                                    return (
-                                        <tr key={key}>
-                                            <td>{columna.columnName}</td>
-                                            <td>{`[${columna.VMin} - ${columna.VMax}]`}</td>
-                                        </tr>
-                                    )
-                                } else {
-                                    return true;
-                                }
-                            })}
-                        </tbody>
-                    </table>
-                }
+
+                <div className="section-content">
+                    <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
+                    {nombreColumnas &&
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Rango [MIN-MAX]</th>
+                                    <th>Orden</th>
+                                    <th>Objetivo VMin</th>
+                                    <th>Objetivo VMax</th>
+                                    <th>Seleccionar</th>
+                                    <th>Quitar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {dataFiltered.map((columna, key) => {
+                                    let orden = 'ASC';
+                                    if (columna.VMax !== 0) {
+                                        return (
+                                            <tr key={key}>
+                                                <td>{columna.columnName}</td>
+                                                <td>{`[${columna.VMin} - ${columna.VMax}]`}</td>
+                                                <td>
+                                                    <select id={key} onChange={
+                                                        (e) => {
+                                                            e.preventDefault();
+                                                            let element = document.getElementById(key);
+                                                            orden = element.value;
+                                                        }
+                                                    }>
+                                                        <option value="ASC">ASC</option>
+                                                        <option value="DESC">DESC</option>
+                                                    </select>
+                                                </td>
+                                                <td> <input type="text" placeholder="VMin" /> </td>
+                                                <td><input type="text" placeholder="VMax" /></td>
+                                                <td> <button onClick={(e) => {
+                                                    e.preventDefault();
+                                                    this.seleccionarFila(columna, orden);
+                                                }}>Seleccionar</button> </td>
+                                                <td> <button>Quitar</button> </td>
+                                            </tr>
+                                        )
+                                    } else {
+                                        return true;
+                                    }
+                                })}
+                            </tbody>
+                        </table>
+                    }
+                </div>
+
             </div>
         )
     }

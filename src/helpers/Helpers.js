@@ -26,7 +26,7 @@ export const HELPER_FUNCTIONS = {
     },
     checkPermission: (route) => {
         const userInfo = JSON.parse(sessionStorage.getItem("userData"))
-        if (userInfo !== null) {   
+        if (userInfo !== null) {
             const permissions = userInfo.role[0].permissionAssign
             for (let index = 0; index < permissions.length; index++) {
                 const element = permissions[index];

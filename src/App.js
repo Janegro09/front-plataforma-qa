@@ -30,29 +30,29 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={Login} />
-        <Route path="/login" component={Login} />
-        <Route path="/home" component={Home} />
-        <Route path="/users" component={UsersComponent} />
         <Route path="/addUser" component={addUserComponent} />
-        <Route path="/editUser" component={editUserComponent} />
-        <Route path="/editGroup" component={editGroupComponent} />
-        <Route path="/editRole" component={editRoleComponent} />
-        <Route path="/deleteUser" component={deleteUserComponent} />
+        <Route path="/backoffice" component={BackOfficeComponent} />
+        <Route path="/borrarPrograma" component={DeleteProgramComponent} />
         <Route path="/createGroup" component={createGroupComponent} />
-        <Route path="/crearPrograma" component={CreateProgramComponent} />
         <Route path="/crearGrupoProgramas" component={CreateProgramsGroupComponent} />
+        <Route path="/changePassword" component={ChangePassword} />
+        <Route path="/crearPrograma" component={CreateProgramComponent} />
+        <Route path="/createRole" component={createRoleComponent} />
+        <Route path="/deleteGroup" component={deleteGroupComponent} />
+        <Route path="/deleteUser" component={deleteUserComponent} />
+        <Route path="/deleteRole" component={deleteRoleComponent} />
+        <Route path="/editGroup" component={editGroupComponent} />
+        <Route path="/editUser" component={editUserComponent} />
+        <Route path="/editRole" component={editRoleComponent} />
         <Route path="/editarGrupoProgramas" component={EditProgramsGroupComponent} />
         <Route path="/editarPrograma" component={EditProgramComponent} />
-        <Route path="/borrarPrograma" component={DeleteProgramComponent} />
-        <Route path="/createRole" component={createRoleComponent} />
-        <Route path="/deleteRole" component={deleteRoleComponent} />
-        <Route path="/deleteGroup" component={deleteGroupComponent} />
-        <Route path="/changePassword" component={ChangePassword} />
         <Route path="/groups" component={GroupsComponent} />
-        <Route path="/roles" component={RolesComponent} />
-        <Route path="/backoffice" component={BackOfficeComponent} />
-        <Route path="/programas" component={ProgramasComponent} />
+        <Route path="/home" component={Home} />
+        <Route path="/login" component={Login} />
         <Route path="/perfilamiento" component={PerfilamientoComponent} />
+        <Route path="/programas" component={ProgramasComponent} />
+        <Route path="/roles" component={RolesComponent} />
+        <Route path="/users" component={UsersComponent} />
       </Switch>
     </BrowserRouter>
   );

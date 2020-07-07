@@ -5,6 +5,8 @@ import Global from '../../Global'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import moment from 'moment'
 import Modal from './Modal/Modal'
+import ModalAgregarPerfilamiento from './Modal/ModalAgregarPerfilamiento'
+import './Perfilamiento.css'
 
 export default class Perfilamiento extends Component {
     constructor(props) {
@@ -12,7 +14,8 @@ export default class Perfilamiento extends Component {
         this.state = {
             data: null,
             dataFiltered: null,
-            id: null
+            id: null,
+            agregarPerfilamiento: false
         }
     }
 
@@ -49,6 +52,13 @@ export default class Perfilamiento extends Component {
     asignarPrograma = (id) => {
         this.setState({
             id
+        })
+    }
+
+    agregarPerfilamiento = () => {
+        console.log('Agregar lanzado');
+        this.setState({
+            agregarPerfilamiento: true
         })
     }
 
@@ -148,11 +158,18 @@ export default class Perfilamiento extends Component {
     }
 
     render() {
-        let { data, dataFiltered, id } = this.state;
+        let { data, dataFiltered, id, agregarPerfilamiento } = this.state;
         return (
             <div>
+                <button className="boton-agregar" onClick={(e) => {
+                    e.preventDefault();
+                    this.agregarPerfilamiento();
+                }}>Subir</button>
                 {data && id &&
                     <Modal idFile={id} />
+                }
+                {agregarPerfilamiento &&
+                    <ModalAgregarPerfilamiento />
                 }
                 <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
                 {data &&

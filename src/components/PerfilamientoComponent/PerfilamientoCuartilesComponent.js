@@ -4,6 +4,7 @@ import axios from 'axios';
 import Global from '../../Global';
 import swal from 'sweetalert';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
+import { Redirect } from 'react-router-dom';
 
 export default class PerfilamientoCuartilesComponent extends Component {
     constructor(props) {
@@ -12,7 +13,8 @@ export default class PerfilamientoCuartilesComponent extends Component {
         this.state = {
             nombreColumnas: null,
             result: [],
-            dataFiltered: null
+            dataFiltered: null,
+            redirect: false
         }
     }
 
@@ -49,6 +51,13 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
     componentDidMount() {
         const { cuartilSeleccionado } = this.props.location;
+        console.log(cuartilSeleccionado);
+        if (cuartilSeleccionado === undefined) {
+            this.setState({
+                redirect: true
+            })
+            return;
+        }
         let id = cuartilSeleccionado.id;
 
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
@@ -74,7 +83,13 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
 
     render() {
-        const { nombreColumnas, dataFiltered } = this.state;
+
+        const { nombreColumnas, dataFiltered, redirect } = this.state;
+
+        if (redirect) {
+            return <Redirect to="/perfilamiento" />
+        }
+
 
         return (
             <div>

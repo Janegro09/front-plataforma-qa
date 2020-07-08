@@ -12,29 +12,89 @@ export default class PerfilaminetosComponent extends Component {
 
         this.state = {
             allUsers: [],
-            cuartiles: []
+            cuartiles: [],
+            grupos: []
         }
     }
 
-    onDragStart = (e, id) => {
-        console.log(e, id);
+    onDrop = (e) => {
+        e.preventDefault();
+        const data = e.dataTransfer.getData('data');
+        console.log(data);
+    }
+
+    onDragStart = (e) => {
         // Buscar los usuarios segun ese cuartil
-        const { cuartiles } = this.state;
+        e.dataTransfer.setData('data', e.target.id)
+        // const { cuartiles } = this.state;
 
-        id = id.split('|');
-        let QName = id[0];
-        let level = id[1];
+        // id = id.split('|');
+        // let QName = id[0];
+        // let level = id[1];
 
-        let usersArray = [];
-        cuartiles.map(v => {
-            if(v.name === QName){
-                let users = v.users[level];
-                console.log(users);
-            }
-            return true;
-        })
+        // cuartiles.map(v => {
+        //     if(v.name === QName){
+        //         let users = v.users[level];
+        //         e.dataTransfer.setData('users',users);
+        //         e.dataTransfer.setData('name',id);
+        //     }
+        //     return true;
+        // })
 
     }
+    eliminarGrupo = (name) => {
+        // Eliminamos el grupo del array
+        const grupos = this.state;
+        let returnData = []
+
+        for(let i = 0; i < grupos.length; i++){
+            const g = grupos[i];
+
+            if(g.name !== name) {
+                returnData.push(g)
+            }
+        }
+
+        this.setState({
+            grupos: returnData
+        })
+    }
+
+    agregarGrupo = (e) => {
+        const { grupos } = this.state
+        e.preventDefault();
+        let tempGroup = {
+            order: 0,
+            name: `Nuevo grupo ${grupos.length + 1}`,
+            applyAllUsers: false,
+            cluster: "",
+            users: [],
+            cuartiles: []
+        }
+
+        this.setState({
+            grupos: [...grupos, tempGroup]
+        })
+    }
+
+    changeName = (oldName) => {
+        const newName = this.name.value
+        const {grupos} = this.state
+        let dataReturn = []
+        // Buscamos el array a modificar
+        grupos.map(v => {
+            let tempData = v;
+            if(v.name === oldName){
+                tempData.name = newName
+            }
+            dataReturn.push(tempData)
+        })
+
+        this.setState({
+            grupos: dataReturn
+        })
+    }
+
     componentDidMount() {
         console.log("Componente lanzado!");
         const { cuartilSeleccionado } = this.props.location;
@@ -71,7 +131,7 @@ export default class PerfilaminetosComponent extends Component {
             });
     }
     render() {
-        let { cuartiles } = this.state;
+        let { cuartiles, grupos } = this.state;
         return (
             <div>
                 <SideBarLeft />
@@ -82,25 +142,40 @@ export default class PerfilaminetosComponent extends Component {
                         <span>
                             <button>Cuartiles</button>
                             <button>Modificar</button>
+                            <button onClick={this.agregarGrupo}>Agregar grupo</button>
                         </span>
                     </div>
 
                     <div className="grupos">
-                        <div className="grupoPerfilamiento">
-                            <div className="acciones">
-                                <input type="text" defaultValue="Nuevo grupo 1" />
-                                <label>Aplicar al 100% de los usuarios.
-                                    <input type="checkbox" id="aplicarall" />
-                                </label>
-                                <button>Eliminar</button>
-                            </div>
-                            <div className="cuartilesAsignados">
-                                <span className="green">
-                                    <p>Cuartil 1 - Q1</p>
-                                    <button>x</button>
-                                </span>
-                            </div>
-                        </div>
+                        {/*  */}
+                        {grupos &&
+                            grupos.map((v, key) => {
+                                return (
+                                    <div className="grupoPerfilamiento" key={key} id={`grupo_${key}`}>
+                                        <div className="acciones">
+                                            <input type="text" defaultValue={v.name} onChange={(e) => this.changeName(v.name)} ref={e => this.name = e}/>
+                                            <label>Aplicar al 100% de los usuarios.
+                                                <input type="checkbox" id="aplicarall" defaultChecked={v.applyAllUsers}/>
+                                            </label>
+                                            <select>
+                                                <option>Seleccionar...</option>
+                                            </select>
+                                            <button onClick={(e) => {
+                                                e.preventDefault();
+                                                this.eliminarGrupo(v.name)
+                                            }}>Eliminar</button>
+                                        </div>
+                                        <div className="cuartilesAsignados" onDrop={this.onDrop} onDragOver={(e) => e.preventDefault()}>
+                                            {/* <span className="green">
+                                                <p>Cuartil 1 - Q1</p>
+                                                <button>x</button>
+                                            </span> */}
+                                        </div>
+                                    </div>
+                                )
+                            })
+
+                        }
                     </div>
 
                     <div className="cuartiles">
@@ -111,10 +186,10 @@ export default class PerfilaminetosComponent extends Component {
                                     <div key={key} className="cuartil">
                                         <h5>{v.name}</h5>
                                         <div className="buttonsContain">
-                                            <button id={`${v.name}|Q1`} className="green" draggable onDragStart={e => this.onDragStart(e, `${v.name}|Q1`)}>Q1</button>
-                                            <button id={`${v.name}|Q2`} className="yellow" draggable onDragStart={e => this.onDragStart(e, `${v.name}|Q2`)}>Q2</button>
-                                            <button id={`${v.name}|Q3`} className="orange" draggable onDragStart={e => this.onDragStart(e, `${v.name}|Q3`)}>Q3</button>
-                                            <button id={`${v.name}|Q4`} className="red" draggable onDragStart={e => this.onDragStart(e, `${v.name}|Q4`)}>Q4</button>
+                                            <button id={`${v.name}|Q1`} className="green" draggable onDragStart={this.onDragStart}>Q1</button>
+                                            <button id={`${v.name}|Q2`} className="yellow" draggable onDragStart={this.onDragStart}>Q2</button>
+                                            <button id={`${v.name}|Q3`} className="orange" draggable onDragStart={this.onDragStart}>Q3</button>
+                                            <button id={`${v.name}|Q4`} className="red" draggable onDragStart={this.onDragStart}>Q4</button>
                                         </div>
                                     </div>
                                 )

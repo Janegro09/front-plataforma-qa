@@ -52,6 +52,8 @@
     flex-flow: row wrap;
     justify-content: flex-start;
     align-items: flex-start;
+    min-height: 30px;
+    border: 1px solid black;
 }
 
 .grupoPerfilamiento .cuartilesAsignados span {

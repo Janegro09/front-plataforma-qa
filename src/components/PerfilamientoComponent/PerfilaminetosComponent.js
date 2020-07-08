@@ -12,51 +12,137 @@ export default class PerfilaminetosComponent extends Component {
 
         this.state = {
             allUsers: [],
+            assignedUsers: [],
             cuartiles: [],
             grupos: []
         }
     }
 
-    onDrop = (e) => {
+    onDrop = (e, groupName) => {
         e.preventDefault();
-        const data = e.dataTransfer.getData('data');
-        console.log(data);
+        let data = e.dataTransfer.getData('data');
+        if (data && groupName) {
+            let { cuartiles, assignedUsers, grupos } = this.state;
+            data = data.split('|');
+            let QName = data[0];
+            let level = data[1];
+            cuartiles.map(v => {
+                if (v.name === QName) {
+                    let users = v.users[level];
+                    let usersToAssign = [];
+
+                    // validar si existe el grupo asignado
+                    let exists = false;
+                    let assignedToAllUsers;
+                    grupos.map(value => {
+                        if (value.name === groupName) {
+                            assignedToAllUsers = value.applyAllUsers;
+                            value.cuartiles.map(c => {
+                                if (c.name === QName && c.level === level) {
+                                    exists = true;
+                                }
+                            })
+                        }
+                    })
+
+                    if (!exists) {
+                        for (let u = 0; u < users.length; u++) {
+                            const us = users[u];
+                            if (assignedUsers.includes(us) && !assignedToAllUsers) continue;
+                            usersToAssign.push(us)
+
+                        }
+
+                        let gruposReturn = [];
+                        grupos.map(d => {
+                            let tempData = d;
+                            if (tempData.name === groupName) {
+                                tempData.users = tempData.users.concat(usersToAssign);
+
+                                tempData.cuartiles = [...tempData.cuartiles, {
+                                    name: QName,
+                                    level,
+                                    usersToAssign
+                                }]
+                            }
+                            gruposReturn.push(tempData);
+
+                        })
+
+                        if (assignedToAllUsers) {
+                            this.setState({
+                                grupos: gruposReturn
+                            })
+                        } else {
+                            this.setState({
+                                grupos: gruposReturn,
+                                assignedUsers: assignedUsers.concat(usersToAssign)
+                            })
+                        }
+                    }
+                }
+                return true;
+            })
+        }
     }
 
     onDragStart = (e) => {
         // Buscar los usuarios segun ese cuartil
         e.dataTransfer.setData('data', e.target.id)
-        // const { cuartiles } = this.state;
-
-        // id = id.split('|');
-        // let QName = id[0];
-        // let level = id[1];
-
-        // cuartiles.map(v => {
-        //     if(v.name === QName){
-        //         let users = v.users[level];
-        //         e.dataTransfer.setData('users',users);
-        //         e.dataTransfer.setData('name',id);
-        //     }
-        //     return true;
-        // })
 
     }
+
     eliminarGrupo = (name) => {
         // Eliminamos el grupo del array
-        const grupos = this.state;
+        let { grupos, assignedUsers } = this.state;
         let returnData = []
-
-        for(let i = 0; i < grupos.length; i++){
+        for (let i = 0; i < grupos.length; i++) {
             const g = grupos[i];
 
-            if(g.name !== name) {
-                returnData.push(g)
+            if (g.name !== name) {
+                returnData.push(grupos[i])
+            } else {
+                grupos[i].users.map(g => {
+                    assignedUsers.splice(assignedUsers.indexOf(g), 1)
+                })
+                // console.log("g: ", grupos[i])
             }
         }
 
         this.setState({
-            grupos: returnData
+            grupos: returnData,
+            assignedUsers
+        })
+    }
+
+    eliminarCuartil = (nameGroup, nameCuartil, levelCuartil) => {
+        let { grupos, assignedUsers } = this.state
+        let gruposReturn = []
+        grupos.forEach(g => {
+            let temp = g
+            if (g.name === nameGroup) {
+                let cuartiles = g.cuartiles;
+                let cuartilesReturn = []
+
+                cuartiles.forEach(c => {
+                    if (c.name === nameCuartil && c.level === levelCuartil) {
+                        c.usersToAssign.forEach(u => {
+                            assignedUsers.splice(assignedUsers.indexOf(u), 1)
+                        })
+                    } else {
+                        cuartilesReturn.push(c)
+                    }
+
+                })
+
+                temp.cuartiles = cuartilesReturn;
+            }
+
+            gruposReturn.push(temp)
+        })
+
+        this.setState({
+            assignedUsers
         })
     }
 
@@ -64,7 +150,7 @@ export default class PerfilaminetosComponent extends Component {
         const { grupos } = this.state
         e.preventDefault();
         let tempGroup = {
-            order: 0,
+            order: grupos.length,
             name: `Nuevo grupo ${grupos.length + 1}`,
             applyAllUsers: false,
             cluster: "",
@@ -79,19 +165,48 @@ export default class PerfilaminetosComponent extends Component {
 
     changeName = (oldName) => {
         const newName = this.name.value
-        const {grupos} = this.state
+        const { grupos } = this.state
         let dataReturn = []
-        // Buscamos el array a modificar
+        let exists = false
         grupos.map(v => {
-            let tempData = v;
-            if(v.name === oldName){
-                tempData.name = newName
+            if (v.name === newName) {
+                exists = true;
             }
-            dataReturn.push(tempData)
+
+            return true;
         })
 
+        if (exists) {
+            swal("Error!", "No pueden tener el mismo nombre", "error")
+        } else {
+            // Buscamos el array a modificar
+            grupos.map(v => {
+                let tempData = v;
+                if (v.name === oldName) {
+                    tempData.name = newName
+                }
+                dataReturn.push(tempData)
+                return true;
+            })
+
+            this.setState({
+                grupos: dataReturn
+            })
+        }
+
+    }
+
+    updateAssign = (groupName) => {
+        let { grupos } = this.state
+        for(let i = 0; i < grupos.length; i++){
+            const v = grupos[i];
+            if(v.name === groupName){
+                v.applyAllUsers = this.assignAllUsers.checked
+            }
+        }
+
         this.setState({
-            grupos: dataReturn
+            grupos
         })
     }
 
@@ -114,7 +229,6 @@ export default class PerfilaminetosComponent extends Component {
                 allUsers,
                 cuartiles
             })
-            console.log("LA RESPONSE: ", respuesta);
             // let win = window.open(Global.download + '/' + respuesta.idTemp, '_blank');
             // win.focus();
 
@@ -131,14 +245,15 @@ export default class PerfilaminetosComponent extends Component {
             });
     }
     render() {
-        let { cuartiles, grupos } = this.state;
+        let { cuartiles, grupos, allUsers, assignedUsers } = this.state;
         return (
             <div>
                 <SideBarLeft />
 
                 <div className="section-content">
                     <div className="headerResultados">
-                        <p>Usuarios sin asignar: 100 - 100%</p>
+                        {console.log(allUsers.length, assignedUsers.length)}
+                        <p>Usuarios sin asignar: {allUsers.length - assignedUsers.length} - {Math.ceil(100 - ((assignedUsers.length / allUsers.length) * 100))}%</p>
                         <span>
                             <button>Cuartiles</button>
                             <button>Modificar</button>
@@ -151,11 +266,13 @@ export default class PerfilaminetosComponent extends Component {
                         {grupos &&
                             grupos.map((v, key) => {
                                 return (
-                                    <div className="grupoPerfilamiento" key={key} id={`grupo_${key}`}>
+                                    <div className="grupoPerfilamiento" key={key}>
                                         <div className="acciones">
-                                            <input type="text" defaultValue={v.name} onChange={(e) => this.changeName(v.name)} ref={e => this.name = e}/>
+                                            <input type="text" defaultValue={v.name} onBlur={(e) => this.changeName(v.name)} ref={e => this.name = e} />
                                             <label>Aplicar al 100% de los usuarios.
-                                                <input type="checkbox" id="aplicarall" defaultChecked={v.applyAllUsers}/>
+                                                <input type="checkbox" id="aplicarall" defaultChecked={v.applyAllUsers} onChange={() => {
+                                                    this.updateAssign(v.name)
+                                                }} ref={e => this.assignAllUsers = e} />
                                             </label>
                                             <select>
                                                 <option>Seleccionar...</option>
@@ -165,10 +282,34 @@ export default class PerfilaminetosComponent extends Component {
                                                 this.eliminarGrupo(v.name)
                                             }}>Eliminar</button>
                                         </div>
-                                        <div className="cuartilesAsignados" onDrop={this.onDrop} onDragOver={(e) => e.preventDefault()}>
-                                            {/* <span className="green">
-                                                <p>Cuartil 1 - Q1</p>
-                                                <button>x</button>
+                                        <div className="cuartilesAsignados" onDrop={(e) => this.onDrop(e, v.name)} onDragOver={(e) => e.preventDefault()}>
+                                            {v.cuartiles &&
+                                                v.cuartiles.map((value, key) => {
+                                                    let claseColor = ""
+                                                    switch (value.level) {
+                                                        case 'Q1':
+                                                            claseColor = 'green';
+                                                            break;
+                                                        case 'Q2':
+                                                            claseColor = 'yellow';
+                                                            break;
+                                                        case 'Q3':
+                                                            claseColor = 'orange';
+                                                            break;
+                                                        case 'Q4':
+                                                            claseColor = 'red';
+                                                            break;
+                                                    }
+                                                    return (
+                                                        <span className={claseColor} key={key}>
+                                                            <p>{`${value.name} - ${value.level}`}</p>
+                                                            <button onClick={(e) => { e.preventDefault(); this.eliminarCuartil(v.name, value.name, value.level) }}>x</button>
+                                                        </span>
+                                                    )
+                                                })
+
+                                            }
+                                            {/* 
                                             </span> */}
                                         </div>
                                     </div>

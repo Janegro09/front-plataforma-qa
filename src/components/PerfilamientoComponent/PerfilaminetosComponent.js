@@ -128,6 +128,7 @@ export default class PerfilaminetosComponent extends Component {
                     if (c.name === nameCuartil && c.level === levelCuartil) {
                         c.usersToAssign.forEach(u => {
                             assignedUsers.splice(assignedUsers.indexOf(u), 1)
+                            g.users.splice(g.users.indexOf(u), 1)
                         })
                     } else {
                         cuartilesReturn.push(c)
@@ -170,14 +171,14 @@ export default class PerfilaminetosComponent extends Component {
         let exists = false
         grupos.map(v => {
             if (v.name === newName) {
+                console.log(v)
                 exists = true;
             }
-
             return true;
         })
 
         if (exists) {
-            swal("Error!", "No pueden tener el mismo nombre", "error")
+            swal("Error!", "No se puede poner el mismo nombre que otro grupo", "error")
         } else {
             // Buscamos el array a modificar
             grupos.map(v => {
@@ -208,6 +209,11 @@ export default class PerfilaminetosComponent extends Component {
         this.setState({
             grupos
         })
+    }
+
+    reasignCuartiles = (groupName, ArrayCuartilesAsignados) => {
+        // Recibimos el nombre del grupo y los cuartiles que hay que reasignar
+        
     }
 
     componentDidMount() {
@@ -252,7 +258,6 @@ export default class PerfilaminetosComponent extends Component {
 
                 <div className="section-content">
                     <div className="headerResultados">
-                        {console.log(allUsers.length, assignedUsers.length)}
                         <p>Usuarios sin asignar: {allUsers.length - assignedUsers.length} - {Math.ceil(100 - ((assignedUsers.length / allUsers.length) * 100))}%</p>
                         <span>
                             <button>Cuartiles</button>
@@ -267,6 +272,7 @@ export default class PerfilaminetosComponent extends Component {
                             grupos.map((v, key) => {
                                 return (
                                     <div className="grupoPerfilamiento" key={key}>
+                                        <p>Usuarios asignados: {v.users.length} - {Math.ceil((v.users.length / allUsers.length) * 100)}%</p>
                                         <div className="acciones">
                                             <input type="text" defaultValue={v.name} onBlur={(e) => this.changeName(v.name)} ref={e => this.name = e} />
                                             <label>Aplicar al 100% de los usuarios.
@@ -327,10 +333,10 @@ export default class PerfilaminetosComponent extends Component {
                                     <div key={key} className="cuartil">
                                         <h5>{v.name}</h5>
                                         <div className="buttonsContain">
-                                            <button id={`${v.name}|Q1`} className="green" draggable onDragStart={this.onDragStart}>Q1</button>
-                                            <button id={`${v.name}|Q2`} className="yellow" draggable onDragStart={this.onDragStart}>Q2</button>
-                                            <button id={`${v.name}|Q3`} className="orange" draggable onDragStart={this.onDragStart}>Q3</button>
-                                            <button id={`${v.name}|Q4`} className="red" draggable onDragStart={this.onDragStart}>Q4</button>
+                                            <button id={`${v.name}|Q1`} className="green" draggable onDragStart={this.onDragStart}>Q1 ({v.users.Q1.length})</button>
+                                            <button id={`${v.name}|Q2`} className="yellow" draggable onDragStart={this.onDragStart}>Q2 ({v.users.Q2.length})</button>
+                                            <button id={`${v.name}|Q3`} className="orange" draggable onDragStart={this.onDragStart}>Q3 ({v.users.Q3.length})</button>
+                                            <button id={`${v.name}|Q4`} className="red" draggable onDragStart={this.onDragStart}>Q4 ({v.users.Q4.length})</button>
                                         </div>
                                     </div>
                                 )

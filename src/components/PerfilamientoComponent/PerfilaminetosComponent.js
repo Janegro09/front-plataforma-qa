@@ -5,6 +5,7 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import axios from 'axios';
 import Global from '../../Global'
 import './PerfilamientosComponent.css'
+import { Redirect } from 'react-router-dom';
 
 export default class PerfilaminetosComponent extends Component {
     constructor(props) {
@@ -14,7 +15,8 @@ export default class PerfilaminetosComponent extends Component {
             allUsers: [],
             assignedUsers: [],
             cuartiles: [],
-            grupos: []
+            grupos: [],
+            redirect: false
         }
     }
 
@@ -215,39 +217,47 @@ export default class PerfilaminetosComponent extends Component {
 
     componentDidMount() {
         const { cuartilSeleccionado } = this.props.location;
-        let id = cuartilSeleccionado.id;
-
-
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-        const token = tokenUser
-        const bearer = `Bearer ${token}`
-        axios.get(Global.getAllFiles + '/' + id + '/cuartiles?getUsers=true', { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            let respuesta = response.data.Data
-
-            const allUsers = respuesta.usuariosTotal
-            const cuartiles = respuesta.cuartiles;
+        if (cuartilSeleccionado === undefined) {
             this.setState({
-                allUsers,
-                cuartiles
+                redirect: true
             })
-            // let win = window.open(Global.download + '/' + respuesta.idTemp, '_blank');
-            // win.focus();
+        } else {
+            let id = cuartilSeleccionado.id;
+            const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+            const token = tokenUser
+            const bearer = `Bearer ${token}`
+            axios.get(Global.getAllFiles + '/' + id + '/cuartiles?getUsers=true', { headers: { Authorization: bearer } }).then(response => {
+                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                let respuesta = response.data.Data
+                const allUsers = respuesta.usuariosTotal
+                const cuartiles = respuesta.cuartiles;
+                
+                this.setState({
+                    allUsers,
+                    cuartiles
+                })
 
-        })
-            .catch((e) => {
-                // Si hay algún error en el request lo deslogueamos
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema", "error");
-                }
-                console.log("Error: ", e)
-            });
+            })
+                .catch((e) => {
+                    // Si hay algún error en el request lo deslogueamos
+                    if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                        HELPER_FUNCTIONS.logout()
+                    } else {
+                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        swal("Error!", "Hubo un problema", "error");
+                    }
+                    console.log("Error: ", e)
+                });
+        }
+
     }
     render() {
-        let { cuartiles, grupos, allUsers, assignedUsers } = this.state;
+        let { cuartiles, grupos, allUsers, assignedUsers, redirect } = this.state;
+
+        if (redirect) {
+            return <Redirect to="/perfilamiento" />
+        }
+
         return (
             <div>
                 <SideBarLeft />

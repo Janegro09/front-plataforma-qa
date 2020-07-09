@@ -22,7 +22,9 @@
 
 .grupoPerfilamiento {
     padding: 5px;
+    margin: 10px;
     box-sizing: border-box;
+    border: 1px solid red;
 }
 .grupoPerfilamiento .acciones {
     width: 100%;
@@ -116,4 +118,12 @@
     width: 100%;
     margin: 0 0 5px 0;
     padding: 5px;
+}
+.placeholder {
+    background: rgb(255,240,120);
+}
+
+.placeholder::before {
+    content: "Drop here";
+    color: rgb(225,210,90);
 }

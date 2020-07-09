@@ -187,7 +187,7 @@ export default class ProgramsGroupComponent extends Component {
                                                 })
                                             }
                                         }
-                                    ><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                                    ><GroupAddIcon className="svgAddButton" style={{ fontSize: 33 }} /></button>
                                 }
 
                             </div>

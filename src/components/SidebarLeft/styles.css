@@ -79,7 +79,7 @@ display: none;
 .side__bar {
   /*width: 360px;*/
   /*background-color: #f3f3f3;*/
-  height: 100vh;
+
   position: fixed;
   overflow-y: scroll;
   overflow: -moz-scrollbars-none;
@@ -241,9 +241,7 @@ hr {
 }
 
 @media screen and (max-width: 700px) {
-  .table-users {
-    overflow: scroll !important;
-  }  
+
   .side__bar_container {
     width: 100vw;
     height: 57px;
@@ -289,15 +287,6 @@ hr {
 
 
 
-  .table-users>h4 {
-
-    background: #c5c5c5;
-    color: white;
-    width: 100%;
-    padding: 8px;
-    border-radius: 5px;
-    -webkit-box-shadow: 0px 7px 13px -16px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
-  }
   .BtnInProgramas {
     width: 100vw;
     height: 48px;
@@ -333,22 +322,40 @@ hr {
   .side__bar {
     z-index: 2;
   }
-
-
-  
-  
 }
 
 .table-users>h4 {
-
-  color: #bfbfbf;
+  color: #6d6d6d;
   width: 100%;
   /* text-align: right; */
+  border-bottom: 1px solid gainsboro;
   padding: 8px;
-  border-radius: 5px;
-  -webkit-box-shadow: 0px 7px 13px -16px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
-}  
+  /* border-radius: 5px; */
+  /* -webkit-box-shadow: 0px 7px 13px -16px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0); */
+}
 
 .h4, h4 {
   font-size: 1.2em;
+}
+
+.svgAddButton {
+  font-size: 29px;
+  padding: 5px;
+  height: 31px;
+  width: 31px;
+  margin-bottom: 3px;
+  border-radius: 4px;
+  color: #5c5c5c;
+}
+
+.morph {
+  border-radius: 7px;
+  border: 2px solid transparent;
+  box-shadow: 0px 0px 6px 2px #ffffffb0, 5px 5px 8px 0px rgba(0, 0, 0, 0.06), 1px 2px 2px 0px rgba(0, 0, 0, 0.06);
+  transition: 0.1s;
+  margin-right: 8px;
+}
+
+.morph:hover {
+  box-shadow: 0px 0px 6px 2px #ffffffb0, 5px 5px 8px 0px rgba(0, 0, 0, 0.06), 1px 1px 5px 0px rgba(2, 3, 0, 0.20);
 }

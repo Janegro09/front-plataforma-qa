@@ -29,10 +29,7 @@ tr:hover .edit {
   display: table-cell;
 }
 
-tr:hover {
-  background-color: #e8e7e76b !important;
-  border-bottom: 1px solid #e2e2e2;
-}
+
 
 img {
   border-radius: 50%;

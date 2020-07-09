@@ -41,8 +41,10 @@ export default class PerfilaminetosComponent extends Component {
                                 if (c.name === QName && c.level === level) {
                                     exists = true;
                                 }
+                                return true;
                             })
                         }
+                        return true;
                     })
 
                     if (!exists) {
@@ -66,6 +68,7 @@ export default class PerfilaminetosComponent extends Component {
                                 }]
                             }
                             gruposReturn.push(tempData);
+                            return true;
 
                         })
 
@@ -104,8 +107,8 @@ export default class PerfilaminetosComponent extends Component {
             } else {
                 grupos[i].users.map(g => {
                     assignedUsers.splice(assignedUsers.indexOf(g), 1)
+                    return true;
                 })
-                // console.log("g: ", grupos[i])
             }
         }
 
@@ -171,7 +174,6 @@ export default class PerfilaminetosComponent extends Component {
         let exists = false
         grupos.map(v => {
             if (v.name === newName) {
-                console.log(v)
                 exists = true;
             }
             return true;
@@ -199,9 +201,9 @@ export default class PerfilaminetosComponent extends Component {
 
     updateAssign = (groupName) => {
         let { grupos } = this.state
-        for(let i = 0; i < grupos.length; i++){
+        for (let i = 0; i < grupos.length; i++) {
             const v = grupos[i];
-            if(v.name === groupName){
+            if (v.name === groupName) {
                 v.applyAllUsers = this.assignAllUsers.checked
             }
         }
@@ -211,13 +213,7 @@ export default class PerfilaminetosComponent extends Component {
         })
     }
 
-    reasignCuartiles = (groupName, ArrayCuartilesAsignados) => {
-        // Recibimos el nombre del grupo y los cuartiles que hay que reasignar
-        
-    }
-
     componentDidMount() {
-        console.log("Componente lanzado!");
         const { cuartilSeleccionado } = this.props.location;
         let id = cuartilSeleccionado.id;
 
@@ -305,6 +301,10 @@ export default class PerfilaminetosComponent extends Component {
                                                         case 'Q4':
                                                             claseColor = 'red';
                                                             break;
+                                                        default:
+                                                            claseColor = 'gray';
+                                                            break;
+
                                                     }
                                                     return (
                                                         <span className={claseColor} key={key}>

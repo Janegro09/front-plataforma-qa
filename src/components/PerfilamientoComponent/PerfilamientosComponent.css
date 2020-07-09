@@ -1,0 +1,119 @@
+.headerResultados {
+    border: 1px solid red;
+    width: 1000px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+}
+.headerResultados span {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: space-around;
+}
+
+.grupos {
+    border: 1px solid green;
+    width: 1000px;
+    padding: 2px;
+    box-sizing: border-box;
+}
+
+.grupoPerfilamiento {
+    padding: 5px;
+    box-sizing: border-box;
+}
+.grupoPerfilamiento .acciones {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.grupoPerfilamiento .acciones input {
+    width: 70%;
+}
+.grupoPerfilamiento .acciones label {
+    position: unset;
+    color: #000;
+    font-size: 12px;
+
+}
+
+.grupoPerfilamiento .acciones label input {
+    margin: 0 auto;
+    display: block;
+}
+
+.grupoPerfilamiento .cuartilesAsignados {
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-height: 30px;
+    border: 1px solid black;
+}
+
+.grupoPerfilamiento .cuartilesAsignados span {
+    color: #fff;
+    width: 200px;
+    display: inline-block;
+    position: relative;
+    padding: 5px;
+    margin: 2px 10px 2px 0px;
+}
+
+.grupoPerfilamiento .cuartilesAsignados span p {
+    margin: 0;
+}
+.grupoPerfilamiento .cuartilesAsignados span button {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+}
+
+.green {
+    background-color: green;
+}
+
+.red {
+    background-color: #f00;
+}
+
+.orange {
+    background-color: #f50;
+}
+.yellow {
+    background-color: #fc0
+}
+
+.cuartiles {
+    border: 1px solid blue;
+    width: 1000px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.cuartiles .cuartil {
+    border: 1px solid black;
+    width: 150px;
+    padding: 5px;
+}
+
+.cuartil h5 {
+    text-align: center;
+}
+
+.cuartil .buttonsContain button {
+    display: block;
+    width: 100%;
+    margin: 0 0 5px 0;
+    padding: 5px;
+}

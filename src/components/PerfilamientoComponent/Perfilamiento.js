@@ -18,7 +18,8 @@ export default class Perfilamiento extends Component {
             id: null,
             agregarPerfilamiento: false,
             cuartiles: false,
-            cuartilSeleccionado: null
+            cuartilSeleccionado: null,
+            perfilamientos: false
         }
     }
 
@@ -136,6 +137,10 @@ export default class Perfilamiento extends Component {
         this.setState({ cuartiles: true, cuartilSeleccionado });
     }
 
+    cargarPerfilamientos = (cuartilSeleccionado) => {
+        this.setState({ perfilamientos: true, cuartilSeleccionado });
+    }
+
     componentDidMount() {
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
@@ -162,13 +167,21 @@ export default class Perfilamiento extends Component {
     }
 
     render() {
-        let { data, dataFiltered, id, agregarPerfilamiento, cuartiles, cuartilSeleccionado } = this.state;
+        let { data, dataFiltered, id, agregarPerfilamiento, cuartiles, cuartilSeleccionado, perfilamientos } = this.state;
 
         if (cuartiles) {
             return <Redirect 
-                        // to={'/perfilamiento/cuartiles'}
                         to={{
                             pathname: '/perfilamiento/cuartiles',
+                            cuartilSeleccionado
+                        }}
+                     />
+        }
+
+        if (perfilamientos) {
+            return <Redirect 
+                        to={{
+                            pathname: '/perfilamiento/perfilamientos',
                             cuartilSeleccionado
                         }}
                      />
@@ -221,6 +234,7 @@ export default class Perfilamiento extends Component {
 
                                             <button onClick={(e) => {
                                                 e.preventDefault()
+                                                this.cargarPerfilamientos(row);
                                                 // /analytics/file/:fileId/perfilamiento
                                             }}>Perfilamientos</button>
 

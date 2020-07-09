@@ -202,7 +202,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
                 <div className="section-content">
                     <button onClick={this.enviar}>Dale</button>
-                    <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
+                    <input className="form-control" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
                     {nombreColumnas &&
                         <table>
                             <thead>
@@ -255,7 +255,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input
+                                                    <input className="form-control"
                                                         id={"VMin" + key}
                                                         type="text"
                                                         placeholder="VMin"
@@ -272,7 +272,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                 <td>
                                                     {exists.Q3 &&
 
-                                                        <input
+                                                        <input className="form-control"
                                                             id={"VMax" + key}
                                                             type="text"
                                                             placeholder="VMax"
@@ -287,7 +287,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                     }
                                                     {exists.Q3 === undefined &&
 
-                                                        <input
+                                                        <input className="form-control"
                                                             id={"VMax" + key}
                                                             type="text"
                                                             placeholder="VMax"

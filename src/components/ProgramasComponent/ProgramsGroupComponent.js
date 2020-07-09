@@ -187,7 +187,7 @@ export default class ProgramsGroupComponent extends Component {
                                                 })
                                             }
                                         }
-                                    ><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                                    ><GroupAddIcon className="svgAddButton" style={{ fontSize: 33 }} /></button>
                                 }
 
                             </div>
@@ -259,13 +259,7 @@ export default class ProgramsGroupComponent extends Component {
                 {this.state.editProgramGroup && this.state.ok &&
                     <div>
                         <EditProgramsGroupComponent edit={this.state.userSelected} />
-                        <button
-                            onClick={() => {
-                                this.setState({
-                                    editProgramGroup: false
-                                })
-                            }}
-                        >Cancelar</button>
+
                     </div>
                 }
 

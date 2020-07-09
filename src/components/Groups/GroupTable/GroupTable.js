@@ -248,7 +248,7 @@ export default class GroupsTable extends Component {
                     </React.Fragment>
                 }
                 
-                <div className="table-users">
+                <div className="tabla_parent">
 
                     <div className="flex-input-add">
                         {/* Buscador */}

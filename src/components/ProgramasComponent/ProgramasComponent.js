@@ -596,7 +596,7 @@ export default class GroupsTable extends Component {
                                         }
 
                                         {HELPER_FUNCTIONS.checkPermission("POST|programs/new") &&
-                                            <button onClick={e => this.newProgram(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                                            <button onClick={e => this.newProgram(e)}><GroupAddIcon className="svgAddButton" style={{ fontSize: 33 }} /></button>
                                         }
 
 
@@ -673,9 +673,9 @@ export default class GroupsTable extends Component {
 
                             {this.state.editProgram && this.state.ok &&
                                 <div>
-                                    <h4>Editar programa</h4>
+                         
                                     {/* <CreateProgramsGroupComponent /> */}
-                                    <div className="table-users-edit">
+                                    <div className="table-parent-edit">
                                         <form onSubmit={this.createProgram} className="inputsEditUser addUserPadding">
                                             <span className="Label">Nombre</span>
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={userSelected.name ? userSelected.name : ''} />
@@ -730,10 +730,10 @@ export default class GroupsTable extends Component {
                     }
 
                     {this.state.createProgram && this.state.okProgramas &&
-                        <div className="table-users">
-                            <h4>Crear programa</h4>
+                        <div className="tabla_parent">
+                            <h4 className="marginBotton15">Crear programa</h4>
                             {/* <CreateProgramsGroupComponent /> */}
-                            <div className="table-users-edit">
+                            <div className="table-parent-edit">
                                 <form onSubmit={this.crearPrograma} className="inputsEditUser addUserPadding">
                                     <span className="Label">Nombre</span>
                                     <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />
@@ -755,7 +755,7 @@ export default class GroupsTable extends Component {
                                             createProgram: false
                                         })
                                     }
-                                }>Cancelar</button>
+                                }>X</button>
                             </div>
                         </div>
                     }
@@ -763,7 +763,7 @@ export default class GroupsTable extends Component {
 
 
                     <hr></hr>
-                    <div className="table-users" id="gruposProgSection">
+                    <div className="tabla_parent" id="gruposProgSection">
                         <h4 className="marginBotton15">Grupos</h4>
                         <div >
                             {this.state.ok &&

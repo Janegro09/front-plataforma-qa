@@ -107,7 +107,7 @@ export default class EditProgramsGroupComponent extends Component {
                     HELPER_FUNCTIONS.backgroundLoading()
                 }
                 {this.state.ok && HELPER_FUNCTIONS.checkPermission("GET|programs/groups/:id") &&
-                    <div className="table-users-edit">
+                    <div className="table-parent-edit">
                         <form onSubmit={this.addUser} className="inputsEditUser addUserPadding">
                             <span className="Label">Nombre</span>
                             <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={edit.name ? edit.name : ''} />
@@ -118,8 +118,16 @@ export default class EditProgramsGroupComponent extends Component {
                             <SelectGroup getValue={(c) => this.usersAssign = c} defaultValue={specific ? specific : ''} idGroup={edit.id} />
                             <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Editar Grupo de Programas</button>
                         </form>
+                        <button
+                            onClick={() => {
+                                this.setState({
+                                    editProgramGroup: false
+                                })
+                            }}
+                        >Cancelar</button>  
                     </div>
                 }
+                
             </div>
         )
     }

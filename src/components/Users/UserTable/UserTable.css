@@ -7,11 +7,32 @@
 
 .encabezadoTabla {
   border-bottom: 1px solid #d2d2d2;
+
   /* -webkit-box-shadow: 0px 29px 39px 0px rgba(0,0,0,0.10); */
-  -webkit-box-shadow: 0px 7px 13px -16px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+  /* -webkit-box-shadow: 0px 7px 13px -16px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0); */
 }
 
 
+
+
+
+#child {
+
+opacity: 0;
+}
+#child2 {
+
+  opacity: 0;
+}
+#parent:hover #child { /* this works */
+    
+  opacity: 1;
+}
+
+#parent:hover #child2 { /* this works */
+    
+  opacity: 1;
+}
 
 
 td {
@@ -27,11 +48,8 @@ th {
   /* width: 33%; */
 }
 
-tr:hover .edit {
-  display: table-cell;
-}
 
-tr:hover {
+table tbody tr:hover {
   background-color: #e8e7e76b !important;
   border-bottom: 1px solid #e2e2e2;
 }
@@ -42,20 +60,20 @@ img {
   width: 60px;
 }
 
-.table-users {
+.tabla_parent {
   max-width: calc(100% - 2em);
   margin: auto;
   overflow: hidden;
   width: 100vw;
-  height: 100vh;
+
 }
 
 table {
-  width: 100%;
+  margin: auto;
+  width: 99%;
   border-bottom: 0.2px solid #dedede;
   margin-bottom: 11px;
-  /* background-color: #ffffff30; */
-  border-radius: 6px;
+  -webkit-box-shadow: 0px 0px 6px 1px #9596981c;
 }
 
 table td, table th {
@@ -65,7 +83,7 @@ table td, table th {
 }
 
 table td {
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
   font-size: 12px;
 }
@@ -79,7 +97,7 @@ table td:last-child {
 table th {
   /* background-color: #daeff1; */
   font-weight: 300;
-  text-align: center;
+  text-align: left;
 }
 
 table svg {
@@ -92,6 +110,7 @@ table svg:hover {
 
 .tableIcons {
   width: 73px;
+  text-align: center;
 }
 
 @media screen and (max-width: 700px) {
@@ -109,7 +128,7 @@ table svg:hover {
     margin-left: 100px;
     padding: 4px 20px 4px 40px;
     position: relative;
-    text-align: center;
+    text-align: left;
   }
   td:not(:first-child):before {
     color: #2d9dca;
@@ -195,7 +214,7 @@ table svg:hover {
     margin: 0.5rem 0;
     padding: 0;
   }
-  .table-users {
+  .tabla_parent {
     border: none;
     box-shadow: none;
     overflow: visible;
@@ -222,6 +241,42 @@ table svg:hover {
   display: flex;
   justify-content: center;
 }
+
+/* Spinner */
+
+.lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #fff;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
+}
+
 
 /* Estilos del spinner */
 
@@ -396,6 +451,7 @@ table svg:hover {
   display: flex;
   margin-bottom: 20px;
   align-items: flex-end;
+  margin-top: 20px;
 }
 
 .btnCrear {
@@ -542,16 +598,16 @@ svg {
 }
 
 .estadoActivo {
-  height: 10px;
-  width: 10px;
+  height: 8px;
+  width: 8px;
   border-radius: 50px;
   background-color: #0080009e!important; 
   margin: auto;
 }
 
 .estadoInactivo {
-  height: 10px;
-  width: 10px;
+  height: 8px;
+  width: 8px;
   border-radius: 50px;
   background-color: #ff000078!important;
   margin: auto;
@@ -595,6 +651,7 @@ svg {
 
 .celdaBtnHover{
   transition: all 0.15s ease-in-out;
+  text-align: center;
 }
 
 .celdaBtnHover:hover {

@@ -30,18 +30,9 @@ export default class UserTable extends Component {
             actualPage: 1,
             searchedUsers: []
         }
-
-        this.buscar = this.buscar.bind(this)
-        this.editUser = this.editUser.bind(this)
-        this.addUser = this.addUser.bind(this)
-        this.changePassword = this.changePassword.bind(this)
-        this.deleteUser = this.deleteUser.bind(this)
-        this.logout = this.logout.bind(this)
-        this.getUsersPage = this.getUsersPage.bind(this)
-
     }
 
-    buscar() {
+    buscar = () => {
         let searched
         if (this.title && this.title !== undefined) {
             searched = this.title.value.toLocaleLowerCase()
@@ -90,7 +81,7 @@ export default class UserTable extends Component {
         })
     }
 
-    editUser(event, userInfo) {
+    editUser = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         this.setState({
@@ -100,7 +91,7 @@ export default class UserTable extends Component {
 
     }
 
-    deleteUser(event, userInfo) {
+    deleteUser = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         this.setState({
@@ -110,7 +101,7 @@ export default class UserTable extends Component {
 
     }
 
-    addUser(event) {
+    addUser = (event) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         this.setState({
@@ -118,21 +109,21 @@ export default class UserTable extends Component {
         })
     }
 
-    changePassword(event) {
+    changePassword = (event) => {
         event.preventDefault()
         this.setState({
             changePassword: true
         })
     }
 
-    logout() {
+    logout = () => {
         sessionStorage.setItem("userData", '')
         sessionStorage.setItem("token", '')
         sessionStorage.clear()
         this.setState({ redirect: true })
     }
 
-    getUsersPage(page, allUsers) {
+    getUsersPage = (page, allUsers) => {
         let total = []
         let cantOfPages = 0
         if (allUsers !== null) {
@@ -238,7 +229,7 @@ export default class UserTable extends Component {
 
         return (
             <div>
-                
+
                 <div className="tabla_parent">
                     <h4>USUARIOS</h4>
                     <div className="flex-input-add">

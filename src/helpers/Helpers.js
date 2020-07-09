@@ -77,7 +77,7 @@ export const HELPER_FUNCTIONS = {
     backgroundLoading: () => {
         return (
             <div className="background-loading">
-                <div class="lds-ripple"><div></div><div></div></div>
+                <div className="lds-ripple"><div></div><div></div></div>
                 {/* <CircularProgress color="secondary" /> */}
                 {/* <h4>Aguarde, por favor...</h4> */}
             </div>

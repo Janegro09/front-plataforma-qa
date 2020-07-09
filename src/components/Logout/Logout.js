@@ -9,10 +9,15 @@ export default class Logout extends Component {
         this.state = {
             redirect: false
         }
-
-        this.logout = this.logout.bind(this)
     }
-
+    
+    logout = () => {
+        sessionStorage.setItem("userData", '')
+        sessionStorage.setItem("token", '')
+        sessionStorage.clear()
+        this.setState({ redirect: true })
+    }
+    
     componentDidMount() {
         if (sessionStorage.getItem("userData")) {
             // console.log("Datos almacenados")
@@ -20,14 +25,7 @@ export default class Logout extends Component {
             this.setState({ redirect: true })
         }
     }
-
-    logout() {
-        sessionStorage.setItem("userData", '')
-        sessionStorage.setItem("token", '')
-        sessionStorage.clear()
-        this.setState({ redirect: true })
-    }
-
+    
     render() {
         if (this.state.redirect) {
             return <Redirect to={'/'} />

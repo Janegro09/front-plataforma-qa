@@ -13,7 +13,6 @@ import Logo from '../Home/logo_background.png';
 export default class addUserComponent extends Component {
     constructor(props) {
         super(props)
-        this.addUser = this.addUser.bind(this)
         this.state = {
             groups: null,
             roles: null,
@@ -25,11 +24,9 @@ export default class addUserComponent extends Component {
                 required: 'Completá este campo'
             }
         });
-        this.handleChange = this.handleChange.bind(this);
-        this.handleTurno = this.handleTurno.bind(this);
     }
 
-    addUser(event) {
+    addUser = (event) => {
         event.preventDefault()
         console.log(this.validator)
         if (!this.validator.allValid()) {
@@ -100,6 +97,14 @@ export default class addUserComponent extends Component {
 
     }
 
+    handleChange = (event) => {
+        this.sexo = event.target.value
+    }
+
+    handleTurno = (event) => {
+        this.turno = event.target.value
+    }
+
     componentDidMount() {
         // console.log(HELPER_FUNCTIONS.logout)
         axios.get(Global.frontUtilities)
@@ -119,14 +124,6 @@ export default class addUserComponent extends Component {
                 }
                 console.log("Error: ", e)
             })
-    }
-
-    handleChange(event) {
-        this.sexo = event.target.value
-    }
-
-    handleTurno(event) {
-        this.turno = event.target.value
     }
 
     render() {
@@ -152,7 +149,7 @@ export default class addUserComponent extends Component {
                 </div>
 
                 <form onSubmit={this.addUser} className="inputsEditUser addUserPadding">
-                    
+
                     <input className="form-control" type="text" placeholder="id" name="id" ref={(c) => this.id = c} required />
                     <div className="error">
                         {
@@ -173,12 +170,12 @@ export default class addUserComponent extends Component {
                     <span className="Label">Telefono</span>
                     <input className="form-control" type="tel" placeholder="" ref={(c) => this.phone = c} />
                     <div>
-                    <span className="Label">Sexo</span>
-                    <select onChange={this.handleChange}>
-                        <option value="MASCULINO">Hombre</option>
-                        <option value="FEMENINO">Mujer</option>
-                        <option value="OTRO">Otro</option>
-                    </select>
+                        <span className="Label">Sexo</span>
+                        <select onChange={this.handleChange}>
+                            <option value="MASCULINO">Hombre</option>
+                            <option value="FEMENINO">Mujer</option>
+                            <option value="OTRO">Otro</option>
+                        </select>
                     </div>
                     <span className="Label">Fecha Ingreso</span>
                     <input className="form-control" type="date" placeholder="" ref={(c) => this.fechaIngresoLinea = c} />
@@ -229,11 +226,11 @@ export default class addUserComponent extends Component {
                     </select>
                     {/* <input type="text" placeholder="turno" ref={(c) => this.turno = c} /> */}
                     {/* <input type="text" placeholder="imagen" ref={(c) => this.imagen = c} /> */}
-                    <button  className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Usuario</button>
-                    
-               
+                    <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Usuario</button>
 
-                    
+
+
+
                 </form>
             </div>
         )

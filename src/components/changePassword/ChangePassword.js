@@ -8,12 +8,7 @@ import './ChangePassword.css'
 
 
 export default class ChangePassword extends Component {
-    constructor(props) {
-        super(props)
-        this.changePass = this.changePass.bind(this)
-    }
-
-    changePass(e) {
+    changePass = (e) => {
         e.preventDefault()
         swal(`Cambiando contraseña de ${this.props.user.email}, ingresá: `, {
             content: {
@@ -56,6 +51,7 @@ export default class ChangePassword extends Component {
                     })
             });
     }
+    
     render() {
         // Protección de rutas
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))

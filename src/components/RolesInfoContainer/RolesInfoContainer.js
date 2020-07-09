@@ -9,10 +9,9 @@ export default class TableOfUsers extends Component {
             allUsers: null,
             redirect: false
         }
-        this.logout = this.logout.bind(this)
     }
 
-    logout() {
+    logout = () => {
         sessionStorage.setItem("userData", '')
         sessionStorage.setItem("token", '')
         sessionStorage.clear()

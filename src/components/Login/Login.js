@@ -8,8 +8,6 @@ import Logo from './qa_logos.png';
 // import ReCAPTCHA from "react-google-recaptcha";
 
 
-
-
 export default class Login extends Component {
     constructor(props) {
         super(props)
@@ -28,11 +26,9 @@ export default class Login extends Component {
             }
         });
 
-        this.login = this.login.bind(this)
-        this.onChange = this.onChange.bind(this)
     }
 
-    login(e) {
+    login = (e) => {
         e.preventDefault()
         // this.captcha.reset()
         const { username, password } = this.state;
@@ -47,13 +43,13 @@ export default class Login extends Component {
         }
     }
 
-    onChange(e) {
+    onChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
 
-    loginUser(username, password) {
+    loginUser = (username, password) => {
         if (username && password) {
             axios.post(Global.login, {
                 user: username,

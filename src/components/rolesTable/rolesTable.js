@@ -29,19 +29,9 @@ export default class RolesTable extends Component {
             searchedUsers: [],
             createGroup: false
         }
-
-        this.buscar = this.buscar.bind(this)
-        this.editUser = this.editUser.bind(this)
-        this.addUser = this.addUser.bind(this)
-        this.changePassword = this.changePassword.bind(this)
-        this.deleteUser = this.deleteUser.bind(this)
-        this.logout = this.logout.bind(this)
-        this.getUsersPage = this.getUsersPage.bind(this)
-        this.createGroup = this.createGroup.bind(this)
-        this.addRole = this.addRole.bind(this)
     }
 
-    buscar() {
+    buscar = () => {
         let searched
         if (this.title && this.title !== undefined) {
             searched = this.title.value.toUpperCase()
@@ -64,7 +54,8 @@ export default class RolesTable extends Component {
             actualPage: 1
         })
     }
-    editUser(event, userInfo) {
+
+    editUser = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
 
@@ -75,7 +66,7 @@ export default class RolesTable extends Component {
 
     }
 
-    deleteUser(event, userInfo) {
+    deleteUser = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         this.setState({
@@ -85,7 +76,7 @@ export default class RolesTable extends Component {
 
     }
 
-    addUser(event) {
+    addUser = (event) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         this.setState({
@@ -93,21 +84,21 @@ export default class RolesTable extends Component {
         })
     }
 
-    changePassword(event) {
+    changePassword = (event) => {
         event.preventDefault()
         this.setState({
             changePassword: true
         })
     }
 
-    logout() {
+    logout = () => {
         sessionStorage.setItem("userData", '')
         sessionStorage.setItem("token", '')
         sessionStorage.clear()
         this.setState({ redirect: true })
     }
 
-    getUsersPage(page, allGroups) {
+    getUsersPage = (page, allGroups) => {
         let total = []
         let cantOfPages = 0
         if (allGroups !== null) {
@@ -130,14 +121,13 @@ export default class RolesTable extends Component {
         }
     }
 
-    createGroup() {
-        console.log("Crear grupo")
+    createGroup = () => {
         this.setState({
             createGroup: true
         })
     }
 
-    addRole() {
+    addRole = () => {
         this.setState({
             createRole: true
         })
@@ -176,17 +166,17 @@ export default class RolesTable extends Component {
         let totalUsuarios = pagina.total
         let botones = []
         for (let index = this.state.actualPage - 1; index < pagina.cantOfPages; index++) {
-                if (botones.length < 4) {
-                    botones.push(
-                        <button className={this.state.actualPage === index + 1 ? 'active' : ''} key={index} onClick={() => {
-                            this.setState({
-                                actualPage: index + 1
-                            })
-                        }}>
-                            {index + 1}
-                        </button>
-                    )
-                }
+            if (botones.length < 4) {
+                botones.push(
+                    <button className={this.state.actualPage === index + 1 ? 'active' : ''} key={index} onClick={() => {
+                        this.setState({
+                            actualPage: index + 1
+                        })
+                    }}>
+                        {index + 1}
+                    </button>
+                )
+            }
         }
 
         if (this.state.createRole) {
@@ -233,7 +223,7 @@ export default class RolesTable extends Component {
                         {HELPER_FUNCTIONS.backgroundLoading()}
                     </React.Fragment>
                 }
-                
+
                 <div className="tabla_parent">
 
                     <div className="flex-input-add">

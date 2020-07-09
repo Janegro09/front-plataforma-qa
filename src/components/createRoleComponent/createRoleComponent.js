@@ -14,25 +14,21 @@ export default class createRoleComponent extends Component {
             userInfo: null,
             redirect: false
         }
-        this.modifyUser = this.modifyUser.bind(this)
-        this.handleChangeStatus = this.handleChangeStatus.bind(this)
-        this.handleChangeTurno = this.handleChangeTurno.bind(this)
-        this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(event) {
+    handleChange = (event) => {
         this.sexo = event.target.value
     }
 
-    handleChangeStatus(event) {
+    handleChangeStatus = (event) => {
         this.userActive = event.target.value
     }
 
-    handleChangeTurno(event) {
+    handleChangeTurno = (event) => {
         this.turno = event.target.value
     }
 
-    modifyUser(e) {
+    modifyUser = (e) => {
         e.preventDefault()
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {

@@ -11,18 +11,13 @@ import SettingsIcon from '@material-ui/icons/Settings';
 export default class UserAdminHeader extends Component {
     constructor(props) {
         super(props)
-        this.changePass = this.changePass.bind(this)
-
         this.state = {
             value: 'user',
             redirect: false
         }
-
-        this.changePass = this.changePass.bind(this)
-        this.salir = this.salir.bind(this);
     }
 
-    changePass() {
+    changePass = () => {
         const userData = JSON.parse(sessionStorage.getItem("userData"))
         const id = userData.id
         swal(`Cambiando contraseña de ${userData.name}, ingresá: `, {
@@ -67,12 +62,13 @@ export default class UserAdminHeader extends Component {
             });
     }
 
-    salir() {
+    salir = () => {
         this.setState({
             redirect: true
         })
         return HELPER_FUNCTIONS.logout()
     }
+
     render() {
         if (this.state.redirect) {
             return <Redirect to={'/'} />

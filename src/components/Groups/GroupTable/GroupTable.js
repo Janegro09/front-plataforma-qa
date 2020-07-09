@@ -30,18 +30,9 @@ export default class GroupsTable extends Component {
             searchedUsers: [],
             createGroup: false
         }
-
-        this.buscar = this.buscar.bind(this)
-        this.editUser = this.editUser.bind(this)
-        this.addUser = this.addUser.bind(this)
-        this.changePassword = this.changePassword.bind(this)
-        this.deleteUser = this.deleteUser.bind(this)
-        this.logout = this.logout.bind(this)
-        this.getUsersPage = this.getUsersPage.bind(this)
-        this.createGroup = this.createGroup.bind(this)
     }
 
-    buscar() {
+    buscar = () => {
         let searched
         if (this.title && this.title !== undefined) {
             searched = this.title.value.toUpperCase()
@@ -65,7 +56,7 @@ export default class GroupsTable extends Component {
         })
     }
 
-    editUser(event, userInfo) {
+    editUser = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         this.setState({
@@ -75,7 +66,7 @@ export default class GroupsTable extends Component {
 
     }
 
-    deleteUser(event, userInfo) {
+    deleteUser = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         this.setState({
@@ -85,7 +76,7 @@ export default class GroupsTable extends Component {
 
     }
 
-    addUser(event) {
+    addUser = (event) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         this.setState({
@@ -93,21 +84,21 @@ export default class GroupsTable extends Component {
         })
     }
 
-    changePassword(event) {
+    changePassword = (event) => {
         event.preventDefault()
         this.setState({
             changePassword: true
         })
     }
 
-    logout() {
+    logout = () => {
         sessionStorage.setItem("userData", '')
         sessionStorage.setItem("token", '')
         sessionStorage.clear()
         this.setState({ redirect: true })
     }
 
-    getUsersPage(page, allGroups) {
+    getUsersPage = (page, allGroups) => {
         let total = []
         let cantOfPages = 0
         if (allGroups !== null) {
@@ -130,7 +121,7 @@ export default class GroupsTable extends Component {
         }
     }
 
-    createGroup() {
+    createGroup = () => {
         console.log("Crear grupo")
         this.setState({
             createGroup: true
@@ -212,12 +203,6 @@ export default class GroupsTable extends Component {
         }
 
         // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
-        // if (this.state.addUser) {
-        //     return <Redirect to="/addUser"
-        //     />
-        // }
-
-        // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
         if (this.state.changePassword) {
             return <Redirect to="/changePassword"
             />
@@ -247,8 +232,8 @@ export default class GroupsTable extends Component {
                         {HELPER_FUNCTIONS.backgroundLoading()}
                     </React.Fragment>
                 }
-                
-                <div className="table-users">
+
+                <div className="tabla_parent">
 
                     <div className="flex-input-add">
                         {/* Buscador */}

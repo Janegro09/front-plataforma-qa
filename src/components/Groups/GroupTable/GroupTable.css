@@ -29,10 +29,7 @@ tr:hover .edit {
   display: table-cell;
 }
 
-tr:hover {
-  background-color: #e8e7e76b !important;
-  border-bottom: 1px solid #e2e2e2;
-}
+
 
 img {
   border-radius: 50%;
@@ -61,7 +58,7 @@ table td, table th {
 }
 
 table td {
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
   font-size: 12px;
 }
@@ -75,7 +72,7 @@ table td:last-child {
 table th {
   /* background-color: #daeff1; */
   font-weight: 300;
-  text-align: center;
+  text-align: left;
 }
 
 table svg {
@@ -88,6 +85,7 @@ table svg:hover {
 
 .tableIcons {
   width: 73px;
+  text-align: center;
 }
 
 @media screen and (max-width: 700px) {
@@ -105,7 +103,7 @@ table svg:hover {
     margin-left: 100px;
     padding: 4px 20px 4px 40px;
     position: relative;
-    text-align: center;
+    text-align: left;
   }
   td:not(:first-child):before {
     color: #2d93bb;
@@ -382,6 +380,7 @@ table svg:hover {
   display: flex;
   margin-bottom: 20px;
   align-items: flex-end;
+  margin-top: 20px;
 }
 
 .btnCrear {

@@ -61,8 +61,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
             }
         }
 
-        console.log(temp)
-
         let indice = -1
         for (let i = 0; i < result.length; i++) {
             if (result[i].QName === fila.columnName) {
@@ -84,14 +82,8 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
     }
 
-    setOrden = () => {
-        console.log("Orden: ", this.orden.value);
-
-    }
-
     handleInputChange = (event) => {
         const target = event.target;
-        console.log("target: ", target)
         this.setState({
             [target]: target
         });
@@ -198,7 +190,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
     render() {
 
         const { nombreColumnas, dataFiltered, redirect, result } = this.state;
-        console.log("RESULT: ", result)
 
         if (redirect) {
             return <Redirect to="/perfilamiento" />
@@ -211,7 +202,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
                 <div className="section-content">
                     <button onClick={this.enviar}>Dale</button>
-                    <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
+                    <input className="form-control" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
                     {nombreColumnas &&
                         <table>
                             <thead>
@@ -241,7 +232,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
                                             return true;
                                         })
-                                        console.log(orden)
+
                                         return (
                                             <tr key={key}>
                                                 <td>{columna.columnName}</td>
@@ -257,14 +248,14 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                             }
                                                         }
                                                         disabled={exists !== ''}
-                                                        // defaultValue={exists.Qorder ? 'ASC' : 'DESC'}
+                                                    // defaultValue={exists.Qorder ? 'ASC' : 'DESC'}
                                                     >
                                                         <option value="DESC">DESC</option>
-                                                        <option value="ASC" selected={exists.Qorder && exists.Qorder === 'ASC' }>ASC</option>
+                                                        <option value="ASC" selected={exists.Qorder && exists.Qorder === 'ASC'}>ASC</option>
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input
+                                                    <input className="form-control"
                                                         id={"VMin" + key}
                                                         type="text"
                                                         placeholder="VMin"
@@ -281,32 +272,32 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                 <td>
                                                     {exists.Q3 &&
 
-                                                    <input
-                                                        id={"VMax" + key}
-                                                        type="text"
-                                                        placeholder="VMax"
-                                                        onChange={(e) => {
-                                                            e.preventDefault()
-                                                            let element = document.getElementById("VMax" + key);
-                                                            obj.VMax = parseFloat(element.value)
-                                                        }}
-                                                        defaultValue={exists !== '' ? exists.Q3.VMax : ''}
-                                                        disabled={exists !== ''}
-                                                    />
+                                                        <input className="form-control"
+                                                            id={"VMax" + key}
+                                                            type="text"
+                                                            placeholder="VMax"
+                                                            onChange={(e) => {
+                                                                e.preventDefault()
+                                                                let element = document.getElementById("VMax" + key);
+                                                                obj.VMax = parseFloat(element.value)
+                                                            }}
+                                                            defaultValue={exists !== '' ? exists.Q3.VMax : ''}
+                                                            disabled={exists !== ''}
+                                                        />
                                                     }
                                                     {exists.Q3 === undefined &&
 
-                                                    <input
-                                                        id={"VMax" + key}
-                                                        type="text"
-                                                        placeholder="VMax"
-                                                        onChange={(e) => {
-                                                            e.preventDefault()
-                                                            let element = document.getElementById("VMax" + key);
-                                                            obj.VMax = parseFloat(element.value)
-                                                        }}
-                                                        disabled={exists !== ''}
-                                                    />
+                                                        <input className="form-control"
+                                                            id={"VMax" + key}
+                                                            type="text"
+                                                            placeholder="VMax"
+                                                            onChange={(e) => {
+                                                                e.preventDefault()
+                                                                let element = document.getElementById("VMax" + key);
+                                                                obj.VMax = parseFloat(element.value)
+                                                            }}
+                                                            disabled={exists !== ''}
+                                                        />
                                                     }
                                                 </td>
 

@@ -1,7 +1,8 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom';
 import '../App.css'
-import CircularProgress from '@material-ui/core/CircularProgress';
+import '../components/Users/UserTable/UserTable.css'
+// import CircularProgress from '@material-ui/core/CircularProgress';
 
 export const HELPER_FUNCTIONS = {
     logout: () => {
@@ -76,8 +77,9 @@ export const HELPER_FUNCTIONS = {
     backgroundLoading: () => {
         return (
             <div className="background-loading">
-                <CircularProgress color="secondary" />
-                <h4>Aguarde, por favor...</h4>
+                <div className="lds-ripple"><div></div><div></div></div>
+                {/* <CircularProgress color="secondary" /> */}
+                {/* <h4>Aguarde, por favor...</h4> */}
             </div>
         )
     }

@@ -22,6 +22,7 @@ td {
   }
 
   tr {
+    background-color: #ffffff2e;
     border-bottom: 1px solid #e4e4e4;
   }
 
@@ -30,17 +31,14 @@ td {
 
   }
 
-  tr:hover {
-    background-color: #e8e7e76b !important;
-    border-bottom: 1px solid #e2e2e2;
-  }
+ 
 
 img {
     border-radius: 50%;
     height: 60px;
     width: 60px;
 }
-.table-users {
+.tabla_parent {
   max-width: calc(100% - 2em);
   margin: auto;
   overflow: hidden;
@@ -61,7 +59,7 @@ table td, table th {
 
 }
 table td {
-    text-align: center;
+    text-align: left;
     vertical-align: middle;
     font-size: 12px;
 }
@@ -73,7 +71,7 @@ table td:last-child {
 table th {
     /* background-color: #daeff1; */
     font-weight: 300;    
-    text-align: center;
+    text-align: left;
 
 }
 
@@ -89,6 +87,7 @@ table svg:hover {
 
 .tableIcons {
   width: 73px;
+  text-align: center;
 }
 
 @media screen and (max-width: 700px) {
@@ -180,7 +179,7 @@ table svg:hover {
         margin: 0.5rem 0;
         padding: 0;
    }
-    .table-users {
+    .tabla_parent {
         border: none;
         box-shadow: none;
         overflow: visible;
@@ -351,6 +350,7 @@ table svg:hover {
     display: flex;
     margin-bottom: 20px;
     align-items: flex-end;
+    margin-top: 20px;
   }
 
 .btnCrear {

@@ -14,11 +14,9 @@ export default class Home extends Component {
         this.state = {
             redirect: false
         }
-
-        this.logout = this.logout.bind(this)
     }
 
-    logout() {
+    logout = () => {
         sessionStorage.setItem("userData", '')
         sessionStorage.clear()
         this.setState({ redirect: true })
@@ -30,6 +28,7 @@ export default class Home extends Component {
         if (this.state.redirect || userInfo === null) {
             return <Redirect to={'/'} />
         }
+
         return (
             <div>
                 

@@ -13,7 +13,6 @@ import Logo from '../../Home/logo_background.png';
 export default class addUserComponent extends Component {
     constructor(props) {
         super(props)
-        this.addUser = this.addUser.bind(this)
         this.state = {
             groups: null,
             roles: null,
@@ -25,11 +24,9 @@ export default class addUserComponent extends Component {
                 required: 'Completá este campo'
             }
         });
-        this.handleChange = this.handleChange.bind(this);
-        this.handleTurno = this.handleTurno.bind(this);
     }
 
-    addUser(event) {
+    addUser = (event) => {
         event.preventDefault()
         console.log(this.validator)
         if (!this.validator.allValid()) {
@@ -100,8 +97,15 @@ export default class addUserComponent extends Component {
 
     }
 
+    handleChange =(event) => {
+        this.sexo = event.target.value
+    }
+
+    handleTurno = (event) => {
+        this.turno = event.target.value
+    }
+
     componentDidMount() {
-        // console.log(HELPER_FUNCTIONS.logout)
         axios.get(Global.frontUtilities)
             .then(response => {
                 this.setState({
@@ -119,14 +123,6 @@ export default class addUserComponent extends Component {
                 }
                 console.log("Error: ", e)
             })
-    }
-
-    handleChange(event) {
-        this.sexo = event.target.value
-    }
-
-    handleTurno(event) {
-        this.turno = event.target.value
     }
 
     render() {
@@ -229,11 +225,7 @@ export default class addUserComponent extends Component {
                     </select>
                     {/* <input type="text" placeholder="turno" ref={(c) => this.turno = c} /> */}
                     {/* <input type="text" placeholder="imagen" ref={(c) => this.imagen = c} /> */}
-                    <button  className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Usuario</button>
-                    
-               
-
-                    
+                    <button  className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Usuario</button>   
                 </form>
             </div>
         )

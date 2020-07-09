@@ -30,18 +30,9 @@ export default class UserTable extends Component {
             actualPage: 1,
             searchedUsers: []
         }
-
-        this.buscar = this.buscar.bind(this)
-        this.editUser = this.editUser.bind(this)
-        this.addUser = this.addUser.bind(this)
-        this.changePassword = this.changePassword.bind(this)
-        this.deleteUser = this.deleteUser.bind(this)
-        this.logout = this.logout.bind(this)
-        this.getUsersPage = this.getUsersPage.bind(this)
-
     }
 
-    buscar() {
+    buscar = () => {
         let searched
         if (this.title && this.title !== undefined) {
             searched = this.title.value.toLocaleLowerCase()
@@ -90,7 +81,7 @@ export default class UserTable extends Component {
         })
     }
 
-    editUser(event, userInfo) {
+    editUser = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         this.setState({
@@ -100,7 +91,7 @@ export default class UserTable extends Component {
 
     }
 
-    deleteUser(event, userInfo) {
+    deleteUser = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         this.setState({
@@ -110,7 +101,7 @@ export default class UserTable extends Component {
 
     }
 
-    addUser(event) {
+    addUser = (event) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         this.setState({
@@ -118,21 +109,21 @@ export default class UserTable extends Component {
         })
     }
 
-    changePassword(event) {
+    changePassword = (event) => {
         event.preventDefault()
         this.setState({
             changePassword: true
         })
     }
 
-    logout() {
+    logout = () => {
         sessionStorage.setItem("userData", '')
         sessionStorage.setItem("token", '')
         sessionStorage.clear()
         this.setState({ redirect: true })
     }
 
-    getUsersPage(page, allUsers) {
+    getUsersPage = (page, allUsers) => {
         let total = []
         let cantOfPages = 0
         if (allUsers !== null) {
@@ -238,8 +229,8 @@ export default class UserTable extends Component {
 
         return (
             <div>
-                
-                <div className="table-users">
+
+                <div className="tabla_parent">
                     <h4>USUARIOS</h4>
                     <div className="flex-input-add">
                         {/* Buscador */}
@@ -256,7 +247,8 @@ export default class UserTable extends Component {
                         }
 
                         {HELPER_FUNCTIONS.checkPermission("POST|users/new") &&
-                            <button className="addItem" onClick={e => this.addUser(e)}><PersonAddIcon style={{ fontSize: 33 }} /></button>
+
+                            <button className="addItem morph" onClick={e => this.addUser(e)}><PersonAddIcon className="svgAddButton" style={{ fontSize: 33 }} /></button>
                         }
 
 
@@ -293,7 +285,7 @@ export default class UserTable extends Component {
 
                                 totalUsuarios.map(user => {
                                     return (
-                                        <tr key={user.idDB}>
+                                        <tr id="parent" key={user.idDB}>
                                             <td >{user.id}</td>
                                             <td className="capitalize-complete-name">{user.name} {user.lastName}</td>
                                             <td>{user.email}</td>
@@ -301,13 +293,13 @@ export default class UserTable extends Component {
                                             <td>{user.equipoEspecifico}</td>
                                             <td className="tablaVariables"><div className={` ${!user.userActive ? "estadoInactivo " : 'estadoActivo'}`}></div></td>
                                             {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                                                <td className="celdaBtnHover" onClick={e => this.editUser(e, user)}><EditIcon style={{ fontSize: 15 }} /></td>
+                                                <td id="child" className="celdaBtnHover" onClick={e => this.editUser(e, user)}><EditIcon style={{ fontSize: 15 }} /></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
                                                 <td disabled><EditIcon></EditIcon></td>
                                             }
                                             {HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
-                                                <td className="celdaBtnHover" onClick={e => this.deleteUser(e, user)}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                                <td id="child2" className="celdaBtnHover" onClick={e => this.deleteUser(e, user)}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission("DELETE|users/:id") &&
                                                 <td disabled><DeleteIcon></DeleteIcon></td>

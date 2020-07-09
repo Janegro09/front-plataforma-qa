@@ -17,67 +17,23 @@ export default class editUserComponent extends Component {
             userInfo: null,
             redirect: false
         }
-        this.modifyUser = this.modifyUser.bind(this)
-        this.handleChangeStatus = this.handleChangeStatus.bind(this)
-        this.handleChangeTurno = this.handleChangeTurno.bind(this)
-        this.handleChange = this.handleChange.bind(this);
     }
 
-    componentDidMount() {
-        let token = JSON.parse(sessionStorage.getItem('token'))
-        // Protección de rutas
-        if (token === null) {
-            return <Redirect to={'/'} />
-        }
-
-        if (this.props.location.state) {  
-            let id = this.props.location.state.userSelected.id
-            const config = {
-                headers: { Authorization: `Bearer ${token}` }
-            };
-    
-            axios.get(Global.getUsers + '/' + id, config)
-                .then(response => {
-                    this.setState({
-                        userInfo: response.data.Data[0]
-                    })
-                    sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-                })
-                .catch(e => {
-                    if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                        HELPER_FUNCTIONS.logout()
-                    } else {
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                        swal("Error!", "Hubo un problema", "error");
-                        this.setState({
-                            redirect: true
-                        })
-                    }
-                    console.log("Error: ", e)
-                })
-        } else {
-            this.setState({
-                redirect: true
-            })
-            return HELPER_FUNCTIONS.logout()
-        }
-    }
-
-    handleChange(event) {
+    handleChange = (event) => {
         this.sexo = event.target.value
     }
 
-    handleChangeStatus(event) {
+    handleChangeStatus = (event) => {
         console.log(this.userActive);
 
         this.userActive = event.target.value
     }
 
-    handleChangeTurno(event) {
+    handleChangeTurno = (event) => {
         this.turno = event.target.value
     }
 
-    modifyUser(e) {
+    modifyUser = (e) => {
         e.preventDefault()
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
@@ -142,6 +98,46 @@ export default class editUserComponent extends Component {
 
     }
 
+    componentDidMount() {
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        // Protección de rutas
+        if (token === null) {
+            return <Redirect to={'/'} />
+        }
+
+        if (this.props.location.state) {
+            let id = this.props.location.state.userSelected.id
+            const config = {
+                headers: { Authorization: `Bearer ${token}` }
+            };
+
+            axios.get(Global.getUsers + '/' + id, config)
+                .then(response => {
+                    this.setState({
+                        userInfo: response.data.Data[0]
+                    })
+                    sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                })
+                .catch(e => {
+                    if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                        HELPER_FUNCTIONS.logout()
+                    } else {
+                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        swal("Error!", "Hubo un problema", "error");
+                        this.setState({
+                            redirect: true
+                        })
+                    }
+                    console.log("Error: ", e)
+                })
+        } else {
+            this.setState({
+                redirect: true
+            })
+            return HELPER_FUNCTIONS.logout()
+        }
+    }
+
     render() {
         const user = this.state.userInfo
         if (this.state.redirect) {
@@ -164,20 +160,20 @@ export default class editUserComponent extends Component {
 
                 {user !== null &&
                     <form className="inputsEditUser" onSubmit={this.modifyUser}>
-                        
+
                         <div className="Label headEditUser">ID
-                        <input className={`form-control ${!user.userActive ? "Inactivo " : 'Activo'}`} type="text" placeholder="id" name="id" ref={(c) => this.id = c} defaultValue={user.id ? user.id : ''} disabled />        
-                        <select onChange={this.handleChangeStatus}>
-                            <option value={user.userActive}>{user.userActive ? "Activo" : "Inactivo"}</option>
-                            <option value={!user.userActive}>{user.userActive ? "Inactivo" : "Activo"}</option>
-                        </select>
-                        {this.state.userInfo !== null &&
-                         <ChangePassword user={this.state.userInfo} />
-                         }
-                   
+                        <input className={`form-control ${!user.userActive ? "Inactivo " : 'Activo'}`} type="text" placeholder="id" name="id" ref={(c) => this.id = c} defaultValue={user.id ? user.id : ''} disabled />
+                            <select onChange={this.handleChangeStatus}>
+                                <option value={user.userActive}>{user.userActive ? "Activo" : "Inactivo"}</option>
+                                <option value={!user.userActive}>{user.userActive ? "Inactivo" : "Activo"}</option>
+                            </select>
+                            {this.state.userInfo !== null &&
+                                <ChangePassword user={this.state.userInfo} />
+                            }
+
 
                         </div>
-                       
+
                         <span className="Label">Nombre</span>
                         <input className="form-control" type="text" placeholder="name" name="name" ref={(c) => this.name = c} defaultValue={user.name ? user.name : ''} />
                         <span className="Label">Apellido</span>
@@ -192,14 +188,14 @@ export default class editUserComponent extends Component {
                         <input className="form-control" type="text" placeholder="phone" ref={(c) => this.phone = c} defaultValue={user.phone ? user.phone : ''} />
                         {/* <input type="text" placeholder="sexo" ref={(c) => this.sexo = c} defaultValue={user.sexo ? user.sexo : ''} /> */}
                         <div>
-                        <span className="Label">Sexo</span>
+                            <span className="Label">Sexo</span>
                             <select onChange={this.handleChange} selected="OTRO">
-                            <option value={user.sexo}>{user.sexo || ""}</option>
-                            <option value="MASCULINO">Hombre</option>
-                            <option value="FEMENINO">Mujer</option>
-                            <option value="OTRO">Otro</option>
-                        </select>
-                        {/* <input type="text" placeholder="status" ref={(c) => this.status = c} defaultValue={user.status ? user.status : ''} /> */}
+                                <option value={user.sexo}>{user.sexo || ""}</option>
+                                <option value="MASCULINO">Hombre</option>
+                                <option value="FEMENINO">Mujer</option>
+                                <option value="OTRO">Otro</option>
+                            </select>
+                            {/* <input type="text" placeholder="status" ref={(c) => this.status = c} defaultValue={user.status ? user.status : ''} /> */}
                         </div>
                         <span className="Label">Fecha Ingreso</span>
                         <input className="form-control" type="date" placeholder="" ref={(c) => this.fechaIngresoLinea = c} defaultValue={user.fechaIngresoLinea ? user.fechaIngresoLinea : ''} />
@@ -251,9 +247,9 @@ export default class editUserComponent extends Component {
                         </select>
                         {/* <input type="text" placeholder="imagen" ref={(c) => this.imagen = c} defaultValue={user.imagen ? user.imagen : ''} /> */}
                         {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                        <button  className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Guardar cambios</button>
-                    
-                         
+                            <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Guardar cambios</button>
+
+
                         }
                     </form>
                 }

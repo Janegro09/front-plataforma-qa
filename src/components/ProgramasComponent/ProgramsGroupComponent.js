@@ -24,20 +24,15 @@ export default class ProgramsGroupComponent extends Component {
             buscando: false,
             ok: false
         }
-        this.buscar = this.buscar.bind(this);
-        this.getUsersPage = this.getUsersPage.bind(this);
-        this.editGroup = this.editGroup.bind(this);
-        this.deleteGroup = this.deleteGroup.bind(this);
-        this.createGroupProgram = this.createGroupProgram.bind(this);
     }
 
-    buscar() {
+    buscar = () => {
         this.setState({
             buscando: true
         })
     }
 
-    getUsersPage(page, allGroups) {
+    getUsersPage = (page, allGroups) => {
         let total = []
         let cantOfPages = 0
         if (allGroups !== null) {
@@ -60,7 +55,7 @@ export default class ProgramsGroupComponent extends Component {
         }
     }
 
-    editGroup(event, userInfo) {
+    editGroup = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         this.setState({
@@ -70,14 +65,14 @@ export default class ProgramsGroupComponent extends Component {
 
     }
 
-    createGroupProgram(e) {
+    createGroupProgram = (e) => {
         e.preventDefault()
         this.setState({
             crearGrupoProgramas: true
         })
     }
 
-    deleteGroup(event, userInfo) {
+    deleteGroup = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         swal({
@@ -187,7 +182,7 @@ export default class ProgramsGroupComponent extends Component {
                                                 })
                                             }
                                         }
-                                    ><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                                    ><GroupAddIcon className="svgAddButton" style={{ fontSize: 33 }} /></button>
                                 }
 
                             </div>
@@ -259,13 +254,7 @@ export default class ProgramsGroupComponent extends Component {
                 {this.state.editProgramGroup && this.state.ok &&
                     <div>
                         <EditProgramsGroupComponent edit={this.state.userSelected} />
-                        <button
-                            onClick={() => {
-                                this.setState({
-                                    editProgramGroup: false
-                                })
-                            }}
-                        >Cancelar</button>
+
                     </div>
                 }
 

@@ -14,10 +14,52 @@ export default class editRoleComponent extends Component {
             userInfo: null,
             redirect: false
         }
-        this.modifyUser = this.modifyUser.bind(this)
-        this.handleChangeStatus = this.handleChangeStatus.bind(this)
-        this.handleChangeTurno = this.handleChangeTurno.bind(this)
-        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange = (event) => {
+        this.sexo = event.target.value
+    }
+
+    handleChangeStatus = (event) => {
+        this.userActive = event.target.value
+    }
+
+    handleChangeTurno = (event) => {
+        this.turno = event.target.value
+    }
+
+    modifyUser = (e) => {
+        e.preventDefault()
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        const bodyParameters = {
+            role: this.role.value,
+            permissions: this.assign,
+            description: this.description.value
+        }
+
+        let id = this.props.location.state.userSelected.id
+
+        axios.put(Global.getRoles + "/" + id, bodyParameters, config)
+            .then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                swal("Felicidades!", "Has cambiado el nombre del grupo", "success");
+                this.setState({
+                    redirect: true
+                })
+            })
+            .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema al agregar los roles", "error");
+                }
+                console.log("Error: ", e)
+            })
+
     }
 
     componentDidMount() {
@@ -60,52 +102,6 @@ export default class editRoleComponent extends Component {
             })
             return HELPER_FUNCTIONS.logout()
         }
-    }
-
-    handleChange(event) {
-        this.sexo = event.target.value
-    }
-
-    handleChangeStatus(event) {
-        this.userActive = event.target.value
-    }
-
-    handleChangeTurno(event) {
-        this.turno = event.target.value
-    }
-
-    modifyUser(e) {
-        e.preventDefault()
-        let token = JSON.parse(sessionStorage.getItem('token'))
-        const config = {
-            headers: { Authorization: `Bearer ${token}` }
-        };
-        const bodyParameters = {
-            role: this.role.value,
-            permissions: this.assign,
-            description: this.description.value
-        }
-
-        let id = this.props.location.state.userSelected.id
-
-        axios.put(Global.getRoles + "/" + id, bodyParameters, config)
-            .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-                swal("Felicidades!", "Has cambiado el nombre del grupo", "success");
-                this.setState({
-                    redirect: true
-                })
-            })
-            .catch(e => {
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema al agregar los roles", "error");
-                }
-                console.log("Error: ", e)
-            })
-
     }
 
     render() {

@@ -5,6 +5,7 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import axios from 'axios';
 import Global from '../../Global'
 import './PerfilamientosComponent.css'
+import { Redirect } from 'react-router-dom';
 
 const placeholder = document.createElement("div");
 placeholder.className = "placeholder";
@@ -19,7 +20,8 @@ export default class PerfilaminetosComponent extends Component {
             allUsers: [],
             assignedUsers: [],
             cuartiles: [],
-            grupos: []
+            grupos: [],
+            redirect: false
         }
     }
 
@@ -52,8 +54,10 @@ export default class PerfilaminetosComponent extends Component {
                                 if (c.name === QName && c.level === level) {
                                     exists = true;
                                 }
+                                return true;
                             })
                         }
+                        return true;
                     })
 
                     if (!exists) {
@@ -77,6 +81,7 @@ export default class PerfilaminetosComponent extends Component {
                                 }]
                             }
                             gruposReturn.push(tempData);
+                            return true;
 
                         })
 
@@ -115,8 +120,8 @@ export default class PerfilaminetosComponent extends Component {
             } else {
                 grupos[i].users.map(g => {
                     assignedUsers.splice(assignedUsers.indexOf(g), 1)
+                    return true;
                 })
-                // console.log("g: ", grupos[i])
             }
         }
 
@@ -231,9 +236,9 @@ export default class PerfilaminetosComponent extends Component {
 
     updateAssign = (groupName) => {
         let { grupos } = this.state
-        for(let i = 0; i < grupos.length; i++){
+        for (let i = 0; i < grupos.length; i++) {
             const v = grupos[i];
-            if(v.name === groupName){
+            if (v.name === groupName) {
                 v.applyAllUsers = this.assignAllUsers.checked
             }
         }
@@ -417,7 +422,6 @@ export default class PerfilaminetosComponent extends Component {
     }
 
     componentDidMount() {
-        console.log("Componente lanzado!");
         const { cuartilSeleccionado } = this.props.location;
         let id = cuartilSeleccionado.id;
 
@@ -467,24 +471,16 @@ export default class PerfilaminetosComponent extends Component {
 
                 this.reasignUsers();
             })
-            // let win = window.open(Global.download + '/' + respuesta.idTemp, '_blank');
-            // win.focus();
-
         })
-            .catch((e) => {
-                // Si hay algún error en el request lo deslogueamos
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema", "error");
-                }
-                console.log("Error: ", e)
-            });
     }
 
     render() {
-        let { cuartiles, grupos, allUsers, assignedUsers } = this.state;
+        let { cuartiles, grupos, allUsers, assignedUsers, redirect } = this.state;
+
+        if (redirect) {
+            return <Redirect to="/perfilamiento" />
+        }
+
         return (
             <div>
                 <SideBarLeft />
@@ -560,6 +556,10 @@ export default class PerfilaminetosComponent extends Component {
                                                         case 'Q4':
                                                             claseColor = 'red';
                                                             break;
+                                                        default:
+                                                            claseColor = 'gray';
+                                                            break;
+
                                                     }
                                                     return (
                                                         <span className={claseColor} key={key}>

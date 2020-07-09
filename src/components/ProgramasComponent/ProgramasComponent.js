@@ -49,17 +49,9 @@ export default class GroupsTable extends Component {
             loading: false,
             redireccion: false
         }
-
-        this.buscar = this.buscar.bind(this)
-        this.editProgram = this.editProgram.bind(this)
-        this.addUser = this.addUser.bind(this)
-        this.changePassword = this.changePassword.bind(this)
-        this.deleteProgram = this.deleteProgram.bind(this)
-        this.getUsersPage = this.getUsersPage.bind(this)
-        this.createProgram = this.createProgram.bind(this)
     }
 
-    buscar() {
+    buscar = () => {
         this.setState({
             buscando: true
         })
@@ -100,7 +92,7 @@ export default class GroupsTable extends Component {
 
     }
 
-    editProgram(event, userInfo) {
+    editProgram = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
         let id = userInfo.id
         let tokenUser = JSON.parse(sessionStorage.getItem("token"))
@@ -119,16 +111,16 @@ export default class GroupsTable extends Component {
             let componente = <SelectGroupEdit end={() => {
                 if (this.state.specificGroup && this.state.specificGroup.length > 0) {
                     let idParentProgram = this.state.specificGroup[0].programParent;
-                        componente2 = <SelectGroupParent defaultValue={idParentProgram} getValue={(d) => {
-                            this.setState({
-                                programEditReq: {
-                                    parentProgram: d.value
-                                }
-                            })
-                        }} />
+                    componente2 = <SelectGroupParent defaultValue={idParentProgram} getValue={(d) => {
                         this.setState({
-                            componenteSelectUsuarios: componente2
+                            programEditReq: {
+                                parentProgram: d.value
+                            }
                         })
+                    }} />
+                    this.setState({
+                        componenteSelectUsuarios: componente2
+                    })
                 }
 
             }} getValue={(d) => {
@@ -218,7 +210,7 @@ export default class GroupsTable extends Component {
 
     }
 
-    addUser(event) {
+    addUser = (event) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
         this.setState({
@@ -226,14 +218,14 @@ export default class GroupsTable extends Component {
         })
     }
 
-    changePassword(event) {
+    changePassword = (event) => {
         event.preventDefault()
         this.setState({
             changePassword: true
         })
     }
 
-    getUsersPage(page, allPrograms) {
+    getUsersPage = (page, allPrograms) => {
         let total = []
         let cantOfPages = 0
         if (allPrograms !== null) {
@@ -256,7 +248,7 @@ export default class GroupsTable extends Component {
         }
     }
 
-    createProgram(e) {
+    createProgram = (e) => {
         e.preventDefault()
         const bodyParameters = {
             name: this.name.value,
@@ -596,7 +588,7 @@ export default class GroupsTable extends Component {
                                         }
 
                                         {HELPER_FUNCTIONS.checkPermission("POST|programs/new") &&
-                                            <button onClick={e => this.newProgram(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                                            <button onClick={e => this.newProgram(e)}><GroupAddIcon className="svgAddButton" style={{ fontSize: 33 }} /></button>
                                         }
 
 
@@ -673,9 +665,9 @@ export default class GroupsTable extends Component {
 
                             {this.state.editProgram && this.state.ok &&
                                 <div>
-                                    <h4>Editar programa</h4>
+
                                     {/* <CreateProgramsGroupComponent /> */}
-                                    <div className="table-users-edit">
+                                    <div className="table-parent-edit">
                                         <form onSubmit={this.createProgram} className="inputsEditUser addUserPadding">
                                             <span className="Label">Nombre</span>
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={userSelected.name ? userSelected.name : ''} />
@@ -730,10 +722,10 @@ export default class GroupsTable extends Component {
                     }
 
                     {this.state.createProgram && this.state.okProgramas &&
-                        <div className="table-users">
-                            <h4>Crear programa</h4>
+                        <div className="tabla_parent">
+                            <h4 className="marginBotton15">Crear programa</h4>
                             {/* <CreateProgramsGroupComponent /> */}
-                            <div className="table-users-edit">
+                            <div className="table-parent-edit">
                                 <form onSubmit={this.crearPrograma} className="inputsEditUser addUserPadding">
                                     <span className="Label">Nombre</span>
                                     <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />
@@ -755,7 +747,7 @@ export default class GroupsTable extends Component {
                                             createProgram: false
                                         })
                                     }
-                                }>Cancelar</button>
+                                }>X</button>
                             </div>
                         </div>
                     }
@@ -763,7 +755,7 @@ export default class GroupsTable extends Component {
 
 
                     <hr></hr>
-                    <div className="table-users" id="gruposProgSection">
+                    <div className="tabla_parent" id="gruposProgSection">
                         <h4 className="marginBotton15">Grupos</h4>
                         <div >
                             {this.state.ok &&

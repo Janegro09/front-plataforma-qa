@@ -173,7 +173,7 @@ export default class Perfilamiento extends Component {
             return <Redirect 
                         to={{
                             pathname: '/perfilamiento/cuartiles',
-                            cuartilSeleccionado
+                            cuartilSeleccionado: cuartilSeleccionado.id
                         }}
                      />
         }
@@ -182,7 +182,7 @@ export default class Perfilamiento extends Component {
             return <Redirect 
                         to={{
                             pathname: '/perfilamiento/perfilamientos',
-                            cuartilSeleccionado
+                            cuartilSeleccionado: cuartilSeleccionado.id
                         }}
                      />
         }

@@ -21,14 +21,15 @@ export default class PerfilaminetosComponent extends Component {
             assignedUsers: [],
             cuartiles: [],
             grupos: [],
-            redirect: false
+            redirect: false,
+            redirectCuartiles: false
         }
     }
 
     onDrop = (e, groupName) => {
         e.preventDefault();
         let data = e.dataTransfer.getData('data');
-        if(data && groupName){
+        if (data && groupName) {
             data = data.split('|');
             let QName = data[0];
             let level = data[1];
@@ -134,23 +135,23 @@ export default class PerfilaminetosComponent extends Component {
         let { grupos } = this.state
         let gruposReturn = []
 
-        for(let i = 0; i < grupos.length; i++){
+        for (let i = 0; i < grupos.length; i++) {
             const g = grupos[i]
             let temp = g;
             if (g.name === nameGroup) {
                 let cuartiles = g.cuartiles;
                 let cuartilesReturn = []
-                for(let j = 0; j < cuartiles.length; j++){
+                for (let j = 0; j < cuartiles.length; j++) {
                     const c = cuartiles[j];
                     if (!(c.name === nameCuartil && c.level === levelCuartil)) {
                         cuartilesReturn.push(c)
-                    } 
+                    }
                 }
 
                 temp.cuartiles = cuartilesReturn;
             }
             gruposReturn.push(temp)
-            
+
         }
 
         this.setState({
@@ -171,8 +172,8 @@ export default class PerfilaminetosComponent extends Component {
             cuartiles: []
         }
 
-        for(let i in tempGroup) {
-            if(dataNew[i]){
+        for (let i in tempGroup) {
+            if (dataNew[i]) {
                 tempGroup[i] = dataNew[i]
             }
         }
@@ -237,6 +238,12 @@ export default class PerfilaminetosComponent extends Component {
         this.reasignUsers();
     }
 
+    cuartiles = (id) => {
+        this.setState({
+            redirectCuartiles: true
+        })
+    }
+
     reasignUsers = () => {
         // Reasignamos todos los cuartiles
         const { grupos, cuartiles } = this.state
@@ -246,7 +253,7 @@ export default class PerfilaminetosComponent extends Component {
         }
 
 
-        for(let r = 0; r < grupos.length; r++){
+        for (let r = 0; r < grupos.length; r++) {
             const oldGroup = grupos[r];
             let tempGroup = {
                 id: oldGroup.id,
@@ -262,9 +269,10 @@ export default class PerfilaminetosComponent extends Component {
                 // Buscamos el cuartil con los usuarios originales
                 let cuartilUsers = [];
                 cuartiles.map(v => {
-                    if(v.name === cuartil.name){
+                    if (v.name === cuartil.name) {
                         cuartilUsers = v.users[cuartil.level];
                     }
+                    return true;
                 })
 
                 let tempCuartil = {
@@ -275,19 +283,21 @@ export default class PerfilaminetosComponent extends Component {
 
                 // Reasignamos los usuarios
                 cuartilUsers.map(dni => {
-                    if(!newAssign.assignedUsers.includes(dni) && !oldGroup.applyAllUsers){
+                    if (!newAssign.assignedUsers.includes(dni) && !oldGroup.applyAllUsers) {
                         newAssign.assignedUsers.push(dni)
                         tempCuartil.usersToAssign.push(dni)
                         tempGroup.users.push(dni)
-                    }else if(oldGroup.applyAllUsers) {
+                    } else if (oldGroup.applyAllUsers) {
                         tempCuartil.usersToAssign.push(dni)
-                        if(!tempGroup.users.includes(dni)){
+                        if (!tempGroup.users.includes(dni)) {
                             tempGroup.users.push(dni)
                         }
                     }
+                    return true;
                 })
 
                 tempGroup.cuartiles.push(tempCuartil);
+                return true;
             })
             newAssign.grupos.push(tempGroup);
 
@@ -309,36 +319,37 @@ export default class PerfilaminetosComponent extends Component {
 
     dragOverG = (e) => {
         e.preventDefault();
-        if(this.drag_el){
+        if (this.drag_el) {
             const { target } = e;
-    
+
             this.drag_el.style.display = "none";
             this.over = target;
-            if(target.parentNode.className === 'grupos'){
-                target.parentNode.insertBefore(placeholder,target);
+            if (target.parentNode.className === 'grupos') {
+                target.parentNode.insertBefore(placeholder, target);
             }
         }
 
     }
 
     dragEndG = () => {
-        if(this.drag_el){
+        if (this.drag_el) {
             this.drag_el.style.display = 'block';
             try {
                 this.drag_el.parentNode.removeChild(placeholder);
-        
+
                 let { grupos } = this.state
-        
+
                 const from = Number(this.drag_el.id);
                 let to = Number(this.over.id);
                 if (from < to) to--;
                 grupos.splice(to, 0, grupos.splice(from, 1)[0]);
-        
-                this.setState({ 
-                    grupos 
+
+                this.setState({
+                    grupos
                 });
                 this.reasignUsers()
-            }catch(e) {
+                this.drag_el = null
+            } catch (e) {
                 console.log('No se puede pegar un grupo fuera del componente')
             }
         }
@@ -346,13 +357,13 @@ export default class PerfilaminetosComponent extends Component {
 
     enviarModificacion = (e) => {
         e.preventDefault();
-        const {grupos, id} = this.state
+        const { grupos, id } = this.state
         let dataSend = []
         // Preparamos el array para enviar con un for para enviarlos ordenados
-        for(let i = 0; i < grupos.length; i++){
+        for (let i = 0; i < grupos.length; i++) {
             const group = grupos[i];
             let tempData = {
-                name: group.name,
+                name: group.name.trim(),
                 assignAllUsers: group.applyAllUsers,
                 cluster: group.cluster,
                 cuartilAssign: []
@@ -361,12 +372,19 @@ export default class PerfilaminetosComponent extends Component {
             group.cuartiles.map(v => {
                 let Q = parseInt(v.level[1])
                 tempData.cuartilAssign.push({
-                    cuartil: v.name,
+                    cuartil: v.name.trim(),
                     Q
                 })
-            })
 
-            dataSend.push(tempData)
+                return true;
+            })
+            let data = dataSend.find(element => (element.name === tempData.name))
+            if (data) {
+                swal("Error", "No pueden existir dos grupos con el mismo nombre", "error");
+                return;
+            } else {
+                dataSend.push(tempData)
+            }
         }
 
 
@@ -385,11 +403,15 @@ export default class PerfilaminetosComponent extends Component {
                         sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                         if (response.data.Success) {
                             swal("Felicidades!", "Perfilamiento modificado!", "success").then(() => {
-                                // window.location.reload(`${window.location.origin}/perfilamiento`)
+                                this.setState({
+                                    redirect: true
+                                })
                             })
                         } else {
                             swal("Error!", "Hubo un error al modificar el perfilamiento!", "error").then(() => {
-                                // window.location.reload(`${window.location.origin}/perfilamiento`)
+                                this.setState({
+                                    redirect: true
+                                })
                             })
                         }
 
@@ -408,14 +430,21 @@ export default class PerfilaminetosComponent extends Component {
 
     componentDidMount() {
         const { cuartilSeleccionado } = this.props.location;
-        let id = cuartilSeleccionado.id;
+        if (!cuartilSeleccionado) {
+            this.setState({
+                redirect: true
+            })
+            return;
+        }
+        let id = cuartilSeleccionado;
+
 
 
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
         axios.get(Global.getAllFiles + '/' + id + '/cuartiles?getUsers=true', { headers: { Authorization: bearer } }).then(response => {
-            
+
             token = response.data.loggedUser.token
             bearer = `Bearer ${token}`
             let respuesta = response.data.Data
@@ -424,47 +453,61 @@ export default class PerfilaminetosComponent extends Component {
 
             axios.get(Global.getAllFiles + '/' + id + '/perfilamiento', { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                let respuesta = response.data.Data
-                // Creamos los grupos existentes en orden
-                for(let i = 0; i < respuesta.length; i++ ){
-                    const r = respuesta[i]
-                    let cuartiles = []
-
-                    r.cuartilAssign.map(c => {
-                        cuartiles.push({
-                            name: c.cuartil,
-                            level: `Q${c.Q}`,
-                            usersToAssign: []
-                        })
-                        
-                    })
-
-                    this.agregarGrupo({
-                        id: parseInt(Date.now() * Math.random()),
-                        name: r.name,
-                        applyAllUsers: r.AssignAllUsers,
-                        cluster: r.cluster,
-                        cuartiles
-                    })
-
-                }
+                let respuesta = response.data.Data;
 
                 this.setState({
                     allUsers,
                     cuartiles,
                     id
-                })
+                });
 
-                this.reasignUsers();
+                if (respuesta) {
+                    // Creamos los grupos existentes en orden
+                    for (let i = 0; i < respuesta.length; i++) {
+                        const r = respuesta[i]
+                        let cuartiles = []
+
+                        r.cuartilAssign.map(c => {
+                            cuartiles.push({
+                                name: c.cuartil,
+                                level: `Q${c.Q}`,
+                                usersToAssign: []
+                            })
+                            return true;
+                        })
+
+                        this.agregarGrupo({
+                            id: parseInt(Date.now() * Math.random()),
+                            name: r.name,
+                            applyAllUsers: r.AssignAllUsers,
+                            cluster: r.cluster,
+                            cuartiles
+                        })
+
+                    }
+
+
+                    this.reasignUsers();
+                }
+
+
             })
         })
     }
 
     render() {
-        let { cuartiles, grupos, allUsers, assignedUsers, redirect } = this.state;
+        let { cuartiles, grupos, allUsers, assignedUsers, redirect, id, redirectCuartiles } = this.state;
 
         if (redirect) {
             return <Redirect to="/perfilamiento" />
+        }
+
+        if (redirectCuartiles) {
+            return <Redirect
+                to={{
+                    pathname: '/perfilamiento/cuartiles',
+                    cuartilSeleccionado: id
+                }} />
         }
 
         return (
@@ -483,9 +526,12 @@ export default class PerfilaminetosComponent extends Component {
                                     this.agregarGrupo();
                                 }}>Agregar grupo</button>
                             }
-                            <button>Cuartiles</button>
+                            <button onClick={(e) => {
+                                e.preventDefault();
+                                this.cuartiles(id)
+                            }}>Cuartiles</button>
                             {grupos.length > 0 &&
-                                <button onClick={this.enviarModificacion}>Modificar</button>
+                                <button onClick={this.enviarModificacion}>Guardar cambios</button>
                             }
                         </span>
                     </div>
@@ -504,9 +550,9 @@ export default class PerfilaminetosComponent extends Component {
                                                     this.updateAssign(v.id)
                                                 }} ref={e => this.assignAllUsers = e} />
                                             </label>
-                    
-                                            <select 
-                                                ref={e => this.select = e} 
+
+                                            <select
+                                                ref={e => this.select = e}
                                                 onChange={(e) => {
                                                     e.preventDefault();
                                                     this.changeSelect(v.id)

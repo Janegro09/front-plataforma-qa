@@ -15,7 +15,8 @@ export default class PerfilamientoCuartilesComponent extends Component {
             result: [],
             dataFiltered: null,
             redirect: false,
-            id: null
+            id: null,
+            redirectPerfilamientos: false
         }
     }
 
@@ -124,6 +125,12 @@ export default class PerfilamientoCuartilesComponent extends Component {
             })
     }
 
+    perfilamientos = () => {
+        this.setState({
+            redirectPerfilamientos: true
+        })
+    }
+
     componentDidMount() {
         const { cuartilSeleccionado } = this.props.location;
         if (cuartilSeleccionado === undefined) {
@@ -132,7 +139,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
             })
             return;
         }
-        let id = cuartilSeleccionado.id;
+        let id = cuartilSeleccionado;
         this.setState({ id })
 
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
@@ -189,10 +196,18 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
     render() {
 
-        const { nombreColumnas, dataFiltered, redirect, result } = this.state;
+        const { nombreColumnas, dataFiltered, redirect, result, id, redirectPerfilamientos } = this.state;
 
         if (redirect) {
             return <Redirect to="/perfilamiento" />
+        }
+
+        if (redirectPerfilamientos) {
+            return <Redirect
+                to={{
+                    pathname: '/perfilamiento/perfilamientos',
+                    cuartilSeleccionado: id
+                }} />
         }
 
 
@@ -201,7 +216,11 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 <SideBarLeft />
 
                 <div className="section-content">
-                    <button onClick={this.enviar}>Dale</button>
+                    <button onClick={this.enviar}>Guardar cambios</button>
+                    <button onClick={(e) => {
+                        e.preventDefault();
+                        this.perfilamientos()
+                    }}>Perfilamientos</button>
                     <input className="form-control" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
                     {nombreColumnas &&
                         <table>

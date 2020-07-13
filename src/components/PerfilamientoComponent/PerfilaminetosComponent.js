@@ -108,14 +108,13 @@ export default class PerfilaminetosComponent extends Component {
 
     }
 
-    eliminarGrupo = (name) => {
+    eliminarGrupo = (id) => {
         // Eliminamos el grupo del array
         let { grupos, assignedUsers } = this.state;
         let returnData = []
         for (let i = 0; i < grupos.length; i++) {
             const g = grupos[i];
-
-            if (g.name !== name) {
+            if (g.id !== id) {
                 returnData.push(grupos[i])
             } else {
                 grupos[i].users.map(g => {
@@ -164,6 +163,7 @@ export default class PerfilaminetosComponent extends Component {
     agregarGrupo = (dataNew = {}) => {
         const { grupos } = this.state
         let tempGroup = {
+            id: parseInt(Date.now() * Math.random()),
             name: `Nuevo grupo ${grupos.length + 1}`,
             applyAllUsers: false,
             cluster: "Convergente",
@@ -184,12 +184,12 @@ export default class PerfilaminetosComponent extends Component {
 
     }
 
-    changeSelect = (groupName) => {
+    changeSelect = (id) => {
         const { grupos } = this.state
         let dataReturn = []
         grupos.map(v => {
             let tempData = v;
-            if (v.name === groupName) {
+            if (v.id === id) {
                 tempData.cluster = this.select.value
             }
             dataReturn.push(tempData)
@@ -198,47 +198,34 @@ export default class PerfilaminetosComponent extends Component {
         this.setState({
             grupos: dataReturn
         })
-        console.log(grupos)
     }
 
 
-    changeName = (oldName) => {
-        const newName = this.name.value
+    changeName = (id) => {
+        let newName = document.getElementById(id).value;
         const { grupos } = this.state
         let dataReturn = []
-        let exists = false
+
+        // Buscamos el array a modificar
         grupos.map(v => {
-            if (v.name === newName) {
-                exists = true;
+            let tempData = v;
+            if (v.id === id) {
+                tempData.name = newName
             }
+            dataReturn.push(tempData)
             return true;
         })
 
-        if (exists) {
-            swal("Error!", "No se puede poner el mismo nombre que otro grupo", "error")
-        } else {
-            // Buscamos el array a modificar
-            grupos.map(v => {
-                let tempData = v;
-                if (v.name === oldName) {
-                    tempData.name = newName
-                }
-                dataReturn.push(tempData)
-                return true;
-            })
-
-            this.setState({
-                grupos: dataReturn
-            })
-        }
-
+        this.setState({
+            grupos: dataReturn
+        })
     }
 
-    updateAssign = (groupName) => {
+    updateAssign = (id) => {
         let { grupos } = this.state
         for (let i = 0; i < grupos.length; i++) {
             const v = grupos[i];
-            if (v.name === groupName) {
+            if (v.id === id) {
                 v.applyAllUsers = this.assignAllUsers.checked
             }
         }
@@ -262,6 +249,7 @@ export default class PerfilaminetosComponent extends Component {
         for(let r = 0; r < grupos.length; r++){
             const oldGroup = grupos[r];
             let tempGroup = {
+                id: oldGroup.id,
                 name: oldGroup.name,
                 applyAllUsers: oldGroup.applyAllUsers,
                 cluster: oldGroup.cluster,
@@ -304,8 +292,6 @@ export default class PerfilaminetosComponent extends Component {
             newAssign.grupos.push(tempGroup);
 
         }
-
-        console.log(newAssign);
 
         this.setState({
             grupos: newAssign.grupos,
@@ -393,7 +379,6 @@ export default class PerfilaminetosComponent extends Component {
 
                 // PARAMETROS REQUERIDOS, SOLO PASSWORD
                 const bodyParameters = dataSend
-                console.log(dataSend)
 
                 axios.post(Global.getAllFiles + '/' + id + '/perfilamiento', bodyParameters, config)
                     .then(response => {
@@ -455,6 +440,7 @@ export default class PerfilaminetosComponent extends Component {
                     })
 
                     this.agregarGrupo({
+                        id: parseInt(Date.now() * Math.random()),
                         name: r.name,
                         applyAllUsers: r.AssignAllUsers,
                         cluster: r.cluster,
@@ -512,10 +498,10 @@ export default class PerfilaminetosComponent extends Component {
                                     <div className="grupoPerfilamiento" id={key} key={key} draggable onDragStart={this.dragStartG} onDragOver={this.dragOverG} onDragEnd={this.dragEndG}>
                                         <p>Usuarios asignados: {v.users.length} - {Math.ceil((v.users.length / allUsers.length) * 100)}%</p>
                                         <div className="acciones">
-                                            <input type="text" value={v.name} onChange={(e) => this.changeName(v.name)} ref={e => this.name = e} />
+                                            <input type="text" value={v.name} onChange={(e) => this.changeName(v.id)} id={v.id} />
                                             <label>Aplicar al 100% de los usuarios.
                                                 <input type="checkbox" id="aplicarall" onChange={() => {
-                                                    this.updateAssign(v.name)
+                                                    this.updateAssign(v.id)
                                                 }} ref={e => this.assignAllUsers = e} />
                                             </label>
                     
@@ -523,7 +509,7 @@ export default class PerfilaminetosComponent extends Component {
                                                 ref={e => this.select = e} 
                                                 onChange={(e) => {
                                                     e.preventDefault();
-                                                    this.changeSelect(v.name)
+                                                    this.changeSelect(v.id)
                                                 }}
                                                 defaultValue={v.cluster}
                                             >
@@ -536,7 +522,7 @@ export default class PerfilaminetosComponent extends Component {
                                             </select>
                                             <button onClick={(e) => {
                                                 e.preventDefault();
-                                                this.eliminarGrupo(v.name)
+                                                this.eliminarGrupo(v.id)
                                             }}>Eliminar</button>
                                         </div>
                                         <div className="cuartilesAsignados" onDrop={(e) => this.onDrop(e, v.name)} onDragOver={(e) => e.preventDefault()}>

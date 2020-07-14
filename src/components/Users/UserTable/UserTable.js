@@ -127,7 +127,7 @@ export default class UserTable extends Component {
         let total = []
         let cantOfPages = 0
         if (allUsers !== null) {
-            const cantPerPage = 12
+            const cantPerPage = 25
             cantOfPages = Math.ceil(allUsers.length / cantPerPage)
 
             let index = (page - 1) * cantPerPage
@@ -271,6 +271,7 @@ export default class UserTable extends Component {
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre y apellido</th>
+                                <th>Canal</th>
                                 <th>Mail</th>
                                 <th>Legajo</th>
                                 <th>Sector</th>
@@ -288,6 +289,7 @@ export default class UserTable extends Component {
                                         <tr id="parent" key={user.idDB}>
                                             <td >{user.id}</td>
                                             <td className="capitalize-complete-name">{user.name} {user.lastName}</td>
+                                            <td>{user.canal}</td>
                                             <td>{user.email}</td>
                                             <td>{user.legajo}</td>
                                             <td>{user.equipoEspecifico}</td>

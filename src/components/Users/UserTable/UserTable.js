@@ -32,6 +32,26 @@ export default class UserTable extends Component {
         }
     }
 
+    dynamicSort = (property) => {
+        var sortOrder = 1;
+        if (property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return (a, b) => {
+            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+            return result * sortOrder;
+        }
+    }
+
+    ascDesc = (field) => {
+        let { allUsers } = this.state
+        let dataOrdenada = allUsers.sort(this.dynamicSort(field));
+        this.setState({
+            searchedUsers: dataOrdenada
+        })
+    }
+
     buscar = () => {
         let searched
         if (this.title && this.title !== undefined) {
@@ -269,8 +289,14 @@ export default class UserTable extends Component {
 
                         <thead className="encabezadoTabla">
                             <tr>
-                                <th>ID</th>
-                                <th>Nombre y apellido</th>
+                                <th onClick={(e) => {
+                                    e.preventDefault()
+                                    this.ascDesc("id")
+                                }}>ID</th>
+                                <th onClick={(e) => {
+                                    e.preventDefault()
+                                    this.ascDesc("name")
+                                }}>Nombre y apellido</th>
                                 <th>Canal</th>
                                 <th>Mail</th>
                                 <th>Legajo</th>

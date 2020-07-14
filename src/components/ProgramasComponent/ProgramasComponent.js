@@ -679,8 +679,8 @@ export default class GroupsTable extends Component {
                                             }
                                             <span className="Label">Section</span>
                                             <select onChange={this.handleTurno}>
-                                                <option value="M" selected={userSelected.section === 'M'}>M</option>
-                                                <option value="P" selected={userSelected.section === 'P'}>P</option>
+                                                <option value="M" selected={userSelected.section === 'M'}>Monitoreo</option>
+                                                <option value="P" selected={userSelected.section === 'P'}>Perfilamiento</option>
                                             </select>
                                             <div>
                                                 {this.state.specificGroup && this.state.componenteSelectGrupos !== null &&
@@ -733,8 +733,8 @@ export default class GroupsTable extends Component {
                                     <SelectGroupParent getValue={(c) => this.parentProgram = c} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''} />
                                     <span className="Label">Section</span>
                                     <select onChange={this.handleTurno}>
-                                        <option value="M">M</option>
-                                        <option value="P">P</option>
+                                        <option value="M">Monitoreo</option>
+                                        <option value="P">Perfilamiento</option>
                                     </select>
                                     <SelectGroupCreate getValue={(c) => this.usersAssign = c} defaultValue={this.state.gruposDeProgramas ? this.state.gruposDeProgramas : ''} />
                                     <span className="Label">Description</span>

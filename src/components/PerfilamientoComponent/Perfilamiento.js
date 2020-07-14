@@ -205,7 +205,6 @@ export default class Perfilamiento extends Component {
                     <table>
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th onClick={(e) => {
                                     e.preventDefault()
                                     this.ascDesc()
@@ -220,7 +219,6 @@ export default class Perfilamiento extends Component {
                             {dataFiltered.map((row, key) => {
                                 return (
                                     <tr key={key}>
-                                        <td>{row.id}</td>
                                         <td>{moment(row.date).format("DD-MM-YYYY")}</td>
                                         <td>{row.name}</td>
                                         <td>{row.program ? row.program.name : 'Programa no asignado'}</td>

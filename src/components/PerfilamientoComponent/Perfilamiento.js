@@ -19,7 +19,8 @@ export default class Perfilamiento extends Component {
             agregarPerfilamiento: false,
             cuartiles: false,
             cuartilSeleccionado: null,
-            perfilamientos: false
+            perfilamientos: false,
+            loading: false
         }
     }
 
@@ -66,11 +67,17 @@ export default class Perfilamiento extends Component {
     }
 
     descargar = (id) => {
+        this.setState({
+            loading: true
+        })
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.get(Global.getAllFiles + '/' + id + '/download', { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            this.setState({
+                loading: false
+            })
             let respuesta = response.data.Data
             let win = window.open(Global.download + '/' + respuesta.idTemp, '_blank');
             win.focus();
@@ -82,6 +89,9 @@ export default class Perfilamiento extends Component {
                     HELPER_FUNCTIONS.logout()
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    this.setState({
+                        loading: false
+                    })
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
@@ -99,13 +109,18 @@ export default class Perfilamiento extends Component {
             .then((willDelete) => {
                 if (willDelete) {
                     let token = JSON.parse(sessionStorage.getItem('token'))
+                    this.setState({
+                        loading: true
+                    })
                     const config = {
                         headers: { Authorization: `Bearer ${token}` }
                     };
                     axios.delete(Global.getAllFiles + '/' + id, config)
                         .then(response => {
                             sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-
+                            this.setState({
+                                loading: false
+                            })
                             if (response.data.Success) {
                                 swal("Ok! El archivo ha sido eliminado 😎", {
                                     icon: "success",
@@ -121,6 +136,7 @@ export default class Perfilamiento extends Component {
                                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                 swal("Error!", "Hubo un problema al intentar borrar el rol", "error");
                                 this.setState({
+                                    loading: false,
                                     redirect: true
                                 })
                             }
@@ -142,6 +158,9 @@ export default class Perfilamiento extends Component {
     }
 
     componentDidMount() {
+        this.setState({
+            loading: true
+        })
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
@@ -151,7 +170,8 @@ export default class Perfilamiento extends Component {
 
             this.setState({
                 data: respuesta,
-                dataFiltered: respuesta
+                dataFiltered: respuesta,
+                loading: false
             })
         })
             .catch((e) => {
@@ -160,6 +180,9 @@ export default class Perfilamiento extends Component {
                     HELPER_FUNCTIONS.logout()
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    this.setState({
+                        loading: false
+                    })
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
@@ -167,29 +190,32 @@ export default class Perfilamiento extends Component {
     }
 
     render() {
-        let { data, dataFiltered, id, agregarPerfilamiento, cuartiles, cuartilSeleccionado, perfilamientos } = this.state;
+        let { data, dataFiltered, id, agregarPerfilamiento, cuartiles, cuartilSeleccionado, perfilamientos, loading } = this.state;
 
         if (cuartiles) {
-            return <Redirect 
-                        to={{
-                            pathname: '/perfilamiento/cuartiles',
-                            cuartilSeleccionado: cuartilSeleccionado.id
-                        }}
-                     />
+            return <Redirect
+                to={{
+                    pathname: '/perfilamiento/cuartiles',
+                    cuartilSeleccionado: cuartilSeleccionado.id
+                }}
+            />
         }
 
         if (perfilamientos) {
-            return <Redirect 
-                        to={{
-                            pathname: '/perfilamiento/perfilamientos',
-                            cuartilSeleccionado: cuartilSeleccionado.id
-                        }}
-                     />
+            return <Redirect
+                to={{
+                    pathname: '/perfilamiento/perfilamientos',
+                    cuartilSeleccionado: cuartilSeleccionado.id
+                }}
+            />
         }
 
         return (
             <div>
-                
+                {/* spiner rekes */}
+                {loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
                 <button className="boton-agregar" onClick={(e) => {
                     e.preventDefault();
                     this.agregarPerfilamiento();
@@ -226,7 +252,7 @@ export default class Perfilamiento extends Component {
                                             <button onClick={(e) => {
                                                 e.preventDefault()
                                                 this.cargarCuartil(row);
-                                                
+
                                                 // /analytics/file/:fileId/cuartiles
                                             }}>Cuartiles</button>
 

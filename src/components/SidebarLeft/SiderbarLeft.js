@@ -15,6 +15,14 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 
 
 export default class SiderbarLeft extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            activo: false
+        }
+    }
+
     render() {
         return (
 
@@ -54,12 +62,21 @@ export default class SiderbarLeft extends Component {
                         {/* ANALYTICS */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("") &&
                             <li className="nameMenu">
-                                <NavLink to="/perfilamiento" activeClassName="active"><TimelineIcon className="IconoMenu" />
-                                    <div class="showme">
+                                {/* <NavLink to="/perfilamiento" activeClassName="active"><TimelineIcon className="IconoMenu" />
+                                    <span className="showme">
                                         <NavLink to="/perfilamiento" activeClassName="active">Perfilamiento</NavLink>
                                         <NavLink to="/partituras" activeClassName="active">Partituras</NavLink>
-                                    </div>
-                                </NavLink>Analytics
+                                    </span>
+                                </NavLink>Analytics */}
+
+                                <div id="parent" className={this.state.activo ? 'active' : ''}>
+                                    <TimelineIcon className="IconoMenu" />
+                                    <span className="showme">
+                                        <NavLink to="/perfilamiento">Perfilamiento</NavLink>
+                                        <NavLink to="/partituras">Partituras</NavLink>
+                                    </span>
+                                    Analytics
+                                </div>
 
                             </li>
                         }

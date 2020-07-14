@@ -192,6 +192,23 @@ div.content {
   color: #757575;
 }
 
+.showme {
+  display: none;
+}
+
+.nameMenu:hover .showme {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  color: white;
+  background-color: red;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  position: fixed;
+  transform: translate(51px, -51px);
+}
+
 .IconoMenuDia {
   color: #5d5d5d;
 }
@@ -220,6 +237,9 @@ hr {
 } */
 
 .active>svg {
+  color: white;
+}
+.activeParent>svg {
   color: white;
 }
 
@@ -304,8 +324,10 @@ hr {
   }
   
   .active>a {
-    color: white !important
-  ;
+    color: white !important;
+  }
+  .activeParent>a {
+    color: white !important;
   }
 
 

@@ -11,6 +11,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import SecurityIcon from '@material-ui/icons/Security';
 import SettingsIcon from '@material-ui/icons/Settings';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
+import TimelineIcon from '@material-ui/icons/Timeline';
 
 
 export default class SiderbarLeft extends Component {
@@ -46,8 +47,20 @@ export default class SiderbarLeft extends Component {
                             </li>
                         }
                         {/* PERFILAMIENTO */}
-                        {HELPER_FUNCTIONS.checkPermissionGroup("") &&
+                        {/* {HELPER_FUNCTIONS.checkPermissionGroup("") &&
                             <li className="nameMenu"><NavLink to="/perfilamiento" activeClassName="active"><GroupWorkIcon className="IconoMenu" /></NavLink>Perfilamiento
+                            </li>
+                        } */}
+                        {/* ANALYTICS */}
+                        {HELPER_FUNCTIONS.checkPermissionGroup("") &&
+                            <li className="nameMenu">
+                                <NavLink to="/perfilamiento" activeClassName="active"><TimelineIcon className="IconoMenu" />
+                                    <div class="showme">
+                                        <NavLink to="/perfilamiento" activeClassName="active">Perfilamiento</NavLink>
+                                        <NavLink to="/partituras" activeClassName="active">Partituras</NavLink>
+                                    </div>
+                                </NavLink>Analytics
+
                             </li>
                         }
                     </ul>

@@ -26,6 +26,7 @@ import EditProgramsGroupComponent from './components/ProgramasComponent/EditProg
 import PerfilamientoComponent from './components/PerfilamientoComponent/PerfilamientoComponent'
 import PerfilamientosComponent from './components/PerfilamientoComponent/PerfilaminetosComponent'
 import PerfilamientoCuartilesComponent from './components/PerfilamientoComponent/PerfilamientoCuartilesComponent';
+import PartiturasComponent from './components/PartiturasComponent/PartiturasComponent';
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
         <Route path="/groups" component={GroupsComponent} />
         <Route path="/home" component={Home} />
         <Route path="/login" component={Login} />
+        <Route exact path="/partituras" component={PartiturasComponent} />
         <Route exact path="/perfilamiento" component={PerfilamientoComponent} />
         <Route path="/perfilamiento/cuartiles" component={PerfilamientoCuartilesComponent} />
         <Route path="/perfilamiento/perfilamientos" component={ PerfilamientosComponent } />

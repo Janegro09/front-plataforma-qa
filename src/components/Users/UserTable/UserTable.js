@@ -297,9 +297,16 @@ export default class UserTable extends Component {
                                     e.preventDefault()
                                     this.ascDesc("name")
                                 }}>Nombre y apellido</th>
-                                <th>Canal</th>
+                                <th onClick={(e) => {
+                                    e.preventDefault()
+                                    this.ascDesc("canal")
+                                }}>Canal</th>
                                 <th>Mail</th>
                                 <th>Legajo</th>
+                                <th onClick={(e) => {
+                                    e.preventDefault()
+                                    this.ascDesc("razonSocial")
+                                }}>Empresa</th>
                                 <th>Sector</th>
                                 <th className="tableIcons">Estado</th>
                                 <th className="tableIcons">Editar</th>
@@ -318,6 +325,7 @@ export default class UserTable extends Component {
                                             <td>{user.canal}</td>
                                             <td>{user.email}</td>
                                             <td>{user.legajo}</td>
+                                            <td>{user.razonSocial}</td>
                                             <td>{user.equipoEspecifico}</td>
                                             <td className="tablaVariables"><div className={` ${!user.userActive ? "estadoInactivo " : 'estadoActivo'}`}></div></td>
                                             {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&

@@ -85,20 +85,12 @@ export default class SubirNominaComponent extends Component {
                 }
                 {HELPER_FUNCTIONS.checkPermission('POST|backoffice/nomina') &&
                     <div className="uploadNomina">
-                        {/* <div>Nómina actual 30/06/2020</div> */}
                         <div>
-                        <PublishIcon />
-                            <input type="file" name="file" onChange={this.fileChange} />
-                            {/* <div>
-                                Actualizar
-                            </div> */}
+                            <PublishIcon />
+                            <input type="file" name="file" onChange={this.fileChange} id="file" />
                         </div>
                     </div>
                 }
-                {/* <div className="uploadNomina">
-                    <div>Nómina actual 30/06/2020</div> 
-                    <button>Actualizar<PublishIcon /></button>
-                </div> */}
             </>
         )
     }

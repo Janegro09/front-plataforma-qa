@@ -19,7 +19,7 @@
 
 }
 
-.uploadNomina>input {
+.uploadNomina>label {
     background-color: #ff6a00;
     padding: 4px 5px 4px 10px;
     border-radius: 3px;
@@ -29,11 +29,11 @@
     transition: all 0.15s ease-in-out;
 }
 
-.uploadNomina>input:hover {
+.uploadNomina>label:hover {
     background-color: #d45902;
 }
 
-.uploadNomina>input>svg {
+.uploadNomina>label>svg {
     color: white;
     height: 18px;
 }

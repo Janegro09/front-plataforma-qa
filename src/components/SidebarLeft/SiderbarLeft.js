@@ -46,7 +46,7 @@ export default class SiderbarLeft extends Component {
                         }
                         {/* BACKOFFICE */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("") &&
-                            <li className="nameMenu"><NavLink to="/backoffice" activeClassName="active"><SettingsIcon className="IconoMenu" /></NavLink>Nómina
+                            <li className="nameMenu"><NavLink to="/backoffice" activeClassName="active"><SettingsIcon className="IconoMenu" /></NavLink>Backoffice
                             </li>
                         }
                         {/* PROGRAMAS */}

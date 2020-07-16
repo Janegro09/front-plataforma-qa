@@ -7,9 +7,78 @@ export default class Formulario extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: null,
+            name: 'Nombre de la plantilla',
             instances: []
         }
+    }
+
+    changeStepName = (instanceId, stepId, newName) => {
+        let { instances } = this.state;
+
+        for(let x of instances){
+            if(x.id === instanceId){
+                for(let j of x.steps){
+                    if(j.id === stepId){
+                        j.name = newName;
+                    }
+                }
+            }
+        }
+
+        this.setState({
+            instances
+        })
+    }
+
+    eliminarStep = (instanceId, stepId) => {
+        let { instances } = this.state;
+
+        let dataReturn = [];
+        for(let x of instances) {
+            let tempD = x;
+            if(tempD.id === instanceId){
+                let steps = [];
+                for(let j of x.steps){
+                    if(j.id === stepId) continue;
+                    steps.push(j);
+                }
+                tempD.steps = steps;
+            }
+            dataReturn.push(tempD);
+        }
+
+        this.setState({
+            instances: dataReturn
+        })
+    }
+
+    eliminarInstance = (id) => {
+        let { instances } = this.state;
+
+        let dataReturn = []
+        for(let x of instances){
+            if(x.id === id) continue;
+            dataReturn.push(x);
+        }
+
+        this.setState({
+            instances: dataReturn
+        })
+        
+    }
+
+    changeInstanceName = (id, newName) => {
+        let { instances } = this.state;
+
+        for(let x of instances){
+            if(x.id === id){
+                x.name = newName;
+            }
+        }
+
+        this.setState({
+            instances
+        })
     }
 
     nuevaInstancia = () => {
@@ -65,31 +134,51 @@ export default class Formulario extends Component {
                             }
                         }>x</button>
                     </div>
-                    <div>
-                        <input type="text" placeholder="Nombre de la planilla" onChange={(e) => {
-                            this.setState({ name: e.target.value })
-                        }} />
-                        <button onClick={(e) => {
-                            e.preventDefault();
-                            this.nuevaInstancia()
-                        }}>Nueva instancia</button>
+                    <div className="partituresModels">
+                        <div className="mainButtons">
+                            <input type="text" value={this.state.name} onChange={(e) => {
+                                this.setState({ name: e.target.value })
+                            }} />
+                            <button onClick={(e) => {
+                                e.preventDefault();
+                                this.nuevaInstancia()
+                            }}>Nueva instancia</button>
+                            <button>Guardar Plantilla</button>
+
+                        </div>
 
                         {instances &&
-                            <div>
+                            <div className="AllInstances">
                                 {instances.map((instance, key) => {
                                     return (
-                                        <div>
-                                            <input type="text" value={instance.name} />
-                                            <button onClick={(e) => {
-                                                e.preventDefault();
-                                                this.agregarPaso(instance.id)
-                                            }}>Agregar paso</button>
-                                            <button>Eliminar instancia</button>
-                                            <div>
+                                        <div className="instance">
+                                            <div className="mainButtons">
+                                                <input type="text" value={instance.name} onChange={(e) => {
+                                                    this.changeInstanceName(instance.id, e.target.value);
+                                                }}/>
+                                                <button onClick={(e) => {
+                                                    e.preventDefault();
+                                                    this.agregarPaso(instance.id)
+                                                }}>Agregar paso</button>
+                                                <button onClick={(e) => {
+                                                    e.preventDefault();
+                                                    this.eliminarInstance(instance.id)
+                                                }}>Eliminar instancia</button>
+                                            </div>
+                                            <div className="AllSteps">
                                                 {instance.steps &&
-                                                    instance.steps.map(step => {
+                                                    instance.steps.map((step, key) => {
                                                         return (
-                                                            <h1>{step.name}</h1>
+                                                            <div key={key} className="step">
+                                                                <input type="text" value={step.name} onChange={(e) => {
+                                                                    this.changeStepName(instance.id, step.id, e.target.value);
+                                                                }} />
+                                                                <button onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    this.eliminarStep(instance.id, step.id);
+                                                                }}>Eliminar paso</button>
+
+                                                            </div>
                                                         )
                                                     })
                                                 }

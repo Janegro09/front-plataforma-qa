@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
 import './Formulario.css'
+import swal from 'sweetalert';
+import axios from 'axios';
+import Global from '../../../Global';
+import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
+
 
 export default class Formulario extends Component {
 
@@ -7,9 +12,28 @@ export default class Formulario extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: null,
             name: 'Nombre de la plantilla',
             instances: []
         }
+    }
+
+    changeStepRequiredMonitorings = (instanceId, stepId, requiredMonitorings) => {
+        let { instances } = this.state;
+
+        for(let x of instances){
+            if(x.id === instanceId){
+                for(let j of x.steps){
+                    if(j.id === stepId){
+                        j.requiredMonitorings = parseInt(requiredMonitorings);
+                    }
+                }
+            }
+        }
+
+        this.setState({
+            instances
+        })
     }
 
     changeStepName = (instanceId, stepId, newName) => {
@@ -52,6 +76,93 @@ export default class Formulario extends Component {
         })
     }
 
+    enviarPlantilla = () => {
+        // Preparamos el objeto para enviar!
+        const { name, instances, id } = this.state;
+
+        if(!name || name === 'Nombre de la plantilla' || instances.length === 0){
+            swal("Error!", "Debe ingresar valores para enviarlos", "error");
+            return false;
+        }
+
+        let sendData = {
+            name,
+            instances: []
+        }
+
+        for(let instance of instances){
+            if(instance.name.includes('Nueva instancia')){
+                swal("Error", "Debe cambiar el nombre de la instancia", "Error");
+                return false;
+            }
+            let tempData = {
+                name: instance.name,
+                steps: []
+            }
+            for(let step of instance.steps){
+                let s = {
+                    name: step.name,
+                    requiredMonitorings: step.requiredMonitorings
+                }
+                tempData.steps.push(s);
+            }
+            sendData.instances.push(tempData);
+        }
+        
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        const bodyParameters = sendData
+        if(id){
+            // entonces editamos
+            axios.put(Global.getPartitureModels + "/" + id, bodyParameters, config)
+            .then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                if (response.data.Success) {
+                    swal("Felicidades!", "Se ha modificado la plantilla de partitura correctamente", "success");
+                    window.location.reload(window.location.href);
+                }
+
+            })
+            .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Atención", "No se ha agregado el grupo", "info");
+                    this.setState({
+                        redirect: true
+                    })
+                }
+                console.log("Error: ", e)
+            })
+        } else {
+            axios.post(Global.getPartitureModels + "/new", bodyParameters, config)
+                .then(response => {
+                    sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                    if (response.data.Success) {
+                        swal("Felicidades!", "Se ha creado la plantilla de partitura correctamente", "success");
+                        window.location.reload(window.location.href);
+                    }
+    
+                })
+                .catch(e => {
+                    if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                        HELPER_FUNCTIONS.logout()
+                    } else {
+                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        swal("Atención", "No se ha agregado el grupo", "info");
+                        this.setState({
+                            redirect: true
+                        })
+                    }
+                    console.log("Error: ", e)
+                })
+        }
+
+    }
+
     eliminarInstance = (id) => {
         let { instances } = this.state;
 
@@ -81,12 +192,22 @@ export default class Formulario extends Component {
         })
     }
 
-    nuevaInstancia = () => {
+    nuevaInstancia = (instanceObject = false) => {
         let { instances } = this.state;
+        let steps = [];
+        if(instanceObject !== false){
+            for(let st of instanceObject.steps){
+                steps.push({
+                    id: parseInt(Date.now() * Math.random()),
+                    name: st.name,
+                    requiredMonitorings: parseInt(st.requiredMonitorings)
+                })
+            }
+        }
         let tempData = {
             id: parseInt(Date.now() * Math.random()),
-            name: `Nueva instancia ${instances.length + 1}`,
-            steps: []
+            name: instanceObject === false ? `Nueva instancia ${instances.length + 1}` : instanceObject.name,
+            steps
         }
 
         this.setState({
@@ -95,10 +216,7 @@ export default class Formulario extends Component {
     }
 
     agregarPaso = (id) => {
-        console.log(id);
         let { instances } = this.state;
-        // let instanciasReturn = [];
-        // let selected = instances.find(element => element.id === id);
 
         for (let i of instances) {
             if (i.id === id) {
@@ -118,16 +236,53 @@ export default class Formulario extends Component {
         window.location.reload(window.location.href);
     }
 
-    render() {
-        let { name, instances } = this.state;
+    componentDidMount = () => {
+        const {idModificate} = this.props
+        if(idModificate){
 
-        console.log("Name: ", name);
-        console.log("Instances: ", instances);
+            let token = JSON.parse(sessionStorage.getItem('token'))
+            const config = {
+                headers: { Authorization: `Bearer ${token}` }
+            };
+
+            axios.get(Global.getPartitureModels + "/" + idModificate, config)
+                .then(response => {
+                    sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                    const respuesta = response.data.Data[0];
+                    if(respuesta){
+                        for(let i of respuesta.instances){
+                            this.nuevaInstancia(i);
+                        }
+                        this.setState({
+                            id: idModificate,
+                            name: respuesta.name
+                        })
+                    }
+                })
+                .catch(e => {
+                    if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                        HELPER_FUNCTIONS.logout()
+                    } else {
+                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        swal("Atención", "No se ha agregado el grupo", "info");
+                        this.setState({
+                            redirect: true
+                        })
+                    }
+                    console.log("Error: ", e)
+                })
+        }
+    }
+
+    render() {
+        let { instances } = this.state;
+
         return (
             <div className="modal" id="modal-casero">
                 <div className="hijo">
                     <div className="boton-cerrar">
-                        <button onClick={
+                        <button 
+                        onClick={
                             (e) => {
                                 e.preventDefault()
                                 this.cerrarModal()
@@ -143,7 +298,10 @@ export default class Formulario extends Component {
                                 e.preventDefault();
                                 this.nuevaInstancia()
                             }}>Nueva instancia</button>
-                            <button>Guardar Plantilla</button>
+                            <button onClick={(e) => {
+                                e.preventDefault()
+                                this.enviarPlantilla();
+                            }}>Guardar Plantilla</button>
 
                         </div>
 
@@ -173,6 +331,9 @@ export default class Formulario extends Component {
                                                                 <input type="text" value={step.name} onChange={(e) => {
                                                                     this.changeStepName(instance.id, step.id, e.target.value);
                                                                 }} />
+                                                                <input type="number" value={step.requiredMonitorings} onChange={(e) => {
+                                                                    this.changeStepRequiredMonitorings(instance.id, step.id, e.target.value);
+                                                                }}/>
                                                                 <button onClick={(e) => {
                                                                     e.preventDefault();
                                                                     this.eliminarStep(instance.id, step.id);

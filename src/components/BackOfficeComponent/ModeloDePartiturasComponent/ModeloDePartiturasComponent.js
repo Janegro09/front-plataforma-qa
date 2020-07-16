@@ -19,8 +19,55 @@ export default class ModeloDePartiturasComponent extends Component {
         }
     }
 
-    crearNuevo = () => {
-        this.setState({ crearNuevo: true })
+    eliminarPlantilla = (id) => {
+        swal({
+            title: "Estas seguro?",
+            text: "Estas por eliminar una plantilla, no podrá recuperarla",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+                let token = JSON.parse(sessionStorage.getItem('token'))
+                const config = {
+                    headers: { Authorization: `Bearer ${token}` }
+                };
+                axios.delete(Global.getPartitureModels + "/" + id, config)
+                    .then(response => {
+                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                        if (response.data.Success) {
+                            swal("Felicidades!", "Plantilla eliminada correctamente", "success");
+                            window.location.reload(window.location.href);
+                        }
+        
+                    })
+                    .catch(e => {
+                        if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                            HELPER_FUNCTIONS.logout()
+                        } else {
+                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                            swal("Listo, ya se eliminó!", {
+                                icon: "success",
+                              });
+
+                        }
+                        console.log("Error: ", e)
+                    })
+
+            } else {
+              swal("No se elimino nada");
+            }
+          });
+
+    }
+
+    crearNuevo = (id = false) => {
+        let crearNuevo = true;
+        if(id !== false){
+            crearNuevo = id;
+        }
+        this.setState({ crearNuevo })
     }
 
     componentDidMount() {
@@ -63,7 +110,7 @@ export default class ModeloDePartiturasComponent extends Component {
         return (
             <div>
                 {crearNuevo &&
-                    <Formulario />
+                    <Formulario idModificate={crearNuevo}/>
                 }
                 <div className="header">
                     {/* BOTON DE SALIDA */}
@@ -93,8 +140,14 @@ export default class ModeloDePartiturasComponent extends Component {
                                         <tr key={key}>
                                             <td>{modelo.name}</td>
                                             <td> {moment(modelo.createdAt).format("DD/MM/YYYY")}</td>
-                                            <td> <button>Editar</button> </td>
-                                            <td> <button>Eliminar</button> </td>
+                                            <td> <button onClick={(e) => {
+                                                e.preventDefault();
+                                                this.crearNuevo(modelo.id)
+                                            }}>Editar</button> </td>
+                                            <td> <button onClick={(e) => {
+                                                e.preventDefault();
+                                                this.eliminarPlantilla(modelo.id);
+                                            }}>Eliminar</button> </td>
                                         </tr>
                                     )
                                 })

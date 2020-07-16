@@ -26,45 +26,45 @@ export default class ModeloDePartiturasComponent extends Component {
             icon: "warning",
             buttons: true,
             dangerMode: true,
-          })
-          .then((willDelete) => {
-            if (willDelete) {
-                let token = JSON.parse(sessionStorage.getItem('token'))
-                const config = {
-                    headers: { Authorization: `Bearer ${token}` }
-                };
-                axios.delete(Global.getPartitureModels + "/" + id, config)
-                    .then(response => {
-                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-                        if (response.data.Success) {
-                            swal("Felicidades!", "Plantilla eliminada correctamente", "success");
-                            window.location.reload(window.location.href);
-                        }
-        
-                    })
-                    .catch(e => {
-                        if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                            HELPER_FUNCTIONS.logout()
-                        } else {
-                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                            swal("Listo, ya se eliminó!", {
-                                icon: "success",
-                              });
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    const config = {
+                        headers: { Authorization: `Bearer ${token}` }
+                    };
+                    axios.delete(Global.getPartitureModels + "/" + id, config)
+                        .then(response => {
+                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            if (response.data.Success) {
+                                swal("Felicidades!", "Plantilla eliminada correctamente", "success");
+                                window.location.reload(window.location.href);
+                            }
 
-                        }
-                        console.log("Error: ", e)
-                    })
+                        })
+                        .catch(e => {
+                            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                                HELPER_FUNCTIONS.logout()
+                            } else {
+                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                swal("Error al eliminar!", {
+                                    icon: "error",
+                                });
 
-            } else {
-              swal("No se elimino nada");
-            }
-          });
+                            }
+                            console.log("Error: ", e)
+                        })
+
+                } else {
+                    swal("No se elimino nada");
+                }
+            });
 
     }
 
     crearNuevo = (id = false) => {
         let crearNuevo = true;
-        if(id !== false){
+        if (id !== false) {
             crearNuevo = id;
         }
         this.setState({ crearNuevo })
@@ -106,11 +106,10 @@ export default class ModeloDePartiturasComponent extends Component {
 
     render() {
         let { data, crearNuevo } = this.state
-        console.log("la data: ", data);
         return (
             <div>
                 {crearNuevo &&
-                    <Formulario idModificate={crearNuevo}/>
+                    <Formulario idModificate={crearNuevo} />
                 }
                 <div className="header">
                     {/* BOTON DE SALIDA */}

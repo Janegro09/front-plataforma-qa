@@ -159,10 +159,6 @@ export default class Modal extends Component {
         }
     }
 
-    componentDidUpdate() {
-        console.log("El estado: ", this.state)
-    }
-
     componentDidMount() {
         let { idEditar } = this.props;
 
@@ -258,14 +254,14 @@ export default class Modal extends Component {
                         {valueSelect === 'text' &&
                             <>
                                 <label htmlFor="input2" className="label">Formato</label>
-                                <input type="text" id="input2" value={this.state.formato} onChange={this.handleChangeFormato} />
+                                <input type="text" id="input2" value={this.state.formato || '' } onChange={this.handleChangeFormato} />
                             </>
                         }
 
                         <label htmlFor="checkbox" className="label">*Es requerido</label>
                         <input type="checkbox" name="esRequerido" checked={this.state.esRequerido} onChange={this.handleChangeRequired} id="checkbox" />
 
-                        <input type="text" placeholder="Descricpión" value={this.state.descripcion} onChange={this.handleChangeDescripcion} />
+                        <input type="text" placeholder="Descricpión" value={this.state.descripcion || ''} onChange={this.handleChangeDescripcion} />
 
                         <select value={this.state.valueSelectMP} onChange={this.handleChangeSelectMP}>
                             <option value="P">Perfilamiento</option>

@@ -26,6 +26,50 @@ export default class AdministracionFormulariosComponent extends Component {
         })
     }
 
+    eliminar = (id) => {
+        swal({
+            title: "Estas seguro?",
+            text: "Estas por eliminar un campo personalizado, no podrás recuperarlo",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    const config = {
+                        headers: { Authorization: `Bearer ${token}` }
+                    };
+                    axios.delete(Global.getAllForms + "/" + id, config)
+                        .then(response => {
+                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            if (response.data.Success) {
+                                swal("Felicidades!", "Campo personalizado eliminado correctamente", "success").then(() => {
+                                    window.location.reload(window.location.href);
+                                });
+                            }
+
+                        })
+                        .catch(e => {
+                            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                                HELPER_FUNCTIONS.logout()
+                            } else {
+                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                swal("Error al eliminar!", {
+                                    icon: "error",
+                                });
+
+                            }
+                            console.log("Error: ", e)
+                        })
+
+                } else {
+                    swal("No se elimino nada");
+                }
+            });
+
+    }
+
     componentDidMount() {
         // Hacer rekest
         this.setState({
@@ -62,8 +106,6 @@ export default class AdministracionFormulariosComponent extends Component {
     render() {
         let { allForms, openModal, id } = this.state;
 
-        console.log("ALLFORMS: ", allForms);
-
         return (
             <div>
                 <div className="header">
@@ -94,6 +136,7 @@ export default class AdministracionFormulariosComponent extends Component {
                                     <th>Requerido</th>
                                     <th>Sección</th>
                                     <th>Fecha de creación</th>
+                                    <th>Formato</th>
                                     <th>Editar</th>
                                     <th>Eliminar</th>
                                 </tr>
@@ -105,19 +148,26 @@ export default class AdministracionFormulariosComponent extends Component {
                                             <td>{form.name}</td>
                                             <td>{form.type}</td>
                                             <td>
-                                                {form.values.map(value => {
-                                                    return (
-                                                        <div>
-                                                            {value}
-                                                        </div>
-                                                    )
-                                                })
+                                                {form.values.length === 0 &&
+                                                    <div>
+                                                        -
+                                                    </div>
+                                                }
+                                                {form.values.length > 0 &&
+                                                    form.values.map((value, key) => {
+                                                        return (
+                                                            <div key={key}>
+                                                                {value}
+                                                            </div>
+                                                        )
+                                                    })
                                                 }
                                             </td>
                                             <td>{form.required ? 'Requerido' : 'No requerido'}</td>
                                             <td>{form.section.toUpperCase() === 'P' ? 'Perfilamiento' : 'Monitoreo'}</td>
                                             <td>{moment(form.createdAt).format("DD/MM/YYYY")}</td>
-                                            <td> 
+                                            <td>{form.format ? form.format : '-'}</td>
+                                            <td>
                                                 <button
                                                     onClick={(e) => {
                                                         e.preventDefault();
@@ -125,9 +175,18 @@ export default class AdministracionFormulariosComponent extends Component {
                                                     }}
                                                 >
                                                     Editar
-                                                </button> 
+                                                </button>
                                             </td>
-                                            <td> <button>Eliminar</button> </td>
+                                            <td>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        this.eliminar(form.id);
+                                                    }}
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </td>
                                         </tr>
                                     )
                                 })

@@ -21,6 +21,7 @@ let Global = {
     download: `${BASE}/downloadFile`,
     files: `${BASE}/files`,
     getPartitureModels: `${BASE}/analytics/partituresModels`,
+    getAllForms: `${BASE}/forms/customfields`,
 }
 
 export default Global;

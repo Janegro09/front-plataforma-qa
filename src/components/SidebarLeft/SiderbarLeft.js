@@ -49,8 +49,8 @@ export default class SiderbarLeft extends Component {
                             <li className="nameMenu"><NavLink to="/backoffice" activeClassName="active"><SettingsIcon className="IconoMenu" /></NavLink>Backoffice
                                 <span className="showme">
                                     <NavLink to="/modelo-de-partituras">Modelo de partitura</NavLink>
-                                    <NavLink to="/partituras">Administrador de formularios</NavLink>
-                                    <NavLink to="/partituras">Exportar bases de datos</NavLink>
+                                    <NavLink to="/administracion-formularios">Administrador de formularios</NavLink>
+                                    <NavLink to="/exportar-bases-de-datos">Exportar bases de datos</NavLink>
                                     <NavLink to="/biblioteca">Biblioteca de archivos general</NavLink>
                                 </span>
                             </li>

@@ -29,6 +29,8 @@ import PerfilamientoCuartilesComponent from './components/PerfilamientoComponent
 import PartiturasComponent from './components/PartiturasComponent/PartiturasComponent';
 import BibliotecaArchivosComponent from './components/BackOfficeComponent/BibliotecaArchivosComponent/BibliotecaArchivosComponent';
 import ModeloDePartiturasComponent from './components/BackOfficeComponent/ModeloDePartiturasComponent/ModeloDePartiturasComponent';
+import AdministracionFormulariosComponent from './components/BackOfficeComponent/AdministracionFormulariosComponent/AdministracionFormulariosComponent';
+import ExportarBasesDeDatosComponent from './components/BackOfficeComponent/ExportarBasesDeDatosComponent/ExportarBasesDeDatosComponent';
 
 function App() {
   return (
@@ -36,6 +38,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={Login} />
         <Route path="/addUser" component={addUserComponent} />
+        <Route path="/administracion-formularios" component={AdministracionFormulariosComponent} />
         <Route path="/backoffice" component={BackOfficeComponent} />
         <Route path="/biblioteca" component={BibliotecaArchivosComponent} />
         <Route path="/borrarPrograma" component={DeleteProgramComponent} />
@@ -52,6 +55,7 @@ function App() {
         <Route path="/editRole" component={editRoleComponent} />
         <Route path="/editarGrupoProgramas" component={EditProgramsGroupComponent} />
         <Route path="/editarPrograma" component={EditProgramComponent} />
+        <Route path="/exportar-bases-de-datos" component={ExportarBasesDeDatosComponent} />
         <Route path="/groups" component={GroupsComponent} />
         <Route path="/home" component={Home} />
         <Route path="/login" component={Login} />

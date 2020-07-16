@@ -28,6 +28,7 @@ import PerfilamientosComponent from './components/PerfilamientoComponent/Perfila
 import PerfilamientoCuartilesComponent from './components/PerfilamientoComponent/PerfilamientoCuartilesComponent';
 import PartiturasComponent from './components/PartiturasComponent/PartiturasComponent';
 import BibliotecaArchivosComponent from './components/BackOfficeComponent/BibliotecaArchivosComponent/BibliotecaArchivosComponent';
+import ModeloDePartiturasComponent from './components/BackOfficeComponent/ModeloDePartiturasComponent/ModeloDePartiturasComponent';
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
         <Route path="/groups" component={GroupsComponent} />
         <Route path="/home" component={Home} />
         <Route path="/login" component={Login} />
+        <Route path="/modelo-de-partituras" component={ModeloDePartiturasComponent} />
         <Route exact path="/partituras" component={PartiturasComponent} />
         <Route exact path="/perfilamiento" component={PerfilamientoComponent} />
         <Route path="/perfilamiento/cuartiles" component={PerfilamientoCuartilesComponent} />

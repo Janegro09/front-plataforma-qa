@@ -27,6 +27,7 @@ import PerfilamientoComponent from './components/PerfilamientoComponent/Perfilam
 import PerfilamientosComponent from './components/PerfilamientoComponent/PerfilaminetosComponent'
 import PerfilamientoCuartilesComponent from './components/PerfilamientoComponent/PerfilamientoCuartilesComponent';
 import PartiturasComponent from './components/PartiturasComponent/PartiturasComponent';
+import BibliotecaArchivosComponent from './components/BackOfficeComponent/BibliotecaArchivosComponent/BibliotecaArchivosComponent';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route exact path="/" component={Login} />
         <Route path="/addUser" component={addUserComponent} />
         <Route path="/backoffice" component={BackOfficeComponent} />
+        <Route path="/biblioteca" component={BibliotecaArchivosComponent} />
         <Route path="/borrarPrograma" component={DeleteProgramComponent} />
         <Route path="/createGroup" component={createGroupComponent} />
         <Route path="/crearGrupoProgramas" component={CreateProgramsGroupComponent} />

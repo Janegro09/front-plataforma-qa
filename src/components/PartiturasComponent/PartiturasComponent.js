@@ -5,6 +5,7 @@ import axios from 'axios';
 import Global from '../../Global';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import swal from 'sweetalert';
+import moment from 'moment';
 
 export default class PartiturasComponent extends Component {
     constructor(props) {
@@ -89,7 +90,7 @@ export default class PartiturasComponent extends Component {
                                             <td>{partiture.name}</td>
                                             <td>{partiture.partitureStatus}</td>
                                             <td>{partiture.perfilamientos}</td>
-                                            <td>{partiture.dates.createdAt}</td>
+                                            <td>{moment(partiture.dates.createdAt).format("DD/MM/YYYY")}</td>
                                             <td>{partiture.users}</td>
                                             <td>{partiture.instances}</td>
                                             <td>

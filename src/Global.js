@@ -22,6 +22,7 @@ let Global = {
     files: `${BASE}/files`,
     getPartitureModels: `${BASE}/analytics/partituresModels`,
     getAllForms: `${BASE}/forms/customfields`,
+    getAllPartitures: `${BASE}/analytics/partitures`,
 }
 
 export default Global;

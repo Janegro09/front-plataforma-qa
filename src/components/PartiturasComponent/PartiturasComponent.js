@@ -11,7 +11,7 @@ export default class PartiturasComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
+            loading: true,
             allPartitures: null
         }
     }
@@ -58,10 +58,13 @@ export default class PartiturasComponent extends Component {
     }
 
     render() {
-        let { allPartitures } = this.state;
+        let { allPartitures, loading } = this.state;
 
         return (
             <div>
+                {loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
                 <div className="header">
                     {/* BOTON DE SALIDA */}
                     {/* BARRA LATERAL IZQUIERDA */}

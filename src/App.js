@@ -31,6 +31,9 @@ import BibliotecaArchivosComponent from './components/BackOfficeComponent/Biblio
 import ModeloDePartiturasComponent from './components/BackOfficeComponent/ModeloDePartiturasComponent/ModeloDePartiturasComponent';
 import AdministracionFormulariosComponent from './components/BackOfficeComponent/AdministracionFormulariosComponent/AdministracionFormulariosComponent';
 import ExportarBasesDeDatosComponent from './components/BackOfficeComponent/ExportarBasesDeDatosComponent/ExportarBasesDeDatosComponent';
+import PartiturasEspecificComponent from './components/PartiturasComponent/PartiturasEspecificComponent';
+
+
 
 function App() {
   return (
@@ -61,6 +64,7 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/modelo-de-partituras" component={ModeloDePartiturasComponent} />
         <Route exact path="/partituras" component={PartiturasComponent} />
+        <Route exact path="/partituras/:id" component={PartiturasEspecificComponent} />
         <Route exact path="/perfilamiento" component={PerfilamientoComponent} />
         <Route path="/perfilamiento/cuartiles" component={PerfilamientoCuartilesComponent} />
         <Route path="/perfilamiento/perfilamientos" component={ PerfilamientosComponent } />

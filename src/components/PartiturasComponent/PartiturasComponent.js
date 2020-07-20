@@ -6,47 +6,25 @@ import Global from '../../Global';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import swal from 'sweetalert';
 import moment from 'moment';
+import { Redirect } from 'react-router-dom';
 
 export default class PartiturasComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: true,
-            allPartitures: null
+            allPartitures: null,
+            specific: false,
+            idSpecific: ''
         }
     }
 
     verPartitura = (id) => {
         // Hacer rekest
         this.setState({
-            loading: true
-        })
-
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-        const token = tokenUser
-        const bearer = `Bearer ${token}`
-        axios.get(Global.getAllPartitures + '/' + id, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            console.log("La response: ", response.data.Data)
-            // this.setState({
-            //     allPartitures: response.data.Data,
-            //     loading: false
-            // })
-
-        })
-            .catch((e) => {
-                // Si hay algún error en el request lo deslogueamos
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    this.setState({
-                        loading: false
-                    })
-                    swal("Error!", "Hubo un problema", "error");
-                }
-                console.log("Error: ", e)
-            });
+            specific: true,
+            idSpecific: id
+        });
     }
 
     crearPartitura = () => {
@@ -91,7 +69,12 @@ export default class PartiturasComponent extends Component {
     }
 
     render() {
-        let { allPartitures, loading } = this.state;
+        let { allPartitures, loading, specific, idSpecific } = this.state;
+
+        if (specific) {
+            return <Redirect to={`/partituras/${idSpecific}`} />
+        }
+
         return (
             <div>
                 {loading &&

@@ -7,51 +7,98 @@ import Global from '../../Global';
 import swal from 'sweetalert';
 import moment from 'moment';
 import './partitures.css';
+import { Redirect } from 'react-router-dom';
 
 export default class PartiturasUsuarioComponent extends Component {
 
     state = {
         loading: false,
-        data: null
+        data: null,
+        redirect: false,
+        id: null
+    }
+
+    modificarEstado = (StepId) => {
+        // Hace un request a put y envia ID del 
+        console.log('Modificamos el sssstatus', StepId);
+    }
+
+    goToStep = (id) => {
+        this.setState({
+            redirect: true,
+            id
+        });
+
     }
 
     getUsersColumns() {
-        let { data } = this.state;
+        let { data, redirect } = this.state;
+
+        if (redirect) {
+            let { id, idUsuario } = this.props.match.params;
+            console.log("redirigir")
+        }
+
         data = data ? data[0] : null;
         let users = data ? data.users[0] : null
 
         let ReturnData = {
             headers: [],
-            rows: []
+            actual: [],
+            comparativo: []
         }
 
         for (let th in users.rowFromPartiture) {
+            if (th === 'id') continue;
             const value = users.rowFromPartiture[th]
             ReturnData.headers.push(th)
-            ReturnData.rows.push(value);
+            ReturnData.actual.push(value);
         }
+        /**
+         * Cuando se haga reporteria, va a venir una columna mas con la misma sintaxisss que la de arriba para comparar
+         */
+        // for (let th in users.rowFromPartiture) {
+        //     if(th === 'id') continue;
+        //     const value = users.rowFromPartiture[th]
+        //     ReturnData.comparativo.push(value);
+        // }
+
         return (
             <table className="longXTable">
                 <thead>
-                    <tr>
-                        <th>Estado</th>
-                        <th>Improvment</th>
-                        {ReturnData.headers.map((value, key) => {
-                            return <th key={key}>{value}</th>
-                        })
+                    {ReturnData.headers.length > 0 &&
+                        <tr>
+                            <th>Estado</th>
+                            <th>Improvment</th>
+                            {ReturnData.headers.map((value, key) => {
+                                return <th key={key}>{value}</th>
+                            })
 
-                        }
-                    </tr>
+                            }
+                        </tr>
+                    }
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>January</td>
-                        <td>$100</td>
-                        {ReturnData.rows.map((value, key) => {
-                            return <th key={key}>{value}</th>
-                        })
-                        }
-                    </tr>
+                    {ReturnData.actual.length > 0 &&
+                        <tr>
+                            <td>{users.partitureStatus}</td>
+                            <td>{users.improvment}</td>
+                            {ReturnData.actual.map((value, key) => {
+                                return <th key={key}>{value}</th>
+                            })
+                            }
+                        </tr>
+                    }
+                    {ReturnData.comparativo.length > 0 &&
+                        <tr>
+                            <td>January</td>
+                            <td>$100</td>
+                            {ReturnData.comparativo.map((value, key) => {
+                                return <th key={key}>{value}</th>
+                            })
+                            }
+                        </tr>
+                    }
                 </tbody>
             </table>
         )
@@ -131,6 +178,40 @@ export default class PartiturasUsuarioComponent extends Component {
 
                         <h2>Usuario actual</h2>
                         {this.getUsersColumns()}
+
+                        <section>
+                            {data.instances &&
+                                data.instances.map(v =>
+                                    (
+                                        <article key={v.id}>
+                                            <h6>{v.name}</h6>
+                                            <p className="fecha vencido">Fecha de vencimiento</p>
+                                            <div className="steps">
+                                                {v.steps.length > 0 &&
+                                                    v.steps.map(s => (
+                                                        <span key={s.id}>
+                                                            <input
+                                                                type="checkbox"
+                                                                onChange={() => {
+                                                                    this.modificarEstado(s.id);
+                                                                }}
+                                                                defaultChecked={s.completed} />
+                                                            <p onClick={(e) => {
+                                                                e.preventDefault();
+                                                                this.goToStep(s.id);
+                                                            }}>{s.name}</p>
+                                                            <p>{s.requestedMonitorings}</p>
+                                                        </span>
+                                                    ))
+                                                }
+                                            </div>
+                                        </article>
+                                    )
+                                )
+
+                            }
+
+                        </section>
                     </div>
                 }
 

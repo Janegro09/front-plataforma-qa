@@ -7,3 +7,55 @@
 .section-content {
     overflow-x: scroll;
 }
+
+section {
+    border: 1px solid red;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+section article {
+    border: 1px solid blue;
+    width: 45%;
+    box-sizing: border-box;
+    padding: 5px;
+    margin: 5px 10px;
+}
+
+article h6 {
+    text-align: center;
+}
+
+.fecha {
+    color: #0f0;
+}
+
+.fecha.vencido {
+    color: #f00;
+}
+
+article .steps {
+    border: 1px solid red;
+    max-height: 100px;
+    margin-top: 5px;
+}
+
+article .steps span {
+    border: 1px solid blue;
+    display: inline-block;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    padding: 10px 5px;
+}
+
+article .steps span input {
+    margin: 0;
+}
+
+article .steps span p {
+    margin: 0 0 0 5px;
+}

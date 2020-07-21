@@ -6,13 +6,21 @@ import swal from 'sweetalert';
 import axios from 'axios';
 import Global from '../../Global';
 import moment from 'moment';
+import { Redirect } from 'react-router-dom';
 
 export default class PartiturasEspecificComponent extends Component {
 
     state = {
         id: null,
         loading: false,
-        data: null
+        data: null,
+        idUsuario: null
+    }
+
+    verUsuario = (id) => {
+        this.setState({
+            idUsuario: id
+        });
     }
 
     componentDidMount() {
@@ -49,8 +57,13 @@ export default class PartiturasEspecificComponent extends Component {
     }
 
     render() {
-        let { loading, data } = this.state;
+        let { loading, data, idUsuario } = this.state;
         data = data ? data[0] : null;
+
+        if (idUsuario) {
+            let id = this.props.match.params.id;
+            return <Redirect to={`/partituras/${id}/${idUsuario}`} />
+        }
 
         return (
             <>
@@ -105,7 +118,10 @@ export default class PartiturasEspecificComponent extends Component {
                                     data.users.map(user => {
                                         return (
                                             <tr key={user.idDB}>
-                                                <td><button>Ver</button></td>
+                                                <td><button onClick={(e) => {
+                                                    e.preventDefault();
+                                                    this.verUsuario(user.idDB)
+                                                }}>Ver</button></td>
                                                 <td>{user.dni}</td>
                                                 <td>{user.improvment}</td>
                                                 <td>{user.partitureStatus}</td>

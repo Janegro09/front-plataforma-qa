@@ -1,0 +1,9 @@
+.longXTable {
+    overflow-x: scroll !important;
+    display: inline-block;
+    width: 100%;
+}
+
+.section-content {
+    overflow-x: scroll;
+}

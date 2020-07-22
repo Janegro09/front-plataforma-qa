@@ -38,6 +38,9 @@ export default class Modal extends Component {
     render() {
         let { paginaActual, ids, perfilamiento, instances } = this.state;
 
+        console.log("P: ", perfilamiento);
+        console.log("ids: ", ids);
+
         return (
             <div className="modal" id="modal-casero">
                 <div className="hijo2">

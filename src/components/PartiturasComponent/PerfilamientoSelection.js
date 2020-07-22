@@ -8,7 +8,35 @@ export default class PerfilamientoSelection extends Component {
 
     state = {
         data: [],
+        perfilamientos: [],
         loading: false
+    }
+
+    aniadir = (fileId, name) => {
+        this.setState(prevState => ({
+            perfilamientos: [...prevState.perfilamientos, {
+                fileId,
+                name
+            }]
+        }))
+    }
+
+    eliminar = (fileId, name) => {
+        let { perfilamientos } = this.state;
+
+        if (perfilamientos.length > 1) {
+            let c = perfilamientos.findIndex(e => e.fileId === fileId && e.name === name);
+            if (c) {
+                perfilamientos.splice(c, 1);
+            }
+        } else if (perfilamientos.length === 1) {
+            perfilamientos = [];
+        }
+
+
+        this.setState({
+            perfilamientos
+        })
     }
 
     async componentDidMount() {
@@ -55,9 +83,9 @@ export default class PerfilamientoSelection extends Component {
     }
 
     render() {
-        let { data, loading } = this.state;
+        let { data, loading, perfilamientos } = this.state;
 
-        console.log("DATA: ", data);
+        console.log('maxa', perfilamientos);
         return (
             <>
                 {loading &&
@@ -81,10 +109,22 @@ export default class PerfilamientoSelection extends Component {
                                             <tr key={key}>
                                                 <td>{s.name}</td>
                                                 <td>{r.id}</td>
-                                                <td>
-                                                    <button>
+                                                <td>{!perfilamientos.find(element => element.fileId === r.id && element.name === s.name) &&
+                                                    <button disabled={s.partitura} onClick={(e) => {
+                                                        e.preventDefault();
+                                                        this.aniadir(r.id, s.name);
+                                                    }}>
                                                         Agregar
-                                                    </button>
+                                                        </button>
+                                                }
+                                                    {perfilamientos.find(element => element.fileId === r.id && element.name === s.name) &&
+                                                        <button disabled={s.partitura} onClick={(e) => {
+                                                            e.preventDefault();
+                                                            this.eliminar(r.id, s.name);
+                                                        }}>
+                                                            Eliminar
+                                                        </button>
+                                                    }
                                                 </td>
                                             </tr>
                                         )
@@ -96,6 +136,15 @@ export default class PerfilamientoSelection extends Component {
                         </tbody>
                     </table>
                 }
+
+                <button
+                    onClick={(e) => {
+                        e.preventDefault();
+                        this.props.getData(perfilamientos);
+                    }}
+                >
+                    Siguiente
+                </button>
             </>
         )
     }

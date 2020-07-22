@@ -9,9 +9,10 @@ export default class FileSelection extends Component {
 
     state = {
         data: null,
+        dataFiltered: null,
         orderedData: null,
         loading: false,
-        itemsToShow: 15,
+        itemsToShow: 6,
         expanded: false
     }
 
@@ -36,11 +37,27 @@ export default class FileSelection extends Component {
     }
 
     showMore = () => {
-        this.state.itemsToShow >= 15 ? (
+        this.state.itemsToShow >= 6 ? (
             this.setState({ itemsToShow: this.state.itemsToShow + 10, expanded: true })
         ) : (
-                this.setState({ itemsToShow: 15, expanded: false })
+                this.setState({ itemsToShow: 6, expanded: false })
             )
+    }
+
+    filtrarTexto = () => {
+        let { data } = this.state;
+        let searchString = document.getElementById('searched').value.toLowerCase();
+
+        let arrayData = []
+        data.map(v => {
+            if (v.name.toLowerCase().includes(searchString)) {
+                arrayData.push(v)
+            }
+        })
+
+        this.setState({
+            dataFiltered: arrayData
+        })
     }
 
     componentDidMount() {
@@ -55,7 +72,8 @@ export default class FileSelection extends Component {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 loading: false,
-                data: response.data.Data
+                data: response.data.Data,
+                dataFiltered: response.data.Data,
             })
 
         })
@@ -74,18 +92,13 @@ export default class FileSelection extends Component {
             });
     }
     render() {
-        let { loading, data, itemsToShow } = this.state;
+        let { loading, data, dataFiltered, itemsToShow } = this.state;
 
         return (
             <>
                 {data &&
                     <>
-                        <button
-                            onClick={this.showMore}
-                        >
-                            Ver mas
-                        </button>
-
+                        <input type="text" id="searched" onChange={this.filtrarTexto} />
                         <table>
                             <thead>
                                 <tr>
@@ -95,7 +108,7 @@ export default class FileSelection extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.slice(0, this.state.itemsToShow).map(file => {
+                                {dataFiltered.slice(0, this.state.itemsToShow).map(file => {
                                     return (
                                         <tr key={file.id}>
                                             <td>{file.name}</td>
@@ -109,6 +122,12 @@ export default class FileSelection extends Component {
 
                             </tbody>
                         </table>
+
+                        <button
+                            onClick={this.showMore}
+                        >
+                            Ver mas
+                        </button>
                     </>
 
                 }

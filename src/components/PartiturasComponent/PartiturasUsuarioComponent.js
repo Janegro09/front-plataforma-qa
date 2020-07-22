@@ -20,7 +20,30 @@ export default class PartiturasUsuarioComponent extends Component {
 
     modificarEstado = (StepId) => {
         // Hace un request a put y envia ID del 
-        console.log('Modificamos el sssstatus', StepId);
+        let { id, idUsuario } = this.props.match.params;
+        let bodyParameters = [
+            { "stepId": StepId, "completed": true }
+        ];
+
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
+        axios.put(Global.getAllPartitures + '/' + id + '/' + idUsuario, bodyParameters, { headers: { Authorization: bearer } })
+            .then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
+            })
+            .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Atención", "No se ha agregado el grupo", "info");
+                    this.setState({
+                        redirect: true
+                    })
+                }
+                console.log("Error: ", e)
+            })
     }
 
     goToStep = (id) => {

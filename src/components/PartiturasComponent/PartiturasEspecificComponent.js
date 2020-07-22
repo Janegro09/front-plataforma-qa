@@ -103,6 +103,7 @@ export default class PartiturasEspecificComponent extends Component {
                         <table>
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>DNI</th>
                                     <th>Improvment</th>
                                     <th>Estado</th>

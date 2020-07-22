@@ -13,7 +13,8 @@ export default class FileSelection extends Component {
         orderedData: null,
         loading: false,
         itemsToShow: 6,
-        expanded: false
+        expanded: false,
+        arrayToSend: []
     }
 
     dynamicSort = (property) => {
@@ -60,6 +61,21 @@ export default class FileSelection extends Component {
         })
     }
 
+    agregar = (data) => {
+        this.setState(prevState => ({
+            arrayToSend: [...prevState.arrayToSend, data]
+        }));
+    }
+
+    eliminar = (data) => {
+        let { arrayToSend } = this.state;
+        const index = arrayToSend.indexOf(data);
+        if (index > -1) {
+            arrayToSend.splice(index, 1);
+        }
+        this.setState({ arrayToSend });
+    }
+
     componentDidMount() {
         this.setState({
             loading: true
@@ -92,7 +108,7 @@ export default class FileSelection extends Component {
             });
     }
     render() {
-        let { loading, data, dataFiltered, itemsToShow } = this.state;
+        let { loading, data, dataFiltered, itemsToShow, arrayToSend } = this.state;
 
         return (
             <>
@@ -102,6 +118,7 @@ export default class FileSelection extends Component {
                         <table>
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>Nombre</th>
                                     <th>Fecha</th>
                                     <th>Programa</th>
@@ -111,6 +128,29 @@ export default class FileSelection extends Component {
                                 {dataFiltered.slice(0, this.state.itemsToShow).map(file => {
                                     return (
                                         <tr key={file.id}>
+                                            <td>
+                                                {!arrayToSend.includes(file.id) &&
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            this.agregar(file.id);
+                                                        }}
+                                                    >
+                                                        Añadir
+                                                    </button>
+                                                }
+
+                                                {arrayToSend.includes(file.id) &&
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            this.eliminar(file.id);
+                                                        }}
+                                                    >
+                                                        Eliminar
+                                                    </button>
+                                                }
+                                            </td>
                                             <td>{file.name}</td>
                                             <td>{moment(file.date).format("DD/MM/YYYY")}</td>
                                             <td>{file.program ? file.program.name : '-'}</td>
@@ -127,6 +167,15 @@ export default class FileSelection extends Component {
                             onClick={this.showMore}
                         >
                             Ver mas
+                        </button>
+
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                this.props.getData(arrayToSend);
+                            }}
+                        >
+                            Siguiente
                         </button>
                     </>
 

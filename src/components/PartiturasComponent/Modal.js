@@ -51,37 +51,15 @@ export default class Modal extends Component {
                     </div>
 
                     {paginaActual === 1 &&
-                        <FileSelection getData={(ids) => this.setState({ ids })} />
+                        <FileSelection getData={(ids) => { this.setState({ ids }); this.siguientePagina(); }} />
                     }
 
                     {paginaActual === 2 &&
-                        <PerfilamientoSelection getData={(perfilamiento) => this.setState({ perfilamiento })} files={ids} />
+                        <PerfilamientoSelection getData={(perfilamiento) => { this.setState({ perfilamiento }); this.siguientePagina(); }} files={ids} />
                     }
 
                     {paginaActual === 3 &&
-                        <InstancePartitureSelection getData={(instances) => this.setState({ instances })} />
-                    }
-
-                    {paginaActual < 3 &&
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                this.siguientePagina()
-                            }}
-                        >
-                            Siguiente
-                        </button>
-                    }
-
-                    {paginaActual >= 3 &&
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                this.crear()
-                            }}
-                        >
-                            Crear
-                        </button>
+                        <InstancePartitureSelection getData={(instances) => { this.setState({ instances }); this.crear() }} />
                     }
 
                 </div>

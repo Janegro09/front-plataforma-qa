@@ -16,7 +16,6 @@ export default class Modal extends Component {
     state = {
         ids: [],
         perfilamiento: [],
-        instances: [],
         paginaActual: 1
     }
 
@@ -26,8 +25,85 @@ export default class Modal extends Component {
         });
     }
 
-    crear = () => {
-        swal("Crear")
+    quitarIds = (instances) => {
+        let dataReturn = [];
+
+        for(let i of instances) {
+            let tempData = {
+                name: i.name,
+                expirationDate: i.expirationDate,
+                steps: []
+            }
+
+            for(let j of i.steps) {
+                let tp = {
+                    name: j.name,
+                    requiredMonitorings: j.requiredMonitorings
+                }
+
+                tempData.steps.push(tp)
+            }
+
+            dataReturn.push(tempData)
+        }
+
+        return dataReturn;
+    }
+
+    obtenerIds = () => {
+        const { perfilamiento } = this.state;
+        let dataReturn = [];
+
+        for(let p of perfilamiento) {
+            if(!dataReturn.includes(p.fileId)){
+                dataReturn.push(p.fileId)
+            }
+        }
+
+        return dataReturn;
+    }
+
+    crear = (instances) => {
+        const { perfilamiento } = this.state;
+        
+        let inst = this.quitarIds(instances);
+
+        let fileId = this.obtenerIds();
+        let sendObject = {
+            fileId,
+            expirationDate: "",
+            perfilamientosAsignados: perfilamiento,
+            instances: inst
+        }
+        this.setState({
+            loading: true
+        })
+
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
+        axios.post(Global.getAllPartitures + "/new", sendObject, { headers: { Authorization: bearer } })
+            .then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                if (response.data.Success) {
+                    swal("Felicidades!", "Se ha creado el ramii", "success").then(() => {
+                        window.location.reload(window.location.href);
+                    });
+                }
+
+            })
+            .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Atención", "No se ha agregado el grupo", "info");
+                    this.setState({
+                        redirect: true
+                    })
+                }
+                console.log("Error: ", e)
+            })
     }
 
     cerrarModal = () => {
@@ -62,7 +138,7 @@ export default class Modal extends Component {
                     }
 
                     {paginaActual === 3 &&
-                        <InstancePartitureSelection getData={(instances) => { this.setState({ instances }); this.crear() }} />
+                        <InstancePartitureSelection getData={(instances) => { this.crear(instances); console.log('se envio animal') }} />
                     }
 
                 </div>

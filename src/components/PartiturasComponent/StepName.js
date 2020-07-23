@@ -6,12 +6,15 @@ import axios from 'axios';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import swal from 'sweetalert';
 import moment from 'moment';
+import './steps.css'
+import CustomFields from '../AdministradorFormularios/customfields/CustomFields';
 
 export default class StepName extends Component {
 
     state = {
         loading: false,
-        data: null
+        data: null,
+        customFields: null
     }
 
     getUsersColumns() {
@@ -87,22 +90,30 @@ export default class StepName extends Component {
         )
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         let { id, idStep, idUsuario } = this.props.match.params;
         this.setState({
             loading: true
         })
-
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-        const token = tokenUser
-        const bearer = `Bearer ${token}`
+        let token = tokenUser
+        let bearer = `Bearer ${token}`
 
-        axios.get(Global.getAllPartitures + '/' + id + '/' + idUsuario + '/' + idStep, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            console.log(response.data.Data)
-            this.setState({
-                loading: false,
-                data: response.data.Data
+        axios.get(Global.getAllForms, { headers: { Authorization: bearer } }).then(response => {
+            token = response.data.loggedUser.token;
+            bearer = `Bearer ${token}`;
+            const data = response.data.Data;
+            axios.get(Global.getAllPartitures + '/' + id + '/' + idUsuario + '/' + idStep, { headers: { Authorization: bearer } }).then(response => {
+                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+
+                console.log(response.data.Data)
+
+                this.setState({
+                    loading: false,
+                    data: response.data.Data,
+                    customFields: data
+                })
+
             })
 
         })
@@ -122,12 +133,19 @@ export default class StepName extends Component {
     }
 
     render() {
-        let { data } = this.state;
+        let { data, customFields } = this.state;
         data = data ? data[0] : null;
         console.log(data);
 
         let date = new Date();
         date = moment(date);
+
+        const instances = data ? data.instances[0] : null;
+
+        const step = instances ? instances.steps[0] : null;
+        console.log('step: ', step);
+
+        console.log("Custom Fields: ", customFields);
 
         return (
             <>
@@ -163,39 +181,162 @@ export default class StepName extends Component {
                         <h2>Usuarios Actuales</h2>
                         {this.getUsersColumns()}
 
-                        <section>
-                            {data.instances &&
-                                data.instances.map(v =>
-                                    (
-                                        <article key={v.id}>
-                                            <h6>{v.name}</h6>
-                                            <p className={!moment(v.dates.expirationDate).isBefore(date) ? 'fecha' : 'fecha vencido'}>{moment(v.dates.expirationDate).format("DD/MM/YYYY")}</p>
-                                            <div className="steps">
-                                                {v.steps.length > 0 &&
-                                                    v.steps.map(s => (
-                                                        <span key={s.id}>
-                                                            <input
-                                                                type="checkbox"
-                                                                onChange={() => {
-                                                                    this.modificarEstado(s.id);
-                                                                }}
-                                                                defaultChecked={s.completed} />
-                                                            <p onClick={(e) => {
-                                                                e.preventDefault();
-                                                                this.goToStep(s.id);
-                                                            }}>{s.name}</p>
-                                                            <p>{s.requestedMonitorings}</p>
-                                                        </span>
-                                                    ))
-                                                }
+                        {step &&
+                            <div className="stepInformation">
+                                <h4>{step.name}</h4>
+                                <article>
+                                    {/* Custom file sync */}
+                                    <div className="archivosCargados">
+                                        <span>
+                                            <button>X</button>
+                                            <p>Archivo 1</p>
+                                        </span>
+                                        <span>
+                                            <button>X</button>
+                                            <p>Archivo 1</p>
+                                        </span>
+                                        <span>
+                                            <button>X</button>
+                                            <p>Archivo 1</p>
+                                        </span>
+                                    </div>
+                                </article>
+                                <div className="information">
+
+                                    <section>
+                                        <article>
+                                            <h6>Lider</h6>
+                                            <div>
+                                                <p>Audios requeridos: {step.requestedMonitorings}</p>
+                                                <p>Audios faltantes: {(step.audioFiles === false ? step.requestedMonitorings : (step.requestedMonitorings - step.audioFiles.length))} </p>
+                                                <select name="" id="">
+                                                    <option value="file">Audio</option>
+                                                    <option value="message">Mensaje</option>
+                                                </select>
+                                                <input type="file" name="" id="" />
+                                                <input type="text" name="" id="" />
+                                                <div className="archivosCargados">
+                                                    <span>
+                                                        <button>X</button>
+                                                        <p>Archivo 1</p>
+                                                    </span>
+                                                    <span>
+                                                        <button>X</button>
+                                                        <p>Archivo 1</p>
+                                                    </span>
+                                                    <span>
+                                                        <button>X</button>
+                                                        <p>Archivo 1</p>
+                                                    </span>
+                                                </div>
                                             </div>
+
+                                            <label htmlFor="ddt">Detalle de transacción</label>
+                                            <textarea name="" id="ddt" cols="30" rows="10"></textarea>
+
+                                            <label htmlFor="cr">Causa Raíz</label>
+                                            <textarea name="" id="cr" cols="30" rows="10"></textarea>
+
+                                            <label htmlFor="cdr">Compromiso del representante</label>
+                                            <textarea name="" id="cdr" cols="30" rows="10"></textarea>
+
+                                            <label htmlFor="imp">Improvment</label>
+                                            <select name="" id="imp">
+                                                <option value="+">Mejoro el wachin</option>
+                                                <option value="+-">Sigue igual</option>
+                                                <option value="-">Es un inutil</option>
+                                            </select>
                                         </article>
-                                    )
-                                )
+                                    </section>
+                                    <section>
+                                        <article>
+                                            <h6>Responsable</h6>
+                                            {customFields &&
+                                                customFields.map(field => {
+                                                    if (field.section === 'P' && field.subsection === 'RESP') {
+                                                        return <CustomFields key={field.id} field={field} />
+                                                    }
+                                                })
+                                            }
+                                            cargamos los campos personalizados de resp (rekess)
+                                        </article>
 
-                            }
+                                        <article>
+                                            <h6>Gerente</h6>
+                                            {customFields &&
+                                                customFields.map(field => {
+                                                    if (field.section === 'P' && field.subsection === 'GTE') {
+                                                        return <CustomFields key={field.id} field={field} />
+                                                    }
+                                                })
+                                            }
+                                            cargamos los campos personalizados de gte (rekess)
+                                        </article>
 
-                        </section>
+                                        <article>
+                                            <h6>Coordinador On Site</h6>
+                                            {customFields &&
+                                                customFields.map(field => {
+                                                    if (field.section === 'P' && field.subsection === 'COO') {
+                                                        return <CustomFields key={field.id} field={field} />
+                                                    }
+                                                })
+                                            }
+
+                                                cargamos los campos personalizados de COO (rekess)
+                                        </article>
+
+                                        <article>
+                                            <h6>Administrador</h6>
+                                            {customFields &&
+                                                customFields.map(field => {
+                                                    if (field.section === 'P' && field.subsection === 'ADM') {
+                                                        return <CustomFields key={field.id} field={field} />
+                                                    }
+                                                })
+                                            }
+                                            cargamos los campos personalizados de ADM (rekess)
+                                        </article>
+
+                                        <article>
+                                            <h6>Coach</h6>
+                                            {customFields &&
+                                                customFields.map(field => {
+                                                    if (field.section === 'P' && field.subsection === 'COACH') {
+                                                        return <CustomFields key={field.id} field={field} />
+                                                    }
+                                                })
+                                            }
+                                            cargamos los campos personalizados de Coach (rekess)
+                                        </article>
+
+                                    </section>
+                                </div>
+                                <article>
+                                    <label htmlFor="uploadAudio">Subir Audio</label>
+                                    <input type="file" name="" id="" />
+
+                                    <label htmlFor="grabaraudio">Grabar Audio</label>
+                                    <div>Componente de grabacion de voz</div>
+
+                                    <div className="archivosCargados">
+                                        <span>
+                                            <button>X</button>
+                                            <p>Archivo 1</p>
+                                        </span>
+                                        <span>
+                                            <button>X</button>
+                                            <p>Archivo 1</p>
+                                        </span>
+                                        <span>
+                                            <button>X</button>
+                                            <p>Archivo 1</p>
+                                        </span>
+                                    </div>
+                                </article>
+                            </div>
+                        }
+
                     </div>
                 }
 

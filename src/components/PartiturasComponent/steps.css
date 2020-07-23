@@ -1,0 +1,58 @@
+.stepInformation {
+    border: 1px solid red;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.stepInformation .information {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+.stepInformation .information section {
+    border: 1px solid black;
+    width: 100%;
+}
+
+.stepInformation .information section article {
+    border: 1px solid red;
+    display: block;
+    width:100%;
+
+}
+
+article textarea {
+    display: block;
+    width:100%;
+    height: 50px;
+}
+
+article label {
+    margin: 10px 0;
+    position: unset;
+}
+
+.archivosCargados {
+    border: 1px solid red;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.archivosCargados span {
+    background-color: #0f0;
+    padding: 10px 20px 10px 10px;
+    display: inline-block;
+    margin: 0 10px 0 0;
+    position: relative;
+}
+
+.archivosCargados span button {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+}
+
+.archivosCargados span p {
+    margin: 0;
+}

@@ -28,14 +28,14 @@ export default class Modal extends Component {
     quitarIds = (instances) => {
         let dataReturn = [];
 
-        for(let i of instances) {
+        for (let i of instances) {
             let tempData = {
                 name: i.name,
                 expirationDate: i.expirationDate,
                 steps: []
             }
 
-            for(let j of i.steps) {
+            for (let j of i.steps) {
                 let tp = {
                     name: j.name,
                     requiredMonitorings: j.requiredMonitorings
@@ -54,8 +54,8 @@ export default class Modal extends Component {
         const { perfilamiento } = this.state;
         let dataReturn = [];
 
-        for(let p of perfilamiento) {
-            if(!dataReturn.includes(p.fileId)){
+        for (let p of perfilamiento) {
+            if (!dataReturn.includes(p.fileId)) {
                 dataReturn.push(p.fileId)
             }
         }
@@ -65,7 +65,7 @@ export default class Modal extends Component {
 
     crear = (instances) => {
         const { perfilamiento } = this.state;
-        
+
         let inst = this.quitarIds(instances);
 
         let fileId = this.obtenerIds();
@@ -86,7 +86,7 @@ export default class Modal extends Component {
             .then(response => {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 if (response.data.Success) {
-                    swal("Felicidades!", "Se ha creado el ramii", "success").then(() => {
+                    swal("Felicidades!", "Se ha creado la partitura", "success").then(() => {
                         window.location.reload(window.location.href);
                     });
                 }

@@ -47,6 +47,7 @@ export default class PartiturasUsuarioComponent extends Component {
     }
 
     goToStep = (id) => {
+
         this.setState({
             redirect: true,
             id
@@ -165,9 +166,17 @@ export default class PartiturasUsuarioComponent extends Component {
             });
     }
     render() {
-        let { data, TableUserHeader } = this.state;
+        let { data, TableUserHeader, redirect, id } = this.state;
         data = data ? data[0] : null;
         let users = data ? data.users[0] : null;
+        let date = new Date();
+        date = moment(date);
+
+        ;
+
+        if (redirect) {
+            return <Redirect to={'/partituras/step/' + this.props.match.params.id + '/' + this.props.match.params.idUsuario + '/' + id} />
+        }
 
         return (
             <>
@@ -208,7 +217,7 @@ export default class PartiturasUsuarioComponent extends Component {
                                     (
                                         <article key={v.id}>
                                             <h6>{v.name}</h6>
-                                            <p className="fecha vencido">Fecha de vencimiento</p>
+                                            <p className={!moment(v.dates.expirationDate).isBefore(date) ? 'fecha' : 'fecha vencido'}>{moment(v.dates.expirationDate).format("DD/MM/YYYY")}</p>
                                             <div className="steps">
                                                 {v.steps.length > 0 &&
                                                     v.steps.map(s => (

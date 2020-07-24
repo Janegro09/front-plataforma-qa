@@ -18,7 +18,8 @@ export default class StepName extends Component {
         customFields: null,
         abrirModalAsignarArchivos: false,
         archivosSeleccionados: null,
-        value: '-'
+        value: '-',
+        dataToSend: {}
     }
 
     asignarArchivos = () => {
@@ -29,8 +30,47 @@ export default class StepName extends Component {
 
     }
 
-    eliminarArchivo = (id) => {
-        console.log("ID BORRAR: ", id)
+    armarObjeto = (e) => {
+        let id = e.target.name;
+        let { dataToSend } = this.state;
+
+        dataToSend[id] = e.target.value;
+
+        this.setState({
+            dataToSend
+        });
+    }
+
+    eliminarArchivo = (fileId) => {
+        this.setState({
+            loading: true
+        });
+
+        let id = this.props.match.params.id
+
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
+        axios.delete(Global.getAllPartitures + '/' + id + '/' + fileId, { headers: { Authorization: bearer } }).then(response => {
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            this.setState({
+                loading: false
+            });
+            window.location.reload(window.location.href);
+        })
+            .catch((e) => {
+                // Si hay algún error en el request lo deslogueamos
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    this.setState({
+                        loading: false
+                    })
+                    swal("Error!", "Hubo un problema", "error");
+                }
+                console.log("Error: ", e)
+            });
     }
 
     descargarArchivo = (archivo) => {
@@ -64,9 +104,54 @@ export default class StepName extends Component {
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
+        this.setState({
+            loading: true
+        });
 
         axios.post(Global.getAllPartitures + '/' + id + '/' + idUsuario + '/' + idStep + '/files?section=monitorings', formData, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            this.setState({
+                loading: false
+            });
+            window.location.reload(window.location.href);
+        })
+            .catch((e) => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema al agregar el arhcivo", "error");
+                    this.setState({
+                        loading: false
+                    })
+                }
+                console.log("Error: ", e)
+            });
+    }
+
+    subirArchivo = () => {
+        let data = this.archivoSeleccionado[0];
+        let { id, idStep, idUsuario } = this.props.match.params;
+
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
+        const formData = new FormData();
+
+        formData.append(
+            'file',
+            data
+        );
+
+        this.setState({
+            loading: true
+        });
+
+        axios.post(Global.getAllPartitures + '/' + id + '/' + idUsuario + '/' + idStep + '/files?section=coachings', formData, { headers: { Authorization: bearer } }).then(response => {
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            this.setState({
+                loading: false
+            });
             window.location.reload(window.location.href);
         })
             .catch((e) => {
@@ -191,7 +276,7 @@ export default class StepName extends Component {
     }
 
     render() {
-        let { data, customFields, abrirModalAsignarArchivos, archivosSeleccionados, value } = this.state;
+        let { data, customFields, abrirModalAsignarArchivos, archivosSeleccionados, value, loading } = this.state;
 
         data = data ? data[0] : null;
 
@@ -211,6 +296,10 @@ export default class StepName extends Component {
                     <SiderbarLeft />
                     <UserAdminHeader />
                 </div>
+
+                {loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
 
                 {abrirModalAsignarArchivos &&
                     <AsignarArchivos getData={(archivosSeleccionados) => { this.setState({ archivosSeleccionados, abrirModalAsignarArchivos: false }); }} archivosSeleccionados={archivosSeleccionados} />
@@ -321,7 +410,7 @@ export default class StepName extends Component {
                                                         step.audioFiles.map(stp => {
                                                             console.log(stp.message)
                                                             return (
-                                                                <span key={stp._id} className={ stp.message && 'isMessage' }>
+                                                                <span key={stp._id} className={stp.message && 'isMessage'}>
                                                                     <button
                                                                         onClick={
                                                                             (e) => {
@@ -347,17 +436,24 @@ export default class StepName extends Component {
                                                 </div>
                                             </div>
 
-                                            <label htmlFor="ddt">Detalle de transacción</label>
-                                            <textarea name="" id="ddt" cols="30" rows="10"></textarea>
+                                            <label htmlFor="ddt">Detalle de transacción / Oportunidades indentificadas</label>
+                                            <textarea name="detalleTransaccion" id="ddt" cols="30" rows="10" onChange={
+                                                this.armarObjeto
+                                            }></textarea>
 
-                                            <label htmlFor="cr">Causa Raíz</label>
-                                            <textarea name="" id="cr" cols="30" rows="10"></textarea>
+                                            <label htmlFor="cr">Causa Raíz / Descripción del patrón a mejorar</label>
+                                            <textarea name="patronMejora" id="cr" cols="30" rows="10" onChange={
+                                                this.armarObjeto
+                                            }
+                                            ></textarea>
 
                                             <label htmlFor="cdr">Compromiso del representante</label>
-                                            <textarea name="" id="cdr" cols="30" rows="10"></textarea>
+                                            <textarea name="compromisoRepresentante" id="cdr" cols="30" rows="10"></textarea>
 
                                             <label htmlFor="imp">Improvment</label>
-                                            <select name="" id="imp">
+                                            <select name="improvment" id="imp" onChange={
+                                                this.armarObjeto
+                                            }>
                                                 <option value="+">Mejoro el wachin</option>
                                                 <option value="+-">Sigue igual</option>
                                                 <option value="-">Es un inutil</option>
@@ -435,7 +531,20 @@ export default class StepName extends Component {
                                 </div>
                                 <article>
                                     <label htmlFor="uploadAudio">Subir Audio</label>
-                                    <input type="file" name="" id="" />
+                                    <input type="file" name="" id="" onChange={
+                                        (e) => {
+                                            this.archivoSeleccionado = e.target.files
+                                        }
+                                    } />
+
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            this.subirArchivo()
+                                        }}
+                                    >
+                                        Subir el archivo
+                                    </button>
 
                                     <label htmlFor="grabaraudio">Grabar Audio</label>
                                     <div>Componente de grabacion de voz</div>

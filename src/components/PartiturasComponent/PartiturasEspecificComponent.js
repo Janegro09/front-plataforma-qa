@@ -137,7 +137,7 @@ export default class PartiturasEspecificComponent extends Component {
                                                 })}</td>
                                                 <td>{user.cluster}</td>
                                                 <td>{user.responsable}</td>
-                                                <td className="tablaVariables"><div className={` ${true ? "estadoInactivo " : 'estadoActivo'}`}></div></td>
+                                                <td className="tablaVariables"><div className={` ${!(user.audioFilesRequired - user.audioFilesActually) <= 0? "estadoInactivo " : 'estadoActivo'}`}></div></td>
                                             </tr>
                                         )
                                     })

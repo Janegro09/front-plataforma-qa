@@ -56,12 +56,7 @@ export default class PartiturasUsuarioComponent extends Component {
     }
 
     getUsersColumns() {
-        let { data, redirect } = this.state;
-
-        if (redirect) {
-            let { id, idUsuario } = this.props.match.params;
-            console.log("redirigir")
-        }
+        let { data } = this.state;
 
         data = data ? data[0] : null;
         let users = data ? data.users[0] : null
@@ -166,9 +161,8 @@ export default class PartiturasUsuarioComponent extends Component {
             });
     }
     render() {
-        let { data, TableUserHeader, redirect, id } = this.state;
+        let { data, redirect, id } = this.state;
         data = data ? data[0] : null;
-        let users = data ? data.users[0] : null;
         let date = new Date();
         date = moment(date);
 

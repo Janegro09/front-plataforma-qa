@@ -14,6 +14,7 @@ export default class editRoleComponent extends Component {
             userInfo: null,
             redirect: false
         }
+        this.modifyUser = this.modifyUser.bind(this);
     }
 
     handleChange = (event) => {
@@ -28,7 +29,7 @@ export default class editRoleComponent extends Component {
         this.turno = event.target.value
     }
 
-    modifyUser = (e) => {
+    modifyUser(e) {
         e.preventDefault()
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {

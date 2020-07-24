@@ -54,6 +54,7 @@ export default class FileSelection extends Component {
             if (v.name.toLowerCase().includes(searchString)) {
                 arrayData.push(v)
             }
+            return true;
         })
 
         this.setState({
@@ -108,7 +109,7 @@ export default class FileSelection extends Component {
             });
     }
     render() {
-        let { loading, data, dataFiltered, itemsToShow, arrayToSend } = this.state;
+        let { data, dataFiltered, arrayToSend } = this.state;
 
         return (
             <>

@@ -8,13 +8,29 @@ import swal from 'sweetalert';
 import moment from 'moment';
 import './steps.css'
 import CustomFields from '../AdministradorFormularios/customfields/CustomFields';
+import AsignarArchivos from './AsignarArchivos'
 
 export default class StepName extends Component {
 
     state = {
         loading: false,
         data: null,
-        customFields: null
+        customFields: null,
+        abrirModalAsignarArchivos: false,
+        archivosSeleccionados: null
+    }
+
+    asignarArchivos = () => {
+
+        this.setState({
+            abrirModalAsignarArchivos: true
+        });
+
+    }
+
+    descargarArchivo = (archivo) => {
+        let win = window.open(Global.download + '/' + archivo.id + '?urltemp=false', '_blank');
+        win.focus();
     }
 
     getUsersColumns() {
@@ -100,9 +116,6 @@ export default class StepName extends Component {
             const data = response.data.Data;
             axios.get(Global.getAllPartitures + '/' + id + '/' + idUsuario + '/' + idStep, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-
-                console.log(response.data.Data)
-
                 this.setState({
                     loading: false,
                     data: response.data.Data,
@@ -128,11 +141,11 @@ export default class StepName extends Component {
     }
 
     render() {
-        let { data, customFields } = this.state;
-        data = data ? data[0] : null;
+        let { data, customFields, abrirModalAsignarArchivos, archivosSeleccionados } = this.state;
 
-        let date = new Date();
-        date = moment(date);
+        console.log("DESDE EL PAPI: ", archivosSeleccionados);
+
+        data = data ? data[0] : null;
 
         const instances = data ? data.instances[0] : null;
 
@@ -146,6 +159,10 @@ export default class StepName extends Component {
                     <SiderbarLeft />
                     <UserAdminHeader />
                 </div>
+
+                {abrirModalAsignarArchivos &&
+                    <AsignarArchivos getData={(archivosSeleccionados) => { this.setState({ archivosSeleccionados, abrirModalAsignarArchivos: false }); }} archivosSeleccionados={archivosSeleccionados} />
+                }
 
                 {data &&
                     <div className="section-content">
@@ -178,19 +195,37 @@ export default class StepName extends Component {
                                 <article>
                                     {/* Custom file sync */}
                                     <div className="archivosCargados">
-                                        <span>
-                                            <button>X</button>
-                                            <p>Archivo 1</p>
-                                        </span>
-                                        <span>
-                                            <button>X</button>
-                                            <p>Archivo 1</p>
-                                        </span>
-                                        <span>
-                                            <button>X</button>
-                                            <p>Archivo 1</p>
-                                        </span>
+                                        {archivosSeleccionados &&
+                                            archivosSeleccionados.map(archivo => {
+                                                return (
+                                                    <span
+                                                        key={archivo.id}
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            this.descargarArchivo(archivo);
+                                                        }}
+                                                    >
+                                                        <p>{archivo.name}</p>
+                                                    </span>
+                                                )
+                                            })
+                                        }
+
+                                        {!archivosSeleccionados &&
+                                            <span> <p>No hay archivos seleccionados</p> </span>
+                                        }
+
                                     </div>
+
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            this.asignarArchivos();
+
+                                        }}
+                                    >
+                                        Asignar archivos
+                                    </button>
                                 </article>
                                 <div className="information">
 
@@ -207,10 +242,7 @@ export default class StepName extends Component {
                                                 <input type="file" name="" id="" />
                                                 <input type="text" name="" id="" />
                                                 <div className="archivosCargados">
-                                                    <span>
-                                                        <button>X</button>
-                                                        <p>Archivo 1</p>
-                                                    </span>
+
                                                     <span>
                                                         <button>X</button>
                                                         <p>Archivo 1</p>
@@ -247,6 +279,7 @@ export default class StepName extends Component {
                                                     if (field.section === 'P' && field.subsection === 'RESP') {
                                                         return <CustomFields key={field.id} field={field} />
                                                     }
+                                                    return true;
                                                 })
                                             }
                                             cargamos los campos personalizados de resp (rekess)
@@ -259,6 +292,7 @@ export default class StepName extends Component {
                                                     if (field.section === 'P' && field.subsection === 'GTE') {
                                                         return <CustomFields key={field.id} field={field} />
                                                     }
+                                                    return true;
                                                 })
                                             }
                                             cargamos los campos personalizados de gte (rekess)
@@ -271,6 +305,7 @@ export default class StepName extends Component {
                                                     if (field.section === 'P' && field.subsection === 'COO') {
                                                         return <CustomFields key={field.id} field={field} />
                                                     }
+                                                    return true;
                                                 })
                                             }
 
@@ -284,6 +319,7 @@ export default class StepName extends Component {
                                                     if (field.section === 'P' && field.subsection === 'ADM') {
                                                         return <CustomFields key={field.id} field={field} />
                                                     }
+                                                    return true;
                                                 })
                                             }
                                             cargamos los campos personalizados de ADM (rekess)
@@ -296,6 +332,7 @@ export default class StepName extends Component {
                                                     if (field.section === 'P' && field.subsection === 'COACH') {
                                                         return <CustomFields key={field.id} field={field} />
                                                     }
+                                                    return true;
                                                 })
                                             }
                                             cargamos los campos personalizados de Coach (rekess)

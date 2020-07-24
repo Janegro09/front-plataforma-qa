@@ -56,3 +56,7 @@ article label {
 .archivosCargados span p {
     margin: 0;
 }
+
+.isMessage {
+    background-color: plum !important;
+}

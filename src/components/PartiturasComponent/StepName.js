@@ -17,7 +17,8 @@ export default class StepName extends Component {
         data: null,
         customFields: null,
         abrirModalAsignarArchivos: false,
-        archivosSeleccionados: null
+        archivosSeleccionados: null,
+        value: '-'
     }
 
     asignarArchivos = () => {
@@ -28,9 +29,58 @@ export default class StepName extends Component {
 
     }
 
+    eliminarArchivo = (id) => {
+        console.log("ID BORRAR: ", id)
+    }
+
     descargarArchivo = (archivo) => {
         let win = window.open(Global.download + '/' + archivo.id + '?urltemp=false', '_blank');
         win.focus();
+    }
+
+    handleChange = (event) => {
+        this.setState({ value: event.target.value });
+    }
+
+    agregarArchivo = (tipoArchivo) => {
+        let data;
+        const formData = new FormData();
+
+        if (tipoArchivo === 'file') {
+            data = this.file[0];
+        } else if (tipoArchivo === 'message') {
+            data = document.getElementById('texto').value;
+        }
+
+        formData.append(
+            tipoArchivo,
+            data
+        );
+
+
+        let { id, idStep, idUsuario } = this.props.match.params;
+
+        // /analytics/partitures/:id/:userId/:stepId/files?section=monitorings
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
+
+        axios.post(Global.getAllPartitures + '/' + id + '/' + idUsuario + '/' + idStep + '/files?section=monitorings', formData, { headers: { Authorization: bearer } }).then(response => {
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            window.location.reload(window.location.href);
+        })
+            .catch((e) => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema al agregar el arhcivo", "error");
+                    this.setState({
+                        loading: false
+                    })
+                }
+                console.log("Error: ", e)
+            });
     }
 
     getUsersColumns() {
@@ -141,15 +191,17 @@ export default class StepName extends Component {
     }
 
     render() {
-        let { data, customFields, abrirModalAsignarArchivos, archivosSeleccionados } = this.state;
-
-        console.log("DESDE EL PAPI: ", archivosSeleccionados);
+        let { data, customFields, abrirModalAsignarArchivos, archivosSeleccionados, value } = this.state;
 
         data = data ? data[0] : null;
+
+
 
         const instances = data ? data.instances[0] : null;
 
         const step = instances ? instances.steps[0] : null;
+
+        console.log("SEPPPP: ", step)
 
         return (
             <>
@@ -235,22 +287,63 @@ export default class StepName extends Component {
                                             <div>
                                                 <p>Audios requeridos: {step.requestedMonitorings}</p>
                                                 <p>Audios faltantes: {(step.audioFiles === false ? step.requestedMonitorings : (step.requestedMonitorings - step.audioFiles.length))} </p>
-                                                <select name="" id="">
+                                                <select value={this.state.value} onChange={this.handleChange}>
+                                                    <option value="-">Selecciona...</option>
                                                     <option value="file">Audio</option>
                                                     <option value="message">Mensaje</option>
                                                 </select>
-                                                <input type="file" name="" id="" />
-                                                <input type="text" name="" id="" />
-                                                <div className="archivosCargados">
 
-                                                    <span>
-                                                        <button>X</button>
-                                                        <p>Archivo 1</p>
-                                                    </span>
-                                                    <span>
-                                                        <button>X</button>
-                                                        <p>Archivo 1</p>
-                                                    </span>
+                                                {value === 'file' &&
+                                                    <input type="file" name="" id="audio" onChange={
+                                                        (e) => {
+                                                            this.file = e.target.files;
+                                                        }
+                                                    } />
+                                                }
+
+                                                {value === 'message' &&
+                                                    <input type="text" name="" id="texto" />
+                                                }
+
+                                                {value !== '-' &&
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            this.agregarArchivo(value);
+                                                        }}
+                                                    >
+                                                        Agregar
+                                                    </button>
+                                                }
+
+                                                <div className="archivosCargados">
+                                                    {step.audioFiles &&
+                                                        step.audioFiles.map(stp => {
+                                                            console.log(stp.message)
+                                                            return (
+                                                                <span key={stp._id} className={ stp.message && 'isMessage' }>
+                                                                    <button
+                                                                        onClick={
+                                                                            (e) => {
+                                                                                e.preventDefault();
+                                                                                this.eliminarArchivo(stp._id);
+                                                                            }
+                                                                        }
+                                                                    >
+                                                                        X
+                                                                    </button>
+                                                                    {stp.message &&
+                                                                        <p>{moment(stp.createdAt).format("DD/MM/YYYY")} - {stp.message} - type: M</p>
+                                                                    }
+                                                                    {!stp.message &&
+                                                                        <p>{moment(stp.createdAt).format("DD/MM/YYYY")} - type: F</p>
+                                                                    }
+                                                                </span>
+                                                            )
+
+                                                        })
+                                                    }
+
                                                 </div>
                                             </div>
 

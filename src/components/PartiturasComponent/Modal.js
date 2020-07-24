@@ -112,7 +112,7 @@ export default class Modal extends Component {
     }
 
     render() {
-        let { paginaActual, ids, perfilamiento, instances } = this.state;
+        let { paginaActual, ids, perfilamiento } = this.state;
 
         console.log("P: ", perfilamiento);
         console.log("ids: ", ids);

@@ -238,8 +238,7 @@ export default class InstancePartitureSelection extends Component {
     }
 
     render() {
-        let { loading, AllPartituresModel, partitureModelSelected, partitureModel } = this.state;
-        console.log("partitureModel: ", partitureModelSelected)
+        let { loading, AllPartituresModel, partitureModelSelected } = this.state;
         return (
             <>
                 {loading &&

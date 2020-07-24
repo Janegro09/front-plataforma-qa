@@ -60,6 +60,9 @@ export default class PartiturasEspecificComponent extends Component {
         let { loading, data, idUsuario } = this.state;
         data = data ? data[0] : null;
 
+        console.log("DATA: ", data);
+
+
         if (idUsuario) {
             let id = this.props.match.params.id;
             return <Redirect to={`/partituras/${id}/${idUsuario}`} />
@@ -112,6 +115,7 @@ export default class PartiturasEspecificComponent extends Component {
                                     <th>Última actualización</th>
                                     <th>Cluster</th>
                                     <th>Responsable</th>
+                                    <th>Audios</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -128,9 +132,12 @@ export default class PartiturasEspecificComponent extends Component {
                                                 <td>{user.partitureStatus}</td>
                                                 <td>{user.name} {user.lastName}</td>
                                                 <td>{user.canal}</td>
-                                                <td>REVISAR ESTA CACA</td>
+                                                <td>{user.lastUpdate.map(data => {
+                                                    return <p key={data.date}>{moment(data.date).format("DD/MM/YYYY")} - {data.section} - {data.user}<br /></p>
+                                                })}</td>
                                                 <td>{user.cluster}</td>
                                                 <td>{user.responsable}</td>
+                                                <td className="tablaVariables"><div className={` ${true ? "estadoInactivo " : 'estadoActivo'}`}></div></td>
                                             </tr>
                                         )
                                     })

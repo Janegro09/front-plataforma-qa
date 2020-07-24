@@ -152,7 +152,6 @@ export default class PartiturasComponent extends Component {
                             </thead>
                             <tbody>
                                 {allPartitures.map((partiture, key) => {
-                                    console.log(partiture)
                                     return (
                                         <tr key={key}>
                                             <td>{moment(partiture.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>

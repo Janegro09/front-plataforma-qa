@@ -18,12 +18,7 @@ export default class StepName extends Component {
     }
 
     getUsersColumns() {
-        let { data, redirect } = this.state;
-
-        if (redirect) {
-            let { id, idUsuario } = this.props.match.params;
-            console.log("redirigir")
-        }
+        let { data } = this.state;
 
         data = data ? data[0] : null;
         let users = data ? data.users[0] : null
@@ -135,7 +130,6 @@ export default class StepName extends Component {
     render() {
         let { data, customFields } = this.state;
         data = data ? data[0] : null;
-        console.log(data);
 
         let date = new Date();
         date = moment(date);
@@ -143,9 +137,6 @@ export default class StepName extends Component {
         const instances = data ? data.instances[0] : null;
 
         const step = instances ? instances.steps[0] : null;
-        console.log('step: ', step);
-
-        console.log("Custom Fields: ", customFields);
 
         return (
             <>

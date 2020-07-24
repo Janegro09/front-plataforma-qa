@@ -36,9 +36,69 @@ export default class StepName extends Component {
 
         dataToSend[id] = e.target.value;
 
+        if (e.target.type === 'checkbox') {
+            dataToSend[id] = e.target.checked;
+        }
+
         this.setState({
             dataToSend
         });
+    }
+
+    enviar = () => {
+        let { id, idStep, idUsuario } = this.props.match.params;
+        let { dataToSend, archivosSeleccionados } = this.state;
+        let sendData = {
+            archivosSeleccionados
+        }
+
+        for (let item in dataToSend) {
+            if (item.indexOf('#') === 0) {
+                let temp = item.substr(1, item.length)
+                temp = temp.split('/');
+
+                let name = temp[0];
+                let data = temp[1];
+
+                data += `@${dataToSend[item]}`;
+
+                /**
+                 * Si ya existe un dato o es uno nuevo
+                 * 
+                 */
+                sendData[name] ? sendData[name] += `%${data}` : sendData[name] = data;
+            } else {
+                sendData[item] = dataToSend[item];
+            }
+
+        }
+
+        
+
+        // /analytics/partitures/:id/:userId/:stepId
+
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
+
+        axios.put(Global.getAllPartitures + "/" + id + '/' + idUsuario + '/' + idStep, sendData, config)
+            .then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                console.log("A ver: ", response.data);
+            })
+            .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema al agregar los roles", "error");
+                }
+                console.log("Error: ", e)
+            })
+
+
     }
 
     eliminarArchivo = (fileId) => {
@@ -286,7 +346,7 @@ export default class StepName extends Component {
 
         const step = instances ? instances.steps[0] : null;
 
-        console.log("SEPPPP: ", step)
+        let contadorAudios = 0;
 
         return (
             <>
@@ -332,6 +392,16 @@ export default class StepName extends Component {
 
                         {step &&
                             <div className="stepInformation">
+                                <button
+                                    onClick={
+                                        (e) => {
+                                            e.preventDefault();
+                                            this.enviar();
+                                        }
+                                    }
+                                >
+                                    Modificar
+                                </button>
                                 <h4>{step.name}</h4>
                                 <article>
                                     {/* Custom file sync */}
@@ -373,14 +443,46 @@ export default class StepName extends Component {
                                     <section>
                                         <article>
                                             <h6>Lider</h6>
-                                            <div>
+                                            <div className="archivosCargados">
+                                                {step.audioFiles &&
+                                                    step.audioFiles.map(stp => {
+                                                        if (stp.section === 'monitorings') {
+                                                            contadorAudios++;
+                                                            return (
+                                                                <span key={stp._id} className={stp.message && 'isMessage'}>
+                                                                    <button
+                                                                        onClick={
+                                                                            (e) => {
+                                                                                e.preventDefault();
+                                                                                this.eliminarArchivo(stp._id);
+                                                                            }
+                                                                        }
+                                                                    >
+                                                                        X
+                                                                        </button>
+                                                                    {stp.message &&
+                                                                        <p>{moment(stp.createdAt).format("DD/MM/YYYY")} - {stp.message} - type: M</p>
+                                                                    }
+                                                                    {!stp.message &&
+                                                                        <p>{moment(stp.createdAt).format("DD/MM/YYYY")} - type: F</p>
+                                                                    }
+                                                                </span>
+                                                            )
+                                                        }
+                                                    })
+                                                }
                                                 <p>Audios requeridos: {step.requestedMonitorings}</p>
-                                                <p>Audios faltantes: {(step.audioFiles === false ? step.requestedMonitorings : (step.requestedMonitorings - step.audioFiles.length))} </p>
-                                                <select value={this.state.value} onChange={this.handleChange}>
-                                                    <option value="-">Selecciona...</option>
-                                                    <option value="file">Audio</option>
-                                                    <option value="message">Mensaje</option>
-                                                </select>
+                                                <p>Audios faltantes: {(step.audioFiles === false ? step.requestedMonitorings : (step.requestedMonitorings - contadorAudios))} </p>
+                                            </div>
+                                            <div>
+
+                                                {step.requestedMonitorings - contadorAudios > 0 &&
+                                                    <select value={this.state.value} onChange={this.handleChange}>
+                                                        <option value="-">Selecciona...</option>
+                                                        <option value="file">Audio</option>
+                                                        <option value="message">Mensaje</option>
+                                                    </select>
+                                                }
 
                                                 {value === 'file' &&
                                                     <input type="file" name="" id="audio" onChange={
@@ -405,35 +507,7 @@ export default class StepName extends Component {
                                                     </button>
                                                 }
 
-                                                <div className="archivosCargados">
-                                                    {step.audioFiles &&
-                                                        step.audioFiles.map(stp => {
-                                                            console.log(stp.message)
-                                                            return (
-                                                                <span key={stp._id} className={stp.message && 'isMessage'}>
-                                                                    <button
-                                                                        onClick={
-                                                                            (e) => {
-                                                                                e.preventDefault();
-                                                                                this.eliminarArchivo(stp._id);
-                                                                            }
-                                                                        }
-                                                                    >
-                                                                        X
-                                                                    </button>
-                                                                    {stp.message &&
-                                                                        <p>{moment(stp.createdAt).format("DD/MM/YYYY")} - {stp.message} - type: M</p>
-                                                                    }
-                                                                    {!stp.message &&
-                                                                        <p>{moment(stp.createdAt).format("DD/MM/YYYY")} - type: F</p>
-                                                                    }
-                                                                </span>
-                                                            )
 
-                                                        })
-                                                    }
-
-                                                </div>
                                             </div>
 
                                             <label htmlFor="ddt">Detalle de transacción / Oportunidades indentificadas</label>
@@ -448,15 +522,18 @@ export default class StepName extends Component {
                                             ></textarea>
 
                                             <label htmlFor="cdr">Compromiso del representante</label>
-                                            <textarea name="compromisoRepresentante" id="cdr" cols="30" rows="10"></textarea>
+                                            <textarea name="compromisoRepresentante" id="cdr" cols="30" rows="10" onChange={
+                                                this.armarObjeto
+                                            }></textarea>
 
                                             <label htmlFor="imp">Improvment</label>
                                             <select name="improvment" id="imp" onChange={
                                                 this.armarObjeto
                                             }>
-                                                <option value="+">Mejoro el wachin</option>
+                                                <option value="">Selecciona</option>
+                                                <option value="+">Mejoro</option>
                                                 <option value="+-">Sigue igual</option>
-                                                <option value="-">Es un inutil</option>
+                                                <option value="-">Empeoró</option>
                                             </select>
                                         </article>
                                     </section>
@@ -466,12 +543,12 @@ export default class StepName extends Component {
                                             {customFields &&
                                                 customFields.map(field => {
                                                     if (field.section === 'P' && field.subsection === 'RESP') {
-                                                        return <CustomFields key={field.id} field={field} />
+                                                        return <CustomFields key={field.id} field={field} name={'#responsibleComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} />
                                                     }
                                                     return true;
                                                 })
                                             }
-                                            cargamos los campos personalizados de resp (rekess)
+
                                         </article>
 
                                         <article>
@@ -479,12 +556,12 @@ export default class StepName extends Component {
                                             {customFields &&
                                                 customFields.map(field => {
                                                     if (field.section === 'P' && field.subsection === 'GTE') {
-                                                        return <CustomFields key={field.id} field={field} />
+                                                        return <CustomFields key={field.id} field={field} name={'#managerComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} />
                                                     }
                                                     return true;
                                                 })
                                             }
-                                            cargamos los campos personalizados de gte (rekess)
+
                                         </article>
 
                                         <article>
@@ -492,13 +569,11 @@ export default class StepName extends Component {
                                             {customFields &&
                                                 customFields.map(field => {
                                                     if (field.section === 'P' && field.subsection === 'COO') {
-                                                        return <CustomFields key={field.id} field={field} />
+                                                        return <CustomFields key={field.id} field={field} name={'#coordinatorOnSiteComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} />
                                                     }
                                                     return true;
                                                 })
                                             }
-
-                                                cargamos los campos personalizados de COO (rekess)
                                         </article>
 
                                         <article>
@@ -506,12 +581,12 @@ export default class StepName extends Component {
                                             {customFields &&
                                                 customFields.map(field => {
                                                     if (field.section === 'P' && field.subsection === 'ADM') {
-                                                        return <CustomFields key={field.id} field={field} />
+                                                        return <CustomFields key={field.id} field={field} name={'#accountAdministratorComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} />
                                                     }
                                                     return true;
                                                 })
                                             }
-                                            cargamos los campos personalizados de ADM (rekess)
+
                                         </article>
 
                                         <article>
@@ -519,12 +594,12 @@ export default class StepName extends Component {
                                             {customFields &&
                                                 customFields.map(field => {
                                                     if (field.section === 'P' && field.subsection === 'COACH') {
-                                                        return <CustomFields key={field.id} field={field} />
+                                                        return <CustomFields key={field.id} field={field} name={'#coachingComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} />
                                                     }
                                                     return true;
                                                 })
                                             }
-                                            cargamos los campos personalizados de Coach (rekess)
+
                                         </article>
 
                                     </section>

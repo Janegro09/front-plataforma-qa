@@ -174,7 +174,7 @@ export default class ProgramsGroupComponent extends Component {
                                 {/* } */}
 
                                 {HELPER_FUNCTIONS.checkPermission("POST|programs/groups/new") &&
-                                    <button
+                                    <button className="addItem morph"
                                         onClick={
                                             () => {
                                                 this.setState({

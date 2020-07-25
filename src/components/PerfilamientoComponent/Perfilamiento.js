@@ -8,6 +8,7 @@ import Modal from './Modal/Modal'
 import ModalAgregarPerfilamiento from './Modal/ModalAgregarPerfilamiento'
 import './Perfilamiento.css'
 import { Redirect } from 'react-router-dom'
+import PublishIcon from '@material-ui/icons/Publish';
 
 export default class Perfilamiento extends Component {
     constructor(props) {
@@ -212,21 +213,24 @@ export default class Perfilamiento extends Component {
 
         return (
             <div>
+                <div  className="flex-input-add">
                 {/* spiner rekes */}
                 {loading &&
                     HELPER_FUNCTIONS.backgroundLoading()
                 }
+                <input className="form-control" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
                 <button className="boton-agregar" onClick={(e) => {
                     e.preventDefault();
                     this.agregarPerfilamiento();
-                }}>Subir</button>
+                }}>Subir<PublishIcon /></button>
+                </div>
                 {data && id &&
                     <Modal idFile={id} />
                 }
                 {agregarPerfilamiento &&
                     <ModalAgregarPerfilamiento />
                 }
-                <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
+                
                 {data &&
                     <table>
                         <thead>

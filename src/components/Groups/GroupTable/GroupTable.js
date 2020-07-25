@@ -250,7 +250,7 @@ export default class GroupsTable extends Component {
                         }
 
                         {/* {HELPER_FUNCTIONS.checkPermission("POST|groups/new") && */}
-                        <button onClick={e => this.createGroup(e)}><GroupAddIcon style={{ fontSize: 33 }} /></button>
+                        <button className="addItem morph" onClick={e => this.createGroup(e)}><GroupAddIcon className="svgAddButton" style={{ fontSize: 33 }} /></button>
                         {/* } */}
 
 

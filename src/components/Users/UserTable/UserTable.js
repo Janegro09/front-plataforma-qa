@@ -373,6 +373,7 @@ export default class UserTable extends Component {
                         <div className="cantUsuarios">Cantidad de usuarios: {this.state.allUsers.length}</div>
                     }
                 </div>
+                
             </div>
         )
     }

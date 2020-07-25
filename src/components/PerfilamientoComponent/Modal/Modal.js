@@ -105,7 +105,7 @@ export default class Modal extends Component {
                         }>x</button>
                     </div>
 
-                    <input type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
+                    <input className="form-control form-control-modal" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
 
 
                     <table>

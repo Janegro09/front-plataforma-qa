@@ -1,8 +1,9 @@
 .section-content {
     /* overflow-y: scroll; */
-    height: 80vh;
+    /* height: 80vh; */
     padding: 50px;
-    width: 100%;
+    /* width: 100%; */
+
 }
 
 .logoBackground {
@@ -47,9 +48,10 @@
 
 .containerIn {
     display: flex;
+    position: fixed;
+    right: 0;
     background-color: transparent;
-    font-size: 15px;
-    float: right;
+    font-size: 14px;
     padding: 9px;
     align-items: baseline;
 }
@@ -118,6 +120,10 @@ select {
 .uploadNomina>button>svg {
     color: white;
     height: 18px;
+}
+
+.player{
+    margin: auto;
 }
 
 

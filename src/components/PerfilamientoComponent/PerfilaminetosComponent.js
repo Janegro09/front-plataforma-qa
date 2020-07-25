@@ -7,9 +7,13 @@ import Global from '../../Global'
 import './PerfilamientosComponent.css'
 import { Redirect } from 'react-router-dom';
 
+
+
 const placeholder = document.createElement("div");
 placeholder.className = "placeholder";
 placeholder.className = "grupoPerfilamiento";
+
+
 
 export default class PerfilaminetosComponent extends Component {
     constructor(props) {
@@ -36,6 +40,7 @@ export default class PerfilaminetosComponent extends Component {
             this.assignCuartil(QName, level, groupName);
         }
     }
+
 
     assignCuartil = (QName, level, groupName) => {
         if (QName && groupName && level) {
@@ -512,6 +517,7 @@ export default class PerfilaminetosComponent extends Component {
 
         return (
             <div>
+
                 <SideBarLeft />
 
                 <div className="section-content">
@@ -544,7 +550,7 @@ export default class PerfilaminetosComponent extends Component {
                                     <div className="grupoPerfilamiento" id={key} key={key} draggable onDragStart={this.dragStartG} onDragOver={this.dragOverG} onDragEnd={this.dragEndG}>
                                         <p>Usuarios asignados: {v.users.length} - {Math.ceil((v.users.length / allUsers.length) * 100)}%</p>
                                         <div className="acciones">
-                                            <input type="text" value={v.name} onChange={(e) => this.changeName(v.id)} id={v.id} />
+                                            <input className="form-control" type="text" value={v.name} onChange={(e) => this.changeName(v.id)} id={v.id} />
                                             <label>Aplicar al 100% de los usuarios.
                                                 <input type="checkbox" id="aplicarall" onChange={() => {
                                                     this.updateAssign(v.id)
@@ -618,7 +624,7 @@ export default class PerfilaminetosComponent extends Component {
                             cuartiles.map((v, key) => {
                                 return (
                                     <div key={key} className="cuartil">
-                                        <h5>{v.name}</h5>
+                                        <h6>{v.name}</h6>
                                         <div className="buttonsContain">
                                             <button id={`${v.name}|Q1`} className="green" draggable onDragStart={this.onDragStart}>Q1 ({v.users.Q1.length})</button>
                                             <button id={`${v.name}|Q2`} className="yellow" draggable onDragStart={this.onDragStart}>Q2 ({v.users.Q2.length})</button>

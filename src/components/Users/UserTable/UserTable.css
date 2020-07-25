@@ -658,3 +658,23 @@ svg {
   background: -webkit-linear-gradient(left, rgba(216, 216, 216, 0.14) 0%, rgba(216, 216, 216, 0.4) 50%, rgba(216, 216, 216, 0.14) 100%);
   cursor: pointer;
 }
+
+
+.footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  margin-left: 60px;
+  height: 60px;
+  box-shadow: 0px -4px 35px 9px rgba(0,0,0,0.15);
+  background-color: #ebecf0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+}
+
+.footer >svg {
+  font-size: 1.3em;
+}
+

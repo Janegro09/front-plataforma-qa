@@ -6,6 +6,11 @@ import { Redirect } from 'react-router-dom'
 import Logo from '../../Home/logo_background.png';
 import UserAdminHeader from '../userAdminHeader/userAdminHeader'
 import PublishIcon from '@material-ui/icons/Publish';
+import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
+import FastRewindIcon from '@material-ui/icons/FastRewind';
+import FastForwardIcon from '@material-ui/icons/FastForward';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
+
 
 
 export default class Home extends Component {
@@ -22,6 +27,10 @@ export default class Home extends Component {
         this.setState({ redirect: true })
     }
 
+
+      
+
+
     render() {
         const userInfo = JSON.parse(sessionStorage.getItem("userData"));
 
@@ -31,7 +40,7 @@ export default class Home extends Component {
 
         return (
             <div>
-                
+
                 <div className="logoBackground">
                     <img src={Logo} alt="" title="Logo" className="logoFixed" />
                 </div>
@@ -47,7 +56,19 @@ export default class Home extends Component {
                     <UserInfoContainer userInfo={userInfo} />
                 </div>
                 <div className="uploadNomina"><div>Nómina actual 30/06/2020</div> <button>Actualizar<PublishIcon /></button></div>
+                <div className="footer">
+                    <div>
+                    <FastRewindIcon />
+                    <PlayCircleOutlineIcon />
+                    <FastForwardIcon />
+                    </div>
+                    <div>
+                    <EqualizerIcon />
+                 
+                    </div>
+                </div>
             </div>
+
         )
     }
 }

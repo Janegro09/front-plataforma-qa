@@ -1,11 +1,11 @@
 .headerResultados {
-    border: 1px solid red;
-    width: 1000px;
     display: flex;
+    background-color: #ffffff3d;
     flex-flow: row nowrap;
+    -webkit-box-shadow: 0px 0px 6px 1px #9596981c;
     justify-content: space-between;
     align-items: center;
-    padding: 5px;
+    padding: 10px;
 }
 .headerResultados span {
     display: flex;
@@ -14,17 +14,15 @@
 }
 
 .grupos {
-    border: 1px solid green;
-    width: 1000px;
-    padding: 2px;
-    box-sizing: border-box;
+
 }
 
 .grupoPerfilamiento {
-    padding: 5px;
-    margin: 10px;
+    padding: 10px;
+    background-color: #ffffff3d;
+    margin: 10px 0px 10px 0px;
+    -webkit-box-shadow: 0px 0px 6px 1px #9596981c;
     box-sizing: border-box;
-    border: 1px solid red;
 }
 .grupoPerfilamiento .acciones {
     width: 100%;
@@ -54,8 +52,9 @@
     flex-flow: row wrap;
     justify-content: flex-start;
     align-items: flex-start;
+    -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.07);
     min-height: 30px;
-    border: 1px solid black;
+    border: 1px solid #e5e5e5;  
 }
 
 .grupoPerfilamiento .cuartilesAsignados span {
@@ -80,44 +79,53 @@
 }
 
 .green {
-    background-color: green;
+    background-color: #91c191;
+    border-radius: 3px;
 }
 
 .red {
-    background-color: #f00;
+    background-color: #e08988;
+    border-radius: 3px;
 }
 
 .orange {
-    background-color: #f50;
+    background-color: #eaaa88;
+    border-radius: 3px;
 }
 .yellow {
-    background-color: #fc0
+    background-color: #e6d077;
+    border-radius: 3px;
 }
 
 .cuartiles {
-    border: 1px solid blue;
-    width: 1000px;
     display: flex;
     flex-flow: row wrap;
+    position: fixed;
+    bottom: 0;
     justify-content: flex-start;
     align-items: flex-start;
 }
 
 .cuartiles .cuartil {
-    border: 1px solid black;
+    background-color: #ffffff3d;
+    -webkit-box-shadow: 0px 0px 6px 1px #9596981c;
     width: 150px;
     padding: 5px;
+    text-align: center;
 }
 
 .cuartil h5 {
     text-align: center;
 }
 
+
+
 .cuartil .buttonsContain button {
     display: block;
     width: 100%;
     margin: 0 0 5px 0;
     padding: 5px;
+    color: white;
 }
 .placeholder {
     background: rgb(255,240,120);

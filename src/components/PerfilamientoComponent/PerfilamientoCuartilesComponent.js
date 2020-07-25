@@ -6,6 +6,7 @@ import swal from 'sweetalert';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import { Redirect } from 'react-router-dom';
 
+
 export default class PerfilamientoCuartilesComponent extends Component {
     constructor(props) {
         super(props);
@@ -213,6 +214,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
         return (
             <div>
+                
                 <SideBarLeft />
 
                 <div className="section-content">

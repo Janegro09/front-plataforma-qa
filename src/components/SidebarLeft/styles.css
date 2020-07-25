@@ -79,7 +79,6 @@ display: none;
 .side__bar {
   /*width: 360px;*/
   /*background-color: #f3f3f3;*/
-
   position: fixed;
   overflow-y: scroll;
   overflow: -moz-scrollbars-none;
@@ -239,6 +238,7 @@ hr {
 .active>svg {
   color: white;
 }
+
 .activeParent>svg {
   color: white;
 }
@@ -261,14 +261,13 @@ hr {
 }
 
 @media screen and (max-width: 700px) {
-
   .side__bar_container {
     width: 100vw;
     height: 57px;
     bottom: 0;
     position: fixed;
     z-index: 999;
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
   }
   .parent__menu_holder {
     display: flex;
@@ -303,10 +302,6 @@ hr {
     padding: 0px !important;
     margin: 0 !important;
   }
-
-
-
-
   .BtnInProgramas {
     width: 100vw;
     height: 48px;
@@ -318,24 +313,19 @@ hr {
     justify-content: space-evenly;
     z-index: 1;
   }
-
-  .BtnInProgramas > button > a {
+  .BtnInProgramas>button>a {
     color: #747474;
   }
-  
   .active>a {
     color: white !important;
   }
   .activeParent>a {
     color: white !important;
   }
-
-
-  .BtnInProgramas > button:hover {
+  .BtnInProgramas>button:hover {
     color: white;
   }
-
-  .BtnInProgramas > hr {
+  .BtnInProgramas>hr {
     height: 71%;
     color: white;
     width: 1px;
@@ -365,10 +355,13 @@ hr {
   padding: 5px;
   height: 31px;
   width: 31px;
-  margin-bottom: 3px;
+  /* margin-bottom: 3px; */
   border-radius: 4px;
-  color: #5c5c5c;
+  color: white;
+
 }
+
+
 
 .morph {
   border-radius: 7px;
@@ -376,8 +369,13 @@ hr {
   box-shadow: 0px 0px 6px 2px #ffffffb0, 5px 5px 8px 0px rgba(0, 0, 0, 0.06), 1px 2px 2px 0px rgba(0, 0, 0, 0.06);
   transition: 0.1s;
   margin-right: 8px;
+  background-color: #03a9f4;
+  transition: all 0.15s ease-in-out;
+  -webkit-box-shadow: 0px 0px 4px 4px #03a9f430;
 }
 
 .morph:hover {
-  box-shadow: 0px 0px 6px 2px #ffffffb0, 5px 5px 8px 0px rgba(0, 0, 0, 0.06), 1px 1px 5px 0px rgba(2, 3, 0, 0.20);
+  /* box-shadow: 0px 0px 6px 2px #ffffffb0, 5px 5px 8px 0px rgba(0, 0, 0, 0.06), 1px 1px 5px 0px rgba(2, 3, 0, 0.20); */
+  background-color: #039be5;
+
 }

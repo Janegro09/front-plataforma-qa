@@ -24,3 +24,13 @@
     top: 0;
     right: 0;
 }
+
+.form-control-modal {
+    margin: 15px;
+    width: -webkit-fill-available;
+}
+
+.hijo > table {
+    margin: 15px;
+    width: -webkit-fill-available;
+}

@@ -242,7 +242,7 @@ export default class RolesTable extends Component {
 
                         {
                             // HELPER_FUNCTIONS.checkPermission("POST|roles/new") &&
-                            <button onClick={e => this.addRole(e)}><AddIcon style={{ fontSize: 33 }} /></button>
+                            <button className="addItem morph" onClick={e => this.addRole(e)}><AddIcon className="svgAddButton" style={{ fontSize: 33 }} /></button>
                         }
 
 

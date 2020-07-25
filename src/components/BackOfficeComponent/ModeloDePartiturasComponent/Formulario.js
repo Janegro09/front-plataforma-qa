@@ -4,7 +4,9 @@ import swal from 'sweetalert';
 import axios from 'axios';
 import Global from '../../../Global';
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
-
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/Save';
 
 export default class Formulario extends Component {
 
@@ -21,10 +23,10 @@ export default class Formulario extends Component {
     changeStepRequiredMonitorings = (instanceId, stepId, requiredMonitorings) => {
         let { instances } = this.state;
 
-        for(let x of instances){
-            if(x.id === instanceId){
-                for(let j of x.steps){
-                    if(j.id === stepId){
+        for (let x of instances) {
+            if (x.id === instanceId) {
+                for (let j of x.steps) {
+                    if (j.id === stepId) {
                         j.requiredMonitorings = parseInt(requiredMonitorings);
                     }
                 }
@@ -39,10 +41,10 @@ export default class Formulario extends Component {
     changeStepName = (instanceId, stepId, newName) => {
         let { instances } = this.state;
 
-        for(let x of instances){
-            if(x.id === instanceId){
-                for(let j of x.steps){
-                    if(j.id === stepId){
+        for (let x of instances) {
+            if (x.id === instanceId) {
+                for (let j of x.steps) {
+                    if (j.id === stepId) {
                         j.name = newName;
                     }
                 }
@@ -58,12 +60,12 @@ export default class Formulario extends Component {
         let { instances } = this.state;
 
         let dataReturn = [];
-        for(let x of instances) {
+        for (let x of instances) {
             let tempD = x;
-            if(tempD.id === instanceId){
+            if (tempD.id === instanceId) {
                 let steps = [];
-                for(let j of x.steps){
-                    if(j.id === stepId) continue;
+                for (let j of x.steps) {
+                    if (j.id === stepId) continue;
                     steps.push(j);
                 }
                 tempD.steps = steps;
@@ -80,7 +82,7 @@ export default class Formulario extends Component {
         // Preparamos el objeto para enviar!
         const { name, instances, id } = this.state;
 
-        if(!name || name === 'Nombre de la plantilla' || instances.length === 0){
+        if (!name || name === 'Nombre de la plantilla' || instances.length === 0) {
             swal("Error!", "Debe ingresar valores para enviarlos", "error");
             return false;
         }
@@ -90,8 +92,8 @@ export default class Formulario extends Component {
             instances: []
         }
 
-        for(let instance of instances){
-            if(instance.name.includes('Nueva instancia')){
+        for (let instance of instances) {
+            if (instance.name.includes('Nueva instancia')) {
                 swal("Error", "Debe cambiar el nombre de la instancia", "Error");
                 return false;
             }
@@ -99,7 +101,7 @@ export default class Formulario extends Component {
                 name: instance.name,
                 steps: []
             }
-            for(let step of instance.steps){
+            for (let step of instance.steps) {
                 let s = {
                     name: step.name,
                     requiredMonitorings: step.requiredMonitorings
@@ -108,35 +110,35 @@ export default class Formulario extends Component {
             }
             sendData.instances.push(tempData);
         }
-        
+
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
         const bodyParameters = sendData
-        if(id){
+        if (id) {
             // entonces editamos
             axios.put(Global.getPartitureModels + "/" + id, bodyParameters, config)
-            .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-                if (response.data.Success) {
-                    swal("Felicidades!", "Se ha modificado la plantilla de partitura correctamente", "success");
-                    window.location.reload(window.location.href);
-                }
+                .then(response => {
+                    sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                    if (response.data.Success) {
+                        swal("Felicidades!", "Se ha modificado la plantilla de partitura correctamente", "success");
+                        window.location.reload(window.location.href);
+                    }
 
-            })
-            .catch(e => {
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Atención", "No se ha agregado el grupo", "info");
-                    this.setState({
-                        redirect: true
-                    })
-                }
-                console.log("Error: ", e)
-            })
+                })
+                .catch(e => {
+                    if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                        HELPER_FUNCTIONS.logout()
+                    } else {
+                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        swal("Atención", "No se ha agregado el grupo", "info");
+                        this.setState({
+                            redirect: true
+                        })
+                    }
+                    console.log("Error: ", e)
+                })
         } else {
             axios.post(Global.getPartitureModels + "/new", bodyParameters, config)
                 .then(response => {
@@ -145,7 +147,7 @@ export default class Formulario extends Component {
                         swal("Felicidades!", "Se ha creado la plantilla de partitura correctamente", "success");
                         window.location.reload(window.location.href);
                     }
-    
+
                 })
                 .catch(e => {
                     if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
@@ -167,22 +169,22 @@ export default class Formulario extends Component {
         let { instances } = this.state;
 
         let dataReturn = []
-        for(let x of instances){
-            if(x.id === id) continue;
+        for (let x of instances) {
+            if (x.id === id) continue;
             dataReturn.push(x);
         }
 
         this.setState({
             instances: dataReturn
         })
-        
+
     }
 
     changeInstanceName = (id, newName) => {
         let { instances } = this.state;
 
-        for(let x of instances){
-            if(x.id === id){
+        for (let x of instances) {
+            if (x.id === id) {
                 x.name = newName;
             }
         }
@@ -195,8 +197,8 @@ export default class Formulario extends Component {
     nuevaInstancia = (instanceObject = false) => {
         let { instances } = this.state;
         let steps = [];
-        if(instanceObject !== false){
-            for(let st of instanceObject.steps){
+        if (instanceObject !== false) {
+            for (let st of instanceObject.steps) {
                 steps.push({
                     id: parseInt(Date.now() * Math.random()),
                     name: st.name,
@@ -237,8 +239,8 @@ export default class Formulario extends Component {
     }
 
     componentDidMount = () => {
-        const {idModificate} = this.props
-        if(idModificate){
+        const { idModificate } = this.props
+        if (idModificate) {
 
             let token = JSON.parse(sessionStorage.getItem('token'))
             const config = {
@@ -249,8 +251,8 @@ export default class Formulario extends Component {
                 .then(response => {
                     sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                     const respuesta = response.data.Data[0];
-                    if(respuesta){
-                        for(let i of respuesta.instances){
+                    if (respuesta) {
+                        for (let i of respuesta.instances) {
                             this.nuevaInstancia(i);
                         }
                         this.setState({
@@ -281,27 +283,32 @@ export default class Formulario extends Component {
             <div className="modal" id="modal-casero">
                 <div className="hijo">
                     <div className="boton-cerrar">
-                        <button 
-                        onClick={
-                            (e) => {
-                                e.preventDefault()
-                                this.cerrarModal()
-                            }
-                        }>x</button>
+                        <button
+                            onClick={
+                                (e) => {
+                                    e.preventDefault()
+                                    this.cerrarModal()
+                                }
+                            }>x</button>
                     </div>
                     <div className="partituresModels">
                         <div className="mainButtons">
-                            <input type="text" value={this.state.name} onChange={(e) => {
+                            <input className="form-control" type="text" value={this.state.name} onChange={(e) => {
                                 this.setState({ name: e.target.value })
                             }} />
-                            <button onClick={(e) => {
+
+                            <button className="addItem morph" onClick={(e) => {
                                 e.preventDefault();
                                 this.nuevaInstancia()
-                            }}>Nueva instancia</button>
-                            <button onClick={(e) => {
+                            }}><AddIcon className="svgAddButton" style={{ fontSize: 33 }} /></button>
+
+
+
+
+                            <button className="addItem morph" onClick={(e) => {
                                 e.preventDefault()
                                 this.enviarPlantilla();
-                            }}>Guardar Plantilla</button>
+                            }}><SaveIcon className="svgAddButton" style={{ fontSize: 33 }} /></button>
 
                         </div>
 
@@ -311,33 +318,41 @@ export default class Formulario extends Component {
                                     return (
                                         <div className="instance">
                                             <div className="mainButtons">
-                                                <input type="text" value={instance.name} onChange={(e) => {
+                                                <input className="form-control" type="text" value={instance.name} onChange={(e) => {
                                                     this.changeInstanceName(instance.id, e.target.value);
-                                                }}/>
+                                                }} />
+
                                                 <button onClick={(e) => {
                                                     e.preventDefault();
                                                     this.agregarPaso(instance.id)
-                                                }}>Agregar paso</button>
+                                                }}><AddIcon  style={{ fontSize: 25 }} /></button>
+                                                {/* <button onClick={(e) => {
+                                                    e.preventDefault();
+                                                    this.agregarPaso(instance.id)
+                                                }}>Agregar paso</button> */}
+
+
+
                                                 <button onClick={(e) => {
                                                     e.preventDefault();
                                                     this.eliminarInstance(instance.id)
-                                                }}>Eliminar instancia</button>
+                                                }}><DeleteIcon /></button>
                                             </div>
                                             <div className="AllSteps">
                                                 {instance.steps &&
                                                     instance.steps.map((step, key) => {
                                                         return (
                                                             <div key={key} className="step">
-                                                                <input type="text" value={step.name} onChange={(e) => {
+                                                                <input className="form-control" type="text" value={step.name} onChange={(e) => {
                                                                     this.changeStepName(instance.id, step.id, e.target.value);
                                                                 }} />
-                                                                <input type="number" value={step.requiredMonitorings} onChange={(e) => {
+                                                                <input className="form-control" type="number" value={step.requiredMonitorings} onChange={(e) => {
                                                                     this.changeStepRequiredMonitorings(instance.id, step.id, e.target.value);
-                                                                }}/>
+                                                                }} />
                                                                 <button onClick={(e) => {
                                                                     e.preventDefault();
                                                                     this.eliminarStep(instance.id, step.id);
-                                                                }}>Eliminar paso</button>
+                                                                }}><DeleteIcon /></button>
 
                                                             </div>
                                                         )

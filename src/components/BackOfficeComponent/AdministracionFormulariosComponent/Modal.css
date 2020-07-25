@@ -13,7 +13,7 @@
 
 .hijo {
     width: 35%;
-    height: 400px;
+    height: auto;
     background-color: white;
     color: black;
     /* position: relative; */

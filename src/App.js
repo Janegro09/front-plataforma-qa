@@ -33,6 +33,7 @@ import AdministracionFormulariosComponent from './components/BackOfficeComponent
 import ExportarBasesDeDatosComponent from './components/BackOfficeComponent/ExportarBasesDeDatosComponent/ExportarBasesDeDatosComponent';
 import PartiturasEspecificComponent from './components/PartiturasComponent/PartiturasEspecificComponent';
 import PartiturasUsuariosComponent from './components/PartiturasComponent/PartiturasUsuarioComponent';
+import StepName from './components/PartiturasComponent/StepName';
 
 
 
@@ -65,6 +66,7 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/modelo-de-partituras" component={ModeloDePartiturasComponent} />
         <Route exact path="/partituras" component={PartiturasComponent} />
+        <Route exact path="/partituras/step/:id/:idUsuario/:idStep" component={StepName} />
         <Route exact path="/partituras/:id" component={PartiturasEspecificComponent} />
         <Route exact path="/partituras/:id/:idUsuario" component={PartiturasUsuariosComponent} />
         <Route exact path="/perfilamiento" component={PerfilamientoComponent} />

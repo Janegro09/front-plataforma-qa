@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import SiderbarLeft from '../SidebarLeft/SiderbarLeft'
 import UserAdminHeader from '../Users/userAdminHeader/userAdminHeader'
+import Modal from './Modal'
 import axios from 'axios';
 import Global from '../../Global';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import swal from 'sweetalert';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
+
 
 export default class PartiturasComponent extends Component {
     constructor(props) {
@@ -15,7 +17,8 @@ export default class PartiturasComponent extends Component {
             loading: true,
             allPartitures: null,
             specific: false,
-            idSpecific: ''
+            idSpecific: '',
+            modalAgregar: false
         }
     }
 
@@ -28,11 +31,44 @@ export default class PartiturasComponent extends Component {
     }
 
     crearPartitura = () => {
-        console.log("Crear partitura");
+        this.setState({ modalAgregar: true });
     }
 
-    eliminarPartitura = () => {
-        console.log("Eliminar partitura");
+    eliminarPartitura = (id) => {
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        this.setState({
+            loading: true
+        })
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        axios.delete(Global.getAllPartitures + '/' + id, config)
+            .then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
+                this.setState({
+                    loading: false
+                })
+                if (response.data.Success) {
+                    swal("Partitura eliminada correctamente", {
+                        icon: "success",
+                    }).then(() => {
+                        window.location.reload(window.location.href);
+                    })
+                }
+            })
+            .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema al intentar borrar el rol", "error");
+                    this.setState({
+                        loading: false,
+                        redirect: true
+                    })
+                }
+                console.log("Error: ", e)
+            })
     }
 
     componentDidMount() {
@@ -69,7 +105,7 @@ export default class PartiturasComponent extends Component {
     }
 
     render() {
-        let { allPartitures, loading, specific, idSpecific } = this.state;
+        let { allPartitures, loading, specific, idSpecific, modalAgregar } = this.state;
 
         if (specific) {
             return <Redirect to={`/partituras/${idSpecific}`} />
@@ -87,6 +123,11 @@ export default class PartiturasComponent extends Component {
                     <UserAdminHeader />
                 </div>
 
+                {modalAgregar &&
+                    <Modal />
+                }
+
+                <div className="section-content">
                 <button
                     onClick={
                         (e) => {
@@ -97,7 +138,6 @@ export default class PartiturasComponent extends Component {
                 >
                     Crear partitura
                 </button>
-                <div className="section-content">
                     {allPartitures !== null &&
                         <table>
                             <thead>
@@ -112,7 +152,6 @@ export default class PartiturasComponent extends Component {
                             </thead>
                             <tbody>
                                 {allPartitures.map((partiture, key) => {
-                                    console.log(partiture)
                                     return (
                                         <tr key={key}>
                                             <td>{moment(partiture.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>
@@ -136,7 +175,7 @@ export default class PartiturasComponent extends Component {
                                                     onClick={
                                                         (e) => {
                                                             e.preventDefault();
-                                                            this.eliminarPartitura();
+                                                            this.eliminarPartitura(partiture.id);
                                                         }
                                                     }
                                                 >

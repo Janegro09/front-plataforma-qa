@@ -33,8 +33,8 @@ export default class editUserComponent extends Component {
         this.turno = event.target.value
     }
 
-    modifyUser = (e) => {
-        e.preventDefault()
+    modifyUser = () => {
+        // e.preventDefault()
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
@@ -157,9 +157,19 @@ export default class editUserComponent extends Component {
                     <img src={Logo} alt="" title="Logo" className="logoFixed" />
                 </div>
 
+                {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
+                    <button className="btn btn-block btn-info ripple-effect confirmar" alt="sign in" 
+                        onClick={(e) => {
+                            e.preventDefault();
+                            this.modifyUser()
+                        }}
+                    >Guardar cambios</button>
+
+
+                }
 
                 {user !== null &&
-                    <form className="inputsEditUser" onSubmit={this.modifyUser}>
+                    <form className="inputsEditUser">
 
                         <div className="Label headEditUser">ID
                         <input className={`form-control ${!user.userActive ? "Inactivo " : 'Activo'}`} type="text" placeholder="id" name="id" ref={(c) => this.id = c} defaultValue={user.id ? user.id : ''} disabled />
@@ -246,11 +256,6 @@ export default class editUserComponent extends Component {
                             <option value={user.turno ? user.turno === 'TM' ? 'TT' : 'TM' : 'TT'}>{user.turno ? user.turno === 'TT' ? 'TM' : 'TT' : "TT"}</option>
                         </select>
                         {/* <input type="text" placeholder="imagen" ref={(c) => this.imagen = c} defaultValue={user.imagen ? user.imagen : ''} /> */}
-                        {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                            <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Guardar cambios</button>
-
-
-                        }
                     </form>
                 }
 

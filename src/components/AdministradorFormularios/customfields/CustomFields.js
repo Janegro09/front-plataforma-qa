@@ -10,6 +10,8 @@ export default class CustomFields extends Component {
 
     render() {
         let { type, values, id, name } = this.props.field;
+
+        console.log("Step en el hijo: ", this.props)
         return (
             <>
 

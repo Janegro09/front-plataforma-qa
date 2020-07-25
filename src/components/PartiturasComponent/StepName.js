@@ -19,7 +19,9 @@ export default class StepName extends Component {
         abrirModalAsignarArchivos: false,
         archivosSeleccionados: null,
         value: '-',
-        dataToSend: {}
+        dataToSend: {},
+        step: null,
+        instances: null
     }
 
     asignarArchivos = () => {
@@ -48,8 +50,9 @@ export default class StepName extends Component {
     enviar = () => {
         let { id, idStep, idUsuario } = this.props.match.params;
         let { dataToSend, archivosSeleccionados } = this.state;
+        let customFilesSync = archivosSeleccionados
         let sendData = {
-            archivosSeleccionados
+            customFilesSync
         }
 
         for (let item in dataToSend) {
@@ -73,7 +76,7 @@ export default class StepName extends Component {
 
         }
 
-        
+
 
         // /analytics/partitures/:id/:userId/:stepId
 
@@ -82,11 +85,9 @@ export default class StepName extends Component {
             headers: { Authorization: `Bearer ${token}` }
         };
 
-
         axios.put(Global.getAllPartitures + "/" + id + '/' + idUsuario + '/' + idStep, sendData, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-                console.log("A ver: ", response.data);
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
             })
             .catch(e => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
@@ -311,10 +312,16 @@ export default class StepName extends Component {
             const data = response.data.Data;
             axios.get(Global.getAllPartitures + '/' + id + '/' + idUsuario + '/' + idStep, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                const instances = response.data.Data[0].instances[0];
+                const step = instances ? instances.steps[0] : null;
+
                 this.setState({
                     loading: false,
                     data: response.data.Data,
-                    customFields: data
+                    customFields: data,
+                    archivosSeleccionados: step.customFilesSync,
+                    step,
+                    instances
                 })
 
             })
@@ -336,15 +343,8 @@ export default class StepName extends Component {
     }
 
     render() {
-        let { data, customFields, abrirModalAsignarArchivos, archivosSeleccionados, value, loading } = this.state;
-
+        let { data, customFields, abrirModalAsignarArchivos, archivosSeleccionados, value, loading, step, instances } = this.state;
         data = data ? data[0] : null;
-
-
-
-        const instances = data ? data.instances[0] : null;
-
-        const step = instances ? instances.steps[0] : null;
 
         let contadorAudios = 0;
 
@@ -543,7 +543,7 @@ export default class StepName extends Component {
                                             {customFields &&
                                                 customFields.map(field => {
                                                     if (field.section === 'P' && field.subsection === 'RESP') {
-                                                        return <CustomFields key={field.id} field={field} name={'#responsibleComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} />
+                                                        return <CustomFields key={field.id} field={field} name={'#responsibleComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} step={step} />
                                                     }
                                                     return true;
                                                 })

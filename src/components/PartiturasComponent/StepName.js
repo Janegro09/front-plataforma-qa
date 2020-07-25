@@ -32,15 +32,16 @@ export default class StepName extends Component {
 
     }
 
-    armarObjeto = (e) => {
-        let id = e.target.name;
+    armarObjeto = (e,data = false) => {
+        let id;
+        if(typeof e === 'string'){
+            id = e;
+        } else{
+            id = e.target.name;
+        }
         let { dataToSend } = this.state;
 
-        dataToSend[id] = e.target.value;
-
-        if (e.target.type === 'checkbox') {
-            dataToSend[id] = e.target.checked;
-        }
+        dataToSend[id] = data === false ? e.target.value : data;
 
         this.setState({
             dataToSend
@@ -88,6 +89,9 @@ export default class StepName extends Component {
         axios.put(Global.getAllPartitures + "/" + id + '/' + idUsuario + '/' + idStep, sendData, config)
             .then(response => {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
+                swal('Excelente','Paso modificado correctamente','success').then(() => {
+                    window.location.reload(window.location.href);
+                })
             })
             .catch(e => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
@@ -247,15 +251,6 @@ export default class StepName extends Component {
             ReturnData.headers.push(th)
             ReturnData.actual.push(value);
         }
-        /**
-         * Cuando se haga reporteria, va a venir una columna mas con la misma sintaxisss que la de arriba para comparar
-         */
-        // for (let th in users.rowFromPartiture) {
-        //     if(th === 'id') continue;
-        //     const value = users.rowFromPartiture[th]
-        //     ReturnData.comparativo.push(value);
-        // }
-
         return (
             <table className="longXTable">
                 <thead>
@@ -347,9 +342,6 @@ export default class StepName extends Component {
         data = data ? data[0] : null;
 
         let contadorAudios = 0;
-
-        console.log("step: ", step);
-
         return (
             <>
                 <div className="header">
@@ -513,23 +505,21 @@ export default class StepName extends Component {
                                             </div>
 
                                             <label htmlFor="ddt">Detalle de transacción / Oportunidades indentificadas</label>
-                                            <textarea name="detalleTransaccion" id="ddt" cols="30" rows="10" onChange={
-                                                this.armarObjeto
-                                            }></textarea>
+                                            <textarea name="detalleTransaccion" id="ddt" cols="30" rows="10" defaultValue={step.detalleTransaccion}  onChange={this.armarObjeto}></textarea>
 
                                             <label htmlFor="cr">Causa Raíz / Descripción del patrón a mejorar</label>
-                                            <textarea name="patronMejora" id="cr" cols="30" rows="10" onChange={
+                                            <textarea name="patronMejora" id="cr" cols="30" rows="10" defaultValue={step.patronMejora} onChange={
                                                 this.armarObjeto
                                             }
-                                            ></textarea>
+                                            ></textarea>addCustomField
 
                                             <label htmlFor="cdr">Compromiso del representante</label>
-                                            <textarea name="compromisoRepresentante" id="cdr" cols="30" rows="10" onChange={
+                                            <textarea name="compromisoRepresentante" id="cdr" cols="30" rows="10" defaultValue={step.compromisoRepresentante} onChange={
                                                 this.armarObjeto
                                             }></textarea>
 
                                             <label htmlFor="imp">Improvment</label>
-                                            <select name="improvment" id="imp" onChange={
+                                            <select name="improvment" id="imp" defaultValue={step.improvment} onChange={
                                                 this.armarObjeto
                                             }>
                                                 <option value="">Selecciona</option>
@@ -543,65 +533,76 @@ export default class StepName extends Component {
                                         <article>
                                             <h6>Responsable</h6>
                                             {customFields &&
-                                                customFields.map(field => {
-                                                    if (field.section === 'P' && field.subsection === 'RESP') {
-                                                        return <CustomFields key={field.id} field={field} name={'#responsibleComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} value={step.responsibleComments} />
-                                                    }
-                                                    return true;
-                                                })
+                                                <CustomFields 
+                                                    fields={customFields}
+                                                    section='P'
+                                                    subsection='RESP'
+                                                    values={step.responsibleComments}
+                                                    data={(d) => {
+                                                        this.armarObjeto('responsibleComments',d)
+                                                    }}
+                                                />
                                             }
-
                                         </article>
 
                                         <article>
                                             <h6>Gerente</h6>
                                             {customFields &&
-                                                customFields.map(field => {
-                                                    if (field.section === 'P' && field.subsection === 'GTE') {
-                                                        return <CustomFields key={field.id} field={field} name={'#managerComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} value={step.managerComments} />
-                                                    }
-                                                    return true;
-                                                })
+                                                <CustomFields 
+                                                    fields={customFields}
+                                                    section='P'
+                                                    subsection='GTE'
+                                                    values={step.managerComments}
+                                                    data={(d) => {
+                                                        this.armarObjeto('managerComments',d)
+                                                    }}
+                                                />
                                             }
-
                                         </article>
 
                                         <article>
                                             <h6>Coordinador On Site</h6>
                                             {customFields &&
-                                                customFields.map(field => {
-                                                    if (field.section === 'P' && field.subsection === 'COO') {
-                                                        return <CustomFields key={field.id} field={field} name={'#coordinatorOnSiteComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} value={step.coordinatorOnSiteComments} />
-                                                    }
-                                                    return true;
-                                                })
+                                                <CustomFields 
+                                                    fields={customFields}
+                                                    section='P'
+                                                    subsection='COO'
+                                                    values={step.coordinatorOnSiteComments}
+                                                    data={(d) => {
+                                                        this.armarObjeto('coordinatorOnSiteComments',d)
+                                                    }}
+                                                />
                                             }
                                         </article>
 
                                         <article>
                                             <h6>Administrador</h6>
                                             {customFields &&
-                                                customFields.map(field => {
-                                                    if (field.section === 'P' && field.subsection === 'ADM') {
-                                                        return <CustomFields key={field.id} field={field} name={'#accountAdministratorComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} value={step.accountAdministratorComments} />
-                                                    }
-                                                    return true;
-                                                })
+                                                <CustomFields 
+                                                    fields={customFields}
+                                                    section='P'
+                                                    subsection='ADM'
+                                                    values={step.accountAdministratorComments}
+                                                    data={(d) => {
+                                                        this.armarObjeto('accountAdministratorComments',d)
+                                                    }}
+                                                />
                                             }
-
                                         </article>
 
                                         <article>
                                             <h6>Coach</h6>
                                             {customFields &&
-                                                customFields.map(field => {
-                                                    if (field.section === 'P' && field.subsection === 'COACH') {
-                                                        return <CustomFields key={field.id} field={field} name={'#coachingComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} value={step.coachingComments} />
-                                                    }
-                                                    return true;
-                                                })
+                                                <CustomFields 
+                                                    fields={customFields}
+                                                    section='P'
+                                                    subsection='COACH'
+                                                    values={step.coachingComments}
+                                                    data={(d) => {
+                                                        this.armarObjeto('coachingComments',d)
+                                                    }}
+                                                />
                                             }
-
                                         </article>
 
                                     </section>

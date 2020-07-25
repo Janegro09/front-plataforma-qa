@@ -348,6 +348,8 @@ export default class StepName extends Component {
 
         let contadorAudios = 0;
 
+        console.log("step: ", step);
+
         return (
             <>
                 <div className="header">
@@ -543,7 +545,7 @@ export default class StepName extends Component {
                                             {customFields &&
                                                 customFields.map(field => {
                                                     if (field.section === 'P' && field.subsection === 'RESP') {
-                                                        return <CustomFields key={field.id} field={field} name={'#responsibleComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} step={step} />
+                                                        return <CustomFields key={field.id} field={field} name={'#responsibleComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} value={step.responsibleComments} />
                                                     }
                                                     return true;
                                                 })
@@ -556,7 +558,7 @@ export default class StepName extends Component {
                                             {customFields &&
                                                 customFields.map(field => {
                                                     if (field.section === 'P' && field.subsection === 'GTE') {
-                                                        return <CustomFields key={field.id} field={field} name={'#managerComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} />
+                                                        return <CustomFields key={field.id} field={field} name={'#managerComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} value={step.managerComments} />
                                                     }
                                                     return true;
                                                 })
@@ -569,7 +571,7 @@ export default class StepName extends Component {
                                             {customFields &&
                                                 customFields.map(field => {
                                                     if (field.section === 'P' && field.subsection === 'COO') {
-                                                        return <CustomFields key={field.id} field={field} name={'#coordinatorOnSiteComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} />
+                                                        return <CustomFields key={field.id} field={field} name={'#coordinatorOnSiteComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} value={step.coordinatorOnSiteComments} />
                                                     }
                                                     return true;
                                                 })
@@ -581,7 +583,7 @@ export default class StepName extends Component {
                                             {customFields &&
                                                 customFields.map(field => {
                                                     if (field.section === 'P' && field.subsection === 'ADM') {
-                                                        return <CustomFields key={field.id} field={field} name={'#accountAdministratorComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} />
+                                                        return <CustomFields key={field.id} field={field} name={'#accountAdministratorComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} value={step.accountAdministratorComments} />
                                                     }
                                                     return true;
                                                 })
@@ -594,7 +596,7 @@ export default class StepName extends Component {
                                             {customFields &&
                                                 customFields.map(field => {
                                                     if (field.section === 'P' && field.subsection === 'COACH') {
-                                                        return <CustomFields key={field.id} field={field} name={'#coachingComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} />
+                                                        return <CustomFields key={field.id} field={field} name={'#coachingComments/' + field.id} functionOnChange={(e) => this.armarObjeto(e)} value={step.coachingComments} />
                                                     }
                                                     return true;
                                                 })
@@ -625,18 +627,33 @@ export default class StepName extends Component {
                                     <div>Componente de grabacion de voz</div>
 
                                     <div className="archivosCargados">
-                                        <span>
-                                            <button>X</button>
-                                            <p>Archivo 1</p>
-                                        </span>
-                                        <span>
-                                            <button>X</button>
-                                            <p>Archivo 1</p>
-                                        </span>
-                                        <span>
-                                            <button>X</button>
-                                            <p>Archivo 1</p>
-                                        </span>
+                                        {step.audioFiles &&
+                                            step.audioFiles.map(stp => {
+                                                if (stp.section === 'coachings') {
+                                                    contadorAudios++;
+                                                    return (
+                                                        <span key={stp._id} className={stp.message && 'isMessage'}>
+                                                            <button
+                                                                onClick={
+                                                                    (e) => {
+                                                                        e.preventDefault();
+                                                                        this.eliminarArchivo(stp._id);
+                                                                    }
+                                                                }
+                                                            >
+                                                                X
+                                                                        </button>
+                                                            {stp.message &&
+                                                                <p>{moment(stp.createdAt).format("DD/MM/YYYY")} - {stp.message} - type: M</p>
+                                                            }
+                                                            {!stp.message &&
+                                                                <p>{moment(stp.createdAt).format("DD/MM/YYYY")} - type: F</p>
+                                                            }
+                                                        </span>
+                                                    )
+                                                }
+                                            })
+                                        }
                                     </div>
                                 </article>
                             </div>

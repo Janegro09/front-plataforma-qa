@@ -159,8 +159,8 @@ export default class PartiturasEspecificComponent extends Component {
                                                 <td>{(user.partitureStatus === 'pending' ? <TimerIcon />:(user.partitureStatus === 'finish' ? <CheckIcon />:<PlayArrowRoundedIcon />))}</td>
 
                                                 <td>{(user.improvment === "+" ? 
-                                                <ArrowDropUpRoundedIcon />: (user.improvment === "+-" ? 
-                                                <ArrowDropDownRoundedIcon />:<ImportExportRoundedIcon />))}</td>
+                                                <ArrowDropUpRoundedIcon className="arrowUp"/>: (user.improvment === "+-" ? 
+                                                <ArrowDropDownRoundedIcon className="arrowDown"/>:<ImportExportRoundedIcon />))}</td>
                                                 <td className="tablaVariables"><div className={` ${!(user.audioFilesRequired - user.audioFilesActually) <= 0? "estadoInactivo " : 'estadoActivo'}`}></div></td>
                                                             <td><button onClick={(e) => {
                                                                 e.preventDefault();

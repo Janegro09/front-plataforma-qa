@@ -411,3 +411,13 @@ hr {
 .ArrowRightIcon {
   font-size: 18px !important;
 }
+
+.arrowUp {
+  color: green;
+  font-size: 3.5em !important;
+}
+
+.arrowDown {
+  color: red;
+  font-size: 3.5em !important;
+}

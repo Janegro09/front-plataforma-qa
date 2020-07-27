@@ -8,6 +8,9 @@ import swal from 'sweetalert';
 import moment from 'moment';
 import './partitures.css';
 import { Redirect } from 'react-router-dom';
+import ArrowDropUpRoundedIcon from '@material-ui/icons/ArrowDropUpRounded';
+import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
+import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import TimerIcon from '@material-ui/icons/Timer';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
@@ -104,8 +107,10 @@ export default class PartiturasUsuarioComponent extends Component {
                 <tbody>
                     {ReturnData.actual.length > 0 &&
                         <tr>
-                            <td>{users.partitureStatus}</td>
-                            <td>{users.improvment}</td>
+                            <td>{(users.partitureStatus === 'pending' ? <TimerIcon />:(users.partitureStatus === 'finish' ? <CheckIcon />:<PlayArrowRoundedIcon />))}</td>
+                            <td>{(users.improvment === "+" ? 
+                                                <ArrowDropUpRoundedIcon className="arrowUp"/>: (users.improvment === "+-" ? 
+                                                <ArrowDropDownRoundedIcon className="arrowDown"/>:<ImportExportRoundedIcon />))}</td>
                             {ReturnData.actual.map((value, key) => {
                                 return <th key={key}>{value}</th>
                             })

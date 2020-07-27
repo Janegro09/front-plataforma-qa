@@ -14,6 +14,8 @@ import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import TimerIcon from '@material-ui/icons/Timer';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 export default class PartiturasEspecificComponent extends Component {
 
@@ -119,7 +121,10 @@ export default class PartiturasEspecificComponent extends Component {
                                 <tr>
                                     <td>{moment(data.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>
                                     <td>{data.name}</td>
-                                    <td>{data.partitureStatus}</td>
+                                    <td>
+                                    {(data.partitureStatus === 'pending' ? <TimerIcon />:(data.partitureStatus === 'finished' ? <CheckIcon />:<PlayArrowRoundedIcon />))}
+                                    </td>
+
                                     <td>{data.fileId.length}</td>
                                 </tr>
                             </tbody>
@@ -136,10 +141,10 @@ export default class PartiturasEspecificComponent extends Component {
                                     <th>Última actualización</th>
                                     <th>Cluster</th>
                                     <th>Responsable</th>
-                                    <th>Estado</th>
-                                    <th>Improvment</th>
-                                    <th>Audios</th>
-                                    <th>Ver</th>
+                                    <th className="tableIcons">Estado</th>
+                                    <th className="tableIcons">Improvment</th>
+                                    <th className="tableIcons">Audios</th>
+                                    <th className="tableIcons">Ver</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -156,16 +161,16 @@ export default class PartiturasEspecificComponent extends Component {
                                                 })}</td>
                                                 <td>{user.cluster}</td>
                                                 <td>{user.responsable}</td>
-                                                <td>{(user.partitureStatus === 'pending' ? <TimerIcon />:(user.partitureStatus === 'finish' ? <CheckIcon />:<PlayArrowRoundedIcon />))}</td>
+                                                <td className="tableIcons">{(user.partitureStatus === 'pending' ? <TimerIcon className="timerIcon"/>:(user.partitureStatus === 'finished' ? <CheckIcon className="CheckIcon" />:<PlayArrowRoundedIcon className="PlayArrowRoundedIcon"/>))}</td>
 
-                                                <td>{(user.improvment === "+" ? 
-                                                <ArrowDropUpRoundedIcon className="arrowUp"/>: (user.improvment === "+-" ? 
-                                                <ArrowDropDownRoundedIcon className="arrowDown"/>:<ImportExportRoundedIcon />))}</td>
-                                                <td className="tablaVariables"><div className={` ${!(user.audioFilesRequired - user.audioFilesActually) <= 0? "estadoInactivo " : 'estadoActivo'}`}></div></td>
+                                                <td className="tableIcons">{(user.improvment === "+" ? 
+                                                <ExpandLessIcon className="arrowUp"/>: (user.improvment === "+-" ? 
+                                                <ExpandMoreIcon className="arrowDown"/>:<ImportExportRoundedIcon />))}</td>
+                                                <td className="tablaVariables tableIcons"><div className={` ${!(user.audioFilesRequired - user.audioFilesActually) <= 0? "estadoInactivo " : 'estadoActivo'}`}></div></td>
                                                             <td><button onClick={(e) => {
                                                                 e.preventDefault();
                                                                 this.verUsuario(user.idDB)
-                                                            }}><VisibilityRoundedIcon /></button></td>
+                                                            }}><VisibilityRoundedIcon className="verIcon"/></button></td>
                                             </tr>
                                         )
                                     })

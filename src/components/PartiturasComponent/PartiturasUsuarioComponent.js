@@ -107,7 +107,7 @@ export default class PartiturasUsuarioComponent extends Component {
                 <tbody>
                     {ReturnData.actual.length > 0 &&
                         <tr>
-                            <td>{(users.partitureStatus === 'pending' ? <TimerIcon />:(users.partitureStatus === 'finish' ? <CheckIcon />:<PlayArrowRoundedIcon />))}</td>
+                            <td>{(users.partitureStatus === 'pending' ? <TimerIcon className="clockIcon"/>:(users.partitureStatus === 'finished' ? <CheckIcon />:<PlayArrowRoundedIcon />))}</td>
                             <td>{(users.improvment === "+" ? 
                                                 <ArrowDropUpRoundedIcon className="arrowUp"/>: (users.improvment === "+-" ? 
                                                 <ArrowDropDownRoundedIcon className="arrowDown"/>:<ImportExportRoundedIcon />))}</td>
@@ -220,8 +220,8 @@ export default class PartiturasUsuarioComponent extends Component {
                                     <td>{moment(data.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>
                                     <td>{data.name}</td>
                                     <td>
-                                        {(data.partitureStatus === 'pending' ? <TimerIcon /> : 
-                                        (data.partitureStatus === 'finish' ? <CheckIcon /> : <PlayArrowRoundedIcon />))}
+                                        {(data.partitureStatus === 'pending' ? <TimerIcon className="clockIcon" /> : 
+                                        (data.partitureStatus === 'finished' ? <CheckIcon /> : <PlayArrowRoundedIcon />))}
                                     </td>
                                     <td>{data.fileId.length}</td>
                                 </tr>

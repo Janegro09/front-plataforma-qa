@@ -193,6 +193,11 @@ div.content {
 
 .showme {
   display: none;
+
+}
+
+.showme > a {
+  color: white;
 }
 
 .nameMenu:hover .showme {
@@ -200,12 +205,14 @@ div.content {
   flex-direction: column;
   justify-content: space-evenly;
   color: white;
-  background-color: red;
+  background-color: #333333;
   width: 100px;
   height: 100px;
   text-align: center;
   position: fixed;
   transform: translate(51px, -51px);
+  -webkit-box-shadow: inset 2px 0px 2px 0px rgba(0,0,0,0.25);
+  border-radius: 0px 3px 3px 0px;
 }
 
 .IconoMenuDia {
@@ -413,11 +420,30 @@ hr {
 }
 
 .arrowUp {
-  color: green;
-  font-size: 3.5em !important;
+  color: #6bca77;
+  font-size: 2.1em !important;
 }
 
 .arrowDown {
-  color: red;
-  font-size: 3.5em !important;
+  color: #f8848c;
+  font-size: 2.1em !important;
 }
+
+
+.verIcon {
+  font-size: 1.3em !important;
+}
+
+.timerIcon {
+  color: orange;
+  font-size: 1.7em !important;
+}
+
+.CheckIcon {
+  color: #6bca77;
+}
+
+.PlayArrowRoundedIcon {
+  color: #6bca77;
+}
+

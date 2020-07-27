@@ -14,13 +14,18 @@ export default class PartiturasEspecificComponent extends Component {
         id: null,
         loading: false,
         data: null,
-        idUsuario: null
+        idUsuario: null,
+        goBack: false
     }
 
     verUsuario = (id) => {
         this.setState({
             idUsuario: id
         });
+    }
+
+    volver = () => {
+        this.setState({ goBack: true });
     }
 
     componentDidMount() {
@@ -57,10 +62,12 @@ export default class PartiturasEspecificComponent extends Component {
     }
 
     render() {
-        let { loading, data, idUsuario } = this.state;
+        let { loading, data, idUsuario, goBack } = this.state;
         data = data ? data[0] : null;
 
-        console.log("DATA: ", data);
+        if (goBack) {
+            return <Redirect to={`/partituras`} />
+        }
 
 
         if (idUsuario) {
@@ -82,6 +89,15 @@ export default class PartiturasEspecificComponent extends Component {
 
                 {data &&
                     <div className="section-content">
+                        <button
+                            onClick={ (e) => {
+                                e.preventDefault();
+                                this.volver();
+                            } }
+                        >
+                            Partituras
+                        </button>
+
                         <h1>Archivo actual</h1>
                         <table>
                             <thead>

@@ -15,7 +15,8 @@ export default class PartiturasUsuarioComponent extends Component {
         loading: false,
         data: null,
         redirect: false,
-        id: null
+        id: null,
+        goBack: false
     }
 
     modificarEstado = (StepId) => {
@@ -123,6 +124,10 @@ export default class PartiturasUsuarioComponent extends Component {
         )
     }
 
+    volver = () => {
+        this.setState({ goBack: true });
+    }
+
     componentDidMount() {
         let { id, idUsuario } = this.props.match.params;
 
@@ -161,12 +166,14 @@ export default class PartiturasUsuarioComponent extends Component {
             });
     }
     render() {
-        let { data, redirect, id } = this.state;
+        let { data, redirect, id, goBack } = this.state;
         data = data ? data[0] : null;
         let date = new Date();
         date = moment(date);
 
-        ;
+        if (goBack) {
+            return <Redirect to='/partituras' />
+        }
 
         if (redirect) {
             return <Redirect to={'/partituras/step/' + this.props.match.params.id + '/' + this.props.match.params.idUsuario + '/' + id} />
@@ -182,6 +189,14 @@ export default class PartiturasUsuarioComponent extends Component {
                 </div>
                 {data &&
                     <div className="section-content">
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                this.volver();
+                            }}
+                        >
+                            Partituras
+                        </button>
                         <h2>Archivo actual</h2>
                         <table>
                             <thead>

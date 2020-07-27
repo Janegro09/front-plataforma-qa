@@ -59,3 +59,7 @@ article .steps span input {
 article .steps span p {
     margin: 0 0 0 5px;
 }
+
+article .steps span {
+    cursor: pointer;
+}

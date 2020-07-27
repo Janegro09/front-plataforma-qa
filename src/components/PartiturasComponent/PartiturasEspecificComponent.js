@@ -7,6 +7,13 @@ import axios from 'axios';
 import Global from '../../Global';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
+import ArrowDropUpRoundedIcon from '@material-ui/icons/ArrowDropUpRounded';
+import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
+import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
+import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
+import CheckIcon from '@material-ui/icons/Check';
+import TimerIcon from '@material-ui/icons/Timer';
+import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 
 export default class PartiturasEspecificComponent extends Component {
 
@@ -122,16 +129,17 @@ export default class PartiturasEspecificComponent extends Component {
                         <table>
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    
                                     <th>DNI</th>
-                                    <th>Improvment</th>
-                                    <th>Estado</th>
                                     <th>Nombre</th>
                                     <th>Canal</th>
                                     <th>Última actualización</th>
                                     <th>Cluster</th>
                                     <th>Responsable</th>
+                                    <th>Estado</th>
+                                    <th>Improvment</th>
                                     <th>Audios</th>
+                                    <th>Ver</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -139,13 +147,8 @@ export default class PartiturasEspecificComponent extends Component {
                                     data.users.map(user => {
                                         return (
                                             <tr key={user.idDB}>
-                                                <td><button onClick={(e) => {
-                                                    e.preventDefault();
-                                                    this.verUsuario(user.idDB)
-                                                }}>Ver</button></td>
                                                 <td>{user.dni}</td>
-                                                <td>{user.improvment}</td>
-                                                <td>{user.partitureStatus}</td>
+
                                                 <td>{user.name} {user.lastName}</td>
                                                 <td>{user.canal}</td>
                                                 <td>{user.lastUpdate.map(data => {
@@ -153,7 +156,16 @@ export default class PartiturasEspecificComponent extends Component {
                                                 })}</td>
                                                 <td>{user.cluster}</td>
                                                 <td>{user.responsable}</td>
+                                                <td>{(user.partitureStatus === 'pending' ? <TimerIcon />:(user.partitureStatus === 'finish' ? <CheckIcon />:<PlayArrowRoundedIcon />))}</td>
+
+                                                <td>{(user.improvment === "+" ? 
+                                                <ArrowDropUpRoundedIcon />: (user.improvment === "+-" ? 
+                                                <ArrowDropDownRoundedIcon />:<ImportExportRoundedIcon />))}</td>
                                                 <td className="tablaVariables"><div className={` ${!(user.audioFilesRequired - user.audioFilesActually) <= 0? "estadoInactivo " : 'estadoActivo'}`}></div></td>
+                                                            <td><button onClick={(e) => {
+                                                                e.preventDefault();
+                                                                this.verUsuario(user.idDB)
+                                                            }}><VisibilityRoundedIcon /></button></td>
                                             </tr>
                                         )
                                     })

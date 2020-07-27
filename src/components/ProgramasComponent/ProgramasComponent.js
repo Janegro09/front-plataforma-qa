@@ -15,8 +15,8 @@ import Logo from '../Home/logo_background.png';
 import SelectGroupCreate from './SelectGroupCreate'
 import SelectGroupEdit from './SelectGroupEdit'
 import SelectGroupParent from './SelectGroupParent'
-
 import PublishIcon from '@material-ui/icons/Publish';
+import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight';
 
 
 export default class GroupsTable extends Component {
@@ -462,7 +462,7 @@ export default class GroupsTable extends Component {
 
                         let tempData = (
                             <tr key={index + 1 + j}>
-                                <td>va la flecha {data[j].name}</td>
+                                <td><SubdirectoryArrowRightIcon className="ArrowRightIcon" /> {data[j].name}</td>
                                 <td onClick={e => this.editProgram(e, data[j])}><EditIcon style={{ fontSize: 15 }} /></td>
                                 <td onClick={e => this.deleteProgram(e, data[j])}><DeleteIcon style={{ fontSize: 15 }} /></td>
                             </tr>
@@ -477,7 +477,7 @@ export default class GroupsTable extends Component {
                             if (data[j].id === data[k].programParent) {
                                 let tempData = (
                                     <tr key={index + 3 + k}>
-                                        <td>    va la flecha {data[k].name}</td>
+                                        <td><SubdirectoryArrowRightIcon className="marginArrow ArrowRightIcon"/> {data[k].name}</td>
                                         <td onClick={e => this.editProgram(e, data[k])}><EditIcon style={{ fontSize: 15 }} /></td>
                                         <td onClick={e => this.deleteProgram(e, data[k])}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                     </tr>
@@ -682,7 +682,7 @@ export default class GroupsTable extends Component {
                                                 <option value="M" selected={userSelected.section === 'M'}>Monitoreo</option>
                                                 <option value="P" selected={userSelected.section === 'P'}>Perfilamiento</option>
                                             </select>
-                                            <div>
+                                            <div className="etiquetas">
                                                 {this.state.specificGroup && this.state.componenteSelectGrupos !== null &&
                                                     this.state.specificGroup[0].assignedGroups.map(grupo => {
                                                         return (

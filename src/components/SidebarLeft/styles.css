@@ -380,10 +380,34 @@ hr {
 
 }
 
+.etiquetas {
+  display: flex;
+  margin-bottom: 20px;
+}
+
 
 .etiqueta {
-  width: fit-content;
-  padding: 10px;
-  border: 1px solid #d4d4d4;
+  display: flex;
+  padding: 10px 0px 10px 5px;
+  height: 43px;
+  border: 1px solid #03a9f4;
   border-radius: 4px;
+}
+
+.etiqueta > p {
+  color: #03a9f4;
+  margin-right: 5px;
+}
+
+.etiqueta > .button {
+  color: #03a9f4;
+  margin-right: 5px;
+}
+
+.marginArrow {
+  margin-left: 21px;
+}
+
+.ArrowRightIcon {
+  font-size: 18px !important;
 }

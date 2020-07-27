@@ -8,6 +8,9 @@ import swal from 'sweetalert';
 import moment from 'moment';
 import './partitures.css';
 import { Redirect } from 'react-router-dom';
+import CheckIcon from '@material-ui/icons/Check';
+import TimerIcon from '@material-ui/icons/Timer';
+import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 
 export default class PartiturasUsuarioComponent extends Component {
 
@@ -211,7 +214,10 @@ export default class PartiturasUsuarioComponent extends Component {
                                 <tr>
                                     <td>{moment(data.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>
                                     <td>{data.name}</td>
-                                    <td>{data.partitureStatus}</td>
+                                    <td>
+                                        {(data.partitureStatus === 'pending' ? <TimerIcon /> : 
+                                        (data.partitureStatus === 'finish' ? <CheckIcon /> : <PlayArrowRoundedIcon />))}
+                                    </td>
                                     <td>{data.fileId.length}</td>
                                 </tr>
                             </tbody>

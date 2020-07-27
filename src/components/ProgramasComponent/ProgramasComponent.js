@@ -686,7 +686,7 @@ export default class GroupsTable extends Component {
                                                 {this.state.specificGroup && this.state.componenteSelectGrupos !== null &&
                                                     this.state.specificGroup[0].assignedGroups.map(grupo => {
                                                         return (
-                                                            <div>
+                                                            <div className="etiqueta">
                                                                 <p>{grupo.name}</p>
                                                                 <button onClick={(e) => {
                                                                     e.preventDefault()

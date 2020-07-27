@@ -379,3 +379,11 @@ hr {
   background-color: #039be5;
 
 }
+
+
+.etiqueta {
+  width: fit-content;
+  padding: 10px;
+  border: 1px solid #d4d4d4;
+  border-radius: 4px;
+}

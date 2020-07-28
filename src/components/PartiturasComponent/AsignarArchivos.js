@@ -1,10 +1,4 @@
 import React, { Component } from 'react'
-
-import FileSelection from './FileSelection'
-import PerfilamientoSelection from './PerfilamientoSelection'
-import InstancePartitureSelection from './InstancePartitureSelection'
-
-
 import './Modal.css'
 import axios from 'axios'
 import Global from '../../Global'
@@ -91,8 +85,6 @@ export default class Modal extends Component {
 
         let { loading, data, archivosSeleccionados } = this.state;
 
-        console.log("Archivos seleccionados: ", archivosSeleccionados)
-
         return (
             <div className="modal" id="modal-casero">
                 <div className="hijo2">
@@ -176,15 +168,6 @@ export default class Modal extends Component {
 
                                 </tbody>
                             </table>
-                            {/* 
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    this.props.getData(archivosSeleccionados);
-                                }}
-                            >
-                                ENVIAR
-                            </button> */}
                         </div>
                     }
 

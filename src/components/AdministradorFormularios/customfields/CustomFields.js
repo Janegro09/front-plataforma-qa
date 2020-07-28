@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Label } from 'recharts';
 
 export default class CustomFields extends Component {
 

@@ -7,8 +7,6 @@ import axios from 'axios';
 import Global from '../../Global';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
-import ArrowDropUpRoundedIcon from '@material-ui/icons/ArrowDropUpRounded';
-import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
 import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
 import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
 import CheckIcon from '@material-ui/icons/Check';

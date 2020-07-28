@@ -368,7 +368,7 @@ export default class StepName extends Component {
     }
 
     render() {
-        let { data, customFields, abrirModalAsignarArchivos, archivosSeleccionados, value, loading, step, instances } = this.state;
+        let { data, customFields, abrirModalAsignarArchivos, archivosSeleccionados, value, loading, step } = this.state;
         data = data ? data[0] : null;
 
         let contadorAudios = 0;
@@ -506,6 +506,7 @@ export default class StepName extends Component {
                                                                 </span>
                                                             )
                                                         }
+                                                        return true;
                                                     })
                                                 }
                                                 <p>Audios requeridos: {step.requestedMonitorings}</p>

@@ -33,11 +33,11 @@ export default class StepName extends Component {
 
     }
 
-    armarObjeto = (e,data = false) => {
+    armarObjeto = (e, data = false) => {
         let id;
-        if(typeof e === 'string'){
+        if (typeof e === 'string') {
             id = e;
-        } else{
+        } else {
             id = e.target.name;
         }
         let { dataToSend } = this.state;
@@ -90,7 +90,7 @@ export default class StepName extends Component {
         axios.put(Global.getAllPartitures + "/" + id + '/' + idUsuario + '/' + idStep, sendData, config)
             .then(response => {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
-                swal('Excelente','Paso modificado correctamente','success').then(() => {
+                swal('Excelente', 'Paso modificado correctamente', 'success').then(() => {
                     window.location.reload(window.location.href);
                 })
             })
@@ -139,8 +139,37 @@ export default class StepName extends Component {
             });
     }
 
-    descargarArchivo = (archivo) => {
-        let win = window.open(Global.download + '/' + archivo.id + '?urltemp=false', '_blank');
+    descargarArchivoAudio = (idArchivo) => {
+        let { id, idStep, idUsuario } = this.props.match.params;
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
+        axios.get(`${Global.getAllPartitures}/${id}/${idUsuario}/${idStep}/${idArchivo}`, { headers: { Authorization: bearer } }).then(response => {
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            let idResp = response.data.Data
+            console.log(`La response que lo re mio ${idResp}`)
+
+            let win = window.open(Global.download + '/' + idResp, '_blank');
+            win.focus();
+
+        })
+            .catch((e) => {
+                // Si hay algún error en el request lo deslogueamos
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    this.setState({
+                        loading: false
+                    })
+                    swal("Error!", "Hubo un problema", "error");
+                }
+                console.log("Error: ", e)
+            });
+    }
+
+    descargarArchivo = (id) => {
+        let win = window.open(Global.download + '/' + id + '?urltemp=false', '_blank');
         win.focus();
     }
 
@@ -408,7 +437,7 @@ export default class StepName extends Component {
                                                         key={archivo.id}
                                                         onClick={(e) => {
                                                             e.preventDefault();
-                                                            this.descargarArchivo(archivo);
+                                                            this.descargarArchivo(archivo.id);
                                                         }}
                                                     >
                                                         <p>{archivo.name}</p>
@@ -454,6 +483,16 @@ export default class StepName extends Component {
                                                                         }
                                                                     >
                                                                         X
+                                                                        </button>
+                                                                    <button
+                                                                        onClick={
+                                                                            (e) => {
+                                                                                e.preventDefault();
+                                                                                this.descargarArchivoAudio(stp._id);
+                                                                            }
+                                                                        }
+                                                                    >
+                                                                        8==D
                                                                         </button>
                                                                     {stp.message &&
                                                                         <p>{moment(stp.createdAt).format("DD/MM/YYYY")} - {stp.message} - type: M</p>
@@ -506,7 +545,7 @@ export default class StepName extends Component {
                                             </div>
 
                                             <label htmlFor="ddt">Detalle de transacción / Oportunidades indentificadas</label>
-                                            <textarea name="detalleTransaccion" id="ddt" cols="30" rows="10" defaultValue={step.detalleTransaccion}  onChange={this.armarObjeto}></textarea>
+                                            <textarea name="detalleTransaccion" id="ddt" cols="30" rows="10" defaultValue={step.detalleTransaccion} onChange={this.armarObjeto}></textarea>
 
                                             <label htmlFor="cr">Causa Raíz / Descripción del patrón a mejorar</label>
                                             <textarea name="patronMejora" id="cr" cols="30" rows="10" defaultValue={step.patronMejora} onChange={
@@ -534,13 +573,13 @@ export default class StepName extends Component {
                                         <article>
                                             <h6>Responsable</h6>
                                             {customFields &&
-                                                <CustomFields 
+                                                <CustomFields
                                                     fields={customFields}
                                                     section='P'
                                                     subsection='RESP'
                                                     values={step.responsibleComments}
                                                     data={(d) => {
-                                                        this.armarObjeto('responsibleComments',d)
+                                                        this.armarObjeto('responsibleComments', d)
                                                     }}
                                                 />
                                             }
@@ -549,13 +588,13 @@ export default class StepName extends Component {
                                         <article>
                                             <h6>Gerente</h6>
                                             {customFields &&
-                                                <CustomFields 
+                                                <CustomFields
                                                     fields={customFields}
                                                     section='P'
                                                     subsection='GTE'
                                                     values={step.managerComments}
                                                     data={(d) => {
-                                                        this.armarObjeto('managerComments',d)
+                                                        this.armarObjeto('managerComments', d)
                                                     }}
                                                 />
                                             }
@@ -564,13 +603,13 @@ export default class StepName extends Component {
                                         <article>
                                             <h6>Coordinador On Site</h6>
                                             {customFields &&
-                                                <CustomFields 
+                                                <CustomFields
                                                     fields={customFields}
                                                     section='P'
                                                     subsection='COO'
                                                     values={step.coordinatorOnSiteComments}
                                                     data={(d) => {
-                                                        this.armarObjeto('coordinatorOnSiteComments',d)
+                                                        this.armarObjeto('coordinatorOnSiteComments', d)
                                                     }}
                                                 />
                                             }
@@ -579,13 +618,13 @@ export default class StepName extends Component {
                                         <article>
                                             <h6>Administrador</h6>
                                             {customFields &&
-                                                <CustomFields 
+                                                <CustomFields
                                                     fields={customFields}
                                                     section='P'
                                                     subsection='ADM'
                                                     values={step.accountAdministratorComments}
                                                     data={(d) => {
-                                                        this.armarObjeto('accountAdministratorComments',d)
+                                                        this.armarObjeto('accountAdministratorComments', d)
                                                     }}
                                                 />
                                             }
@@ -594,13 +633,13 @@ export default class StepName extends Component {
                                         <article>
                                             <h6>Coach</h6>
                                             {customFields &&
-                                                <CustomFields 
+                                                <CustomFields
                                                     fields={customFields}
                                                     section='P'
                                                     subsection='COACH'
                                                     values={step.coachingComments}
                                                     data={(d) => {
-                                                        this.armarObjeto('coachingComments',d)
+                                                        this.armarObjeto('coachingComments', d)
                                                     }}
                                                 />
                                             }
@@ -626,7 +665,7 @@ export default class StepName extends Component {
                                     </button>
 
                                     <label htmlFor="grabaraudio">Grabar Audio</label>
-                                    <RecordAudio />
+                                    <RecordAudio ids={this.props.match.params} />
 
                                     <div className="archivosCargados">
                                         {step.audioFiles &&
@@ -644,6 +683,16 @@ export default class StepName extends Component {
                                                                 }
                                                             >
                                                                 X
+                                                                        </button>
+                                                            <button
+                                                                onClick={
+                                                                    (e) => {
+                                                                        e.preventDefault();
+                                                                        this.descargarArchivoAudio(stp._id);
+                                                                    }
+                                                                }
+                                                            >
+                                                                8==D
                                                                         </button>
                                                             {stp.message &&
                                                                 <p>{moment(stp.createdAt).format("DD/MM/YYYY")} - {stp.message} - type: M</p>

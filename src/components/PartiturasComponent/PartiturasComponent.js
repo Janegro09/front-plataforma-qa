@@ -128,16 +128,20 @@ export default class PartiturasComponent extends Component {
                 }
 
                 <div className="section-content">
-                <button
-                    onClick={
-                        (e) => {
-                            e.preventDefault();
-                            this.crearPartitura();
-                        }
+
+                    {HELPER_FUNCTIONS.checkPermission('POST|analytics/partitures/new') &&
+                        <button
+                            onClick={
+                                (e) => {
+                                    e.preventDefault();
+                                    this.crearPartitura();
+                                }
+                            }
+                        >
+                            Crear partitura
+                        </button>
                     }
-                >
-                    Crear partitura
-                </button>
+
                     {allPartitures !== null &&
                         <table>
                             <thead>
@@ -171,16 +175,25 @@ export default class PartiturasComponent extends Component {
                                                 </button>
                                             </td>
                                             <td>
-                                                <button
-                                                    onClick={
-                                                        (e) => {
-                                                            e.preventDefault();
-                                                            this.eliminarPartitura(partiture.id);
+                                                {HELPER_FUNCTIONS.checkPermission('DELETE|analytics/partitures/:id') &&
+                                                    <button
+                                                        onClick={
+                                                            (e) => {
+                                                                e.preventDefault();
+                                                                this.eliminarPartitura(partiture.id);
+                                                            }
                                                         }
-                                                    }
-                                                >
-                                                    Eliminar
-                                                </button>
+                                                    >
+                                                        Eliminar
+                                                    </button>
+                                                }
+                                                {!HELPER_FUNCTIONS.checkPermission('DELETE|analytics/partitures/:id') &&
+                                                    <button
+                                                    disabled
+                                                    >
+                                                        Eliminar
+                                                    </button>
+                                                }
                                             </td>
 
                                         </tr>

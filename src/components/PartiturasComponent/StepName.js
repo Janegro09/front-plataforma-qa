@@ -9,6 +9,7 @@ import moment from 'moment';
 import './steps.css'
 import CustomFields from '../AdministradorFormularios/customfields/CustomFields';
 import AsignarArchivos from './AsignarArchivos'
+import RecordAudio from '../RecordAudio/RecordAudio'
 
 export default class StepName extends Component {
 
@@ -625,7 +626,7 @@ export default class StepName extends Component {
                                     </button>
 
                                     <label htmlFor="grabaraudio">Grabar Audio</label>
-                                    <div>Componente de grabacion de voz</div>
+                                    <RecordAudio />
 
                                     <div className="archivosCargados">
                                         {step.audioFiles &&

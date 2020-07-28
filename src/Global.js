@@ -7,6 +7,7 @@ let Global = {
     deleteUser: `${BASE}/users/`,
     modifyUser: `${BASE}/users/`,
     changeStatus: `${BASE}/users/`,
+    dashboard: `${BASE}/home`,
     passChange: `${BASE}/users/passchange/`,
     permissions: `${BASE}/permissions/`,
     frontUtilities: `${BASE}/frontUtilities`,

@@ -473,7 +473,9 @@ export default class StepName extends Component {
                                                         if (stp.section === 'monitorings') {
                                                             contadorAudios++;
                                                             return (
-                                                                <span key={stp._id} className={stp.message && 'isMessage'}>
+                                                                <span key={stp._id} className={stp.message && 'isMessage'}
+                                                                    
+                                                                >
                                                                     <button
                                                                         onClick={
                                                                             (e) => {
@@ -481,24 +483,25 @@ export default class StepName extends Component {
                                                                                 this.eliminarArchivo(stp._id);
                                                                             }
                                                                         }
+                                                                        style={{zIndex: 10000}}
                                                                     >
                                                                         X
                                                                         </button>
-                                                                    <button
-                                                                        onClick={
-                                                                            (e) => {
-                                                                                e.preventDefault();
-                                                                                this.descargarArchivoAudio(stp._id);
-                                                                            }
-                                                                        }
-                                                                    >
-                                                                        8==D
-                                                                        </button>
                                                                     {stp.message &&
-                                                                        <p>{moment(stp.createdAt).format("DD/MM/YYYY")} - {stp.message} - type: M</p>
+                                                                        <p onClick={
+                                                                        (e) => {
+                                                                            e.preventDefault();
+                                                                            this.descargarArchivoAudio(stp._id);
+                                                                        }
+                                                                    }>{moment(stp.createdAt).format("DD/MM/YYYY")} - {stp.message} - type: M</p>
                                                                     }
                                                                     {!stp.message &&
-                                                                        <p>{moment(stp.createdAt).format("DD/MM/YYYY")} - type: F</p>
+                                                                        <p onClick={
+                                                                        (e) => {
+                                                                            e.preventDefault();
+                                                                            this.descargarArchivoAudio(stp._id);
+                                                                        }
+                                                                    }>{moment(stp.createdAt).format("DD/MM/YYYY")} - type: F</p>
                                                                     }
                                                                 </span>
                                                             )
@@ -673,7 +676,8 @@ export default class StepName extends Component {
                                                 if (stp.section === 'coachings') {
                                                     contadorAudios++;
                                                     return (
-                                                        <span key={stp._id} className={stp.message && 'isMessage'}>
+                                                        <span key={stp._id} className={stp.message && 'isMessage'}
+                                                        >
                                                             <button
                                                                 onClick={
                                                                     (e) => {
@@ -681,24 +685,27 @@ export default class StepName extends Component {
                                                                         this.eliminarArchivo(stp._id);
                                                                     }
                                                                 }
+
+                                                                style={{zIndex: 10000}}
                                                             >
                                                                 X
                                                                         </button>
-                                                            <button
-                                                                onClick={
-                                                                    (e) => {
-                                                                        e.preventDefault();
-                                                                        this.descargarArchivoAudio(stp._id);
-                                                                    }
-                                                                }
-                                                            >
-                                                                8==D
-                                                                        </button>
+
                                                             {stp.message &&
-                                                                <p>{moment(stp.createdAt).format("DD/MM/YYYY")} - {stp.message} - type: M</p>
+                                                                <p onClick={
+                                                                (e) => {
+                                                                    e.preventDefault();
+                                                                    this.descargarArchivoAudio(stp._id);
+                                                                }
+                                                            }>{moment(stp.createdAt).format("DD/MM/YYYY")} - {stp.message} - type: M</p>
                                                             }
                                                             {!stp.message &&
-                                                                <p>{moment(stp.createdAt).format("DD/MM/YYYY")} - type: F</p>
+                                                                <p onClick={
+                                                                (e) => {
+                                                                    e.preventDefault();
+                                                                    this.descargarArchivoAudio(stp._id);
+                                                                }
+                                                            }>{moment(stp.createdAt).format("DD/MM/YYYY")} - type: F</p>
                                                             }
                                                         </span>
                                                     )

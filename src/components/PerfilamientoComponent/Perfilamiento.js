@@ -213,16 +213,19 @@ export default class Perfilamiento extends Component {
 
         return (
             <div>
-                <div  className="flex-input-add">
-                {/* spiner rekes */}
-                {loading &&
-                    HELPER_FUNCTIONS.backgroundLoading()
-                }
-                <input className="form-control" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
-                <button className="boton-agregar" onClick={(e) => {
-                    e.preventDefault();
-                    this.agregarPerfilamiento();
-                }}>Subir<PublishIcon /></button>
+                <div className="flex-input-add">
+                    {/* spiner rekes */}
+                    {loading &&
+                        HELPER_FUNCTIONS.backgroundLoading()
+                    }
+                    <input className="form-control" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
+                    {HELPER_FUNCTIONS.checkPermission('POST|analytics/file/:fileId/perfilamiento') &&
+                        <button className="boton-agregar" onClick={(e) => {
+                            e.preventDefault();
+                            this.agregarPerfilamiento();
+                        }}>Subir<PublishIcon /></button>
+                    }
+
                 </div>
                 {data && id &&
                     <Modal idFile={id} />
@@ -230,7 +233,7 @@ export default class Perfilamiento extends Component {
                 {agregarPerfilamiento &&
                     <ModalAgregarPerfilamiento />
                 }
-                
+
                 {data &&
                     <table>
                         <thead>

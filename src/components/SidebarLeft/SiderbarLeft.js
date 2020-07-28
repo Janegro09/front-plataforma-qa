@@ -48,15 +48,26 @@ export default class SiderbarLeft extends Component {
                         {HELPER_FUNCTIONS.checkPermissionGroup("") &&
                             <li className="nameMenu"><NavLink to="/backoffice" activeClassName="active"><SettingsIcon className="IconoMenu" /></NavLink>Backoffice
                                 <span className="showme">
-                                    <NavLink to="/modelo-de-partituras">Modelo de partitura</NavLink>
-                                    <NavLink to="/administracion-formularios">Administrador de formularios</NavLink>
-                                    <NavLink to="/exportar-bases-de-datos">Exportar bases de datos</NavLink>
-                                    <NavLink to="/biblioteca">Biblioteca de archivos general</NavLink>
+                                    {HELPER_FUNCTIONS.checkPermission("GET|analytics/partituresModels/:id") &&
+                                        <NavLink to="/modelo-de-partituras">Modelo de partitura</NavLink>
+                                    }
+
+                                    {HELPER_FUNCTIONS.checkPermissionGroup("forms") &&
+                                        <NavLink to="/administracion-formularios">Administrador de formularios</NavLink>
+                                    }
+
+                                    {HELPER_FUNCTIONS.checkPermission("GET|backoffice/exports") &&
+                                        <NavLink to="/exportar-bases-de-datos">Exportar bases de datos</NavLink>
+                                    }
+
+                                    {HELPER_FUNCTIONS.checkPermission("GET|backoffice/exports") &&
+                                        <NavLink to="/biblioteca">Biblioteca de archivos general</NavLink>
+                                    }
                                 </span>
                             </li>
                         }
                         {/* PROGRAMAS */}
-                        {HELPER_FUNCTIONS.checkPermissionGroup("") &&
+                        {HELPER_FUNCTIONS.checkPermissionGroup("programs") &&
                             <li className="nameMenu"><NavLink to="/programas" activeClassName="active"><GroupWorkIcon className="IconoMenu" /></NavLink>Programas
                             </li>
                         }
@@ -66,20 +77,17 @@ export default class SiderbarLeft extends Component {
                             </li>
                         } */}
                         {/* ANALYTICS */}
-                        {HELPER_FUNCTIONS.checkPermissionGroup("") &&
+                        {HELPER_FUNCTIONS.checkPermissionGroup("analytics") &&
                             <li className="nameMenu">
-                                {/* <NavLink to="/perfilamiento" activeClassName="active"><TimelineIcon className="IconoMenu" />
-                                    <span className="showme">
-                                        <NavLink to="/perfilamiento" activeClassName="active">Perfilamiento</NavLink>
-                                        <NavLink to="/partituras" activeClassName="active">Partituras</NavLink>
-                                    </span>
-                                </NavLink>Analytics */}
-
                                 <div id="parent" className={this.state.activo ? 'active' : ''}>
                                     <TimelineIcon className="IconoMenu" />
                                     <span className="showme">
-                                        <NavLink to="/perfilamiento">Perfilamiento</NavLink>
-                                        <NavLink to="/partituras">Partituras</NavLink>
+                                        {HELPER_FUNCTIONS.checkPermission("GET|analytics/file") &&
+                                            <NavLink to="/perfilamiento">Perfilamiento</NavLink>
+                                        }
+                                        {HELPER_FUNCTIONS.checkPermission("GET|analytics/partitures/:id/:userId/:stepId") &&
+                                            <NavLink to="/partituras">Partituras</NavLink>
+                                        }
                                     </span>
                                     Analytics
                                 </div>

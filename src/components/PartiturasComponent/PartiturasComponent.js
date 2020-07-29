@@ -25,8 +25,46 @@ export default class PartiturasComponent extends Component {
             allPartitures: null,
             specific: false,
             idSpecific: '',
-            modalAgregar: false
+            modalAgregar: false,
+            filtredData: null
         }
+    }
+
+    buscar = (e) => {
+        let val = e.target.value;
+        let { filtredData, allPartitures } = this.state;
+        filtredData = [];
+        if(val){
+            for(let p of allPartitures) {
+                let name = p.name.toLowerCase();
+                val = val.toLowerCase();
+                if(name === val) {
+                    filtredData.push(p)
+                } else {
+                    let actualPartitureName = name.split(' ');
+                    let busquedaActual = val.split(' ');
+                    let coincide = 0;
+
+                    for(let x = 0; x < actualPartitureName.length; x++) {
+                        for(let j = 0; j < busquedaActual.length; j++){
+                            if(actualPartitureName[x].indexOf(busquedaActual[j]) >= 0) {
+                                coincide++;
+                            }
+                        }
+                    }
+
+                    if(coincide === busquedaActual.length){
+                        filtredData.push(p);
+                    }
+
+                }
+            }
+        } else {
+            filtredData = allPartitures;
+        }
+
+        this.setState({ filtredData });
+
     }
 
     verPartitura = (id) => {
@@ -91,6 +129,7 @@ export default class PartiturasComponent extends Component {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 allPartitures: response.data.Data,
+                filtredData: response.data.Data,
                 loading: false
             })
 
@@ -112,7 +151,7 @@ export default class PartiturasComponent extends Component {
     }
 
     render() {
-        let { allPartitures, loading, specific, idSpecific, modalAgregar } = this.state;
+        let { allPartitures, loading, specific, idSpecific, modalAgregar, filtredData } = this.state;
 
         if (specific) {
             return <Redirect to={`/partituras/${idSpecific}`} />
@@ -149,6 +188,9 @@ export default class PartiturasComponent extends Component {
                         </button>
                     }
 
+
+
+                    <input onChange={this.buscar} className="form-control" placeholder="Buscar por nombre de archivo"/>
                     {allPartitures !== null &&
                         <table>
                             <thead>
@@ -162,7 +204,7 @@ export default class PartiturasComponent extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {allPartitures.map((partiture, key) => {
+                                {filtredData.map((partiture, key) => {
                                     return (
                                         <tr key={key}>
                                             <td>{moment(partiture.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>

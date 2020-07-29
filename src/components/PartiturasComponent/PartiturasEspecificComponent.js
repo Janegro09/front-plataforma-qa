@@ -31,18 +31,18 @@ export default class PartiturasEspecificComponent extends Component {
         const val = e.target.value;
         let { data, filtredData } = this.state;
         const users = data[0].users;
-        if(val) {
+        if (val) {
             filtredData = [];
-            
-            for(let u of users) {
+
+            for (let u of users) {
                 let nameLastName = `${u.name} ${u.lastName}`
-                if(u.id.indexOf(val) >= 0) {
+                if (u.id.indexOf(val) >= 0) {
                     filtredData.push(u)
-                } else if(nameLastName.indexOf(val) >= 0) {
+                } else if (nameLastName.indexOf(val) >= 0) {
                     filtredData.push(u)
                 } else {
-                    let nameDividido        = nameLastName.split(' ');
-                    let busquedaDividida    = val.split(' ');
+                    let nameDividido = nameLastName.split(' ');
+                    let busquedaDividida = val.split(' ');
                     let coincide = 0;
                     for (let x = 0; x < nameDividido.length; x++) {
                         for (let y = 0; y < busquedaDividida.length; y++) {
@@ -56,18 +56,17 @@ export default class PartiturasEspecificComponent extends Component {
                     }
 
                 }
-            }   
+            }
         } else {
             filtredData = users;
         }
 
         this.setState({ filtredData });
 
-        console.log(val);
     }
 
     descargarArchivos = async (fileIds) => {
-        for(let f of fileIds) {
+        for (let f of fileIds) {
             let win = window.open(Global.download + '/' + f + '?urltemp=false', '_blank');
             win.focus();
         }
@@ -81,6 +80,26 @@ export default class PartiturasEspecificComponent extends Component {
 
     volver = () => {
         this.setState({ goBack: true });
+    }
+
+    dynamicSort = (property) => {
+        var sortOrder = 1;
+        if (property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return (a, b) => {
+            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+            return result * sortOrder;
+        }
+    }
+
+    ascDesc = (field) => {
+        let { filtredData } = this.state
+        let dataOrdenada = filtredData.sort(this.dynamicSort(field));
+        this.setState({
+            filtredData: dataOrdenada
+        })
     }
 
     componentDidMount() {
@@ -147,10 +166,10 @@ export default class PartiturasEspecificComponent extends Component {
                 {data &&
                     <div className="section-content">
                         <button
-                            onClick={ (e) => {
+                            onClick={(e) => {
                                 e.preventDefault();
                                 this.volver();
-                            } }
+                            }}
                         >
                             Partituras
                         </button>
@@ -171,7 +190,7 @@ export default class PartiturasEspecificComponent extends Component {
                                     <td>{moment(data.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>
                                     <td>{data.name}</td>
                                     <td className="tableIcons">
-                                    {(data.partitureStatus === 'pending' ? <TimerIcon />:(data.partitureStatus === 'finished' ? <CheckIcon />:<PlayArrowRoundedIcon />))}
+                                        {(data.partitureStatus === 'pending' ? <TimerIcon /> : (data.partitureStatus === 'finished' ? <CheckIcon /> : <PlayArrowRoundedIcon />))}
                                     </td >
 
                                     <td className="tableIcons">{data.fileId.length}</td>
@@ -189,19 +208,54 @@ export default class PartiturasEspecificComponent extends Component {
                         </table>
 
                         <h2>Usuarios</h2>
-                        <input onChange={this.buscar} className="form-control" placeholder="Buscar por usuario | Nombre o DNI"/>
+                        <input onChange={this.buscar} className="form-control" placeholder="Buscar por usuario | Nombre o DNI" />
                         <table>
                             <thead>
                                 <tr>
-                                    
+
                                     <th>DNI</th>
-                                    <th>Nombre</th>
-                                    <th>Canal</th>
+                                    <th
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            this.ascDesc('name')
+                                        }}
+                                    >
+                                        Nombre
+                                    </th>
+                                    <th
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            this.ascDesc('canal')
+                                        }}
+                                    >
+                                        Canal
+                                    </th>
                                     <th>Última actualización</th>
-                                    <th>Cluster</th>
-                                    <th>Responsable</th>
+                                    <th
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            this.ascDesc('cluster')
+                                        }}
+                                    >
+                                        Cluster
+                                    </th>
+                                    <th
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            this.ascDesc('responsable')
+                                        }}
+                                    >
+                                        Responsable
+                                    </th>
                                     <th className="tableIcons">Estado</th>
-                                    <th className="tableIcons">Improvment</th>
+                                    <th className="tableIcons"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            this.ascDesc('improvment')
+                                        }}
+                                    >
+                                        Improvment
+                                    </th>
                                     <th className="tableIcons">Audios</th>
                                     <th className="tableIcons">Ver</th>
                                 </tr>
@@ -220,23 +274,23 @@ export default class PartiturasEspecificComponent extends Component {
                                                 })}</td>
                                                 <td>{user.cluster}</td>
                                                 <td>{user.responsable}</td>
-                                                <td className="tableIcons">{(user.partitureStatus === 'pending' ? <TimerIcon className="timerIcon"/>:(user.partitureStatus === 'finished' ? <CheckIcon className="CheckIcon" />:<PlayArrowRoundedIcon className="PlayArrowRoundedIcon"/>))}</td>
+                                                <td className="tableIcons">{(user.partitureStatus === 'pending' ? <TimerIcon className="timerIcon" /> : (user.partitureStatus === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon className="PlayArrowRoundedIcon" />))}</td>
 
-                                                <td className="tableIcons">{(user.improvment === "+" ? 
-                                                <ExpandLessIcon className="arrowUp"/>: (user.improvment === "+-" ? 
-                                                <ExpandMoreIcon className="arrowDown"/>:<ImportExportRoundedIcon />))}</td>
-                                                <td className="tablaVariables tableIcons"><div className={` ${!(user.audioFilesRequired - user.audioFilesActually) <= 0? "estadoInactivo " : 'estadoActivo'}`}></div></td>
-                                                            <td><button onClick={(e) => {
-                                                                e.preventDefault();
-                                                                this.verUsuario(user.idDB)
-                                                            }}><VisibilityRoundedIcon className="verIcon"/></button></td>
+                                                <td className="tableIcons">{(user.improvment === "+" ?
+                                                    <ExpandLessIcon className="arrowUp" /> : (user.improvment === "+-" ?
+                                                        <ExpandMoreIcon className="arrowDown" /> : <ImportExportRoundedIcon />))}</td>
+                                                <td className="tablaVariables tableIcons"><div className={` ${!(user.audioFilesRequired - user.audioFilesActually) <= 0 ? "estadoInactivo " : 'estadoActivo'}`}></div></td>
+                                                <td><button onClick={(e) => {
+                                                    e.preventDefault();
+                                                    this.verUsuario(user.idDB)
+                                                }}><VisibilityRoundedIcon className="verIcon" /></button></td>
                                             </tr>
                                         )
                                     })
                                 }
                             </tbody>
                         </table>
-                        
+
                     </div>
 
                 }

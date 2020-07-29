@@ -26,7 +26,8 @@ export default class PartiturasComponent extends Component {
             specific: false,
             idSpecific: '',
             modalAgregar: false,
-            filtredData: null
+            filtredData: null,
+            orderedData: null
         }
     }
 
@@ -34,26 +35,26 @@ export default class PartiturasComponent extends Component {
         let val = e.target.value;
         let { filtredData, allPartitures } = this.state;
         filtredData = [];
-        if(val){
-            for(let p of allPartitures) {
+        if (val) {
+            for (let p of allPartitures) {
                 let name = p.name.toLowerCase();
                 val = val.toLowerCase();
-                if(name === val) {
+                if (name === val) {
                     filtredData.push(p)
                 } else {
                     let actualPartitureName = name.split(' ');
                     let busquedaActual = val.split(' ');
                     let coincide = 0;
 
-                    for(let x = 0; x < actualPartitureName.length; x++) {
-                        for(let j = 0; j < busquedaActual.length; j++){
-                            if(actualPartitureName[x].indexOf(busquedaActual[j]) >= 0) {
+                    for (let x = 0; x < actualPartitureName.length; x++) {
+                        for (let j = 0; j < busquedaActual.length; j++) {
+                            if (actualPartitureName[x].indexOf(busquedaActual[j]) >= 0) {
                                 coincide++;
                             }
                         }
                     }
 
-                    if(coincide === busquedaActual.length){
+                    if (coincide === busquedaActual.length) {
                         filtredData.push(p);
                     }
 
@@ -116,6 +117,26 @@ export default class PartiturasComponent extends Component {
             })
     }
 
+    dynamicSort = (property) => {
+        var sortOrder = 1;
+        if (property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return (a, b) => {
+            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+            return result * sortOrder;
+        }
+    }
+
+    ascDesc = (field) => {
+        let { allPartitures } = this.state
+        let dataOrdenada = allPartitures.sort(this.dynamicSort(field));
+        this.setState({
+            orderedData: dataOrdenada
+        })
+    }
+
     componentDidMount() {
         // Hacer rekest
         this.setState({
@@ -174,7 +195,7 @@ export default class PartiturasComponent extends Component {
                 }
 
                 <div className="section-content">
-                <h4>PARTITURAS</h4>
+                    <h4>PARTITURAS</h4>
                     {HELPER_FUNCTIONS.checkPermission('POST|analytics/partitures/new') &&
                         <button
                             onClick={
@@ -190,14 +211,24 @@ export default class PartiturasComponent extends Component {
 
 
 
-                    <input onChange={this.buscar} className="form-control" placeholder="Buscar por nombre de archivo"/>
+                    <input onChange={this.buscar} className="form-control" placeholder="Buscar por nombre de archivo" />
                     {allPartitures !== null &&
-                        
+
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Fechas</th>
-                                    <th>Nombre</th>
+                                    <th>
+                                        Fechas
+                                    </th>
+                                    <th
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            console.log("Clickeaste");
+                                            this.ascDesc('name')
+                                        }}
+                                    >
+                                        Nombre
+                                    </th>
                                     <th className="tableIcons">Estado</th>
                                     <th className="tableIcons">Archivos</th>
                                     <th className="tableIcons">Ver</th>
@@ -210,7 +241,7 @@ export default class PartiturasComponent extends Component {
                                         <tr key={key}>
                                             <td>{moment(partiture.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>
                                             <td>{partiture.name}</td>
-                                            <td className="tableIcons">{(partiture.partitureStatus === 'pending' ? <TimerIcon className="clockIcon"/>:(partiture.partitureStatus === 'finished' ? <CheckIcon />:<PlayArrowRoundedIcon />))}</td>
+                                            <td className="tableIcons">{(partiture.partitureStatus === 'pending' ? <TimerIcon className="clockIcon" /> : (partiture.partitureStatus === 'finished' ? <CheckIcon /> : <PlayArrowRoundedIcon />))}</td>
                                             <td className="tableIcons">{partiture.fileId.length.toString()}</td>
                                             <td className="tableIcons">
                                                 <button
@@ -221,7 +252,7 @@ export default class PartiturasComponent extends Component {
                                                         }
                                                     }
                                                 >
-                                                    <VisibilityRoundedIcon className="verIcon"/>
+                                                    <VisibilityRoundedIcon className="verIcon" />
                                                 </button>
                                             </td>
                                             <td className="tableIcons">
@@ -239,7 +270,7 @@ export default class PartiturasComponent extends Component {
                                                 }
                                                 {!HELPER_FUNCTIONS.checkPermission('DELETE|analytics/partitures/:id') &&
                                                     <button
-                                                    disabled
+                                                        disabled
                                                     >
                                                         Eliminar
                                                     </button>

@@ -60,7 +60,6 @@ export default class UsersComponent extends Component {
 
         const { userData } = this.state;
 
-        console.log(userData)
 
         return (
             <div>

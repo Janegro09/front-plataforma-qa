@@ -47,7 +47,8 @@ export default class GroupsTable extends Component {
             programaPadre: null,
             programEditReq: {},
             loading: false,
-            redireccion: false
+            redireccion: false,
+            selected: 'M'
         }
     }
 
@@ -384,6 +385,19 @@ export default class GroupsTable extends Component {
         });
     }
 
+    filtrarMonitoreoPerfilamiento = () => {
+        let { selected } = this.state;
+
+        if (selected === 'M') {
+            this.setState({ selected: 'P' });
+        } else {
+            this.setState({ selected: 'M' });
+
+        }
+
+        console.log("El estado cambiado: ", this.state.selected)
+    }
+
     componentDidMount() {
         let tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
@@ -396,6 +410,7 @@ export default class GroupsTable extends Component {
 
             this.setState({
                 allPrograms: response.data.Data,
+                programsFiltered: response.data.Data,
                 ok: true,
                 loading: false
             })
@@ -417,7 +432,7 @@ export default class GroupsTable extends Component {
     }
 
     render() {
-        const { allPrograms, userSelected } = this.state
+        const { allPrograms, programsFiltered, userSelected, selected } = this.state
         let pagina = this.getUsersPage(this.state.actualPage, allPrograms)
         let botones = []
         let arrayDiv = []
@@ -425,16 +440,18 @@ export default class GroupsTable extends Component {
 
         if (allPrograms) {
 
-            const data = allPrograms.filter(program => {
+            const data = programsFiltered.filter(program => {
+                console.log("Selected: ", selected)
                 if (this.title) {
                     if (this.title.value === '' || this.title.value === null) {
-                        return true;
+                        return (program.section === selected || program.section === 'notSpecify')
                     } else {
-                        return program.name.toUpperCase().indexOf(this.title.value.toUpperCase()) >= 0;
+                        return (program.name.toUpperCase().indexOf(this.title.value.toUpperCase()) >= 0);
                     }
                 } else {
-                    return true;
+                    return (program.section === selected || program.section === 'notSpecify')
                 }
+
             })
 
             for (let index = 0; index < data.length; index++) {
@@ -477,7 +494,7 @@ export default class GroupsTable extends Component {
                             if (data[j].id === data[k].programParent) {
                                 let tempData = (
                                     <tr key={index + 3 + k}>
-                                        <td><SubdirectoryArrowRightIcon className="marginArrow ArrowRightIcon"/> {data[k].name}</td>
+                                        <td><SubdirectoryArrowRightIcon className="marginArrow ArrowRightIcon" /> {data[k].name}</td>
                                         <td onClick={e => this.editProgram(e, data[k])}><EditIcon style={{ fontSize: 15 }} /></td>
                                         <td onClick={e => this.deleteProgram(e, data[k])}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                     </tr>
@@ -573,6 +590,13 @@ export default class GroupsTable extends Component {
                             <h4 className="marginBotton15">Programas</h4>
                             {!this.state.editProgram &&
                                 <div>
+                                    <label className="switch">
+                                        <input type="checkbox" type="checkbox" name="filtro" onChange={this.filtrarMonitoreoPerfilamiento} />
+                                        <span className="slider round"></span>
+                                    </label>
+
+                                    <h2>Filtrado por: {selected === 'M' ? 'Monitoreo' : 'Perfilamiento'}</h2>
+
                                     <div className="flex-input-add">
                                         {/* Buscador */}
                                         {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") &&
@@ -618,6 +642,8 @@ export default class GroupsTable extends Component {
                                                 <div className="sk-circle12 sk-circle"></div>
                                             </div>
                                         }
+
+
 
                                         <thead className="encabezadoTabla">
                                             <tr>

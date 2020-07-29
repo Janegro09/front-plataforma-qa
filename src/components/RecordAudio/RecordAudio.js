@@ -12,7 +12,8 @@ export default class RecordAudio extends Component {
     state = {
         isRecording: false,
         blobURL: '',
-        isBlocked: false
+        isBlocked: false,
+        dataSend: null
     }
 
     componentDidMount() {
@@ -72,17 +73,16 @@ export default class RecordAudio extends Component {
             .getMp3()
             .then(([buffer, blob]) => {
                 const blobURL = URL.createObjectURL(blob)
-                const test = new Blob( [blob], {
+                const dataSend = new Blob( [blob], {
                     type: 'audio/mp3'
 
                 } );
-                this.send( test )
-                this.setState({ blobURL, isRecording: false });
+                this.setState({ dataSend ,blobURL, isRecording: false });
             }).catch((e) => console.log(e));
     };
 
     render() {
-
+        const { dataSend } = this.state;
         return (
             <>
                 <button onClick={this.start} disabled={this.state.isRecording}>
@@ -92,9 +92,12 @@ export default class RecordAudio extends Component {
                     Parar
                 </button>
                 <audio src={this.state.blobURL} controls="controls" type="audio/mp3" id="audio" />
-
-                <h1>Ave soler</h1>
-                <a href={this.state.blobURL} download="filename.mp3">Enviar</a>
+                <button onClick={(e) => {
+                    e.preventDefault();
+                    this.send(dataSend);
+                }} disabled={!dataSend}>
+                    Enviar
+                </button>
 
             </>
         )

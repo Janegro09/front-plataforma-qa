@@ -105,9 +105,13 @@ export default class ModeloDePartiturasComponent extends Component {
     }
 
     render() {
-        let { data, crearNuevo } = this.state
+        let { data, crearNuevo, loading } = this.state
         return (
             <div>
+                {loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
+                
                 {crearNuevo &&
                     <Formulario idModificate={crearNuevo} />
                 }

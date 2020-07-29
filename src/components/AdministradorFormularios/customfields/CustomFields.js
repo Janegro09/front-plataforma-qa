@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import './customFields.css';
 
 export default class CustomFields extends Component {
 
@@ -120,7 +121,7 @@ export default class CustomFields extends Component {
                     print.map(value => {
                         return (
                             <>  
-                                <label>{value.name}</label>
+                                <label className="main">{value.name}</label>
                                 {value.type === 'text' &&
                                     <input type="text" required={value.required} name={value.sectionName} value={value.defaultValue} onChange={(e) => {
                                         this.changeValues(e, value);
@@ -152,10 +153,10 @@ export default class CustomFields extends Component {
                                                     defVal = false;
                                                 }
                                                 return (
-                                                    <>
+                                                    <div className="labelsInputs">
                                                         <input type="radio" name={value.sectionName} checked={defVal} onChange={(e) => this.changeValues(e, value, v)}/>
-                                                        <label>{v}</label>
-                                                    </>
+                                                        <label className="forInputs">{v}</label>
+                                                    </div>
                                                 )
                                             })
 
@@ -178,10 +179,10 @@ export default class CustomFields extends Component {
                                                 }
 
                                                 return (
-                                                    <>
+                                                    <div className="labelsInputs">
                                                         <input type="checkbox" id={v} name={value.sectionName} checked={defVal} onChange={(e) => {this.changeValues(e, value, v);}}/>
-                                                        <label>{v}</label>
-                                                    </>
+                                                        <label className="forInputs">{v}</label>
+                                                    </div>
                                                 )
                                             })
 

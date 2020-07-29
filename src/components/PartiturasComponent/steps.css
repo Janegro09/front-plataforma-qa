@@ -34,9 +34,12 @@ article label {
 }
 
 .archivosCargados {
-    border: 1px solid red;
     padding: 5px;
     box-sizing: border-box;
+}
+
+.archivosCargados p {
+    margin: 0;
 }
 
 .archivosCargados span {
@@ -59,4 +62,46 @@ article label {
 
 .isMessage {
     background-color: plum !important;
+}
+
+.uploadAudioMon select {
+    display: block;
+    width: 100%;
+}
+
+.uploadAudioMon input[type='file'] {
+    display: block;
+    margin: 0 auto;
+}
+
+.uploadAudioMon input[type='text'] {
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.uploadAudioMon button {
+    background-color: greenyellow;
+    display: block;
+    width: 25%;
+    padding: 5px 10px;
+    margin: 10px auto;
+}
+
+.coachingsAudios select {
+    display: block;
+    width: 25%;
+}
+
+.coachingsAudios label {
+    display: block;
+    font-size: 14px;
+    color: #000;
+}
+
+.coachingsAudios button {
+    display: block;
+    background-color: greenyellow;
+    padding: 10px 5px;
+    color: #000;
 }

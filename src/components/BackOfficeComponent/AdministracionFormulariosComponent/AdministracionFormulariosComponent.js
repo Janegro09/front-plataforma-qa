@@ -104,10 +104,14 @@ export default class AdministracionFormulariosComponent extends Component {
     }
 
     render() {
-        let { allForms, openModal, id } = this.state;
+        let { allForms, openModal, id, loading } = this.state;
 
         return (
             <div>
+
+                {loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
                 <div className="header">
                     {/* BOTON DE SALIDA */}
                     {/* BARRA LATERAL IZQUIERDA */}

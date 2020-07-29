@@ -32,7 +32,6 @@ class SelectGroup extends Component {
     };
 
     componentDidMount() {
-            console.log("ENTRANDO A UNO")
             let usuarios = []
             let tokenUser = JSON.parse(sessionStorage.getItem("token"))
             let token = tokenUser

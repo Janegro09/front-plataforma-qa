@@ -25,7 +25,6 @@ export default class UsersComponent extends Component {
         const bearer = `Bearer ${token}`
         axios.get(Global.dashboard, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            console.log(response.data)
 
         })
             .catch((e) => {

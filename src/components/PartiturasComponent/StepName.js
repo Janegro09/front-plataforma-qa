@@ -147,7 +147,6 @@ export default class StepName extends Component {
         axios.get(`${Global.getAllPartitures}/${id}/${idUsuario}/${idStep}/${idArchivo}`, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             let idResp = response.data.Data
-            console.log(`La response que lo re mio ${idResp}`)
 
             let win = window.open(Global.download + '/' + idResp, '_blank');
             win.focus();
@@ -711,6 +710,7 @@ export default class StepName extends Component {
                                                         </span>
                                                     )
                                                 }
+                                                return true;
                                             })
                                         }
                                     </div>

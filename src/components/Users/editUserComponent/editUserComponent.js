@@ -24,8 +24,6 @@ export default class editUserComponent extends Component {
     }
 
     handleChangeStatus = (event) => {
-        console.log(this.userActive);
-
         this.userActive = event.target.value
     }
 

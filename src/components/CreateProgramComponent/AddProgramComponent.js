@@ -28,7 +28,7 @@ export default class addUserComponent extends Component {
 
     addUser = (event) => {
         event.preventDefault()
-        console.log(this.validator)
+
         if (!this.validator.allValid()) {
             swal("Error!", "Parámetros inválidos", "error");
             this.validator.showMessages();

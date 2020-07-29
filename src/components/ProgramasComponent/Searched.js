@@ -13,7 +13,6 @@ export default class Searched extends Component {
     }
 
     agregarUsuario = (data) => {
-        console.log("agregar", data);
         this.props.results(data)
     }
 
@@ -22,12 +21,11 @@ export default class Searched extends Component {
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.get(Global.getUsers, { headers: { Authorization: bearer } }).then(response => {
-            // console.log("usuarios: ", response.data.Data)
             const usuarios = response.data.Data;
             const resultado = usuarios.filter(usuario => {
                 return usuario.id === this.props.searchString || usuario.name === this.props.searchString.toLowerCase() || usuario.lastName === this.props.searchString.toLowerCase()
             })
-            console.log(resultado)
+
             this.setState({
                 result: resultado
             })

@@ -161,7 +161,6 @@ export default class InstancePartitureSelection extends Component {
             const instance = partitureModelSelected[i];
 
             if (instance.id === idInstancia) {
-                console.log("A")
                 instance.expirationDate = date;
             }
         }

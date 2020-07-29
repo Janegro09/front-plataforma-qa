@@ -84,8 +84,7 @@ export default class PerfilamientoSelection extends Component {
 
     render() {
         let { data, loading, perfilamientos } = this.state;
-
-        console.log('maxa', perfilamientos);
+        
         return (
             <>
                 {loading &&

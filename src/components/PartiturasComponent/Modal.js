@@ -114,9 +114,6 @@ export default class Modal extends Component {
     render() {
         let { paginaActual, ids, perfilamiento } = this.state;
 
-        console.log("P: ", perfilamiento);
-        console.log("ids: ", ids);
-
         return (
             <div className="modal" id="modal-casero">
                 <div className="hijo2">
@@ -138,7 +135,7 @@ export default class Modal extends Component {
                     }
 
                     {paginaActual === 3 &&
-                        <InstancePartitureSelection getData={(instances) => { this.crear(instances); console.log('se envio animal') }} />
+                        <InstancePartitureSelection getData={(instances) => { this.crear(instances); }} />
                     }
 
                 </div>

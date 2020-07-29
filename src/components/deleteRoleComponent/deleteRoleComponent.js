@@ -39,10 +39,8 @@ export default class deleteRoleComponent extends Component {
 
                         axios.delete(Global.getRoles + '/' + id, config)
                             .then(response => {
-                                console.log(response.data.Success)
                                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
 
-                                console.log("La response: ", response.data)
                                 if (response.data.Success) {
                                     swal("Genial! se ha eliminado el rol correctamente", {
                                         icon: "success",

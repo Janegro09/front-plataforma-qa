@@ -13,8 +13,7 @@ export default class SubirNominaComponent extends Component {
     };
 
     fileChange = (event) => {
-        let mail = JSON.parse(sessionStorage.getItem("userData")).email
-        console.log(event.target.files[0])
+        let mail = JSON.parse(sessionStorage.getItem("userData")).email;
         this.setState({
             selectedFile: event.target.files[0]
         });

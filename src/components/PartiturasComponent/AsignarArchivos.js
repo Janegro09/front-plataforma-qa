@@ -25,7 +25,6 @@ export default class Modal extends Component {
     }
 
     eliminarArchivo = (idSeleccionado) => {
-        console.log("ID seleccionado: ", idSeleccionado);
         let { archivosSeleccionados } = this.state;
         const index = archivosSeleccionados.findIndex(element => element.id === idSeleccionado);
         if (index > -1 && archivosSeleccionados.length > 1) {
@@ -40,7 +39,6 @@ export default class Modal extends Component {
     }
 
     componentDidMount() {
-        console.log("LAS PROPS EN EL HIJITO: ", this.props)
         let { archivosSeleccionados } = this.props;
 
         if (archivosSeleccionados === null) {
@@ -58,7 +56,6 @@ export default class Modal extends Component {
         const bearer = `Bearer ${token}`
         axios.get(Global.files + '?section=filesLibraryPartitures', { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            console.log("La response: ", response.data.Data)
             this.setState({
                 data: response.data.Data,
                 loading: false

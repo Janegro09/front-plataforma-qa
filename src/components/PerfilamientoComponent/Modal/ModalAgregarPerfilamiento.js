@@ -45,12 +45,10 @@ export default class Modal extends Component {
 
                     axios.post(Global.reasignProgram, formData, { headers: { Authorization: bearer } }).then(response => {
                         sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                        console.log("ENTRA");
                         this.setState({ loaded: true })
                         setTimeout(() => {
                             this.setState({ loaded: false })
                             window.location.reload(window.location.href);
-                            console.log("TERMINADO");
                         }, 90000);
                     })
                         .catch((e) => {
@@ -68,8 +66,6 @@ export default class Modal extends Component {
                 }
             });
 
-
-        console.log(this.state);
     }
 
     cerrarModal = () => {

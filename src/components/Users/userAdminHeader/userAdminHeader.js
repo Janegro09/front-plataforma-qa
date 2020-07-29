@@ -42,7 +42,6 @@ export default class UserAdminHeader extends Component {
 
                 axios.post(Global.passChange + id, bodyParameters, config)
                     .then(response => {
-                        console.log(response)
                         if (response.data.Success) {
                             swal("Felicidades!", "Contraseña cambiada!", "success");
                         } else {

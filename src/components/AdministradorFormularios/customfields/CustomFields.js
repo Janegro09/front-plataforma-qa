@@ -48,21 +48,18 @@ export default class CustomFields extends Component {
     }
 
     changeValues = (e,input, inputRadio = '') => {
-        let { type, value, id } = e.target
+        let { type, value } = e.target
         let { print } = this.state 
         if(type === 'checkbox'){
             value = e.target.checked;
         } 
 
-
-        console.log(e.target);
         for(let p of print) {
             if(p.id === input.id){
                 if(type === 'radio'){
                     p.defaultValue = `${inputRadio}|${value}`
                 } else if(type === 'checkbox') {
                     let newValue = `${inputRadio}|${value}`;
-                    console.log('defaaayt', p.defaultValue);
 
                     if(p.defaultValue){
                         // Dividimos la data a ver si ya existe, sino la agregamos, y si existe cambiamos el valor a false

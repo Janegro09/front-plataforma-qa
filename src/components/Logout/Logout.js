@@ -20,7 +20,6 @@ export default class Logout extends Component {
     
     componentDidMount() {
         if (sessionStorage.getItem("userData")) {
-            // console.log("Datos almacenados")
         } else {
             this.setState({ redirect: true })
         }

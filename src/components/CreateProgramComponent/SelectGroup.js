@@ -8,7 +8,7 @@ import {HELPER_FUNCTIONS} from '../../helpers/Helpers'
 class SelectGroup extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props.defaultValue)
+ 
         this.state = {
             value: "",
             groups: null,
@@ -53,7 +53,7 @@ class SelectGroup extends Component {
             let temp
             temp = this.state.groupsToSend.split("|")
             temp.map(v => {
-                console.log(temp)
+
                 this.state.groupSelect.map(value => {
                     if (value.value === v) {
                         groupData.push(value)
@@ -62,7 +62,7 @@ class SelectGroup extends Component {
                 })
                 return true;
             })
-            console.log(groupData);
+
 
             return groupData
         } else {

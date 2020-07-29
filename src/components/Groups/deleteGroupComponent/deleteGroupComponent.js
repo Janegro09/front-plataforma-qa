@@ -40,7 +40,6 @@ export default class deleteUserComponent extends Component {
 
                         axios.delete(Global.getGroups + '/' + id, config)
                             .then(response => {
-                                console.log(response.data.Success)
                                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                                 if (response.data.Success) {
                                     swal("Genial! el grupo se ha eliminado correctamente", {

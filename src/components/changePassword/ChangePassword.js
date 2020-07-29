@@ -32,7 +32,6 @@ export default class ChangePassword extends Component {
 
                 axios.post(Global.passChange + this.props.user.id, bodyParameters, config)
                     .then(response => {
-                        console.log(response)
                         if (response.data.Success) {
                             swal("Felicidades!", "Contraseña cambiada!", "success");
                         } else {

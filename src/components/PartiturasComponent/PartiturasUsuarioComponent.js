@@ -139,10 +139,6 @@ export default class PartiturasUsuarioComponent extends Component {
     componentDidMount() {
         let { id, idUsuario } = this.props.match.params;
 
-        console.log("id: ", id);
-        console.log("idUsuario: ", idUsuario);
-
-
         this.setState({
             loading: true
         });
@@ -152,7 +148,6 @@ export default class PartiturasUsuarioComponent extends Component {
         const bearer = `Bearer ${token}`
         axios.get(Global.getAllPartitures + '/' + id + '/' + idUsuario, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            console.log(response.data.Data)
             this.setState({
                 loading: false,
                 data: response.data.Data

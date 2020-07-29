@@ -122,7 +122,6 @@ export default class GroupsTable extends Component {
     }
 
     createGroup = () => {
-        console.log("Crear grupo")
         this.setState({
             createGroup: true
         })

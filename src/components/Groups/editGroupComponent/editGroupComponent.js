@@ -111,7 +111,6 @@ export default class editGroupComponent extends Component {
         const group = this.state.userInfo
 
         if (group !== null) {
-            console.log("group: ", group)
             const name = group.group
             swal("Ingrese nombre del grupo:", {
                 content: {
@@ -122,7 +121,6 @@ export default class editGroupComponent extends Component {
                 }
             })
                 .then((value) => {
-                    console.log("El valor: ", value)
                     this.group = value
                     this.modifyUser()
                 })

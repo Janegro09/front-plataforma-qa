@@ -15,7 +15,8 @@ export default class UsersComponent extends Component {
 
         this.state = {
             value: 'user',
-            redirect: false
+            redirect: false,
+            userData: null
         }
     }
 
@@ -25,6 +26,10 @@ export default class UsersComponent extends Component {
         const bearer = `Bearer ${token}`
         axios.get(Global.dashboard, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+
+            this.setState({
+                userData: response.data.loggedUser
+            })
 
         })
             .catch((e) => {
@@ -53,6 +58,8 @@ export default class UsersComponent extends Component {
             return <Redirect to={'/'} />
         }
 
+        const { userData } = this.state;
+
 
         return (
             <div>
@@ -67,6 +74,43 @@ export default class UsersComponent extends Component {
                 {/* {HELPER_FUNCTIONS.checkPermission("POST|users/passchange/:id") && userData && */}
                 <UserAdminHeader />
                 {/* } */}
+
+                <div className="dashboard">
+                    {userData &&
+                        <section>
+                            <h2>Mis datos</h2>
+                            <article>
+                                <h6>ID</h6>
+                                <span>{userData.id}</span>
+                            </article>
+                            <article>
+                                <h6>EMAIL</h6>
+                                <span>{userData.email}</span>
+                            </article>
+                            <article>
+                                <h6>NAME & LASTNAME</h6>
+                                <span>{`${userData.name} ${userData.lastName}`}</span>
+                            </article>
+                            <article>
+                                <h6>Grupos</h6>
+                                <div className="multispan">
+                                    {userData.group.map(v => {
+                                        return <span>{v.name}</span>
+                                    })
+
+                                    }
+                                </div>
+                            </article>
+                            <article>
+                                <h6>ROL</h6>
+                                <span>{userData.role.role}</span>
+                            </article>
+                            
+                        </section>
+
+                    }
+                    
+                </div>
 
             </div>
 

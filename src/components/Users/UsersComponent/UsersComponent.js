@@ -55,7 +55,6 @@ export default class Home extends Component {
                 <div className="section-content">
                     <UserInfoContainer userInfo={userInfo} />
                 </div>
-                <div className="uploadNomina"><div>Nómina actual 30/06/2020</div> <button>Actualizar<PublishIcon /></button></div>
                 <div className="footer">
                     <div>
                     <FastRewindIcon />

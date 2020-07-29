@@ -21,7 +21,8 @@ export default class ProgramsGroupComponent extends Component {
             crearGrupoProgramas: false,
             editProgramGroup: false,
             addGroup: false,
-            buscando: false
+            buscando: false,
+            loading: false
         }
     }
 
@@ -116,19 +117,22 @@ export default class ProgramsGroupComponent extends Component {
     }
 
     componentDidMount() {
+        this.setState({ loading: true });
         const tokenUser = JSON.parse(sessionStorage.getItem("token"));
         const token = tokenUser;
         const bearer = `Bearer ${token}`;
         axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
             this.setState({
-                searchedGroups: response.data.Data
+                searchedGroups: response.data.Data,
+                loading: false
             })
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         })
             .catch((e) => {
                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
-                    searchedGroups: []
+                    searchedGroups: [],
+                    loading: false
                 })
                 console.log("Error: ", e)
             });
@@ -150,10 +154,13 @@ export default class ProgramsGroupComponent extends Component {
 
         return (
             <div>
+                {this.state.loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
                 <div>
                     {!this.state.addGroup && !this.state.editProgramGroup &&
                         <div>
-                            
+
                             <div className="flex-input-add">
                                 {/* Buscador */}
                                 {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}

@@ -17,7 +17,8 @@ export default class PerfilamientoCuartilesComponent extends Component {
             dataFiltered: null,
             redirect: false,
             id: null,
-            redirectPerfilamientos: false
+            redirectPerfilamientos: false,
+            loading: false
         }
     }
 
@@ -141,7 +142,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
             return;
         }
         let id = cuartilSeleccionado;
-        this.setState({ id })
+        this.setState({ id, loading: true })
 
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
@@ -178,7 +179,8 @@ export default class PerfilamientoCuartilesComponent extends Component {
                     final.push(temp)
                 }
                 this.setState({
-                    result: final
+                    result: final,
+                    loading: false
                 })
             })
         })
@@ -197,7 +199,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
     render() {
 
-        const { nombreColumnas, dataFiltered, redirect, result, id, redirectPerfilamientos } = this.state;
+        const { nombreColumnas, dataFiltered, redirect, result, id, redirectPerfilamientos, loading } = this.state;
 
         if (redirect) {
             return <Redirect to="/perfilamiento" />
@@ -214,7 +216,10 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
         return (
             <div>
-                
+                {loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
+
                 <SideBarLeft />
 
                 <div className="section-content">

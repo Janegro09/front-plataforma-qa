@@ -91,10 +91,13 @@ export default class Modal extends Component {
     }
 
     render() {
-        const { programsFiltered } = this.state
+        const { programsFiltered, loading } = this.state
 
         return (
             <div className="modal" id="modal-casero">
+                {loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
                 <div className="hijo">
                     <div className="boton-cerrar">
                         <button onClick={
@@ -104,6 +107,7 @@ export default class Modal extends Component {
                             }
                         }>x</button>
                     </div>
+
 
                     <input className="form-control form-control-modal" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
 

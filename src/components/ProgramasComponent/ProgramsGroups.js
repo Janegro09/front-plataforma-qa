@@ -19,7 +19,7 @@ import PublishIcon from '@material-ui/icons/Publish';
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight';
 
 export default class ProgramsGroups extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -28,14 +28,10 @@ export default class ProgramsGroups extends Component {
 
     }
 
-    componentDidMount() {
-        console.log('lanzado!')
-    }
-
     render() {
         const { loading } = this.state;
         return (
-            <div>
+            <>
                 {loading &&
                     HELPER_FUNCTIONS.backgroundLoading()
                 }
@@ -43,7 +39,14 @@ export default class ProgramsGroups extends Component {
                     <img src={Logo} alt="" title="Logo" className="logoFixed" />
                 </div>
                 <SiderBarLeft />
-            </div>
+
+                <div className="section-content tabla_parent" id="gruposProgSection">
+                    <h4 className="marginBotton15">Grupos</h4>
+                    <div >
+                        <ProgramsGroupComponent />
+                    </div>
+                </div>
+            </>
         )
     }
 }

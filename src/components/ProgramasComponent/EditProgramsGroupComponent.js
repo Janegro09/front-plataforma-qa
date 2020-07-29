@@ -10,7 +10,6 @@ export default class EditProgramsGroupComponent extends Component {
         super(props)
         this.state = {
             specific: [],
-            ok: false,
             loading: false
         }
     }
@@ -62,41 +61,40 @@ export default class EditProgramsGroupComponent extends Component {
     }
 
     componentDidMount() {
-        setTimeout(() => {
-            const id = this.props.edit.id
-            const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-            const token = tokenUser
-            const bearer = `Bearer ${token}`
-            this.setState({
-                loading: true
-            })
-            axios.get(Global.getAllProgramsGroups + '/' + id, { headers: { Authorization: bearer } }).then(response => {
-                if (response.data.Data[0].assignedUsers.length > 0) {
+        const id = this.props.edit.id
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
+        this.setState({
+            loading: true
+        })
+
+        axios.get(Global.getAllProgramsGroups + '/' + id, { headers: { Authorization: bearer } }).then(response => {
+            if (response.data.Data[0].assignedUsers.length > 0) {
+                this.setState({
+                    loading: false,
+                    specific: response.data.Data[0].assignedUsers
+                })
+            } else {
+                this.setState({ loading: false });
+            }
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+        })
+            .catch((e) => {
+                // Si hay algún error en el request lo deslogueamos
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
                     this.setState({
-                        specific: response.data.Data[0].assignedUsers,
-                        ok: true,
+                        error: true,
+                        redirect: true,
                         loading: false
                     })
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
                 }
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            })
-                .catch((e) => {
-                    // Si hay algún error en el request lo deslogueamos
-                    if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                        HELPER_FUNCTIONS.logout()
-                    } else {
-                        this.setState({
-                            error: true,
-                            redirect: true,
-                            ok: true,
-                            loading: false
-                        })
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                        swal("Error!", "Hubo un problema", "error");
-                    }
-                    console.log("Error: ", e)
-                });
-        }, 1000);
+                console.log("Error: ", e)
+            });
     }
     render() {
         const { edit } = this.props
@@ -106,7 +104,7 @@ export default class EditProgramsGroupComponent extends Component {
                 {this.state.loading &&
                     HELPER_FUNCTIONS.backgroundLoading()
                 }
-                {this.state.ok && HELPER_FUNCTIONS.checkPermission("GET|programs/groups/:id") &&
+                {HELPER_FUNCTIONS.checkPermission("GET|programs/groups/:id") &&
                     <div className="table-parent-edit">
                         <form onSubmit={this.addUser} className="inputsEditUser addUserPadding">
                             <span className="Label">Nombre</span>
@@ -124,10 +122,10 @@ export default class EditProgramsGroupComponent extends Component {
                                     editProgramGroup: false
                                 })
                             }}
-                        >Cancelar</button>  
+                        >Cancelar</button>
                     </div>
                 }
-                
+
             </div>
         )
     }

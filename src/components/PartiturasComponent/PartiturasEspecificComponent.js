@@ -14,6 +14,7 @@ import TimerIcon from '@material-ui/icons/Timer';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 export default class PartiturasEspecificComponent extends Component {
 
@@ -160,9 +161,9 @@ export default class PartiturasEspecificComponent extends Component {
                                 <tr>
                                     <th>Fechas</th>
                                     <th>Nombre</th>
-                                    <th>Estado de partitura</th>
-                                    <th>Archivos incluídos</th>
-                                    <th>Descargar</th>
+                                    <th className="tableIcons">Estado</th>
+                                    <th className="tableIcons">Archivos</th>
+                                    <th className="tableIcons">Descargar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -180,7 +181,7 @@ export default class PartiturasEspecificComponent extends Component {
                                             e.preventDefault();
                                             this.descargarArchivos(data.fileId);
                                         }}>
-                                            Descargar
+                                            <GetAppIcon />
                                         </button>
                                     </td>
                                 </tr>
@@ -235,7 +236,9 @@ export default class PartiturasEspecificComponent extends Component {
                                 }
                             </tbody>
                         </table>
+                        
                     </div>
+
                 }
             </>
         )

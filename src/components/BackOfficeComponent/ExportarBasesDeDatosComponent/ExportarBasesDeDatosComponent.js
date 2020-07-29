@@ -71,7 +71,11 @@ export default class AdministracionFormulariosComponent extends Component {
                     </button>
 
                     {urlUser !== '' &&
-                        <a href={urlUser}>Descargar</a>
+                        <a href={urlUser} onClick={() => {
+                            setTimeout(() => {
+                                this.setState({ urlUser: '' });
+                            }, 2000);
+                        }}>Descargar</a>
                     }
 
                 </div>

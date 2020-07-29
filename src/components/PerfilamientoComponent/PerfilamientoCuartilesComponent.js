@@ -350,6 +350,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                         </table>
                     }
                 </div>
+                <div className="footer"></div>
 
             </div>
         )

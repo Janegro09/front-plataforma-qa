@@ -213,7 +213,7 @@ export default class Perfilamiento extends Component {
 
         return (
             <div className="tabla_parent">
-                <h4>PROGRAMAS</h4>
+                <h4>PERFILAMIENTO</h4>
                 <div className="flex-input-add">
                     {/* spiner rekes */}
                     {loading &&
@@ -224,7 +224,7 @@ export default class Perfilamiento extends Component {
                         <button className="boton-agregar" onClick={(e) => {
                             e.preventDefault();
                             this.agregarPerfilamiento();
-                        }}>Subir<PublishIcon /></button>
+                        }}><PublishIcon /></button>
                     }
 
                 </div>

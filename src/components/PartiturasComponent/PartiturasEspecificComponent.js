@@ -234,7 +234,9 @@ export default class PartiturasEspecificComponent extends Component {
                                 }
                             </tbody>
                         </table>
+                        
                     </div>
+
                 }
             </>
         )

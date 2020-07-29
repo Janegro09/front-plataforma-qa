@@ -8,6 +8,13 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import swal from 'sweetalert';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
+import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
+import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
+import CheckIcon from '@material-ui/icons/Check';
+import TimerIcon from '@material-ui/icons/Timer';
+import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
 export default class PartiturasComponent extends Component {
@@ -160,7 +167,7 @@ export default class PartiturasComponent extends Component {
                                         <tr key={key}>
                                             <td>{moment(partiture.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>
                                             <td>{partiture.name}</td>
-                                            <td>{partiture.partitureStatus}</td>
+                                            <td>{(partiture.partitureStatus === 'pending' ? <TimerIcon className="clockIcon"/>:(partiture.partitureStatus === 'finished' ? <CheckIcon />:<PlayArrowRoundedIcon />))}</td>
                                             <td>{partiture.fileId.length.toString()}</td>
                                             <td>
                                                 <button
@@ -171,7 +178,7 @@ export default class PartiturasComponent extends Component {
                                                         }
                                                     }
                                                 >
-                                                    Ver
+                                                    <VisibilityRoundedIcon className="verIcon"/>
                                                 </button>
                                             </td>
                                             <td>

@@ -763,7 +763,6 @@ export default class GroupsTable extends Component {
                             }</div>
                     </div>
                 </div>
-                <div className="uploadNomina"><div>Nómina actual 30/06/2020</div> <button>Actualizar<PublishIcon /></button></div>
 
 
             </div>

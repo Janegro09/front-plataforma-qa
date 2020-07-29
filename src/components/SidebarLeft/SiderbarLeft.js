@@ -68,7 +68,12 @@ export default class SiderbarLeft extends Component {
                         }
                         {/* PROGRAMAS */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("programs") &&
-                            <li className="nameMenu"><NavLink to="/programas" activeClassName="active"><GroupWorkIcon className="IconoMenu" /></NavLink>Programas
+                            <li className="nameMenu"><GroupWorkIcon className="IconoMenu" />Programas
+                                <span className="showme">
+                                    <NavLink to="/programas">Programas</NavLink>
+                                    <NavLink to="/programas/grupos">Grupos de programas</NavLink>
+
+                                </span>
                             </li>
                         }
                         {/* PERFILAMIENTO */}

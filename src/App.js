@@ -34,7 +34,7 @@ import ExportarBasesDeDatosComponent from './components/BackOfficeComponent/Expo
 import PartiturasEspecificComponent from './components/PartiturasComponent/PartiturasEspecificComponent';
 import PartiturasUsuariosComponent from './components/PartiturasComponent/PartiturasUsuarioComponent';
 import StepName from './components/PartiturasComponent/StepName';
-
+import ProgramsGroups from './components/ProgramasComponent/ProgramsGroups';
 
 
 function App() {
@@ -72,7 +72,8 @@ function App() {
         <Route exact path="/perfilamiento" component={PerfilamientoComponent} />
         <Route path="/perfilamiento/cuartiles" component={PerfilamientoCuartilesComponent} />
         <Route path="/perfilamiento/perfilamientos" component={ PerfilamientosComponent } />
-        <Route path="/programas" component={ProgramasComponent} />
+        <Route exact path="/programas" component={ProgramasComponent} />
+        <Route exact path="/programas/grupos" component={ProgramsGroups} />
         <Route path="/roles" component={RolesComponent} />
         <Route path="/users" component={UsersComponent} />
       </Switch>

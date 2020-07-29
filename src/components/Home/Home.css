@@ -126,4 +126,56 @@ select {
     margin: auto;
 }
 
+.dashboard {
+    height: 100vh;
+    margin-left: 60px;
+    padding-top: 60px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
 
+.dashboard section {
+    margin: 0 0 20px 0;
+    border: 1px solid red;
+    width: 48%;
+    display: flex;
+    flex-flow: column nowrap;
+
+}
+
+.dashboard section h2 {
+    text-align: center;
+}
+
+.dashboard section article {
+    width: 100%;
+    margin: 0 0 10px 0;
+    padding: 0;
+}
+
+.dashboard section article h6 {
+    padding: 10px 0;
+    background-color: #ccc;
+}
+
+.dashboard section article span {
+    padding: 5px;
+    display: block;
+    text-align: center;
+}
+
+.dashboard section article .multispan {
+    box-sizing: border-box;
+    padding: 10px 0;
+    margin: 0;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+.dashboard section article .multispan span {
+    margin-right: 10px;
+    background-color: royalblue;
+    padding: 10px 5px;
+}

@@ -355,6 +355,7 @@ export default class PerfilaminetosComponent extends Component {
                 this.reasignUsers()
                 this.drag_el = null
             } catch (e) {
+                this.drag_el = null
                 console.log('No se puede pegar un grupo fuera del componente')
             }
         }

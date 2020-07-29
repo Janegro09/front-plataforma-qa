@@ -228,9 +228,11 @@ export default class Perfilamiento extends Component {
                     }
 
                 </div>
+
                 {data && id &&
                     <Modal idFile={id} />
                 }
+                
                 {agregarPerfilamiento &&
                     <ModalAgregarPerfilamiento />
                 }

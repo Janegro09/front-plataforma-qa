@@ -10,9 +10,11 @@ export default class EditProgramsGroupComponent extends Component {
         super(props)
         this.state = {
             specific: [],
-            loading: false
+            loading: false,
+            editProgramGroup: true
         }
     }
+    
     addUser = (event) => {
         event.preventDefault()
         let token = JSON.parse(sessionStorage.getItem('token'))
@@ -98,7 +100,12 @@ export default class EditProgramsGroupComponent extends Component {
     }
     render() {
         const { edit } = this.props
-        const { specific } = this.state
+        const { specific, editProgramGroup } = this.state
+
+        if (!editProgramGroup) {
+            window.location.reload(window.location.href);
+        }
+
         return (
             <div>
                 {this.state.loading &&

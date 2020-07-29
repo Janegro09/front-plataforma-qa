@@ -71,7 +71,7 @@ function App() {
         <Route exact path="/partituras/:id/:idUsuario" component={PartiturasUsuariosComponent} />
         <Route exact path="/perfilamiento" component={PerfilamientoComponent} />
         <Route path="/perfilamiento/cuartiles" component={PerfilamientoCuartilesComponent} />
-        <Route path="/perfilamiento/perfilamientos" component={ PerfilamientosComponent } />
+        <Route path="/perfilamiento/perfilamientos" component={PerfilamientosComponent} />
         <Route exact path="/programas" component={ProgramasComponent} />
         <Route exact path="/programas/grupos" component={ProgramsGroups} />
         <Route path="/roles" component={RolesComponent} />

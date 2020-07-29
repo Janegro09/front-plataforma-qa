@@ -107,10 +107,10 @@ export default class PartiturasUsuarioComponent extends Component {
                 <tbody>
                     {ReturnData.actual.length > 0 &&
                         <tr>
-                            <td>{(users.partitureStatus === 'pending' ? <TimerIcon className="clockIcon"/>:(users.partitureStatus === 'finished' ? <CheckIcon />:<PlayArrowRoundedIcon />))}</td>
-                            <td>{(users.improvment === "+" ? 
-                                                <ArrowDropUpRoundedIcon className="arrowUp"/>: (users.improvment === "+-" ? 
-                                                <ArrowDropDownRoundedIcon className="arrowDown"/>:<ImportExportRoundedIcon />))}</td>
+                            <td>{(users.partitureStatus === 'pending' ? <TimerIcon className="clockIcon" /> : (users.partitureStatus === 'finished' ? <CheckIcon /> : <PlayArrowRoundedIcon />))}</td>
+                            <td>{(users.improvment === "+" ?
+                                <ArrowDropUpRoundedIcon className="arrowUp" /> : (users.improvment === "+-" ?
+                                    <ArrowDropDownRoundedIcon className="arrowDown" /> : <ImportExportRoundedIcon />))}</td>
                             {ReturnData.actual.map((value, key) => {
                                 return <th key={key}>{value}</th>
                             })
@@ -169,7 +169,7 @@ export default class PartiturasUsuarioComponent extends Component {
             });
     }
     render() {
-        let { data, redirect, id, goBack } = this.state;
+        let { data, redirect, id, goBack, loading } = this.state;
         data = data ? data[0] : null;
         let date = new Date();
         date = moment(date);
@@ -190,6 +190,11 @@ export default class PartiturasUsuarioComponent extends Component {
                     <SiderbarLeft />
                     <UserAdminHeader />
                 </div>
+
+                {loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
+
                 {data &&
                     <div className="section-content">
                         <button
@@ -215,8 +220,8 @@ export default class PartiturasUsuarioComponent extends Component {
                                     <td>{moment(data.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>
                                     <td>{data.name}</td>
                                     <td>
-                                        {(data.partitureStatus === 'pending' ? <TimerIcon className="clockIcon" /> : 
-                                        (data.partitureStatus === 'finished' ? <CheckIcon /> : <PlayArrowRoundedIcon />))}
+                                        {(data.partitureStatus === 'pending' ? <TimerIcon className="clockIcon" /> :
+                                            (data.partitureStatus === 'finished' ? <CheckIcon /> : <PlayArrowRoundedIcon />))}
                                     </td>
                                     <td>{data.fileId.length}</td>
                                 </tr>
@@ -261,7 +266,7 @@ export default class PartiturasUsuarioComponent extends Component {
                         </section>
                         <div className="footer"></div>
                     </div>
-                    
+
                 }
 
             </>

@@ -26,7 +26,8 @@ export default class PerfilaminetosComponent extends Component {
             cuartiles: [],
             grupos: [],
             redirect: false,
-            redirectCuartiles: false
+            redirectCuartiles: false,
+            loading: false
         }
     }
 
@@ -443,12 +444,12 @@ export default class PerfilaminetosComponent extends Component {
             return;
         }
         let id = cuartilSeleccionado;
-
-
-
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
+
+        this.setState({loading: true});
+
         axios.get(Global.getAllFiles + '/' + id + '/cuartiles?getUsers=true', { headers: { Authorization: bearer } }).then(response => {
 
             token = response.data.loggedUser.token
@@ -464,7 +465,8 @@ export default class PerfilaminetosComponent extends Component {
                 this.setState({
                     allUsers,
                     cuartiles,
-                    id
+                    id,
+                    loading: false
                 });
 
                 if (respuesta) {
@@ -502,7 +504,7 @@ export default class PerfilaminetosComponent extends Component {
     }
 
     render() {
-        let { cuartiles, grupos, allUsers, assignedUsers, redirect, id, redirectCuartiles } = this.state;
+        let { cuartiles, grupos, allUsers, assignedUsers, redirect, id, redirectCuartiles, loading } = this.state;
 
         if (redirect) {
             return <Redirect to="/perfilamiento" />
@@ -518,7 +520,9 @@ export default class PerfilaminetosComponent extends Component {
 
         return (
             <div>
-
+                {loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
                 <SideBarLeft />
 
                 <div className="section-content">

@@ -477,7 +477,7 @@ export default class GroupsTable extends Component {
                             if (data[j].id === data[k].programParent) {
                                 let tempData = (
                                     <tr key={index + 3 + k}>
-                                        <td><SubdirectoryArrowRightIcon className="marginArrow ArrowRightIcon"/> {data[k].name}</td>
+                                        <td><SubdirectoryArrowRightIcon className="marginArrow ArrowRightIcon" /> {data[k].name}</td>
                                         <td onClick={e => this.editProgram(e, data[k])}><EditIcon style={{ fontSize: 15 }} /></td>
                                         <td onClick={e => this.deleteProgram(e, data[k])}><DeleteIcon style={{ fontSize: 15 }} /></td>
                                     </tr>
@@ -751,17 +751,6 @@ export default class GroupsTable extends Component {
                             </div>
                         </div>
                     }
-
-
-
-                    <hr></hr>
-                    <div className="tabla_parent" id="gruposProgSection">
-                        <h4 className="marginBotton15">Grupos</h4>
-                        <div >
-                            {this.state.ok &&
-                                <ProgramsGroupComponent ok={this.state.ok} />
-                            }</div>
-                    </div>
                 </div>
 
 

@@ -23,7 +23,8 @@ export default class StepName extends Component {
         dataToSend: {},
         step: null,
         instances: null,
-        valueCoach: '-'
+        valueCoach: '-',
+        role: false
     }
 
     asignarArchivos = () => {
@@ -200,6 +201,7 @@ export default class StepName extends Component {
         let { id, idStep, idUsuario } = this.props.match.params;
 
         // /analytics/partitures/:id/:userId/:stepId/files?section=monitorings
+
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
@@ -293,8 +295,7 @@ export default class StepName extends Component {
                             <th>Estado</th>
                             <th>Improvment</th>
                             {ReturnData.headers.map((value, key) => {
-                                return <th key={key}>{value}</th>
-                            })
+                                return <th key={key}>{value}</th>    })
 
                             }
                         </tr>
@@ -331,6 +332,9 @@ export default class StepName extends Component {
         this.setState({
             loading: true
         })
+        let role = JSON.parse(sessionStorage.getItem("userData"));
+        role = role.role[0];
+        role = role.role;
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
@@ -350,7 +354,8 @@ export default class StepName extends Component {
                     customFields: data,
                     archivosSeleccionados: step.customFilesSync,
                     step,
-                    instances
+                    instances,
+                    role: role || false
                 })
 
             })
@@ -579,80 +584,93 @@ export default class StepName extends Component {
                                         </article>
                                     </section>
                                     <section>
-                                        <article>
-                                            <h6>Responsable</h6>
-                                            {customFields &&
-                                                <CustomFields
-                                                    fields={customFields}
-                                                    section='P'
-                                                    subsection='RESP'
-                                                    values={step.responsibleComments}
-                                                    data={(d) => {
-                                                        this.armarObjeto('responsibleComments', d)
-                                                    }}
-                                                />
-                                            }
-                                        </article>
+                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' &&
+                                            <article>
+                                                <h6>Responsable</h6>
+                                                {customFields &&
+                                                    <CustomFields
+                                                        fields={customFields}
+                                                        section='P'
+                                                        subsection='RESP'
+                                                        values={step.responsibleComments}
+                                                        data={(d) => {
+                                                            this.armarObjeto('responsibleComments', d)
+                                                        }}
+                                                    />
+                                                }
+                                            </article>
+                                        }
+                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' &&
 
-                                        <article>
-                                            <h6>Gerente</h6>
-                                            {customFields &&
-                                                <CustomFields
-                                                    fields={customFields}
-                                                    section='P'
-                                                    subsection='GTE'
-                                                    values={step.managerComments}
-                                                    data={(d) => {
-                                                        this.armarObjeto('managerComments', d)
-                                                    }}
-                                                />
-                                            }
-                                        </article>
+                                            <article>
+                                                <h6>Gerente</h6>
+                                                {customFields &&
+                                                    <CustomFields
+                                                        fields={customFields}
+                                                        section='P'
+                                                        subsection='GTE'
+                                                        values={step.managerComments}
+                                                        data={(d) => {
+                                                            this.armarObjeto('managerComments', d)
+                                                        }}
+                                                    />
+                                                }
+                                            </article>
 
-                                        <article>
-                                            <h6>Coordinador On Site</h6>
-                                            {customFields &&
-                                                <CustomFields
-                                                    fields={customFields}
-                                                    section='P'
-                                                    subsection='COO'
-                                                    values={step.coordinatorOnSiteComments}
-                                                    data={(d) => {
-                                                        this.armarObjeto('coordinatorOnSiteComments', d)
-                                                    }}
-                                                />
-                                            }
-                                        </article>
+                                        }
 
-                                        <article>
-                                            <h6>Administrador</h6>
-                                            {customFields &&
-                                                <CustomFields
-                                                    fields={customFields}
-                                                    section='P'
-                                                    subsection='ADM'
-                                                    values={step.accountAdministratorComments}
-                                                    data={(d) => {
-                                                        this.armarObjeto('accountAdministratorComments', d)
-                                                    }}
-                                                />
-                                            }
-                                        </article>
+                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' &&
+                                            <article>
+                                                <h6>Coordinador On Site</h6>
+                                                {customFields &&
+                                                    <CustomFields
+                                                        fields={customFields}
+                                                        section='P'
+                                                        subsection='COO'
+                                                        values={step.coordinatorOnSiteComments}
+                                                        data={(d) => {
+                                                            this.armarObjeto('coordinatorOnSiteComments', d)
+                                                        }}
+                                                    />
+                                                }
+                                            </article>
+                                            
+                                        }
 
-                                        <article>
-                                            <h6>Coach</h6>
-                                            {customFields &&
-                                                <CustomFields
-                                                    fields={customFields}
-                                                    section='P'
-                                                    subsection='COACH'
-                                                    values={step.coachingComments}
-                                                    data={(d) => {
-                                                        this.armarObjeto('coachingComments', d)
-                                                    }}
-                                                />
-                                            }
-                                        </article>
+                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' && this.state.role !== 'GERENTE' &&
+                                            <article>
+                                                <h6>Administrador</h6>
+                                                {customFields &&
+                                                    <CustomFields
+                                                        fields={customFields}
+                                                        section='P'
+                                                        subsection='ADM'
+                                                        values={step.accountAdministratorComments}
+                                                        data={(d) => {
+                                                            this.armarObjeto('accountAdministratorComments', d)
+                                                        }}
+                                                    />
+                                                }
+                                            </article>
+                                            
+                                        }
+
+                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' && this.state.role !== 'GERENTE' &&
+                                            <article>
+                                                <h6>Coach</h6>
+                                                {customFields &&
+                                                    <CustomFields
+                                                        fields={customFields}
+                                                        section='P'
+                                                        subsection='COACH'
+                                                        values={step.coachingComments}
+                                                        data={(d) => {
+                                                            this.armarObjeto('coachingComments', d)
+                                                        }}
+                                                    />
+                                                }
+                                            </article> 
+                                        }
 
                                     </section>
                                 </div>

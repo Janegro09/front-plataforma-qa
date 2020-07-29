@@ -25,6 +25,7 @@ let Global = {
     getAllForms: `${BASE}/forms/customfields`,
     getAllPartitures: `${BASE}/analytics/partitures`,
     getAllPartituresModel: `${BASE}/analytics/partituresModels`,
+    exportsDatabase: `${BASE}/backoffice/exports`,
 }
 
 export default Global;

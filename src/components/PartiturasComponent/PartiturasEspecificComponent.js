@@ -22,7 +22,47 @@ export default class PartiturasEspecificComponent extends Component {
         loading: false,
         data: null,
         idUsuario: null,
-        goBack: false
+        goBack: false,
+        filtredData: null
+    }
+
+    buscar = (e) => {
+        const val = e.target.value;
+        let { data, filtredData } = this.state;
+        const users = data[0].users;
+        if(val) {
+            filtredData = [];
+            
+            for(let u of users) {
+                let nameLastName = `${u.name} ${u.lastName}`
+                if(u.id.indexOf(val) >= 0) {
+                    filtredData.push(u)
+                } else if(nameLastName.indexOf(val) >= 0) {
+                    filtredData.push(u)
+                } else {
+                    let nameDividido        = nameLastName.split(' ');
+                    let busquedaDividida    = val.split(' ');
+                    let coincide = 0;
+                    for (let x = 0; x < nameDividido.length; x++) {
+                        for (let y = 0; y < busquedaDividida.length; y++) {
+                            if (nameDividido[x].indexOf(busquedaDividida[y]) >= 0) {
+                                coincide++;
+                            }
+                        }
+                    }
+                    if (coincide === busquedaDividida.length) {
+                        filtredData.push(u);
+                    }
+
+                }
+            }   
+        } else {
+            filtredData = users;
+        }
+
+        this.setState({ filtredData });
+
+        console.log(val);
     }
 
     descargarArchivos = async (fileIds) => {
@@ -56,8 +96,10 @@ export default class PartiturasEspecificComponent extends Component {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 loading: false,
-                data: response.data.Data
+                data: response.data.Data,
+                filtredData: response.data.Data[0].users || null
             })
+
 
         })
             .catch((e) => {
@@ -76,7 +118,7 @@ export default class PartiturasEspecificComponent extends Component {
     }
 
     render() {
-        let { loading, data, idUsuario, goBack } = this.state;
+        let { loading, data, idUsuario, goBack, filtredData } = this.state;
         data = data ? data[0] : null;
 
         if (goBack) {
@@ -146,6 +188,7 @@ export default class PartiturasEspecificComponent extends Component {
                         </table>
 
                         <h2>Usuarios</h2>
+                        <input onChange={this.buscar} className="form-control" placeholder="Buscar por usuario | Nombre o DNI"/>
                         <table>
                             <thead>
                                 <tr>
@@ -163,8 +206,8 @@ export default class PartiturasEspecificComponent extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.users &&
-                                    data.users.map(user => {
+                                {filtredData &&
+                                    filtredData.map(user => {
                                         return (
                                             <tr key={user.idDB}>
                                                 <td>{user.dni}</td>

@@ -153,6 +153,7 @@ export default class ProgramsGroupComponent extends Component {
                 <div>
                     {!this.state.addGroup && !this.state.editProgramGroup &&
                         <div>
+                            
                             <div className="flex-input-add">
                                 {/* Buscador */}
                                 {/* {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") && */}

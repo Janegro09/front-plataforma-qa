@@ -135,7 +135,7 @@ export default class PartiturasComponent extends Component {
                 }
 
                 <div className="section-content">
-
+                <h4>PARTITURAS</h4>
                     {HELPER_FUNCTIONS.checkPermission('POST|analytics/partitures/new') &&
                         <button
                             onClick={
@@ -150,15 +150,16 @@ export default class PartiturasComponent extends Component {
                     }
 
                     {allPartitures !== null &&
+                        
                         <table>
                             <thead>
                                 <tr>
                                     <th>Fechas</th>
                                     <th>Nombre</th>
-                                    <th>Estado de partitura</th>
-                                    <th>Archivos incluídos</th>
-                                    <th>Ver</th>
-                                    <th>Eliminar</th>
+                                    <th className="tableIcons">Estado</th>
+                                    <th className="tableIcons">Archivos</th>
+                                    <th className="tableIcons">Ver</th>
+                                    <th className="tableIcons">Eliminar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -167,9 +168,9 @@ export default class PartiturasComponent extends Component {
                                         <tr key={key}>
                                             <td>{moment(partiture.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>
                                             <td>{partiture.name}</td>
-                                            <td>{(partiture.partitureStatus === 'pending' ? <TimerIcon className="clockIcon"/>:(partiture.partitureStatus === 'finished' ? <CheckIcon />:<PlayArrowRoundedIcon />))}</td>
-                                            <td>{partiture.fileId.length.toString()}</td>
-                                            <td>
+                                            <td className="tableIcons">{(partiture.partitureStatus === 'pending' ? <TimerIcon className="clockIcon"/>:(partiture.partitureStatus === 'finished' ? <CheckIcon />:<PlayArrowRoundedIcon />))}</td>
+                                            <td className="tableIcons">{partiture.fileId.length.toString()}</td>
+                                            <td className="tableIcons">
                                                 <button
                                                     onClick={
                                                         (e) => {
@@ -181,7 +182,7 @@ export default class PartiturasComponent extends Component {
                                                     <VisibilityRoundedIcon className="verIcon"/>
                                                 </button>
                                             </td>
-                                            <td>
+                                            <td className="tableIcons">
                                                 {HELPER_FUNCTIONS.checkPermission('DELETE|analytics/partitures/:id') &&
                                                     <button
                                                         onClick={

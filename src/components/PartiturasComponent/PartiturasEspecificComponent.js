@@ -170,13 +170,13 @@ export default class PartiturasEspecificComponent extends Component {
                                 <tr>
                                     <td>{moment(data.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>
                                     <td>{data.name}</td>
-                                    <td>
+                                    <td className="tableIcons">
                                     {(data.partitureStatus === 'pending' ? <TimerIcon />:(data.partitureStatus === 'finished' ? <CheckIcon />:<PlayArrowRoundedIcon />))}
-                                    </td>
+                                    </td >
 
-                                    <td>{data.fileId.length}</td>
+                                    <td className="tableIcons">{data.fileId.length}</td>
 
-                                    <td>
+                                    <td className="tableIcons">
                                         <button onClick={(e) => {
                                             e.preventDefault();
                                             this.descargarArchivos(data.fileId);

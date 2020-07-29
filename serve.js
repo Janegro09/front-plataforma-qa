@@ -8,8 +8,18 @@ app.get('/', function(req,res){
 	res.sendFile(path.join(__dirname, 'build','index.html'));
 });
 
-app.all('/*', function(req, res){
-	res.redirect('/');
+app.get('/*', function(req, res) {
+	res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
+//
+//app.all('/:redirect?', function(req, res){
+//	const { redirect } = req.params;
+//	if(redirect){
+//		res.redirect('/' + redirect);
+//	} else {
+//		res.redirect('/');	
+//	}
+//	
+//});
 
-app.listen(11000);
+app.listen(23000);

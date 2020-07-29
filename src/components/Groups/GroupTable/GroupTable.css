@@ -86,7 +86,12 @@ table svg:hover {
 .tableIcons {
   width: 73px;
   text-align: center;
+  
 }
+
+.tableIconsPerfilamiento {
+  text-align: center;
+} 
 
 @media screen and (max-width: 700px) {
   table, tr, td {

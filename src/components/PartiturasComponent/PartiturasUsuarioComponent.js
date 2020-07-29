@@ -206,8 +206,8 @@ export default class PartiturasUsuarioComponent extends Component {
                                 <tr>
                                     <th>Fechas</th>
                                     <th>Nombre</th>
-                                    <th>Estado de partitura</th>
-                                    <th>Archivos incluídos</th>
+                                    <th className="tableIcons">Estado</th>
+                                    <th className="tableIcons">Archivos</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -259,7 +259,9 @@ export default class PartiturasUsuarioComponent extends Component {
                             }
 
                         </section>
+                        <div className="footer"></div>
                     </div>
+                    
                 }
 
             </>

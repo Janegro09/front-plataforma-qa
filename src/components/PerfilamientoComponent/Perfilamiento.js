@@ -212,7 +212,8 @@ export default class Perfilamiento extends Component {
         }
 
         return (
-            <div>
+            <div className="tabla_parent">
+                <h4>PERFILAMIENTO</h4>
                 <div className="flex-input-add">
                     {/* spiner rekes */}
                     {loading &&
@@ -223,7 +224,7 @@ export default class Perfilamiento extends Component {
                         <button className="boton-agregar" onClick={(e) => {
                             e.preventDefault();
                             this.agregarPerfilamiento();
-                        }}>Subir<PublishIcon /></button>
+                        }}><PublishIcon /></button>
                     }
 
                 </div>
@@ -244,7 +245,7 @@ export default class Perfilamiento extends Component {
                                 }}>Fecha</th>
                                 <th>Archivo</th>
                                 <th>Programa</th>
-                                <th>Acciones</th>
+                                <th className="tableIconsPerfilamiento">Acciones</th>
                             </tr>
                         </thead>
 
@@ -255,7 +256,7 @@ export default class Perfilamiento extends Component {
                                         <td>{moment(row.date).format("DD-MM-YYYY")}</td>
                                         <td>{row.name}</td>
                                         <td>{row.program ? row.program.name : 'Programa no asignado'}</td>
-                                        <td>
+                                        <td className="tableIconstableIconsPerfilamiento">
                                             <button onClick={(e) => {
                                                 e.preventDefault()
                                                 this.cargarCuartil(row);

@@ -25,6 +25,13 @@ export default class PartiturasEspecificComponent extends Component {
         goBack: false
     }
 
+    descargarArchivos = async (fileIds) => {
+        for(let f of fileIds) {
+            let win = window.open(Global.download + '/' + f + '?urltemp=false', '_blank');
+            win.focus();
+        }
+    }
+
     verUsuario = (id) => {
         this.setState({
             idUsuario: id
@@ -113,6 +120,7 @@ export default class PartiturasEspecificComponent extends Component {
                                     <th>Nombre</th>
                                     <th>Estado de partitura</th>
                                     <th>Archivos incluídos</th>
+                                    <th>Descargar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -124,6 +132,15 @@ export default class PartiturasEspecificComponent extends Component {
                                     </td>
 
                                     <td>{data.fileId.length}</td>
+
+                                    <td>
+                                        <button onClick={(e) => {
+                                            e.preventDefault();
+                                            this.descargarArchivos(data.fileId);
+                                        }}>
+                                            Descargar
+                                        </button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

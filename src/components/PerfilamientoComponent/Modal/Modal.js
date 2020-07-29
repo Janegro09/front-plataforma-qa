@@ -5,6 +5,10 @@ import Global from '../../../Global'
 import swal from 'sweetalert'
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers'
 
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight';
+
 export default class Modal extends Component {
     constructor(props) {
         super(props)
@@ -91,7 +95,83 @@ export default class Modal extends Component {
     }
 
     render() {
-        const { programsFiltered, loading } = this.state
+        const { programsFiltered, loading, allPrograms } = this.state;
+        let assignedPrograms = [];
+        let arrayDiv = [];
+
+        if (allPrograms) {
+
+            const data = programsFiltered.filter(program => {
+                if (this.title) {
+                    if (this.title.value === '' || this.title.value === null) {
+                        return true;
+                    } else {
+                        return (program.name.toUpperCase().indexOf(this.title.value.toUpperCase()) >= 0);
+                    }
+                } else {
+                    return true;
+                }
+
+            })
+
+            for (let index = 0; index < data.length; index++) {
+                if (assignedPrograms.indexOf(data[index].id) >= 0 || data[index].programParent !== '') {
+                    continue
+                }
+
+                let rows = []
+                let tempData = (
+                    <tr key={index}>
+                        <td>{data[index].name}</td>
+                        {HELPER_FUNCTIONS.checkPermission("PUT|programs/:id") &&
+                            <td onClick={e => this.editProgram(e, data[index])}><EditIcon style={{ fontSize: 15 }} /></td>
+                        }
+                        {HELPER_FUNCTIONS.checkPermission("DELETE|programs/:id") &&
+                            <td onClick={e => this.deleteProgram(e, data[index])}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                        }
+                    </tr>
+                )
+
+                rows.push(tempData)
+                for (let j = 0; j < data.length; j++) {
+
+                    if (data[j].programParent === data[index].id) {
+
+                        let tempData = (
+                            <tr key={index + 1 + j}>
+                                <td><SubdirectoryArrowRightIcon className="ArrowRightIcon" /> {data[j].name}</td>
+                                <td onClick={e => this.editProgram(e, data[j])}><EditIcon style={{ fontSize: 15 }} /></td>
+                                <td onClick={e => this.deleteProgram(e, data[j])}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                            </tr>
+                        )
+
+                        rows.push(tempData)
+                        assignedPrograms.push(data[j].id)
+
+
+                        for (let k = 0; k < data.length; k++) {
+
+                            if (data[j].id === data[k].programParent) {
+                                let tempData = (
+                                    <tr key={index + 3 + k}>
+                                        <td><SubdirectoryArrowRightIcon className="marginArrow ArrowRightIcon" /> {data[k].name}</td>
+                                        <td onClick={e => this.editProgram(e, data[k])}><EditIcon style={{ fontSize: 15 }} /></td>
+                                        <td onClick={e => this.deleteProgram(e, data[k])}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                    </tr>
+                                )
+
+                                rows.push(tempData)
+                                assignedPrograms.push(data[k].id)
+                            }
+                        }
+                    }
+
+                }
+
+                arrayDiv.push(rows)
+                assignedPrograms.push(data[index].id)
+            }
+        }
 
         return (
             <div className="modal" id="modal-casero">
@@ -111,40 +191,48 @@ export default class Modal extends Component {
 
                     <input className="form-control form-control-modal" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
 
+                    <table cellSpacing="0">
 
-                    <table>
-                        <thead>
+                        {this.state.allUsers === null &&
+                            <div className="sk-fading-circle">
+                                <div className="sk-circle1 sk-circle"></div>
+                                <div className="sk-circle2 sk-circle"></div>
+                                <div className="sk-circle3 sk-circle"></div>
+                                <div className="sk-circle4 sk-circle"></div>
+                                <div className="sk-circle5 sk-circle"></div>
+                                <div className="sk-circle6 sk-circle"></div>
+                                <div className="sk-circle7 sk-circle"></div>
+                                <div className="sk-circle8 sk-circle"></div>
+                                <div className="sk-circle9 sk-circle"></div>
+                                <div className="sk-circle10 sk-circle"></div>
+                                <div className="sk-circle11 sk-while (true) {
+                                                        <h1>Hola</h1>
+                                                    }circle"></div>
+                                <div className="sk-circle12 sk-circle"></div>
+                            </div>
+                        }
+
+
+
+                        <thead className="encabezadoTabla">
                             <tr>
+
                                 <th>Nombre</th>
-                                <th>Acción</th>
+                                <th className="tableIcons">Editar</th>
+                                <th className="tableIcons">Eliminar</th>
                             </tr>
                         </thead>
+
                         <tbody>
-                            {programsFiltered &&
-
-                                programsFiltered.map((program, key) => {
-                                    return (
-                                        <tr key={key}>
-                                            <td>
-                                                {program.name}
-
-                                            </td>
-                                            <td>
-                                                <button onClick={
-                                                    (e) => {
-                                                        e.preventDefault()
-                                                        this.enviarPrograma(program)
-                                                    }
-                                                }>Asignar</button>
-                                            </td>
-                                        </tr>
-                                    )
+                            {arrayDiv.length > 0 &&
+                                arrayDiv.map(data => {
+                                    data.map(row => {
+                                        return row;
+                                    })
+                                    return data;
                                 })
-
-
                             }
                         </tbody>
-
                     </table>
                 </div>
             </div>

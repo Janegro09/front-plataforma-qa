@@ -590,12 +590,6 @@ export default class GroupsTable extends Component {
                             <h4 className="marginBotton15">Programas</h4>
                             {!this.state.editProgram &&
                                 <div>
-                                    <label className="switch">
-                                        <input type="checkbox" type="checkbox" name="filtro" onChange={this.filtrarMonitoreoPerfilamiento} />
-                                        <span className="slider round"></span>
-                                    </label>
-
-                                    <h2>Filtrado por: {selected === 'M' ? 'Monitoreo' : 'Perfilamiento'}</h2>
 
                                     <div className="flex-input-add">
                                         {/* Buscador */}
@@ -620,6 +614,15 @@ export default class GroupsTable extends Component {
                                         {this.state.error &&
                                             <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1>
                                         }
+                                    </div>
+
+                                    <div className="filtroSwitch">
+                                        <h5>Filtrado por: {selected === 'M' ? 'Monitoreo' : 'Perfilamiento'}</h5>
+                                        <label className="switch">
+                                            <input type="checkbox" type="checkbox" name="filtro" onChange={this.filtrarMonitoreoPerfilamiento} />
+                                            <span className="slider round"></span>
+                                        </label>
+
                                     </div>
 
                                     <table cellSpacing="0">

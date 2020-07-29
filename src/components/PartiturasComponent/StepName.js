@@ -414,8 +414,8 @@ export default class StepName extends Component {
                                 <tr>
                                     <td>{moment(data.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>
                                     <td>{data.name}</td>
-                                    <td>{data.partitureStatus}</td>
-                                    <td>{data.fileId.length}</td>
+                                    <td className="tableIcons">{data.partitureStatus}</td>
+                                    <td className="tableIcons">{data.fileId.length}</td>
                                 </tr>
                             </tbody>
                         </table>

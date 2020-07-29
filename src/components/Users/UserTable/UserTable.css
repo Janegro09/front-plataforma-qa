@@ -449,9 +449,7 @@ table svg:hover {
 
 .flex-input-add {
   display: flex;
-  margin-bottom: 20px;
-  align-items: flex-end;
-  margin-top: 20px;
+  align-items: center;
 }
 
 .btnCrear {

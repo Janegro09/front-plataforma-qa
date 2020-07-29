@@ -6,6 +6,7 @@ import Global from '../../../Global';
 import axios from 'axios';
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
 import PublishIcon from '@material-ui/icons/Publish';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 export default class BibliotecaArchivosComponent extends Component {
     constructor(props) {
@@ -179,8 +180,8 @@ export default class BibliotecaArchivosComponent extends Component {
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Tipo</th>
-                                    <th>Descargar</th>
-                                    <th>Eliminar</th>
+                                    <th className="tableIcons">Descargar</th>
+                                    <th className="tableIcons">Eliminar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -189,18 +190,18 @@ export default class BibliotecaArchivosComponent extends Component {
                                         <tr key={key}>
                                             <td>{data.name}</td>
                                             <td>{data.type}</td>
-                                            <td> <button onClick={(e) => {
+                                            <td className="tableIcons"> <button onClick={(e) => {
                                                 e.preventDefault();
                                                 this.descargar(data.id)
-                                            }}>Descargar</button> </td>
+                                            }}><GetAppIcon /></button> </td>
                                             {HELPER_FUNCTIONS.checkPermission('DELETE|files/:id') &&
-                                                <td> <button onClick={(e) => {
+                                                <td className="tableIcons"> <button onClick={(e) => {
                                                     e.preventDefault();
                                                     this.eliminar(data.id)
                                                 }}>Eliminar</button> </td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission('DELETE|files/:id') &&
-                                                <td> <button disabled>Eliminar</button> </td>
+                                                <td className="tableIcons"> <button disabled>Eliminar</button> </td>
                                             }
                                         </tr>
                                     )

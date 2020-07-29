@@ -22,7 +22,8 @@ export default class StepName extends Component {
         value: '-',
         dataToSend: {},
         step: null,
-        instances: null
+        instances: null,
+        valueCoach: '-'
     }
 
     asignarArchivos = () => {
@@ -174,6 +175,10 @@ export default class StepName extends Component {
 
     handleChange = (event) => {
         this.setState({ value: event.target.value });
+    }
+
+    handleChangeCoach = (event) => {
+        this.setState({ valueCoach: event.target.value });
     }
 
     agregarArchivo = (tipoArchivo) => {
@@ -508,11 +513,12 @@ export default class StepName extends Component {
                                                         return true;
                                                     })
                                                 }
+                                                <h6>Media (Monitorings)</h6>
                                                 <p>Audios requeridos: {step.requestedMonitorings}</p>
                                                 <p>Audios faltantes: {(step.audioFiles === false ? step.requestedMonitorings : (step.requestedMonitorings - contadorAudios))} </p>
                                             </div>
-                                            <div>
-
+                                            <div className="uploadAudioMon">
+                                                
                                                 {step.requestedMonitorings - contadorAudios > 0 &&
                                                     <select value={this.state.value} onChange={this.handleChange}>
                                                         <option value="-">Selecciona...</option>
@@ -530,7 +536,7 @@ export default class StepName extends Component {
                                                 }
 
                                                 {value === 'message' &&
-                                                    <input type="text" name="" id="texto" />
+                                                    <input type="text" placeholder="Mensaje explicando el porque no pudo cargar audios" name="" id="texto" />
                                                 }
 
                                                 {value !== '-' &&
@@ -554,7 +560,7 @@ export default class StepName extends Component {
                                             <textarea name="patronMejora" id="cr" cols="30" rows="10" defaultValue={step.patronMejora} onChange={
                                                 this.armarObjeto
                                             }
-                                            ></textarea>addCustomField
+                                            ></textarea>
 
                                             <label htmlFor="cdr">Compromiso del representante</label>
                                             <textarea name="compromisoRepresentante" id="cdr" cols="30" rows="10" defaultValue={step.compromisoRepresentante} onChange={
@@ -650,25 +656,33 @@ export default class StepName extends Component {
 
                                     </section>
                                 </div>
-                                <article>
-                                    <label htmlFor="uploadAudio">Subir Audio</label>
-                                    <input type="file" name="" id="" onChange={
-                                        (e) => {
-                                            this.archivoSeleccionado = e.target.files
-                                        }
-                                    } />
+                                <article className="coachingsAudios">
+                                    <h6>Media (Coachings)</h6>
 
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            this.subirArchivo()
-                                        }}
-                                    >
-                                        Subir el archivo
-                                    </button>
+                                    
+                                    <select value={this.state.valueCoach} onChange={this.handleChangeCoach}>
+                                        <option value="-">Selecciona...</option>
+                                        <option value="file">Audio</option>
+                                        <option value="record">Grabacion</option>
+                                    </select>
+                                    
+                                    {this.state.valueCoach === 'file' &&
+                                        <>
+                                            <label htmlFor="uploadAudio">Subir Audio</label>
+                                            <input type="file" onChange={(e) => {this.archivoSeleccionado = e.target.files}} />
+                                            <button onClick={(e) => {e.preventDefault();this.subirArchivo()}}>
+                                                Subir el archivo
+                                            </button>
+                                        </>
+                                    }
 
-                                    <label htmlFor="grabaraudio">Grabar Audio</label>
-                                    <RecordAudio ids={this.props.match.params} />
+                                    {this.state.valueCoach === 'record' &&
+                                        <>
+                                            <label htmlFor="grabaraudio">Grabar Audio</label>
+                                            <RecordAudio ids={this.props.match.params} />
+                                        </>
+                                    }
+
 
                                     <div className="archivosCargados">
                                         {step.audioFiles &&

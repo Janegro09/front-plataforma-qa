@@ -1,0 +1,49 @@
+
+label {
+
+}
+
+label.main {
+    display: block;
+    font-size: 14px;
+    color: #000;
+    margin-bottom: 0;
+}
+
+label.forInputs {
+    display: inline-block;
+    margin: 0 0 0 10px;
+    font-size: 13px;
+    color: #000;
+}
+
+input[type='text'] {
+    display: block;
+    width: 100%;
+    padding: 5px 10px;
+    margin: 10px 0;
+}
+
+.labelsInputs {
+    padding: 10px;
+    margin: 5px 0;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+
+textarea {
+
+}
+
+select {
+
+}
+
+input[type='radio'] {
+
+}
+
+input[type='checkbox'] {
+
+}

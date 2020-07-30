@@ -6,6 +6,7 @@ import Global from '../../../Global'
 import axios from 'axios'
 import swal from 'sweetalert'
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers'
+import './ExportarBasesDeDatosComponent.css'
 
 export default class AdministracionFormulariosComponent extends Component {
 
@@ -60,8 +61,8 @@ export default class AdministracionFormulariosComponent extends Component {
                     <UserAdminHeader />
                 </div>
                 <div className="section-content">
-                    <h1>Exportar</h1>
-                    <button
+                    <h1>Exportar bases de datos</h1>
+                    <button className="buttonExport"
                         onClick={(e) => {
                             e.preventDefault();
                             this.exportsDatabase();
@@ -71,7 +72,7 @@ export default class AdministracionFormulariosComponent extends Component {
                     </button>
 
                     {urlUser !== '' &&
-                        <a href={urlUser} onClick={() => {
+                        <a className="descargar" href={urlUser} onClick={() => {
                             setTimeout(() => {
                                 this.setState({ urlUser: '' });
                             }, 2000);

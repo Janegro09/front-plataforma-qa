@@ -12,7 +12,7 @@ export default class FileSelection extends Component {
         dataFiltered: null,
         orderedData: null,
         loading: false,
-        itemsToShow: 6,
+        itemsToShow: 60,
         expanded: false,
         arrayToSend: []
     }
@@ -38,7 +38,7 @@ export default class FileSelection extends Component {
     }
 
     showMore = () => {
-        this.state.itemsToShow >= 6 ? (
+        this.state.itemsToShow >= 50 ? (
             this.setState({ itemsToShow: this.state.itemsToShow + 10, expanded: true })
         ) : (
                 this.setState({ itemsToShow: 6, expanded: false })
@@ -163,14 +163,14 @@ export default class FileSelection extends Component {
 
                             </tbody>
                         </table>
-
-                        <button
-                            onClick={this.showMore}
-                        >
-                            Ver mas
+                        <div className="verMas">
+                            <button
+                                onClick={this.showMore}
+                            >
+                                Ver mas
                         </button>
-
-                        <button
+                        </div>
+                        <button className="buttonSiguiente"
                             onClick={(e) => {
                                 e.preventDefault();
                                 this.props.getData(arrayToSend);

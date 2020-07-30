@@ -452,3 +452,65 @@ hr {
   float: right;
   display: flex;
 }
+.textarea {
+  border: 1px solid #efeff3;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.textarea:focus {
+  border: transparent;
+}
+
+.audiosReq {
+  float: right;
+  margin: 0px 24px 0px 0px;
+  font-size: 11px;
+}
+
+.audiosReq > p {
+  text-align: right;
+}
+
+.titleInBox {
+  margin: 45px 0px 10px 0px;
+}
+
+.margin-top-20 {
+  margin-top: 20px;
+}
+
+.buttonSiguiente {
+  /* float: right; */
+  color: white;
+  bottom: 40px;
+  right: 40px;
+  position: fixed;
+  padding: 15px 20px;
+  border-radius: 5px;
+  background-color: #03a9f4;
+  -webkit-box-shadow: 0 0.125rem 0.625rem rgb(22 170 255 / 33%), 0 0.0625rem 0.125rem rgb(22 170 255 / 50%);
+}
+
+.contenedorPartituras {
+  height: 200px;
+}
+
+
+.buttonStepInformation {
+  width: fit-content;
+  background-color: #03a9f4;
+  color:  white;
+  padding: 10px 20px 10px 20px;
+  border-radius: 5px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  -webkit-box-shadow: 0 0.125rem 0.625rem rgb(22 170 255 / 33%), 0 0.0625rem 0.125rem rgb(22 170 255 / 50%);
+  z-index: 2000;
+}
+
+.verMas {
+
+}
+

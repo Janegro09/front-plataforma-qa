@@ -10,6 +10,14 @@ import './steps.css'
 import CustomFields from '../AdministradorFormularios/customfields/CustomFields';
 import AsignarArchivos from './AsignarArchivos'
 import RecordAudio from '../RecordAudio/RecordAudio'
+import VolumeUpIcon from '@material-ui/icons/VolumeUp';
+import EmailIcon from '@material-ui/icons/Email';
+import CheckIcon from '@material-ui/icons/Check';
+import TimerIcon from '@material-ui/icons/Timer';
+import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
 
 export default class StepName extends Component {
 
@@ -295,7 +303,8 @@ export default class StepName extends Component {
                             <th>Estado</th>
                             <th>Improvment</th>
                             {ReturnData.headers.map((value, key) => {
-                                return <th key={key}>{value}</th>    })
+                                return <th key={key}>{value}</th>
+                            })
 
                             }
                         </tr>
@@ -304,8 +313,14 @@ export default class StepName extends Component {
                 <tbody>
                     {ReturnData.actual.length > 0 &&
                         <tr>
-                            <td>{users.partitureStatus}</td>
-                            <td>{users.improvment}</td>
+                            <td>
+                                {(users.partitureStatus === 'pending' ? <TimerIcon className="clockIcon" /> : (users.partitureStatus === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon />))}
+                            </td>
+                            <td>
+                                {(users.improvment === "+" ?
+                                    <ExpandLessIcon className="arrowUp" /> : (users.improvment === "+-" ?
+                                    <ImportExportRoundedIcon /> : <ExpandMoreIcon className="arrowDown" />))}
+                            </td>
                             {ReturnData.actual.map((value, key) => {
                                 return <th key={key}>{value}</th>
                             })
@@ -414,7 +429,9 @@ export default class StepName extends Component {
                                 <tr>
                                     <td>{moment(data.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>
                                     <td>{data.name}</td>
-                                    <td className="tableIcons">{data.partitureStatus}</td>
+                                    <td className="tableIcons">
+                                        {(data.partitureStatus === 'pending' ? <TimerIcon className="clockIcon" /> : (data.partitureStatus === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon />))}
+                                    </td>
                                     <td className="tableIcons">{data.fileId.length}</td>
                                 </tr>
                             </tbody>
@@ -425,7 +442,7 @@ export default class StepName extends Component {
 
                         {step &&
                             <div className="stepInformation">
-                                <button
+                                <button className="buttonStepInformation"
                                     onClick={
                                         (e) => {
                                             e.preventDefault();
@@ -433,7 +450,7 @@ export default class StepName extends Component {
                                         }
                                     }
                                 >
-                                    Modificar
+                                    Enviar
                                 </button>
                                 <h4>{step.name}</h4>
                                 <article>
@@ -475,55 +492,58 @@ export default class StepName extends Component {
 
                                     <section>
                                         <article>
-                                            <h6>Lider</h6>
-                                            <div className="archivosCargados">
-                                                {step.audioFiles &&
-                                                    step.audioFiles.map(stp => {
-                                                        if (stp.section === 'monitorings') {
-                                                            contadorAudios++;
-                                                            return (
-                                                                <span key={stp._id} className={stp.message && 'isMessage'}
-                                                                    
-                                                                >
-                                                                    <button
-                                                                        onClick={
-                                                                            (e) => {
-                                                                                e.preventDefault();
-                                                                                this.eliminarArchivo(stp._id);
-                                                                            }
-                                                                        }
-                                                                        style={{zIndex: 10000}}
+                                            <div className="contenedorPartituras">
+                                                <h6>Lider</h6>
+                                                <div className="archivosCargados">
+                                                    {step.audioFiles &&
+                                                        step.audioFiles.map(stp => {
+                                                            if (stp.section === 'monitorings') {
+                                                                contadorAudios++;
+                                                                return (
+                                                                    <span key={stp._id} className={stp.message && 'isMessage'}
+
                                                                     >
-                                                                        X
+                                                                        <button
+                                                                            onClick={
+                                                                                (e) => {
+                                                                                    e.preventDefault();
+                                                                                    this.eliminarArchivo(stp._id);
+                                                                                }
+                                                                            }
+                                                                            style={{ zIndex: 10000 }}
+                                                                        >
+                                                                            X
                                                                         </button>
-                                                                    {stp.message &&
-                                                                        <p onClick={
-                                                                        (e) => {
-                                                                            e.preventDefault();
-                                                                            this.descargarArchivoAudio(stp._id);
+                                                                        {stp.message &&
+                                                                            <p>{moment(stp.createdAt).format("DD/MM/YYYY")} - {stp.message} <EmailIcon /></p>
                                                                         }
-                                                                    }>{moment(stp.createdAt).format("DD/MM/YYYY")} - {stp.message} - type: M</p>
-                                                                    }
-                                                                    {!stp.message &&
-                                                                        <p onClick={
-                                                                        (e) => {
-                                                                            e.preventDefault();
-                                                                            this.descargarArchivoAudio(stp._id);
+                                                                        {!stp.message &&
+                                                                            <p onClick={
+                                                                                (e) => {
+                                                                                    e.preventDefault();
+                                                                                    this.descargarArchivoAudio(stp._id);
+                                                                                }
+                                                                            }>{moment(stp.createdAt).format("DD/MM/YYYY")} <VolumeUpIcon /></p>
                                                                         }
-                                                                    }>{moment(stp.createdAt).format("DD/MM/YYYY")} - type: F</p>
-                                                                    }
-                                                                </span>
-                                                            )
-                                                        }
-                                                        return true;
-                                                    })
-                                                }
-                                                <h6>Media (Monitorings)</h6>
-                                                <p>Audios requeridos: {step.requestedMonitorings}</p>
-                                                <p>Audios faltantes: {(step.audioFiles === false ? step.requestedMonitorings : (step.requestedMonitorings - contadorAudios))} </p>
+
+                                                                    </span>
+                                                                )
+                                                            }
+                                                            return true;
+                                                        })
+                                                    }
+                                                    <div className="audiosReq">
+                                                        <p>Audios requeridos: {step.requestedMonitorings}</p>
+                                                        <p>Audios faltantes: {(step.audioFiles === false ? step.requestedMonitorings : (step.requestedMonitorings - contadorAudios))} </p>
+                                                    </div>
+                                                    <div className="titleInBox">
+                                                        <h6>Media (Monitorings)</h6>
+                                                    </div>
+                                                    <hr></hr>
+                                                </div>
                                             </div>
                                             <div className="uploadAudioMon">
-                                                
+
                                                 {step.requestedMonitorings - contadorAudios > 0 &&
                                                     <select value={this.state.value} onChange={this.handleChange}>
                                                         <option value="-">Selecciona...</option>
@@ -559,19 +579,19 @@ export default class StepName extends Component {
                                             </div>
 
                                             <label htmlFor="ddt">Detalle de transacción / Oportunidades indentificadas</label>
-                                            <textarea name="detalleTransaccion" id="ddt" cols="30" rows="10" defaultValue={step.detalleTransaccion} onChange={this.armarObjeto}></textarea>
+                                            <textarea className="textarea" name="detalleTransaccion" id="ddt" cols="30" rows="10" defaultValue={step.detalleTransaccion} onChange={this.armarObjeto}></textarea>
 
                                             <label htmlFor="cr">Causa Raíz / Descripción del patrón a mejorar</label>
-                                            <textarea name="patronMejora" id="cr" cols="30" rows="10" defaultValue={step.patronMejora} onChange={
+                                            <textarea className="textarea" name="patronMejora" id="cr" cols="30" rows="10" defaultValue={step.patronMejora} onChange={
                                                 this.armarObjeto
                                             }
                                             ></textarea>
 
                                             <label htmlFor="cdr">Compromiso del representante</label>
-                                            <textarea name="compromisoRepresentante" id="cdr" cols="30" rows="10" defaultValue={step.compromisoRepresentante} onChange={
+                                            <textarea className="textarea" name="compromisoRepresentante" id="cdr" cols="30" rows="10" defaultValue={step.compromisoRepresentante} onChange={
                                                 this.armarObjeto
                                             }></textarea>
-
+                                            <div className="margin-top-20"></div>
                                             <label htmlFor="imp">Improvment</label>
                                             <select name="improvment" id="imp" defaultValue={step.improvment} onChange={
                                                 this.armarObjeto
@@ -617,7 +637,9 @@ export default class StepName extends Component {
                                                 }
                                             </article>
 
+
                                         }
+
 
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' &&
                                             <article>
@@ -634,7 +656,7 @@ export default class StepName extends Component {
                                                     />
                                                 }
                                             </article>
-                                            
+
                                         }
 
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' && this.state.role !== 'GERENTE' &&
@@ -652,7 +674,7 @@ export default class StepName extends Component {
                                                     />
                                                 }
                                             </article>
-                                            
+
                                         }
 
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' && this.state.role !== 'GERENTE' &&
@@ -669,7 +691,7 @@ export default class StepName extends Component {
                                                         }}
                                                     />
                                                 }
-                                            </article> 
+                                            </article>
                                         }
 
                                     </section>
@@ -677,18 +699,18 @@ export default class StepName extends Component {
                                 <article className="coachingsAudios">
                                     <h6>Media (Coachings)</h6>
 
-                                    
+
                                     <select value={this.state.valueCoach} onChange={this.handleChangeCoach}>
                                         <option value="-">Selecciona...</option>
                                         <option value="file">Audio</option>
                                         <option value="record">Grabacion</option>
                                     </select>
-                                    
+
                                     {this.state.valueCoach === 'file' &&
                                         <>
                                             <label htmlFor="uploadAudio">Subir Audio</label>
-                                            <input type="file" onChange={(e) => {this.archivoSeleccionado = e.target.files}} />
-                                            <button onClick={(e) => {e.preventDefault();this.subirArchivo()}}>
+                                            <input type="file" onChange={(e) => { this.archivoSeleccionado = e.target.files }} />
+                                            <button onClick={(e) => { e.preventDefault(); this.subirArchivo() }}>
                                                 Subir el archivo
                                             </button>
                                         </>
@@ -718,26 +740,26 @@ export default class StepName extends Component {
                                                                     }
                                                                 }
 
-                                                                style={{zIndex: 10000}}
+                                                                style={{ zIndex: 10000 }}
                                                             >
                                                                 X
                                                                         </button>
 
                                                             {stp.message &&
                                                                 <p onClick={
-                                                                (e) => {
-                                                                    e.preventDefault();
-                                                                    this.descargarArchivoAudio(stp._id);
-                                                                }
-                                                            }>{moment(stp.createdAt).format("DD/MM/YYYY")} - {stp.message} - type: M</p>
+                                                                    (e) => {
+                                                                        e.preventDefault();
+                                                                        this.descargarArchivoAudio(stp._id);
+                                                                    }
+                                                                }>{moment(stp.createdAt).format("DD/MM/YYYY")} - {stp.message} - type: M</p>
                                                             }
                                                             {!stp.message &&
                                                                 <p onClick={
-                                                                (e) => {
-                                                                    e.preventDefault();
-                                                                    this.descargarArchivoAudio(stp._id);
-                                                                }
-                                                            }>{moment(stp.createdAt).format("DD/MM/YYYY")} - type: F</p>
+                                                                    (e) => {
+                                                                        e.preventDefault();
+                                                                        this.descargarArchivoAudio(stp._id);
+                                                                    }
+                                                                }>{moment(stp.createdAt).format("DD/MM/YYYY")} <VolumeUpIcon /></p>
                                                             }
                                                         </span>
                                                     )

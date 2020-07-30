@@ -18,6 +18,8 @@
     color: black;
     position: relative;
     overflow-y: scroll;
+    padding: 25px;
+    -webkit-box-shadow: inset 0px -37px 24px -23px rgba(0,0,0,0.55);
 }
 
 .boton-cerrar {

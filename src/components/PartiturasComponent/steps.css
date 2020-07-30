@@ -1,22 +1,25 @@
 .stepInformation {
-    border: 1px solid red;
     display: flex;
     flex-flow: column nowrap;
+    background-color: #ffffff2e;
+    padding: 11px;
 }
 
 .stepInformation .information {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
+    margin-top: 20px;
 }
 
 .stepInformation .information section {
-    border: 1px solid black;
+    border: 1px solid #e4e4e4;
+    border-radius: 5px;
     width: 100%;
+    margin-right: 22px;
 }
 
 .stepInformation .information section article {
-    border: 1px solid red;
     display: block;
     width:100%;
 
@@ -26,6 +29,8 @@ article textarea {
     display: block;
     width:100%;
     height: 50px;
+    border: 1px solid #efeff3;
+    border-radius: 5px;
 }
 
 article label {
@@ -34,8 +39,8 @@ article label {
 }
 
 .archivosCargados {
-    padding: 5px;
     box-sizing: border-box;
+    margin: 6px 0px 15px 0px;
 }
 
 .archivosCargados p {
@@ -43,25 +48,28 @@ article label {
 }
 
 .archivosCargados span {
-    background-color: #0f0;
     padding: 10px 20px 10px 10px;
-    display: inline-block;
-    margin: 0 10px 0 0;
+    display: flex;
+    margin: 0 10px 7px 0;
+    border-radius: 6px;
+    border: 1px solid #e4e4e4;
     position: relative;
 }
 
 .archivosCargados span button {
     position: absolute;
-    top: 2px;
-    right: 2px;
+    font-size: 10px;
+    right: 12px;
+    top: 14px;
 }
+
 
 .archivosCargados span p {
     margin: 0;
 }
 
 .isMessage {
-    background-color: plum !important;
+    /* background-color: #ffa8a86b !important; */
 }
 
 .uploadAudioMon select {
@@ -99,9 +107,3 @@ article label {
     color: #000;
 }
 
-.coachingsAudios button {
-    display: block;
-    background-color: greenyellow;
-    padding: 10px 5px;
-    color: #000;
-}

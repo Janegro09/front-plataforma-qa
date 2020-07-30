@@ -174,7 +174,7 @@ export default class PartiturasEspecificComponent extends Component {
                             Partituras
                         </button>
 
-                        <h1>Archivo actual</h1>
+                        <h3>Archivo actual</h3>
                         <table>
                             <thead>
                                 <tr>
@@ -207,7 +207,7 @@ export default class PartiturasEspecificComponent extends Component {
                             </tbody>
                         </table>
 
-                        <h2>Usuarios</h2>
+                        <h3>Usuarios</h3>
                         <input onChange={this.buscar} className="form-control" placeholder="Buscar por usuario | Nombre o DNI" />
                         <table>
                             <thead>
@@ -278,7 +278,7 @@ export default class PartiturasEspecificComponent extends Component {
 
                                                 <td className="tableIcons">{(user.improvment === "+" ?
                                                     <ExpandLessIcon className="arrowUp" /> : (user.improvment === "+-" ?
-                                                        <ExpandMoreIcon className="arrowDown" /> : <ImportExportRoundedIcon />))}</td>
+                                                        <ImportExportRoundedIcon /> : <ExpandMoreIcon className="arrowDown"/>))}</td>
                                                 <td className="tablaVariables tableIcons"><div className={` ${!(user.audioFilesRequired - user.audioFilesActually) <= 0 ? "estadoInactivo " : 'estadoActivo'}`}></div></td>
                                                 <td><button onClick={(e) => {
                                                     e.preventDefault();

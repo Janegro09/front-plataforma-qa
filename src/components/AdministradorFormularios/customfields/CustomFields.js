@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import './customFields.css';
+import Checkbox from '@material-ui/core/Checkbox';
+import Radio from '@material-ui/core/Radio';
 
 export default class CustomFields extends Component {
 
@@ -128,7 +130,7 @@ export default class CustomFields extends Component {
                                     }}/>
                                 }
                                 {value.type === 'textarea' &&
-                                    <textarea cols="30" rows="10" required={value.required} name={value.sectionName}/>
+                                    <textarea className="textarea" cols="30" rows="10" required={value.required} name={value.sectionName}/>
                                 }
                                 {value.type === 'select' &&
                                     <select required={value.required} name={value.sectionName} value={value.defaultValue} onChange={(e) => this.changeValues(e, value)}>
@@ -180,7 +182,7 @@ export default class CustomFields extends Component {
 
                                                 return (
                                                     <div className="labelsInputs">
-                                                        <input type="checkbox" id={v} name={value.sectionName} checked={defVal} onChange={(e) => {this.changeValues(e, value, v);}}/>
+                                                        <Checkbox id={v} name={value.sectionName} checked={defVal} onChange={(e) => {this.changeValues(e, value, v);}}/>
                                                         <label className="forInputs">{v}</label>
                                                     </div>
                                                 )

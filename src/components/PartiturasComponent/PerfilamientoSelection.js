@@ -136,7 +136,7 @@ export default class PerfilamientoSelection extends Component {
                     </table>
                 }
 
-                <button
+                <button className="buttonSiguiente"
                     onClick={(e) => {
                         e.preventDefault();
                         this.props.getData(perfilamientos);

@@ -271,7 +271,7 @@ export default class InstancePartitureSelection extends Component {
                                                 e.preventDefault();
                                                 this.agregarPaso(instance.id);
                                             }}>Agregar paso</button>
-                                            <button onClick={(e) => {
+                                            <button className="addItem morph" onClick={(e) => {
                                                 e.preventDefault();
                                                 this.eliminarInstancia(instance.id);
                                             }}>Eliminar instancia</button>
@@ -307,7 +307,7 @@ export default class InstancePartitureSelection extends Component {
                     </div>
                 }
 
-                <button
+                <button className="buttonSiguiente"
                     onClick={(e) => {
                         e.preventDefault();
                         this.props.getData(partitureModelSelected);

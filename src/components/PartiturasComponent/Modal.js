@@ -137,7 +137,6 @@ export default class Modal extends Component {
                     {paginaActual === 3 &&
                         <InstancePartitureSelection getData={(instances) => { this.crear(instances); }} />
                     }
-
                 </div>
             </div>
         )

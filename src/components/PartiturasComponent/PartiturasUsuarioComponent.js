@@ -14,6 +14,7 @@ import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import TimerIcon from '@material-ui/icons/Timer';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
+import Checkbox from '@material-ui/core/Checkbox';
 
 export default class PartiturasUsuarioComponent extends Component {
 
@@ -242,8 +243,7 @@ export default class PartiturasUsuarioComponent extends Component {
                                                 {v.steps.length > 0 &&
                                                     v.steps.map(s => (
                                                         <span key={s.id}>
-                                                            <input
-                                                                type="checkbox"
+                                                            <Checkbox
                                                                 onChange={() => {
                                                                     this.modificarEstado(s.id);
                                                                 }}

@@ -510,7 +510,16 @@ hr {
   z-index: 2000;
 }
 
-.verMas {
-
+.buttonGral {
+    position: fixed;
+    top: -45px;
+    font-size: 50px;
+    border: 1px solid white;
+    border-radius: 50%;
+    e: white;
+    width: 115px;
+    height: 113px;
+    padding: 33px 38px 22px 2px;
+    right: -51px;
+    color: white;
 }
-

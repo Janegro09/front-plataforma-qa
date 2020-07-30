@@ -115,7 +115,7 @@ export default class FileSelection extends Component {
             <>
                 {data &&
                     <>
-                        <input type="text" id="searched" onChange={this.filtrarTexto} />
+                        <input className="form-control" type="text" id="searched" onChange={this.filtrarTexto} />
                         <table>
                             <thead>
                                 <tr>

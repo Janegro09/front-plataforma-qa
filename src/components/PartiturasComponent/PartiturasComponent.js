@@ -15,6 +15,7 @@ import TimerIcon from '@material-ui/icons/Timer';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AddIcon from '@material-ui/icons/Add';
 
 
 export default class PartiturasComponent extends Component {
@@ -199,7 +200,7 @@ export default class PartiturasComponent extends Component {
                     <div className="flex-input-add">
                     <input onChange={this.buscar} className="form-control" placeholder="Buscar por nombre de archivo" />
                     {HELPER_FUNCTIONS.checkPermission('POST|analytics/partitures/new') &&
-                        <button
+                        <button className="addItem morph"
                             onClick={
                                 (e) => {
                                     e.preventDefault();
@@ -207,7 +208,8 @@ export default class PartiturasComponent extends Component {
                                 }
                             }
                         >
-                            Crear partitura
+                           <AddIcon className="svgAddButton" style={{ fontSize: 33 }} />
+
                         </button>
                     }
                     </div>

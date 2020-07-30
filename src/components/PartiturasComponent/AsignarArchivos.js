@@ -86,7 +86,7 @@ export default class Modal extends Component {
             <div className="modal" id="modal-casero">
                 <div className="hijo2">
                     <div className="boton-cerrar">
-                        <button onClick={
+                        <button className="buttonGral" onClick={
                             (e) => {
                                 e.preventDefault()
                                 this.cerrarModal()

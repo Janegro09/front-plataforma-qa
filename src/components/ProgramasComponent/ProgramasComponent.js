@@ -249,7 +249,7 @@ export default class GroupsTable extends Component {
         }
     }
 
-    createProgram = (e) => {
+    edit = (e) => {
         e.preventDefault()
         const bodyParameters = {
             name: this.name.value,
@@ -274,29 +274,32 @@ export default class GroupsTable extends Component {
         let bearer = `Bearer ${token}`
         this.setState({
             loading: true,
-            redireccion: true
-        })
-        axios.put(Global.getAllPrograms + '/' + id, dataSend, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            this.setState({
-                loading: false
+            // redireccion: true
+        });
+
+        // setTimeout(() => {      
+            axios.put(Global.getAllPrograms + '/' + id, dataSend, { headers: { Authorization: bearer } }).then(response => {
+                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                window.location.reload(window.location.href);
+                this.setState({
+                    loading: false
+                })
             })
-        })
-            .catch((e) => {
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
-                    this.setState({
-                        loading: false
-                    })
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema", "error");
-                }
-                console.log("Error: ", e)
-            });
-        this.setState({
-            createProgram: true
-        })
+                .catch((e) => {
+                    if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                        HELPER_FUNCTIONS.logout()
+                    } else {
+                        this.setState({
+                            loading: false
+                        })
+                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        swal("Error!", "Hubo un problema", "error");
+                    }
+                    console.log("Error: ", e)
+                });
+        // }, 4000);
+
+
     }
 
     newProgram = (e) => {
@@ -338,12 +341,13 @@ export default class GroupsTable extends Component {
 
     handleTurno = (event) => {
         event.preventDefault()
+        console.log("El turno de la farmacia")
         this.turno = event.target.value
     }
 
     crearPrograma = (e) => {
         e.preventDefault()
-
+        
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
@@ -437,6 +441,8 @@ export default class GroupsTable extends Component {
         let botones = []
         let arrayDiv = []
         let assignedPrograms = []
+
+        console.log("programsFiltered: ", programsFiltered);
 
         if (allPrograms) {
 
@@ -697,7 +703,7 @@ export default class GroupsTable extends Component {
 
                                     {/* <CreateProgramsGroupComponent /> */}
                                     <div className="table-parent-edit">
-                                        <form onSubmit={this.createProgram} className="inputsEditUser addUserPadding">
+                                        <form onSubmit={this.edit} className="inputsEditUser addUserPadding">
                                             <span className="Label">Nombre</span>
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={userSelected.name ? userSelected.name : ''} />
                                             <span className="Label">Parent program</span>
@@ -708,6 +714,7 @@ export default class GroupsTable extends Component {
                                             }
                                             <span className="Label">Section</span>
                                             <select onChange={this.handleTurno}>
+                                                <option value="-">Selecciona...</option>
                                                 <option value="M" selected={userSelected.section === 'M'}>Monitoreo</option>
                                                 <option value="P" selected={userSelected.section === 'P'}>Perfilamiento</option>
                                             </select>

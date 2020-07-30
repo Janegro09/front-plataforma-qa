@@ -1,0 +1,23 @@
+.buttonExport {
+    padding: 10px;
+    background: #039BE5;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.descargar {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-left: 20px;
+    background: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #039BE5;
+}
+
+.descargar:hover {
+    text-decoration: none;
+    background: #039BE5;
+    color: #fff;
+    border: none;
+}

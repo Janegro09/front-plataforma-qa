@@ -72,9 +72,11 @@ export default class Modal extends Component {
         })
         axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            let losP = response.data.Data.filter(data => data.section === 'P');
+
             this.setState({
-                allPrograms: response.data.Data,
-                programsFiltered: response.data.Data,
+                allPrograms: losP,
+                programsFiltered: losP,
                 loading: false
             })
 
@@ -123,12 +125,12 @@ export default class Modal extends Component {
                 let tempData = (
                     <tr key={index}>
                         <td>{data[index].name}</td>
-                        {HELPER_FUNCTIONS.checkPermission("PUT|programs/:id") &&
-                            <td onClick={e => this.editProgram(e, data[index])}><EditIcon style={{ fontSize: 15 }} /></td>
-                        }
-                        {HELPER_FUNCTIONS.checkPermission("DELETE|programs/:id") &&
-                            <td onClick={e => this.deleteProgram(e, data[index])}><DeleteIcon style={{ fontSize: 15 }} /></td>
-                        }
+                        <td><button onClick={
+                            (e) => {
+                                e.preventDefault()
+                                this.enviarPrograma(data[index])
+                            }
+                        }>Asignar</button></td>
                     </tr>
                 )
 
@@ -140,8 +142,12 @@ export default class Modal extends Component {
                         let tempData = (
                             <tr key={index + 1 + j}>
                                 <td><SubdirectoryArrowRightIcon className="ArrowRightIcon" /> {data[j].name}</td>
-                                <td onClick={e => this.editProgram(e, data[j])}><EditIcon style={{ fontSize: 15 }} /></td>
-                                <td onClick={e => this.deleteProgram(e, data[j])}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                <td><button onClick={
+                                    (e) => {
+                                        e.preventDefault()
+                                        this.enviarPrograma(data[j])
+                                    }
+                                }>Asignar</button></td>
                             </tr>
                         )
 
@@ -155,8 +161,12 @@ export default class Modal extends Component {
                                 let tempData = (
                                     <tr key={index + 3 + k}>
                                         <td><SubdirectoryArrowRightIcon className="marginArrow ArrowRightIcon" /> {data[k].name}</td>
-                                        <td onClick={e => this.editProgram(e, data[k])}><EditIcon style={{ fontSize: 15 }} /></td>
-                                        <td onClick={e => this.deleteProgram(e, data[k])}><DeleteIcon style={{ fontSize: 15 }} /></td>
+                                        <td><button onClick={
+                                            (e) => {
+                                                e.preventDefault()
+                                                this.enviarPrograma(data[k])
+                                            }
+                                        }>Asignar</button></td>
                                     </tr>
                                 )
 
@@ -218,8 +228,7 @@ export default class Modal extends Component {
                             <tr>
 
                                 <th>Nombre</th>
-                                <th className="tableIcons">Editar</th>
-                                <th className="tableIcons">Eliminar</th>
+                                <th className="tableIcons">Asignar</th>
                             </tr>
                         </thead>
 

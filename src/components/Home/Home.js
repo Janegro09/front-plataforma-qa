@@ -58,7 +58,7 @@ export default class UsersComponent extends Component {
             return <Redirect to={'/'} />
         }
 
-        const { userData } = this.state;
+        // const { userData } = this.state;
 
 
         return (

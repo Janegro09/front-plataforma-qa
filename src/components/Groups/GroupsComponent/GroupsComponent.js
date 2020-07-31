@@ -4,7 +4,6 @@ import GroupInfoContainer from '../GroupInfoContainer/GroupInfoContainer'
 import Logo from '../../Home/logo_background.png';
 // import UserAdminHeader from '../userAdminHeader/userAdminHeader'
 import UserAdminHeader from '../../Users/userAdminHeader/userAdminHeader'
-import PublishIcon from '@material-ui/icons/Publish';
 
 
 

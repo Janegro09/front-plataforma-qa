@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import './customFields.css';
 import Checkbox from '@material-ui/core/Checkbox';
-import Radio from '@material-ui/core/Radio';
 
 export default class CustomFields extends Component {
 

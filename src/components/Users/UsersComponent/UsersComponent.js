@@ -5,7 +5,6 @@ import { Redirect } from 'react-router-dom'
 // import './Home.css'
 import Logo from '../../Home/logo_background.png';
 import UserAdminHeader from '../userAdminHeader/userAdminHeader'
-import PublishIcon from '@material-ui/icons/Publish';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import FastRewindIcon from '@material-ui/icons/FastRewind';
 import FastForwardIcon from '@material-ui/icons/FastForward';

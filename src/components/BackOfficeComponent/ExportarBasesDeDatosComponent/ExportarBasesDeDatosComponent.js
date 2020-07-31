@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link, Redirect } from 'react-router-dom'
 import SiderbarLeft from '../../SidebarLeft/SiderbarLeft'
 import UserAdminHeader from '../../Users/userAdminHeader/userAdminHeader'
 import Global from '../../../Global'

@@ -5,8 +5,6 @@ import Global from '../../../Global'
 import swal from 'sweetalert'
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers'
 
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight';
 
 export default class Modal extends Component {

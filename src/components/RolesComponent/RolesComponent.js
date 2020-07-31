@@ -4,7 +4,6 @@ import RolesInfoContainer from '../RolesInfoContainer/RolesInfoContainer'
 import Logo from '../Home/logo_background.png';
 // import UserAdminHeader from '../userAdminHeader/userAdminHeader'
 import UserAdminHeader from '../Users/userAdminHeader/userAdminHeader'
-import PublishIcon from '@material-ui/icons/Publish';
 
 export default class Home extends Component {
     constructor(props) {

@@ -23,7 +23,6 @@ export default class PartiturasEspecificComponent extends Component {
         loading: false,
         data: null,
         idUsuario: null,
-        goBack: false,
         filtredData: null
     }
 
@@ -76,10 +75,6 @@ export default class PartiturasEspecificComponent extends Component {
         this.setState({
             idUsuario: id
         });
-    }
-
-    volver = () => {
-        this.setState({ goBack: true });
     }
 
     dynamicSort = (property) => {
@@ -138,13 +133,8 @@ export default class PartiturasEspecificComponent extends Component {
     }
 
     render() {
-        let { loading, data, idUsuario, goBack, filtredData } = this.state;
+        let { loading, data, idUsuario, filtredData } = this.state;
         data = data ? data[0] : null;
-
-        if (goBack) {
-            return <Redirect to={`/partituras`} />
-        }
-
 
         if (idUsuario) {
             let id = this.props.match.params.id;
@@ -165,15 +155,6 @@ export default class PartiturasEspecificComponent extends Component {
 
                 {data &&
                     <div className="section-content">
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                this.volver();
-                            }}
-                        >
-                            Partituras
-                        </button>
-
                         <h3>Archivo actual</h3>
                         <table>
                             <thead>

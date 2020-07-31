@@ -15,6 +15,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import TimerIcon from '@material-ui/icons/Timer';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import Checkbox from '@material-ui/core/Checkbox';
+import './partitures.css';
 
 export default class PartiturasUsuarioComponent extends Component {
 
@@ -22,8 +23,7 @@ export default class PartiturasUsuarioComponent extends Component {
         loading: false,
         data: null,
         redirect: false,
-        id: null,
-        goBack: false
+        id: null
     }
 
     modificarEstado = (StepId) => {
@@ -133,10 +133,6 @@ export default class PartiturasUsuarioComponent extends Component {
         )
     }
 
-    volver = () => {
-        this.setState({ goBack: true });
-    }
-
     componentDidMount() {
         let { id, idUsuario } = this.props.match.params;
 
@@ -170,14 +166,10 @@ export default class PartiturasUsuarioComponent extends Component {
             });
     }
     render() {
-        let { data, redirect, id, goBack, loading } = this.state;
+        let { data, redirect, id, loading } = this.state;
         data = data ? data[0] : null;
         let date = new Date();
         date = moment(date);
-
-        if (goBack) {
-            return <Redirect to='/partituras' />
-        }
 
         if (redirect) {
             return <Redirect to={'/partituras/step/' + this.props.match.params.id + '/' + this.props.match.params.idUsuario + '/' + id} />
@@ -198,14 +190,6 @@ export default class PartiturasUsuarioComponent extends Component {
 
                 {data &&
                     <div className="section-content">
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                this.volver();
-                            }}
-                        >
-                            Partituras
-                        </button>
                         <h2>Archivo actual</h2>
                         <table>
                             <thead>
@@ -221,8 +205,8 @@ export default class PartiturasUsuarioComponent extends Component {
                                     <td>{moment(data.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>
                                     <td>{data.name}</td>
                                     <td className="tableIcons">
-                                        {(data.partitureStatus === 'pending' ? <TimerIcon className="clockIcon" /> : 
-                                        (data.partitureStatus === 'finished' ? <CheckIcon /> : <PlayArrowRoundedIcon />))}
+                                        {(data.partitureStatus === 'pending' ? <TimerIcon className="clockIcon" /> :
+                                            (data.partitureStatus === 'finished' ? <CheckIcon /> : <PlayArrowRoundedIcon />))}
                                     </td >
                                     <td className="tableIcons">{data.fileId.length}</td>
                                 </tr>
@@ -237,7 +221,7 @@ export default class PartiturasUsuarioComponent extends Component {
                                 data.instances.map(v =>
                                     (
                                         <article key={v.id}>
-                                            <h6>{v.name}</h6>
+                                            <h6 className="titulo-semana">{v.name}</h6>
                                             <p className={!moment(v.dates.expirationDate).isBefore(date) ? 'fecha' : 'fecha vencido'}>{moment(v.dates.expirationDate).format("DD/MM/YYYY")}</p>
                                             <div className="steps">
                                                 {v.steps.length > 0 &&
@@ -257,6 +241,7 @@ export default class PartiturasUsuarioComponent extends Component {
                                                     ))
                                                 }
                                             </div>
+                                            <hr />
                                         </article>
                                     )
                                 )

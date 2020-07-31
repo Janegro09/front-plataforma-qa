@@ -8,6 +8,7 @@ import './PerfilamientosComponent.css'
 import { Redirect } from 'react-router-dom';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const placeholder = document.createElement("div");
 placeholder.className = "placeholder";
@@ -579,7 +580,7 @@ export default class PerfilaminetosComponent extends Component {
                                             <button onClick={(e) => {
                                                 e.preventDefault();
                                                 this.eliminarGrupo(v.id)
-                                            }}>Eliminar</button>
+                                            }}> <DeleteIcon /></button>
                                         </div>
                                         <div className="cuartilesAsignados" onDrop={(e) => this.onDrop(e, v.name)} onDragOver={(e) => e.preventDefault()}>
                                             {v.cuartiles &&

@@ -8,15 +8,12 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import swal from 'sweetalert';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
-import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
 import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import TimerIcon from '@material-ui/icons/Timer';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
-
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export default class PartiturasComponent extends Component {
     constructor(props) {
@@ -198,20 +195,20 @@ export default class PartiturasComponent extends Component {
                 <div className="section-content">
                     <h4>PARTITURAS</h4>
                     <div className="flex-input-add">
-                    <input onChange={this.buscar} className="form-control" placeholder="Buscar por nombre de archivo" />
-                    {HELPER_FUNCTIONS.checkPermission('POST|analytics/partitures/new') &&
-                        <button className="addItem morph"
-                            onClick={
-                                (e) => {
-                                    e.preventDefault();
-                                    this.crearPartitura();
+                        <input onChange={this.buscar} className="form-control" placeholder="Buscar por nombre de archivo" />
+                        {HELPER_FUNCTIONS.checkPermission('POST|analytics/partitures/new') &&
+                            <button className="addItem morph"
+                                onClick={
+                                    (e) => {
+                                        e.preventDefault();
+                                        this.crearPartitura();
+                                    }
                                 }
-                            }
-                        >
-                           <AddIcon className="svgAddButton" style={{ fontSize: 33 }} />
+                            >
+                                <AddIcon className="svgAddButton" style={{ fontSize: 33 }} />
 
-                        </button>
-                    }
+                            </button>
+                        }
                     </div>
                     {allPartitures !== null &&
                         <table>
@@ -265,7 +262,7 @@ export default class PartiturasComponent extends Component {
                                                             }
                                                         }
                                                     >
-                                                        Eliminar
+                                                        <DeleteIcon />
                                                     </button>
                                                 }
                                                 {!HELPER_FUNCTIONS.checkPermission('DELETE|analytics/partitures/:id') &&

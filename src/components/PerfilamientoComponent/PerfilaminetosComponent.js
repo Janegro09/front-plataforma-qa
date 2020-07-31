@@ -6,14 +6,12 @@ import axios from 'axios';
 import Global from '../../Global'
 import './PerfilamientosComponent.css'
 import { Redirect } from 'react-router-dom';
-
-
+import AssessmentIcon from '@material-ui/icons/Assessment';
+import AddIcon from '@material-ui/icons/Add';
 
 const placeholder = document.createElement("div");
 placeholder.className = "placeholder";
 placeholder.className = "grupoPerfilamiento";
-
-
 
 export default class PerfilaminetosComponent extends Component {
     constructor(props) {
@@ -448,7 +446,7 @@ export default class PerfilaminetosComponent extends Component {
         let token = tokenUser
         let bearer = `Bearer ${token}`
 
-        this.setState({loading: true});
+        this.setState({ loading: true });
 
         axios.get(Global.getAllFiles + '/' + id + '/cuartiles?getUsers=true', { headers: { Authorization: bearer } }).then(response => {
 
@@ -526,6 +524,7 @@ export default class PerfilaminetosComponent extends Component {
                 <SideBarLeft />
 
                 <div className="section-content">
+                    <h6 className="titulo-seccion">Grupos</h6>
                     <div className="headerResultados">
                         {cuartiles.length > 0 &&
                             <p>Usuarios sin asignar: {allUsers.length - assignedUsers.length} - {Math.ceil(100 - ((assignedUsers.length / allUsers.length) * 100))}%</p>
@@ -535,14 +534,14 @@ export default class PerfilaminetosComponent extends Component {
                                 <button onClick={(e) => {
                                     e.preventDefault();
                                     this.agregarGrupo();
-                                }}>Agregar grupo</button>
+                                }} className="addItem morph"> <AddIcon className="svgAddButton" style={{ fontSize: 33 }} /></button>
                             }
                             <button onClick={(e) => {
                                 e.preventDefault();
                                 this.cuartiles(id)
-                            }}>Cuartiles</button>
+                            }} className="buttonSiguiente cuartiles-boton"><AssessmentIcon />Cuartiles</button>
                             {grupos.length > 0 &&
-                                <button onClick={this.enviarModificacion}>Guardar cambios</button>
+                                <button onClick={this.enviarModificacion} className="buttonSiguiente">Guardar cambios</button>
                             }
                         </span>
                     </div>

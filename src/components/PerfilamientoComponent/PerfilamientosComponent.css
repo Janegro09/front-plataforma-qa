@@ -7,15 +7,14 @@
     align-items: center;
     padding: 10px;
 }
+
 .headerResultados span {
     display: flex;
     flex-flow: column nowrap;
     align-items: space-around;
 }
 
-.grupos {
-
-}
+.grupos {}
 
 .grupoPerfilamiento {
     padding: 10px;
@@ -24,6 +23,7 @@
     -webkit-box-shadow: 0px 0px 6px 1px #9596981c;
     box-sizing: border-box;
 }
+
 .grupoPerfilamiento .acciones {
     width: 100%;
     display: flex;
@@ -31,14 +31,15 @@
     justify-content: space-between;
     align-items: center;
 }
+
 .grupoPerfilamiento .acciones input {
     width: 70%;
 }
+
 .grupoPerfilamiento .acciones label {
     position: unset;
     color: #000;
     font-size: 12px;
-
 }
 
 .grupoPerfilamiento .acciones label input {
@@ -52,9 +53,9 @@
     flex-flow: row wrap;
     justify-content: flex-start;
     align-items: flex-start;
-    -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.07);
+    -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.07);
     min-height: 30px;
-    border: 1px solid #e5e5e5;  
+    border: 1px solid #e5e5e5;
 }
 
 .grupoPerfilamiento .cuartilesAsignados span {
@@ -69,6 +70,7 @@
 .grupoPerfilamiento .cuartilesAsignados span p {
     margin: 0;
 }
+
 .grupoPerfilamiento .cuartilesAsignados span button {
     position: absolute;
     top: 0;
@@ -92,6 +94,7 @@
     background-color: #eaaa88;
     border-radius: 3px;
 }
+
 .yellow {
     background-color: #e6d077;
     border-radius: 3px;
@@ -118,8 +121,6 @@
     text-align: center;
 }
 
-
-
 .cuartil .buttonsContain button {
     display: block;
     width: 100%;
@@ -127,11 +128,26 @@
     padding: 5px;
     color: white;
 }
+
 .placeholder {
-    background: rgb(255,240,120);
+    background: rgb(255, 240, 120);
 }
 
 .placeholder::before {
     content: "Drop here";
-    color: rgb(225,210,90);
+    color: rgb(225, 210, 90);
+}
+
+.cuartiles-boton {
+    right: 196px !important;
+    height: 50px;
+}
+
+.perfilamientos {
+    right: 141px !important;
+    height: 49px;
+}
+
+.perfilamientos>svg, .cuartiles-boton>svg {
+    color: #fff;
 }

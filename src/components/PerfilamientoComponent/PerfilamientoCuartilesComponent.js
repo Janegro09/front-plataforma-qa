@@ -5,6 +5,7 @@ import Global from '../../Global';
 import swal from 'sweetalert';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import { Redirect } from 'react-router-dom';
+import RecentActorsIcon from '@material-ui/icons/RecentActors';
 
 
 export default class PerfilamientoCuartilesComponent extends Component {
@@ -223,11 +224,11 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 <SideBarLeft />
 
                 <div className="section-content">
-                    <button onClick={this.enviar}>Guardar cambios</button>
+                    <button onClick={this.enviar} className="buttonSiguiente">Guardar</button>
                     <button onClick={(e) => {
                         e.preventDefault();
                         this.perfilamientos()
-                    }}>Perfilamientos</button>
+                    }} className="buttonSiguiente perfilamientos"> <RecentActorsIcon /> Perfilamientos</button>
                     <input className="form-control" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
                     {nombreColumnas &&
                         <table>

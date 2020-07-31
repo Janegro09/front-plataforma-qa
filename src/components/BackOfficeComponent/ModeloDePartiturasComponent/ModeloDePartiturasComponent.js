@@ -7,6 +7,8 @@ import { HELPER_FUNCTIONS } from '../../../helpers/Helpers'
 import swal from 'sweetalert'
 import moment from 'moment'
 import Formulario from './Formulario'
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 
 export default class ModeloDePartiturasComponent extends Component {
@@ -111,7 +113,7 @@ export default class ModeloDePartiturasComponent extends Component {
                 {loading &&
                     HELPER_FUNCTIONS.backgroundLoading()
                 }
-                
+
                 {crearNuevo &&
                     <Formulario idModificate={crearNuevo} />
                 }
@@ -127,14 +129,17 @@ export default class ModeloDePartiturasComponent extends Component {
                         e.preventDefault();
                         this.crearNuevo();
                     }}>Crear nuevo</button>
+
+                    <h3>Modelo de partituras</h3>
+
                     {data &&
                         <table>
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Fecha de creación</th>
-                                    <th>Editar</th>
-                                    <th>Eliminar</th>
+                                    <th className="tableIcons">Editar</th>
+                                    <th className="tableIcons">Eliminar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -143,14 +148,14 @@ export default class ModeloDePartiturasComponent extends Component {
                                         <tr key={key}>
                                             <td>{modelo.name}</td>
                                             <td> {moment(modelo.createdAt).format("DD/MM/YYYY")}</td>
-                                            <td> <button onClick={(e) => {
+                                            <td className="tableIcons"> <button onClick={(e) => {
                                                 e.preventDefault();
                                                 this.crearNuevo(modelo.id)
-                                            }}>Editar</button> </td>
-                                            <td> <button onClick={(e) => {
+                                            }} className="celdaBtnHover"> <EditIcon style={{ fontSize: 15 }} /> </button> </td>
+                                            <td className="tableIcons"> <button onClick={(e) => {
                                                 e.preventDefault();
                                                 this.eliminarPlantilla(modelo.id);
-                                            }}>Eliminar</button> </td>
+                                            }} className="celdaBtnHover"> <DeleteIcon style={{ fontSize: 15 }} /> </button> </td>
                                         </tr>
                                     )
                                 })

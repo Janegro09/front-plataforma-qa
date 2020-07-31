@@ -234,10 +234,11 @@ export default class Modal extends Component {
 
                     <form onSubmit={this.handleSubmit} className="formulario">
 
-                        <label htmlFor="nombre" className="label">*nombre: </label>
+                        <label htmlFor="nombre" className="label">Nombre: *</label>
                         <input className="form-control" type="text" id="nombre" value={this.state.value} onChange={this.handleChange} required />
 
-                        <select value={this.state.valueSelect} onChange={this.handleChangeSelect}>
+                        <label htmlFor="tipo" className="label">Tipo: *</label>
+                        <select value={this.state.valueSelect} onChange={this.handleChangeSelect} id="tipo">
                             <option value="text">Texto</option>
                             <option value="area">Área de texto</option>
                             <option value="select">Lista desplegable</option>
@@ -247,7 +248,7 @@ export default class Modal extends Component {
 
                         {valueSelect && valueSelect !== 'text' && valueSelect !== 'area' &&
                             <>
-                                <label htmlFor="input1" className="label">*Opciones separadas por coma</label>
+                                <label htmlFor="input1" className="label">Valores (opciones separadas con coma): *</label>
                                 <input className="form-control" type="text" id="input1" value={this.state.valueArray} onChange={this.handleChangeArray} required />
                             </>
                         }
@@ -259,10 +260,11 @@ export default class Modal extends Component {
                             </>
                         }
                         <div className="flexContent">
-                        <label htmlFor="checkbox" className="label">*Es requerido </label>
                         <input type="checkbox" name="esRequerido" checked={this.state.esRequerido} onChange={this.handleChangeRequired} id="checkbox" />
+                        <label htmlFor="checkbox" className="label">* ¿Es requerido? </label>
                         </div>
-                        <input type="text" placeholder="Descricpión" value={this.state.descripcion || ''} onChange={this.handleChangeDescripcion} />
+                        <label htmlFor="descr" className="label">Descripcion: </label>
+                        <input type="text" id="descr" placeholder="Descricpión" value={this.state.descripcion || ''} onChange={this.handleChangeDescripcion} />
                         
                         <select value={this.state.valueSelectMP} onChange={this.handleChangeSelectMP}>
                             <option value="P">Perfilamiento</option>

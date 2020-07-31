@@ -452,7 +452,16 @@ hr {
 .filtroSwitch {
   float: right;
   display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin-bottom: 10px;
 }
+
+.filtroSwitch h5 {
+  font-size: 1rem;
+  margin-right: 12px;
+}
+
 .textarea {
   border: 1px solid #efeff3;
   border-radius: 5px;

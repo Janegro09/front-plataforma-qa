@@ -255,7 +255,8 @@ export default class InstancePartitureSelection extends Component {
                 }
                 {partitureModelSelected &&
                     <div className="partituresModels">
-                        <button onClick={(e) => {
+                        <button className="btn"
+                        onClick={(e) => {
                             e.preventDefault();
                             this.agregarInstancia();
                         }}>Agregar instancia</button>
@@ -268,7 +269,7 @@ export default class InstancePartitureSelection extends Component {
                                             <input type="text" value={instance.name} onChange={(e) => {
                                                 this.cambiarNombreInstancia(instance.id, e);
                                             }} />
-                                            <button onClick={(e) => {
+                                            <button className="boton" onClick={(e) => {
                                                 e.preventDefault();
                                                 this.agregarPaso(instance.id);
                                             }}>Agregar paso</button>

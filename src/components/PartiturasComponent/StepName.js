@@ -415,7 +415,7 @@ export default class StepName extends Component {
 
                 {data &&
                     <div className="section-content">
-                        <h2 className="titulo">Archivo actual</h2>
+                        <h2 className="titulo">Archivo Actual</h2>
                         <table>
                             <thead>
                                 <tr>
@@ -437,7 +437,7 @@ export default class StepName extends Component {
                             </tbody>
                         </table>
 
-                        <h2 className="titulo">Usuarios Actuales</h2>
+                        <h2 className="titulo">Usuario Actual</h2>
                         {this.getUsersColumns()}
 
                         {step &&
@@ -453,7 +453,8 @@ export default class StepName extends Component {
                                     Enviar
                                 </button>
                                 <h2 className="titulo">Nombre: {step.name}</h2>
-                                <article>
+                                <article className="seccion">
+                                    <h6 className="titulo-seccion">Archivos de apoyo</h6>
                                     {/* Custom file sync */}
                                     <div className="archivosCargados">
                                         {archivosSeleccionados &&
@@ -479,7 +480,7 @@ export default class StepName extends Component {
 
                                     </div>
 
-                                    <button
+                                    <button className="btn"
                                         onClick={(e) => {
                                             e.preventDefault();
                                             this.asignarArchivos();
@@ -697,7 +698,7 @@ export default class StepName extends Component {
 
                                     </section>
                                 </div>
-                                <article className="coachingsAudios">
+                                <article className="coachingsAudios seccion">
                                     <h6 className="titulo-seccion">Media (Coachings)</h6>
 
 

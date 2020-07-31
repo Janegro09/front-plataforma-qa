@@ -262,7 +262,7 @@ export default class Perfilamiento extends Component {
                                     <tr key={key}>
                                         <td>{moment(row.date).format("DD-MM-YYYY")}</td>
                                         <td>{row.name}</td>
-                                        <td>{row.program ? row.program.name : 'Programa no asignado'}</td>
+                                        <td>{row.program ? row.program.name : '-'}</td>
                                         <td className="tableIconstableIconsPerfilamiento">
                                             <button onClick={(e) => {
                                                 e.preventDefault()

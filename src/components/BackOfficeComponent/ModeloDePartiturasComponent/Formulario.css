@@ -84,7 +84,10 @@
     align-items: center;
 }
 
-.step input {
-    /* width: 80%; */
+.mainButtons .form-control {
+    margin: 0;
 }
 
+button.addItem {
+    margin-left: 20px;
+}

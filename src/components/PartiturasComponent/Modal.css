@@ -27,3 +27,42 @@
     top: 0;
     right: 0;
 }
+
+.verMas button {
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #03a9f4;
+}
+
+.partituresModels input[type='date'] {
+    width: 10%;
+}
+
+.partituresModels button.boton {
+    background: #03a9f4;
+    padding: 0 10px;
+    color: #fff;
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+.mainButtons input[type='text'] {
+    width: 75% !important;
+}
+
+.step {
+    justify-content: space-between;
+}
+
+.step input[type='text'] {
+    width: 85%;
+}
+
+.step input[type='number'] {
+    display: block;
+    margin: 15px 0px 15px 0px;
+    padding: 5px 10px;
+    border: 1px solid #efeff3;
+    border-radius: 5px;
+}

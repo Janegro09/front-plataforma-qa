@@ -15,8 +15,7 @@
 .stepInformation .information section {
     border: 1px solid #e4e4e4;
     border-radius: 5px;
-    width: 100%;
-    margin-right: 22px;
+    width: 49%;
 }
 
 .stepInformation .information section article {
@@ -121,4 +120,20 @@ article label {
 .titulo-seccion {
     font-weight: bold;
     font-size: 18px;
+}
+
+.btn {
+    background: #03a9f4;
+}
+
+article.coachingsAudios {
+    margin-top: 20px;
+}
+
+.seccion {
+    padding: 20px;
+    border: 1px solid #e4e4e4;
+    border-radius: 5px;
+    background: #ffffff2e;
+    box-shadow: 0 0 6px 1px #9596981c;
 }

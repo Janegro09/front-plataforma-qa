@@ -623,7 +623,7 @@ export default class GroupsTable extends Component {
                                     </div>
 
                                     <div className="filtroSwitch">
-                                        <h5>Filtrado por: {selected === 'M' ? 'Monitoreo' : 'Perfilamiento'}</h5>
+                                        <h5>Filtrado por: <strong>{selected === 'M' ? 'Monitoreo' : 'Perfilamiento'}</strong></h5>
                                         <label className="switch">
                                             <input type="checkbox" type="checkbox" name="filtro" onChange={this.filtrarMonitoreoPerfilamiento} />
                                             <span className="slider round"></span>

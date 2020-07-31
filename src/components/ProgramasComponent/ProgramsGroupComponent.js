@@ -241,7 +241,7 @@ export default class ProgramsGroupComponent extends Component {
                     {this.state.addGroup &&
                         <div>
                             <CreateProgramsGroupComponent />
-                            <button
+                            <button className="btn"
                                 onClick={() => {
                                     this.setState({
                                         addGroup: false

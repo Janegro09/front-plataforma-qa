@@ -77,7 +77,7 @@ export default class Modal extends Component {
     render() {
         const { loaded, selectedFile } = this.state;
         return (
-            <div className="modal" id="modal-casero">
+            <div className="modal uploadPerfilamiento" id="modal-casero">
                 <div className="hijo">
                     <div className="boton-cerrar">
                         <button onClick={

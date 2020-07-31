@@ -56,6 +56,14 @@ export default class GroupsTable extends Component {
         })
     }
 
+    errordeCreacion = () => {
+        alert('Debe crear grupos de programas antes de crear programas')
+        this.setState({
+            createProgram: false,
+            okProgramas: false
+        })
+    }
+
     desasignarGrupo = (idGrupo) => {
         let idPrograma = this.state.specificGroup[0].id
         let tokenUser = JSON.parse(sessionStorage.getItem("token"))
@@ -440,7 +448,6 @@ export default class GroupsTable extends Component {
         let arrayDiv = []
         let assignedPrograms = []
 
-        console.log("programsFiltered: ", programsFiltered);
 
         if (allPrograms) {
 
@@ -582,11 +589,7 @@ export default class GroupsTable extends Component {
                 <SiderBarLeft />
 
                 <div className="BtnInProgramas"> <button><a href="#programasSection">Programas</a></button> <hr></hr><button><a href="#gruposProgSection">Grupos</a></button></div>
-                {!this.state.allPrograms &&
-                    <React.Fragment>
-                        {HELPER_FUNCTIONS.backgroundLoading()}
-                    </React.Fragment>
-                }
+
 
                 <div className="section-content doble-section">
                     {!this.state.createProgram &&
@@ -770,7 +773,11 @@ export default class GroupsTable extends Component {
                                         <option value="M">Monitoreo</option>
                                         <option value="P">Perfilamiento</option>
                                     </select>
-                                    <SelectGroupCreate getValue={(c) => this.usersAssign = c} defaultValue={this.state.gruposDeProgramas ? this.state.gruposDeProgramas : ''} />
+                                    {this.state.gruposDeProgramas &&
+
+                                        <SelectGroupCreate getValue={(c) => this.usersAssign = c} defaultValue={this.state.gruposDeProgramas ? this.state.gruposDeProgramas : ''} />
+
+                                    }
                                     <span className="Label">Description</span>
                                     <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} required />
                                     <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Programas</button>
@@ -785,6 +792,11 @@ export default class GroupsTable extends Component {
                             </div>
                         </div>
                     }
+
+                    {!this.state.createProgram || !this.state.okProgramas &&
+                        this.errordeCreacion()
+                    }
+
                 </div>
 
 

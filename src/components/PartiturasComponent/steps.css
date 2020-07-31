@@ -71,6 +71,10 @@ article label {
     display: inline-block !important;
 }
 
+.textarea {
+    min-height: 150px;
+}
+
 .uploadAudioMon select {
     display: block;
     width: 100%;
@@ -87,12 +91,22 @@ article label {
     margin: 0 auto;
 }
 
-.uploadAudioMon button {
-    background-color: greenyellow;
+.uploadAudioMon button, .buttonupload  {
+    background-color: #03a9f4;
+    color: #fff;
     display: block;
     width: 25%;
     padding: 5px 10px;
     margin: 10px auto;
+    border-radius: 5px;
+}
+
+.buttonupload {
+    width: 100%;
+}
+
+.formSubirArchivo {
+    width: 25%;
 }
 
 .coachingsAudios select {

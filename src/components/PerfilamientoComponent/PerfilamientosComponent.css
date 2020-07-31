@@ -81,22 +81,22 @@
 }
 
 .green {
-    background-color: #91c191;
+    background-color: #91c191 !important;
     border-radius: 3px;
 }
 
 .red {
-    background-color: #e08988;
+    background-color: #e08988 !important;
     border-radius: 3px;
 }
 
 .orange {
-    background-color: #eaaa88;
+    background-color: #eaaa88 !important;
     border-radius: 3px;
 }
 
 .yellow {
-    background-color: #e6d077;
+    background-color: #e6d077 !important;
     border-radius: 3px;
 }
 

@@ -547,7 +547,7 @@ export default class StepName extends Component {
                                             <div className="uploadAudioMon">
 
                                                 {step.requestedMonitorings - contadorAudios > 0 &&
-                                                    <select value={this.state.value} onChange={this.handleChange}>
+                                                    <select value={this.state.value} onChange={this.handleChange} disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'}>
                                                         <option value="-">Selecciona...</option>
                                                         <option value="file">Audio</option>
                                                         <option value="message">Mensaje</option>
@@ -581,21 +581,22 @@ export default class StepName extends Component {
                                             </div>
 
                                             <label htmlFor="ddt">Detalle de transacción / Oportunidades indentificadas</label>
-                                            <textarea className="textarea" name="detalleTransaccion" id="ddt" cols="30" rows="10" defaultValue={step.detalleTransaccion} onChange={this.armarObjeto}></textarea>
+                                            <textarea disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'} className="textarea" name="detalleTransaccion" id="ddt" cols="30" rows="10" defaultValue={step.detalleTransaccion} onChange={this.armarObjeto}></textarea>
 
                                             <label htmlFor="cr">Causa Raíz / Descripción del patrón a mejorar</label>
-                                            <textarea className="textarea" name="patronMejora" id="cr" cols="30" rows="10" defaultValue={step.patronMejora} onChange={
+                                            <textarea disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'} className="textarea" name="patronMejora" id="cr" cols="30" rows="10" defaultValue={step.patronMejora} onChange={
                                                 this.armarObjeto
                                             }
                                             ></textarea>
 
                                             <label htmlFor="cdr">Compromiso del representante</label>
-                                            <textarea className="textarea" name="compromisoRepresentante" id="cdr" cols="30" rows="10" defaultValue={step.compromisoRepresentante} onChange={
+                                            <textarea disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'} className="textarea" name="compromisoRepresentante" id="cdr" cols="30" rows="10" defaultValue={step.compromisoRepresentante} onChange={
                                                 this.armarObjeto
                                             }></textarea>
                                             <div className="margin-top-20"></div>
                                             <label htmlFor="imp">Improvment</label>
-                                            <select name="improvment" id="imp" defaultValue={step.improvment} onChange={
+                                            <select name="improvment" id="imp" defaultValue={step.improvment} disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'}
+                                                onChange={
                                                 this.armarObjeto
                                             }>
                                                 <option value="">Selecciona</option>
@@ -612,6 +613,7 @@ export default class StepName extends Component {
                                                 {customFields &&
                                                     <CustomFields
                                                         fields={customFields}
+                                                        disabled={this.state.role !== 'RESPONSABLE' && this.state.role !== 'ADMINISTRATOR'}
                                                         section='P'
                                                         subsection='RESP'
                                                         values={step.responsibleComments}
@@ -628,6 +630,7 @@ export default class StepName extends Component {
                                                 <h6 className="titulo-seccion">Gerente</h6>
                                                 {customFields &&
                                                     <CustomFields
+                                                        disabled={this.state.role !== 'GERENTE' && this.state.role !== 'ADMINISTRATOR'}
                                                         fields={customFields}
                                                         section='P'
                                                         subsection='GTE'
@@ -648,6 +651,7 @@ export default class StepName extends Component {
                                                 <h6 className="titulo-seccion">Coordinador On Site</h6>
                                                 {customFields &&
                                                     <CustomFields
+                                                        disabled={this.state.role !== 'GERENTE' && this.state.role !== 'ADMINISTRATOR'}
                                                         fields={customFields}
                                                         section='P'
                                                         subsection='COO'
@@ -666,6 +670,7 @@ export default class StepName extends Component {
                                                 <h6 className="titulo-seccion">Administrador</h6>
                                                 {customFields &&
                                                     <CustomFields
+                                                        disabled={this.state.role === 'GERENTE' || this.state.role === 'RESPONSABLE' || this.state.role === 'LIDER' || this.state.role === 'REPRESENTANTE'}
                                                         fields={customFields}
                                                         section='P'
                                                         subsection='ADM'
@@ -708,11 +713,13 @@ export default class StepName extends Component {
                                         <option value="record">Grabacion</option>
                                     </select>
 
+                                    <div className="formSubirArchivo">
+
                                     {this.state.valueCoach === 'file' &&
                                         <>
-                                            <label htmlFor="uploadAudio">Subir Audio</label>
+                                            <h6 className="titulo-seccion">Subir Audio</h6>
                                             <input type="file" onChange={(e) => { this.archivoSeleccionado = e.target.files }} />
-                                            <button onClick={(e) => { e.preventDefault(); this.subirArchivo() }}>
+                                            <button className="buttonupload" onClick={(e) => { e.preventDefault(); this.subirArchivo() }}>
                                                 Subir el archivo
                                             </button>
                                         </>
@@ -720,12 +727,12 @@ export default class StepName extends Component {
 
                                     {this.state.valueCoach === 'record' &&
                                         <>
-                                            <label htmlFor="grabaraudio">Grabar Audio</label>
+                                            <h6 className="titulo-seccion">Grabar Audio</h6>
                                             <RecordAudio ids={this.props.match.params} />
                                         </>
                                     }
 
-
+                                    </div>
                                     <div className="archivosCargados">
                                         {step.audioFiles &&
                                             step.audioFiles.map(stp => {

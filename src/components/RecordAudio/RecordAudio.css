@@ -1,0 +1,27 @@
+.recordSection audio{
+    width: 100%;
+}
+
+.recordSection .mainButtons {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+
+.recordSection .mainButtons button {
+    width: 40%;
+}
+
+.recordSection {
+    display: flex;
+    flex-flow: column;
+}
+
+button.controlButtons {
+    background-color: #03a9f4;
+    color: #fff;
+    padding: 5px 10px;
+    margin: 10px auto;
+    border-radius: 5px;
+    width: 100%;
+}

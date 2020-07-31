@@ -5,6 +5,7 @@ import Global from '../../Global';
 import axios from 'axios';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import swal from 'sweetalert';
+import './RecordAudio.css';
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
@@ -84,22 +85,24 @@ export default class RecordAudio extends Component {
     render() {
         const { dataSend } = this.state;
         return (
-            <>
-                <button onClick={this.start} disabled={this.state.isRecording}>
-                    Grabar
-                </button>
-                <button onClick={this.stop} disabled={!this.state.isRecording}>
-                    Parar
-                </button>
+            <div className="recordSection">
                 <audio src={this.state.blobURL} controls="controls" type="audio/mp3" id="audio" />
-                <button onClick={(e) => {
+                <div className='mainButtons'>
+                    <button className="controlButtons green" onClick={this.start} disabled={this.state.isRecording}>
+                        Grabar
+                    </button>
+                    <button className="controlButtons red" onClick={this.stop} disabled={!this.state.isRecording}>
+                        Parar
+                    </button>
+                </div>
+                <button className="controlButtons" onClick={(e) => {
                     e.preventDefault();
                     this.send(dataSend);
                 }} disabled={!dataSend}>
                     Enviar
                 </button>
 
-            </>
+            </div>
         )
     }
 }

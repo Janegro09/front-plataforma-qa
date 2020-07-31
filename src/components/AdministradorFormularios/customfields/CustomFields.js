@@ -10,7 +10,7 @@ export default class CustomFields extends Component {
     }
 
     componentDidMount() {
-        let { fields, section, subsection, name, values } = this.props;
+        let { fields, section, subsection, name, values} = this.props;
 
         let print = [];
 
@@ -115,6 +115,7 @@ export default class CustomFields extends Component {
     render() {
 
         const { print } = this.state;
+        const { disabled } = this.props;
 
         return (
             <>
@@ -126,15 +127,15 @@ export default class CustomFields extends Component {
 
                                 <div className="contenedor-checkbox">
                                     {value.type === 'text' &&
-                                        <input type="text" required={value.required} name={value.sectionName} value={value.defaultValue} onChange={(e) => {
+                                        <input disabled={disabled} type="text" required={value.required} name={value.sectionName} value={value.defaultValue} onChange={(e) => {
                                             this.changeValues(e, value);
                                         }} />
                                     }
                                     {value.type === 'textarea' &&
-                                        <textarea className="textarea" cols="30" rows="10" required={value.required} name={value.sectionName} />
+                                        <textarea disabled={disabled} className="textarea" cols="30" rows="10" required={value.required} name={value.sectionName} />
                                     }
                                     {value.type === 'select' &&
-                                        <select required={value.required} name={value.sectionName} value={value.defaultValue} onChange={(e) => this.changeValues(e, value)}>
+                                        <select disabled={disabled} required={value.required} name={value.sectionName} value={value.defaultValue} onChange={(e) => this.changeValues(e, value)}>
                                             <option value='-'>Selecciona...</option>
                                             {value.values.map(v => {
                                                 return <option value={v}>{v}</option>
@@ -162,7 +163,7 @@ export default class CustomFields extends Component {
 
                                                     return (
                                                         <div className="labelsInputs">
-                                                            <input type="radio" name={value.sectionName} checked={defVal} onChange={(e) => this.changeValues(e, value, v)} />
+                                                            <input disabled={disabled} type="radio" name={value.sectionName} checked={defVal} onChange={(e) => this.changeValues(e, value, v)} />
                                                             <label className="forInputs">{v}</label>
                                                         </div>
                                                     )
@@ -189,7 +190,7 @@ export default class CustomFields extends Component {
 
                                                 return (
                                                     <div className="labelsInputs">
-                                                        <Checkbox id={v} name={value.sectionName} checked={defVal} onChange={(e) => { this.changeValues(e, value, v); }} />
+                                                        <Checkbox disabled={disabled} id={v} name={value.sectionName} checked={defVal} onChange={(e) => { this.changeValues(e, value, v); }} />
                                                         <label className="forInputs">{v}</label>
                                                     </div>
                                                 )

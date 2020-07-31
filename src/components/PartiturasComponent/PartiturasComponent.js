@@ -262,7 +262,7 @@ export default class PartiturasComponent extends Component {
                                                             }
                                                         }
                                                     >
-                                                        <DeleteIcon />
+                                                        <DeleteIcon style={{ fontSize: 15 }}/>
                                                     </button>
                                                 }
                                                 {!HELPER_FUNCTIONS.checkPermission('DELETE|analytics/partitures/:id') &&

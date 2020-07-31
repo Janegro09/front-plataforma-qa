@@ -269,28 +269,28 @@ export default class Perfilamiento extends Component {
                                                 this.cargarCuartil(row);
 
                                                 // /analytics/file/:fileId/cuartiles
-                                            }}><AssessmentIcon /></button>
+                                            }}><AssessmentIcon style={{ fontSize: 15 }} /></button>
 
                                             <button onClick={(e) => {
                                                 e.preventDefault()
                                                 this.cargarPerfilamientos(row);
                                                 // /analytics/file/:fileId/perfilamiento
-                                            }}><RecentActorsIcon /></button>
+                                            }}><RecentActorsIcon style={{ fontSize: 15 }} /></button>
 
                                             <button onClick={(e) => {
                                                 e.preventDefault()
                                                 this.asignarPrograma(row.id)
-                                            }}><AssignmentReturnIcon /></button>
+                                            }}><AssignmentReturnIcon style={{ fontSize: 15 }} /></button>
 
                                             <button onClick={(e) => {
                                                 e.preventDefault()
                                                 this.borrar(row.id)
-                                            }}><DeleteIcon /></button>
+                                            }}><DeleteIcon style={{ fontSize: 15 }} /></button>
 
                                             <button onClick={(e) => {
                                                 e.preventDefault()
                                                 this.descargar(row.id)
-                                            }}><GetAppIcon /></button>
+                                            }}><GetAppIcon style={{ fontSize: 15 }} /></button>
                                         </td>
                                     </tr>
                                 )

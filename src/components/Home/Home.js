@@ -75,7 +75,7 @@ export default class UsersComponent extends Component {
                 <UserAdminHeader />
                 {/* } */}
 
-                <div className="dashboard">
+                {/* <div className="dashboard">
                     {userData &&
                         <section>
                             <h2>Mis datos</h2>
@@ -110,7 +110,7 @@ export default class UsersComponent extends Component {
 
                     }
                     
-                </div>
+                </div> */}
 
 
             </div>

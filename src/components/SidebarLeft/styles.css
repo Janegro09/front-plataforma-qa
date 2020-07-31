@@ -375,6 +375,7 @@ hr {
   border-radius: 7px;
   margin-right: 1px;
   margin-bottom: 3px;
+  color: white;
   border: 2px solid transparent;
   transition: 0.1s;
   background-color: #03a9f4;
@@ -516,10 +517,66 @@ hr {
     font-size: 50px;
     border: 1px solid white;
     border-radius: 50%;
-    e: white;
+    color: white;
     width: 115px;
     height: 113px;
     padding: 33px 38px 22px 2px;
     right: -51px;
     color: white;
 }
+
+.flexContent {
+  display: flex;
+}
+
+.flexContentEvenly {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.inputGuardar {
+  width: fit-content;
+  background-color: #03a9f4;
+  color: white;
+  padding: 10px 20px 10px 20px;
+  border-radius: 5px;
+  float: right;
+  border: none;
+  right: 20px;
+  position: absolute;
+  bottom: 20px;
+  -webkit-box-shadow: 0 0.125rem 0.625rem rgb(22 170 255 / 33%), 0 0.0625rem 0.125rem rgb(22 170 255 / 50%);
+  z-index: 2000;
+}
+
+.descargar > svg {
+  font-size: 18px;
+  margin-right: 3px;
+}
+
+.descargar:hover{
+  color: white !important;
+}
+
+.descargar:hover > svg {
+  color: white;
+}
+
+.descargar {
+  color: #6d6d6d !important;
+}
+
+.mainButtons > button {
+  font-size: 11px;
+} 
+
+.mainButtons > .form-control {
+  margin-top: 10px;
+}
+
+.tableIconstableIconsPerfilamiento {
+  display: flex;
+  justify-content: space-between;
+} 
+ 

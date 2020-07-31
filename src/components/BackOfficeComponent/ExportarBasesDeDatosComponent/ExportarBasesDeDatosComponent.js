@@ -7,6 +7,7 @@ import axios from 'axios'
 import swal from 'sweetalert'
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers'
 import './ExportarBasesDeDatosComponent.css'
+import GetAppIcon from '@material-ui/icons/GetApp'
 
 export default class AdministracionFormulariosComponent extends Component {
 
@@ -61,7 +62,7 @@ export default class AdministracionFormulariosComponent extends Component {
                     <UserAdminHeader />
                 </div>
                 <div className="section-content">
-                    <h1>Exportar bases de datos</h1>
+                    <h3>Exportar bases de datos</h3>
                     <button className="buttonExport"
                         onClick={(e) => {
                             e.preventDefault();
@@ -76,7 +77,7 @@ export default class AdministracionFormulariosComponent extends Component {
                             setTimeout(() => {
                                 this.setState({ urlUser: '' });
                             }, 2000);
-                        }}>Descargar</a>
+                        }}><GetAppIcon />Descargar</a>
                     }
 
                 </div>

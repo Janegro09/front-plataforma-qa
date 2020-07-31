@@ -16,6 +16,8 @@
     height: auto;
     background-color: white;
     color: black;
+    min-width: 330px;
+    border-radius: 5px;
     /* position: relative; */
 }
 
@@ -25,12 +27,21 @@
     right: 0;
 }
 
+.boton-cerrar > button {
+    padding: 7px 10px;
+    color: black;
+}
+
 .formulario {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 20px;
-    align-items: center;
+    padding: 22px;
+    height: 530px;
+    
+}
+
+.formulario > select {
+    border: 1px solid #efeff3;
 }
 
 .label {

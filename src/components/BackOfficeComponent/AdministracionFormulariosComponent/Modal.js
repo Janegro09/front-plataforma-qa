@@ -5,6 +5,7 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import Global from '../../../Global';
 
+
 export default class Modal extends Component {
     constructor(props) {
         super(props);
@@ -234,7 +235,7 @@ export default class Modal extends Component {
                     <form onSubmit={this.handleSubmit} className="formulario">
 
                         <label htmlFor="nombre" className="label">*nombre: </label>
-                        <input type="text" id="nombre" value={this.state.value} onChange={this.handleChange} required />
+                        <input className="form-control" type="text" id="nombre" value={this.state.value} onChange={this.handleChange} required />
 
                         <select value={this.state.valueSelect} onChange={this.handleChangeSelect}>
                             <option value="text">Texto</option>
@@ -247,22 +248,22 @@ export default class Modal extends Component {
                         {valueSelect && valueSelect !== 'text' && valueSelect !== 'area' &&
                             <>
                                 <label htmlFor="input1" className="label">*Opciones separadas por coma</label>
-                                <input type="text" id="input1" value={this.state.valueArray} onChange={this.handleChangeArray} required />
+                                <input className="form-control" type="text" id="input1" value={this.state.valueArray} onChange={this.handleChangeArray} required />
                             </>
                         }
 
                         {valueSelect === 'text' &&
                             <>
                                 <label htmlFor="input2" className="label">Formato</label>
-                                <input type="text" id="input2" value={this.state.formato || '' } onChange={this.handleChangeFormato} />
+                                <input className="form-control" type="text" id="input2" value={this.state.formato || '' } onChange={this.handleChangeFormato} />
                             </>
                         }
-
-                        <label htmlFor="checkbox" className="label">*Es requerido</label>
+                        <div className="flexContent">
+                        <label htmlFor="checkbox" className="label">*Es requerido </label>
                         <input type="checkbox" name="esRequerido" checked={this.state.esRequerido} onChange={this.handleChangeRequired} id="checkbox" />
-
+                        </div>
                         <input type="text" placeholder="Descricpión" value={this.state.descripcion || ''} onChange={this.handleChangeDescripcion} />
-
+                        
                         <select value={this.state.valueSelectMP} onChange={this.handleChangeSelectMP}>
                             <option value="P">Perfilamiento</option>
                             <option value="M">Monitoreo</option>
@@ -277,8 +278,8 @@ export default class Modal extends Component {
                                 <option value="COACH">Coach</option>
                             </select>
                         }
-
-                        <input type="submit" value="Guardar" />
+                        
+                        <input className="inputGuardar" type="submit" value="Guardar" />
                     </form>
                 </div>
             </div>

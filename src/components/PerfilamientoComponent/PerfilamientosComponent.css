@@ -110,8 +110,8 @@
 }
 
 .cuartiles .cuartil {
-    background-color: #ffffff3d;
-    -webkit-box-shadow: 0px 0px 6px 1px #9596981c;
+    background-color: #efefef;
+    -webkit-box-shadow: 3px -2px 6px 1px #0000000d;
     width: 150px;
     padding: 5px;
     text-align: center;

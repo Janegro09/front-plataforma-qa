@@ -7,6 +7,9 @@ import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
 import Global from '../../../Global'
 import moment from 'moment';
 import Modal from './Modal'
+import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export default class AdministracionFormulariosComponent extends Component {
     constructor(props) {
@@ -121,15 +124,18 @@ export default class AdministracionFormulariosComponent extends Component {
                 {openModal &&
                     <Modal idEditar={id} />
                 }
+
                 <div className="section-content">
+                <div className="flex-input-add">
+                <h3>Administrador de formularios</h3>
                     <button
                         onClick={(e) => {
                             e.preventDefault();
                             this.abrirModal();
                         }}
                     >
-                        Agregar nuevo
-                    </button>
+                        <AddIcon className="morph"/>
+                    </button></div>
                     {allForms &&
                         <table>
                             <thead>
@@ -141,8 +147,8 @@ export default class AdministracionFormulariosComponent extends Component {
                                     <th>Sección</th>
                                     <th>Fecha de creación</th>
                                     <th>Formato</th>
-                                    <th>Editar</th>
-                                    <th>Eliminar</th>
+                                    <th className="tableIcons">Editar</th>
+                                    <th className="tableIcons">Eliminar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -171,24 +177,24 @@ export default class AdministracionFormulariosComponent extends Component {
                                             <td>{form.section.toUpperCase() === 'P' ? 'Perfilamiento' : 'Monitoreo'}</td>
                                             <td>{moment(form.createdAt).format("DD/MM/YYYY")}</td>
                                             <td>{form.format ? form.format : '-'}</td>
-                                            <td>
+                                            <td className="tableIcons">
                                                 <button
                                                     onClick={(e) => {
                                                         e.preventDefault();
                                                         this.abrirModal(form.id);
                                                     }}
                                                 >
-                                                    Editar
+                                                    <EditIcon style={{ fontSize: 15 }}/>
                                                 </button>
                                             </td>
-                                            <td>
+                                            <td className="tableIcons">
                                                 <button
                                                     onClick={(e) => {
                                                         e.preventDefault();
                                                         this.eliminar(form.id);
                                                     }}
                                                 >
-                                                    Eliminar
+                                                    <DeleteIcon style={{ fontSize: 15 }}/>
                                                 </button>
                                             </td>
                                         </tr>

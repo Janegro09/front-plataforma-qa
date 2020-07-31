@@ -5,6 +5,7 @@ import swal from 'sweetalert'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import './FormularioEspecial.css'
 import moment from 'moment'
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export default class InstancePartitureSelection extends Component {
 
@@ -271,11 +272,11 @@ export default class InstancePartitureSelection extends Component {
                                                 e.preventDefault();
                                                 this.agregarPaso(instance.id);
                                             }}>Agregar paso</button>
-                                            <button className="addItem morph" onClick={(e) => {
+                                            <button onClick={(e) => {
                                                 e.preventDefault();
                                                 this.eliminarInstancia(instance.id);
-                                            }}>Eliminar instancia</button>
-                                            <input type="date" format="mm/dd/AAAA" onChange={(e) => {
+                                            }}><DeleteIcon /></button>
+                                            <input className="form-control" type="date" format="mm/dd/AAAA" onChange={(e) => {
                                                 this.modificarVencimiento(instance.id, e)
                                             }} />
                                         </div>
@@ -293,7 +294,7 @@ export default class InstancePartitureSelection extends Component {
                                                         <button onClick={(e) => {
                                                             e.preventDefault();
                                                             this.eliminarPaso(instance.id, step.id);
-                                                        }}>Eliminar paso</button>
+                                                        }}><DeleteIcon /></button>
                                                     </div>
                                                 )
                                             })}

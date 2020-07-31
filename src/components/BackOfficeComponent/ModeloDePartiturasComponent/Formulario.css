@@ -81,9 +81,10 @@
     border: 1px solid #e4e4e4;
     padding: 10px;
     margin: 5px 0;
+    align-items: center;
 }
 
 .step input {
-    width: 80%;
+    /* width: 80%; */
 }
 

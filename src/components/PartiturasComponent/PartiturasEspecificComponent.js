@@ -155,7 +155,7 @@ export default class PartiturasEspecificComponent extends Component {
 
                 {data &&
                     <div className="section-content">
-                        <h3>Archivo actual</h3>
+                        <h4>ARCHIVO ACTUAL</h4>
                         <table>
                             <thead>
                                 <tr>
@@ -187,9 +187,10 @@ export default class PartiturasEspecificComponent extends Component {
                                 </tr>
                             </tbody>
                         </table>
-
-                        <h3>Usuarios</h3>
+                        <br></br>
+                        <h4>USUARIOS</h4>
                         <input onChange={this.buscar} className="form-control" placeholder="Buscar por usuario | Nombre o DNI" />
+                        <br></br>
                         <table>
                             <thead>
                                 <tr>
@@ -259,7 +260,7 @@ export default class PartiturasEspecificComponent extends Component {
 
                                                 <td className="tableIcons">{(user.improvment === "+" ?
                                                     <ExpandLessIcon className="arrowUp" /> : (user.improvment === "+-" ?
-                                                        <ImportExportRoundedIcon /> : <ExpandMoreIcon className="arrowDown"/>))}</td>
+                                                        <ImportExportRoundedIcon /> : <ExpandMoreIcon className="arrowDown" />))}</td>
                                                 <td className="tablaVariables tableIcons"><div className={` ${!(user.audioFilesRequired - user.audioFilesActually) <= 0 ? "estadoInactivo " : 'estadoActivo'}`}></div></td>
                                                 <td><button onClick={(e) => {
                                                     e.preventDefault();
@@ -271,7 +272,7 @@ export default class PartiturasEspecificComponent extends Component {
                                 }
                             </tbody>
                         </table>
-
+                        <div className="footer"></div>
                     </div>
 
                 }

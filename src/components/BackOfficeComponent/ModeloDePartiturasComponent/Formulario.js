@@ -297,7 +297,7 @@ export default class Formulario extends Component {
                                 this.setState({ name: e.target.value })
                             }} />
 
-                            <button className="addItem morph" onClick={(e) => {
+                            <button className="morph" onClick={(e) => {
                                 e.preventDefault();
                                 this.nuevaInstancia()
                             }}><AddIcon className="svgAddButton" style={{ fontSize: 33 }} /></button>

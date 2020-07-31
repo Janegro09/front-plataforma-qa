@@ -415,7 +415,7 @@ export default class StepName extends Component {
 
                 {data &&
                     <div className="section-content">
-                        <h1>Archivo actual</h1>
+                        <h2 className="titulo">Archivo actual</h2>
                         <table>
                             <thead>
                                 <tr>
@@ -437,7 +437,7 @@ export default class StepName extends Component {
                             </tbody>
                         </table>
 
-                        <h2>Usuarios Actuales</h2>
+                        <h2 className="titulo">Usuarios Actuales</h2>
                         {this.getUsersColumns()}
 
                         {step &&
@@ -452,7 +452,7 @@ export default class StepName extends Component {
                                 >
                                     Enviar
                                 </button>
-                                <h4>{step.name}</h4>
+                                <h2 className="titulo">Nombre: {step.name}</h2>
                                 <article>
                                     {/* Custom file sync */}
                                     <div className="archivosCargados">
@@ -464,7 +464,8 @@ export default class StepName extends Component {
                                                         onClick={(e) => {
                                                             e.preventDefault();
                                                             this.descargarArchivo(archivo.id);
-                                                        }}
+                                                        }} 
+                                                        className="nombreArchivo"
                                                     >
                                                         <p>{archivo.name}</p>
                                                     </span>
@@ -493,7 +494,7 @@ export default class StepName extends Component {
                                     <section>
                                         <article>
                                             <div className="contenedorPartituras">
-                                                <h6>Lider</h6>
+                                                <h6 className="titulo-seccion">Lider</h6>
                                                 <div className="archivosCargados">
                                                     {step.audioFiles &&
                                                         step.audioFiles.map(stp => {
@@ -537,7 +538,7 @@ export default class StepName extends Component {
                                                         <p>Audios faltantes: {(step.audioFiles === false ? step.requestedMonitorings : (step.requestedMonitorings - contadorAudios))} </p>
                                                     </div>
                                                     <div className="titleInBox">
-                                                        <h6>Media (Monitorings)</h6>
+                                                        <h6 className="titulo-seccion">Media (Monitorings)</h6>
                                                     </div>
                                                     <hr></hr>
                                                 </div>
@@ -606,7 +607,7 @@ export default class StepName extends Component {
                                     <section>
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' &&
                                             <article>
-                                                <h6>Responsable</h6>
+                                                <h6 className="titulo-seccion">Responsable</h6>
                                                 {customFields &&
                                                     <CustomFields
                                                         fields={customFields}
@@ -623,7 +624,7 @@ export default class StepName extends Component {
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' &&
 
                                             <article>
-                                                <h6>Gerente</h6>
+                                                <h6 className="titulo-seccion">Gerente</h6>
                                                 {customFields &&
                                                     <CustomFields
                                                         fields={customFields}
@@ -643,7 +644,7 @@ export default class StepName extends Component {
 
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' &&
                                             <article>
-                                                <h6>Coordinador On Site</h6>
+                                                <h6 className="titulo-seccion">Coordinador On Site</h6>
                                                 {customFields &&
                                                     <CustomFields
                                                         fields={customFields}
@@ -661,7 +662,7 @@ export default class StepName extends Component {
 
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' && this.state.role !== 'GERENTE' &&
                                             <article>
-                                                <h6>Administrador</h6>
+                                                <h6 className="titulo-seccion">Administrador</h6>
                                                 {customFields &&
                                                     <CustomFields
                                                         fields={customFields}
@@ -679,7 +680,7 @@ export default class StepName extends Component {
 
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' && this.state.role !== 'GERENTE' &&
                                             <article>
-                                                <h6>Coach</h6>
+                                                <h6 className="titulo-seccion">Coach</h6>
                                                 {customFields &&
                                                     <CustomFields
                                                         fields={customFields}
@@ -697,7 +698,7 @@ export default class StepName extends Component {
                                     </section>
                                 </div>
                                 <article className="coachingsAudios">
-                                    <h6>Media (Coachings)</h6>
+                                    <h6 className="titulo-seccion">Media (Coachings)</h6>
 
 
                                     <select value={this.state.valueCoach} onChange={this.handleChangeCoach}>

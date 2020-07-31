@@ -15,15 +15,15 @@ export default class CustomFields extends Component {
 
         let print = [];
 
-        if(values) {
+        if (values) {
             values = JSON.parse(values);
-        } else{
+        } else {
             values = [];
         }
 
         // Analizamos los fields dependiendo la seccion
-        for(let f of fields) {
-            if(f.section === section && f.subsection === subsection){
+        for (let f of fields) {
+            if (f.section === section && f.subsection === subsection) {
                 let tempValue = values.find(e => e.id === f.id);
 
                 let tempData = {
@@ -35,7 +35,7 @@ export default class CustomFields extends Component {
                     type: f.type,
                     values: f.values
                 }
-                if(tempValue){
+                if (tempValue) {
                     tempData.defaultValue = tempValue.defaultValue;
                 }
 
@@ -50,27 +50,27 @@ export default class CustomFields extends Component {
         })
     }
 
-    changeValues = (e,input, inputRadio = '') => {
+    changeValues = (e, input, inputRadio = '') => {
         let { type, value } = e.target
-        let { print } = this.state 
-        if(type === 'checkbox'){
+        let { print } = this.state
+        if (type === 'checkbox') {
             value = e.target.checked;
-        } 
+        }
 
-        for(let p of print) {
-            if(p.id === input.id){
-                if(type === 'radio'){
+        for (let p of print) {
+            if (p.id === input.id) {
+                if (type === 'radio') {
                     p.defaultValue = `${inputRadio}|${value}`
-                } else if(type === 'checkbox') {
+                } else if (type === 'checkbox') {
                     let newValue = `${inputRadio}|${value}`;
 
-                    if(p.defaultValue){
+                    if (p.defaultValue) {
                         // Dividimos la data a ver si ya existe, sino la agregamos, y si existe cambiamos el valor a false
                         let vals = p.defaultValue.split('@');
                         let defaultValueReturn = [];
                         let existe = false;
                         p.defaultValue = "";
-                        for(let i of vals) {
+                        for (let i of vals) {
                             let section = i.split('|');
                             let value = section[1];
                             section = section[0];
@@ -79,10 +79,10 @@ export default class CustomFields extends Component {
                                 value
                             });
                         }
-                        
+
                         // Devolvemos los valores al string
-                        for(let dv of defaultValueReturn) {
-                            if(dv.section === inputRadio) {
+                        for (let dv of defaultValueReturn) {
+                            if (dv.section === inputRadio) {
                                 dv.value = dv.value === 'true' ? 'false' : 'true';
                                 existe = true;
                             }
@@ -92,7 +92,7 @@ export default class CustomFields extends Component {
                             p.defaultValue = p.defaultValue ? p.defaultValue += `@${n}` : n;
                         }
 
-                        if(!existe) {
+                        if (!existe) {
                             p.defaultValue = p.defaultValue ? p.defaultValue += `@${inputRadio}|${value}` : `${inputRadio}|${value}`;
                         }
 
@@ -110,7 +110,7 @@ export default class CustomFields extends Component {
         })
 
         this.props.data(JSON.stringify(print));
-        
+
     }
 
     render() {
@@ -122,74 +122,82 @@ export default class CustomFields extends Component {
                 {print &&
                     print.map(value => {
                         return (
-                            <>  
+                            <>
                                 <label className="main">{value.name}</label>
-                                {value.type === 'text' &&
-                                    <input type="text" required={value.required} name={value.sectionName} value={value.defaultValue} onChange={(e) => {
-                                        this.changeValues(e, value);
-                                    }}/>
-                                }
-                                {value.type === 'textarea' &&
-                                    <textarea className="textarea" cols="30" rows="10" required={value.required} name={value.sectionName}/>
-                                }
-                                {value.type === 'select' &&
-                                    <select required={value.required} name={value.sectionName} value={value.defaultValue} onChange={(e) => this.changeValues(e, value)}>
-                                        <option value='-'>Selecciona...</option>
-                                        {value.values.map(v => {
-                                            return <option value={v}>{v}</option>
-                                        })
-                                        }
-                                    </select>
-                                }
+
+                                <div className="contenedor-checkbox">
+                                    {value.type === 'text' &&
+                                        <input type="text" required={value.required} name={value.sectionName} value={value.defaultValue} onChange={(e) => {
+                                            this.changeValues(e, value);
+                                        }} />
+                                    }
+                                    {value.type === 'textarea' &&
+                                        <textarea className="textarea" cols="30" rows="10" required={value.required} name={value.sectionName} />
+                                    }
+                                    {value.type === 'select' &&
+                                        <select required={value.required} name={value.sectionName} value={value.defaultValue} onChange={(e) => this.changeValues(e, value)}>
+                                            <option value='-'>Selecciona...</option>
+                                            {value.values.map(v => {
+                                                return <option value={v}>{v}</option>
+                                            })
+                                            }
+                                        </select>
+                                    }
+
+                                </div>
                                 {value.type === 'radio' &&
                                     <>
-                                        {value.values && 
-                                        
-                                            value.values.map(v => {
-                                                let section = value.defaultValue.split('|');
-                                                let defVal = section[1];
-                                                section = section[0];
-                                                if(section === v && defVal === 'on') {
-                                                    defVal = 'on';
-                                                } else {
-                                                    defVal = false;
-                                                }
-                                                return (
-                                                    <div className="labelsInputs">
-                                                        <input type="radio" name={value.sectionName} checked={defVal} onChange={(e) => this.changeValues(e, value, v)}/>
-                                                        <label className="forInputs">{v}</label>
-                                                    </div>
-                                                )
-                                            })
+                                        {value.values &&
 
+                                            <div className="contenedor-inputs">
+                                                {value.values.map(v => {
+                                                    let section = value.defaultValue.split('|');
+                                                    let defVal = section[1];
+                                                    section = section[0];
+                                                    if (section === v && defVal === 'on') {
+                                                        defVal = 'on';
+                                                    } else {
+                                                        defVal = false;
+                                                    }
+
+
+                                                    return (
+                                                        <div className="labelsInputs">
+                                                            <input type="radio" name={value.sectionName} checked={defVal} onChange={(e) => this.changeValues(e, value, v)} />
+                                                            <label className="forInputs">{v}</label>
+                                                        </div>
+                                                    )
+
+                                                })}
+                                            </div>
                                         }
-                                    </> 
+                                    </>
                                 }
                                 {value.type === 'checkbox' &&
                                     <>
-                                        {value.values && 
+                                        {value.values &&
                                             value.values.map(v => {
                                                 let vals = value.defaultValue.split('@');
                                                 let defVal = false;
-                                                for(let i of vals) {
+                                                for (let i of vals) {
                                                     let section = i.split('|');
                                                     let temp = section[1];
                                                     section = section[0];
-                                                    if(section === v && temp === 'true') {
+                                                    if (section === v && temp === 'true') {
                                                         defVal = true;
                                                     }
                                                 }
 
                                                 return (
                                                     <div className="labelsInputs">
-                                                        <Checkbox id={v} name={value.sectionName} checked={defVal} onChange={(e) => {this.changeValues(e, value, v);}}/>
+                                                        <Checkbox id={v} name={value.sectionName} checked={defVal} onChange={(e) => { this.changeValues(e, value, v); }} />
                                                         <label className="forInputs">{v}</label>
                                                     </div>
                                                 )
                                             })
 
                                         }
-                                    </>                                    
+                                    </>
                                 }
                             </>
                         )

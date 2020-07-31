@@ -49,11 +49,11 @@ article label {
 
 .archivosCargados span {
     padding: 10px 20px 10px 10px;
-    display: flex;
     margin: 0 10px 7px 0;
     border-radius: 6px;
     border: 1px solid #e4e4e4;
     position: relative;
+    display: inline-block;
 }
 
 .archivosCargados span button {
@@ -68,8 +68,8 @@ article label {
     margin: 0;
 }
 
-.isMessage {
-    /* background-color: #ffa8a86b !important; */
+.nombreArchivo {
+    display: inline-block !important;
 }
 
 .uploadAudioMon select {
@@ -107,3 +107,18 @@ article label {
     color: #000;
 }
 
+
+.titulo {
+    font-weight: bold;
+    font-size: 35px;
+    font-family: Helvetica, Arial, sans-serif
+}
+
+#imp {
+    display: block;
+}
+
+.titulo-seccion {
+    font-weight: bold;
+    font-size: 18px;
+}

@@ -41,7 +41,6 @@ export default class Home extends Component {
                 <div className="section-content">
                     <RolesInfoContainer userInfo={userInfo} />
                 </div>
-                <div className="footer"></div>
             </div>
         )
     }

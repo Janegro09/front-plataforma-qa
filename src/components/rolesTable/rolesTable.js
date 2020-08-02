@@ -262,7 +262,7 @@ export default class RolesTable extends Component {
 
                         <tbody>
                             {totalUsuarios &&
-                                totalUsuarios.map((role, index) => {
+                                totalUsuarios.slice(0,20).map((role, index) => {
                                     return (
                                         <tr key={index}>
                                             <td>{role.role}</td>

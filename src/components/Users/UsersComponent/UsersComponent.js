@@ -54,17 +54,6 @@ export default class Home extends Component {
                 <div className="section-content">
                     <UserInfoContainer userInfo={userInfo} />
                 </div>
-                <div className="footer">
-                    <div>
-                    <FastRewindIcon />
-                    <PlayCircleOutlineIcon />
-                    <FastForwardIcon />
-                    </div>
-                    <div>
-                    <EqualizerIcon />
-                 
-                    </div>
-                </div>
             </div>
 
         )

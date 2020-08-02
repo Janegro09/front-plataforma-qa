@@ -292,7 +292,7 @@ export default class GroupsTable extends Component {
                         <tbody>
                             {totalUsuarios &&
 
-                                totalUsuarios.map((group, index) => {
+                                totalUsuarios.slice(0,20).map((group, index) => {
 
                                     return (
                                         <tr key={index}>

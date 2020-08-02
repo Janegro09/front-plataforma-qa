@@ -14,7 +14,6 @@ export default class PerfilamientoComponent extends Component {
                 <div className="section-content">
                     <Perfilamiento />
                 </div>
-                <div className="footer"></div>
             </div>
         )
     }

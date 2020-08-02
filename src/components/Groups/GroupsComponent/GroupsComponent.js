@@ -43,7 +43,7 @@ export default class Home extends Component {
                 <div className="section-content">
                     <GroupInfoContainer userInfo={userInfo} />
                 </div>
-                <div className="footer"></div>
+
             </div>
         )
     }

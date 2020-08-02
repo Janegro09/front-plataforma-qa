@@ -317,7 +317,7 @@ export default class UserTable extends Component {
                         <tbody>
                             {totalUsuarios &&
 
-                                totalUsuarios.map(user => {
+                                totalUsuarios.slice(0,20).map(user => {
                                     return (
                                         <tr id="parent" key={user.idDB}>
                                             <td >{user.id}</td>

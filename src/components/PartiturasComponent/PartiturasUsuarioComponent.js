@@ -249,7 +249,6 @@ export default class PartiturasUsuarioComponent extends Component {
                             }
 
                         </section>
-                        <div className="footer"></div>
                     </div>
 
                 }

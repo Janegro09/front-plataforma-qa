@@ -128,7 +128,7 @@ export default class ModeloDePartiturasComponent extends Component {
                 <div className="section-content">
 
                     <div className="flex-input-add">
-                    <h3>Modelo de partituras</h3>
+                    <h4>MODELO DE PARTITURAS</h4>
                     <button className="addItem morph" onClick={(e) => {
                         e.preventDefault();
                         this.crearNuevo();

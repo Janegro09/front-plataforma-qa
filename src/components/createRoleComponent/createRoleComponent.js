@@ -78,33 +78,37 @@ export default class createRoleComponent extends Component {
             return <Redirect to={'/roles'} />
         }
         return (
-            <div>
+            <>
                 <div className="header">
                     {/* BOTON DE SALIDA */}
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
                 </div>
-                <form className="inputsEditUser addUserPadding" onSubmit={this.modifyUser}>
-                <span className="Label">Rol</span>
-                    {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
-                     
-                     <input className="form-control" type="text" placeholder="" name="group" ref={(c) => this.role = c} required />
-                    }
-                    <span className="Label">Descripción</span>
-                    {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
-                        <input className="form-control" type="text" placeholder="" name="description" ref={(c) => this.description = c} required />
-                    }
 
-                <SelectGroup getValue={(c) => this.permissions = c} />
+                <section className="section-content">
+                    <h4>CREAR ROL</h4>
+                    <form className="inputsEditUser addUserPadding" onSubmit={this.modifyUser}>
+                        <span className="Label">Rol</span>
+                        {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
 
-                {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
-                
-                    <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Guardar cambios</button>
+                            <input className="form-control" type="text" placeholder="" name="group" ref={(c) => this.role = c} required />
+                        }
+                        <span className="Label">Descripción</span>
+                        {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
+                            <input className="form-control" type="text" placeholder="" name="description" ref={(c) => this.description = c} required />
+                        }
 
-                }
-                </form>
+                        <SelectGroup getValue={(c) => this.permissions = c} />
 
-            </div>
+                        {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
+
+                            <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Guardar cambios</button>
+
+                        }
+                    </form>
+                </section>
+
+            </>
         )
     }
 }

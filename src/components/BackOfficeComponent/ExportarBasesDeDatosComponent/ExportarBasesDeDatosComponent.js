@@ -61,7 +61,7 @@ export default class AdministracionFormulariosComponent extends Component {
                     <UserAdminHeader />
                 </div>
                 <div className="section-content">
-                    <h3>Exportar bases de datos</h3>
+                    <h4>EXPORTAR BASE DE DATOS</h4>
                     <button className="buttonExport"
                         onClick={(e) => {
                             e.preventDefault();

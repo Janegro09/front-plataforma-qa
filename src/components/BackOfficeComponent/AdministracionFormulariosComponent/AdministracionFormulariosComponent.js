@@ -126,16 +126,16 @@ export default class AdministracionFormulariosComponent extends Component {
                 }
 
                 <div className="section-content">
-                <div className="flex-input-add">
-                <h3>Administrador de formularios</h3>
-                    <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            this.abrirModal();
-                        }}
-                    >
-                        <AddIcon className="morph"/>
-                    </button></div>
+                    <div className="flex-input-add">
+                        <h4 className="mr-2">ADMINISTRADOR DE FORMULARIOS</h4>
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                this.abrirModal();
+                            }}
+                        >
+                            <AddIcon className="morph" />
+                        </button></div>
                     {allForms &&
                         <table>
                             <thead>
@@ -184,7 +184,7 @@ export default class AdministracionFormulariosComponent extends Component {
                                                         this.abrirModal(form.id);
                                                     }}
                                                 >
-                                                    <EditIcon style={{ fontSize: 15 }}/>
+                                                    <EditIcon style={{ fontSize: 15 }} />
                                                 </button>
                                             </td>
                                             <td className="tableIcons">
@@ -194,7 +194,7 @@ export default class AdministracionFormulariosComponent extends Component {
                                                         this.eliminar(form.id);
                                                     }}
                                                 >
-                                                    <DeleteIcon style={{ fontSize: 15 }}/>
+                                                    <DeleteIcon style={{ fontSize: 15 }} />
                                                 </button>
                                             </td>
                                         </tr>

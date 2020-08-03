@@ -7,6 +7,7 @@ import axios from 'axios';
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
 import PublishIcon from '@material-ui/icons/Publish';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export default class BibliotecaArchivosComponent extends Component {
     constructor(props) {
@@ -163,6 +164,7 @@ export default class BibliotecaArchivosComponent extends Component {
                 }
 
                 <div className="section-content">
+                    <h4>BIBLIOTECA DE ARCHIVOS</h4>
                     {seccionSeleccionada &&
                         <select onChange={(e) => {
                             e.preventDefault();
@@ -198,7 +200,7 @@ export default class BibliotecaArchivosComponent extends Component {
                                                 <td className="tableIcons"> <button onClick={(e) => {
                                                     e.preventDefault();
                                                     this.eliminar(data.id)
-                                                }}>Eliminar</button> </td>
+                                                }}><DeleteIcon /></button> </td>
                                             }
                                             {!HELPER_FUNCTIONS.checkPermission('DELETE|files/:id') &&
                                                 <td className="tableIcons"> <button disabled>Eliminar</button> </td>

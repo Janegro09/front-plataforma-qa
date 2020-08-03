@@ -9,9 +9,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
-
-
-
 export default class UserTable extends Component {
     constructor(props) {
         super(props)

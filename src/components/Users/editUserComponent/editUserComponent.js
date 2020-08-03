@@ -155,17 +155,6 @@ export default class editUserComponent extends Component {
                     <img src={Logo} alt="" title="Logo" className="logoFixed" />
                 </div>
 
-                {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                    <button className="btn btn-block btn-info ripple-effect confirmar" alt="sign in" 
-                        onClick={(e) => {
-                            e.preventDefault();
-                            this.modifyUser()
-                        }}
-                    >Guardar cambios</button>
-
-
-                }
-
                 {user !== null &&
                     <form className="inputsEditUser">
 
@@ -256,6 +245,17 @@ export default class editUserComponent extends Component {
                         {/* <input type="text" placeholder="imagen" ref={(c) => this.imagen = c} defaultValue={user.imagen ? user.imagen : ''} /> */}
                     </form>
                 }
+
+                <div className="section-content">
+                    {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
+                        <button className="btn btn-primary guardar-cambios" alt="sign in"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                this.modifyUser()
+                            }}
+                        >Guardar cambios</button>
+                    }
+                </div>
 
             </div>
         )

@@ -9,6 +9,7 @@ import { HELPER_FUNCTIONS } from '../../../helpers/Helpers'
 import { Redirect } from 'react-router-dom'
 import swal from 'sweetalert'
 import Logo from '../../Home/logo_background.png';
+import SeleccionarGrupo from './SeleccionarGrupo'
 
 export default class editUserComponent extends Component {
     constructor(props) {
@@ -237,7 +238,8 @@ export default class editUserComponent extends Component {
                         <span className="Label">Punto Venta</span>
                         <input className="form-control" type="text" placeholder="" ref={(c) => this.puntoVenta = c} defaultValue={user.puntoVenta ? user.puntoVenta : ''} />
                         {/* <input type="text" placeholder="group" ref={(c) => this.group = c} defaultValue={user.group ? user.group : ''} /> */}
-                        <SelectGroup getValue={(c) => this.group = c} defaultValue={user.group ? user.group : ''} />
+                        <SeleccionarGrupo getValue={(c) => this.group = c} defaultValue={user.group ? user.group : ''} />
+                        {/* <SelectGroup getValue={(c) => this.group = c} defaultValue={user.group ? user.group : ''} /> */}
                         <select onChange={this.handleChangeTurno} className="form-control select-t">
                             <option value={user.turno ? user.turno : 'TM'}>{user.turno ? user.turno === 'TM' ? 'TM' : 'TT' : "TM"}</option>
                             <option value={user.turno ? user.turno === 'TM' ? 'TT' : 'TM' : 'TT'}>{user.turno ? user.turno === 'TT' ? 'TM' : 'TT' : "TT"}</option>

@@ -38,7 +38,7 @@ export default class SeleccionarGrupo extends Component {
     }
 
     handleClickAddAll = () => {
-        const { groupSelect } = this.state;
+        const { groupSelect, allSelected } = this.state;
         let groupsToSend = '';
 
         for (let i = 0; i < groupSelect.length; i++) {
@@ -46,7 +46,7 @@ export default class SeleccionarGrupo extends Component {
         }
 
         groupsToSend = groupsToSend.substring(0, groupsToSend.length - 1);
-        this.setState({ groupsToSend, allSelected: true });
+        this.setState({ groupsToSend, allSelected: !allSelected });
 
         document.getElementById('agregar-todos').focus();
         document.getElementById('agregar-todos').click();
@@ -68,12 +68,43 @@ export default class SeleccionarGrupo extends Component {
         document.getElementById('agregar-uno').focus();
     }
 
+    quitarGrupo = (grupo) => {
+        let nombre = grupo.label;
+        let id = grupo.value;
+
+        let { groupsToSend, seleccionados } = this.state;
+
+        groupsToSend = groupsToSend.replace(id, '');
+
+        const index = seleccionados.indexOf(nombre);
+        if (index > -1) {
+            seleccionados.splice(index, 1);
+        }
+
+        this.setState({ groupsToSend, seleccionados });
+    }
+
     componentDidMount() {
         let groupSelect = []
         axios.get(Global.frontUtilities)
             .then(response => {
+                // levanto el default value: 
+                let { defaultValue } = this.props;
+                let { groupsToSend, seleccionados } = this.state;
+
+                defaultValue.map(value => {
+                    groupsToSend += `${value.id}|`;
+                    seleccionados.push(value.name);
+                    return true;
+                })
+
+                // se quita el último caracter del string (que es |)
+                groupsToSend = groupsToSend.substring(0, groupsToSend.length - 1);
+
                 this.setState({
-                    groups: response.data.Data.groups
+                    groups: response.data.Data.groups,
+                    groupsToSend,
+                    seleccionados
                 })
 
                 this.state.groups.map(group => {
@@ -103,7 +134,7 @@ export default class SeleccionarGrupo extends Component {
     render() {
         const { groupSelect, groupsToShow, valueInput, allSelected, seleccionados } = this.state;
         this.props.getValue(this.state.groupsToSend)
-        console.log(valueInput)
+
         return (
             <>
                 <input
@@ -165,32 +196,34 @@ export default class SeleccionarGrupo extends Component {
                                     >
                                         <td>{group.label}</td>
                                         <td>
-                                            {
-                                                !allSelected
-                                                    ?
-                                                    (
-                                                        <button
-                                                            id="agregar-uno"
-                                                            onClick={
-                                                                (e) => {
-                                                                    e.preventDefault();
-                                                                    this.agregarGrupo(group);
-                                                                }
-                                                            }
-                                                        >
-                                                            Agregar
-                                                        </button>
-                                                    )
-                                                    :
-                                                    (
-                                                        <button
-                                                            disabled
-                                                        >
-                                                            Agregar
-                                                        </button>
-                                                    )
+                                            {!seleccionados.includes(group.label) &&
+                                                <button
+                                                    disabled={allSelected}
+                                                    id="agregar-uno"
+                                                    onClick={
+                                                        (e) => {
+                                                            e.preventDefault();
+                                                            this.agregarGrupo(group);
+                                                        }
+                                                    }
+                                                >
+                                                    Agregar
+                                            </button>
                                             }
-
+                                            {seleccionados.includes(group.label) &&
+                                                <button
+                                                    disabled={allSelected}
+                                                    id="agregar-uno"
+                                                    onClick={
+                                                        (e) => {
+                                                            e.preventDefault();
+                                                            this.quitarGrupo(group);
+                                                        }
+                                                    }
+                                                >
+                                                    Quitar
+                                            </button>
+                                            }
                                         </td>
                                     </tr>
                                 );

@@ -46,7 +46,8 @@ export default class GroupsTable extends Component {
             programEditReq: {},
             loading: false,
             redireccion: false,
-            selected: 'M'
+            selected: 'M',
+            goToHome: false
         }
     }
 
@@ -57,10 +58,12 @@ export default class GroupsTable extends Component {
     }
 
     errordeCreacion = () => {
-        alert('Debe crear grupos de programas antes de crear programas')
-        this.setState({
-            createProgram: false,
-            okProgramas: false
+        swal('Debe crear grupos de programas antes de crear programas').then(() => {
+            this.setState({
+                createProgram: false,
+                okProgramas: false,
+                goToHome: true
+            })
         })
     }
 
@@ -284,25 +287,25 @@ export default class GroupsTable extends Component {
         });
 
         // setTimeout(() => {      
-            axios.put(Global.getAllPrograms + '/' + id, dataSend, { headers: { Authorization: bearer } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                window.location.reload(window.location.href);
-                this.setState({
-                    loading: false
-                })
+        axios.put(Global.getAllPrograms + '/' + id, dataSend, { headers: { Authorization: bearer } }).then(response => {
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            window.location.reload(window.location.href);
+            this.setState({
+                loading: false
             })
-                .catch((e) => {
-                    if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                        HELPER_FUNCTIONS.logout()
-                    } else {
-                        this.setState({
-                            loading: false
-                        })
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                        swal("Error!", "Hubo un problema", "error");
-                    }
-                    console.log("Error: ", e)
-                });
+        })
+            .catch((e) => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    this.setState({
+                        loading: false
+                    })
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
+                }
+                console.log("Error: ", e)
+            });
         // }, 4000);
 
 
@@ -353,7 +356,7 @@ export default class GroupsTable extends Component {
 
     crearPrograma = (e) => {
         e.preventDefault()
-        
+
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
@@ -576,6 +579,10 @@ export default class GroupsTable extends Component {
                 state: { userSelected: this.state.userSelected }
             }}
             />
+        }
+
+        if (this.state.goToHome) {
+            return <Redirect to="/home" />
         }
 
         return (

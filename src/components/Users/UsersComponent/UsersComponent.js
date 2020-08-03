@@ -1,15 +1,9 @@
-import React, { Component } from 'react'
-import SiderbarLeft from '../../SidebarLeft/SiderbarLeft'
-import UserInfoContainer from '../UserInfoContainer/UserInfoContainer'
-import { Redirect } from 'react-router-dom'
-// import './Home.css'
+import React, { Component } from 'react';
+import SiderbarLeft from '../../SidebarLeft/SiderbarLeft';
+import UserInfoContainer from '../UserInfoContainer/UserInfoContainer';
+import { Redirect } from 'react-router-dom';
 import Logo from '../../Home/logo_background.png';
-import UserAdminHeader from '../userAdminHeader/userAdminHeader'
-import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
-import FastRewindIcon from '@material-ui/icons/FastRewind';
-import FastForwardIcon from '@material-ui/icons/FastForward';
-import EqualizerIcon from '@material-ui/icons/Equalizer';
-
+import UserAdminHeader from '../userAdminHeader/userAdminHeader';
 
 
 export default class Home extends Component {
@@ -25,10 +19,6 @@ export default class Home extends Component {
         sessionStorage.clear()
         this.setState({ redirect: true })
     }
-
-
-      
-
 
     render() {
         const userInfo = JSON.parse(sessionStorage.getItem("userData"));

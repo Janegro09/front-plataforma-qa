@@ -793,7 +793,7 @@ export default class GroupsTable extends Component {
                         </div>
                     }
 
-                    {!this.state.createProgram || !this.state.okProgramas &&
+                    {(!this.state.createProgram || !this.state.okProgramas) &&
                         this.errordeCreacion()
                     }
 

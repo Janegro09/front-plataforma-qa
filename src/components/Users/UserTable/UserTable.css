@@ -590,8 +590,9 @@ svg {
   color: white;
   background-color: #00800052!important;
   margin-top: 14px;
-  width: 126px;
+  width: 126px !important;
   margin-left: 10px;
+  text-align: center;
 }
 
 .estadoActivo {

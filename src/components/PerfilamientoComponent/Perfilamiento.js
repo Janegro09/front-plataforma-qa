@@ -26,8 +26,17 @@ export default class Perfilamiento extends Component {
             cuartiles: false,
             cuartilSeleccionado: null,
             perfilamientos: false,
-            loading: false
+            loading: false,
+            totalDisplayed: 20
         }
+    }
+
+    verMas = () => {
+        document.getElementById('ver-mas').focus();
+        let { totalDisplayed } = this.state;
+        totalDisplayed += 5;
+
+        this.setState({ totalDisplayed });
     }
 
     dynamicSort = (property) => {
@@ -196,7 +205,7 @@ export default class Perfilamiento extends Component {
     }
 
     render() {
-        let { data, dataFiltered, id, agregarPerfilamiento, cuartiles, cuartilSeleccionado, perfilamientos, loading } = this.state;
+        let { data, dataFiltered, id, agregarPerfilamiento, cuartiles, cuartilSeleccionado, perfilamientos, loading, totalDisplayed } = this.state;
 
         if (cuartiles) {
             return <Redirect
@@ -257,7 +266,7 @@ export default class Perfilamiento extends Component {
                         </thead>
 
                         <tbody>
-                            {dataFiltered.map((row, key) => {
+                            {dataFiltered.slice(0, totalDisplayed).map((row, key) => {
                                 return (
                                     <tr key={key}>
                                         <td>{moment(row.date).format("DD-MM-YYYY")}</td>
@@ -298,6 +307,19 @@ export default class Perfilamiento extends Component {
                         </tbody>
                     </table>
                 }
+
+                <button
+                    id="ver-mas"
+                    className="btn btn-primary"
+                    onClick={
+                        (e) => {
+                            e.preventDefault();
+                            this.verMas();
+                        }
+                    }
+                >
+                    Ver más
+                </button>
             </div>
         )
     }

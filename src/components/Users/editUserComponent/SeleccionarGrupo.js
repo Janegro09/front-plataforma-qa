@@ -52,6 +52,14 @@ export default class SeleccionarGrupo extends Component {
         document.getElementById('agregar-todos').click();
     }
 
+    handleClickDeleteAll = () => {
+
+        this.setState({ groupsToSend: '', allSelected: false, seleccionados: [] });
+
+        document.getElementById('quitar-todos').focus();
+        document.getElementById('quitar-todos').click();
+    }
+
     agregarGrupo = (grupo) => {
         let id = grupo.value;
         let { groupsToSend, seleccionados } = this.state;
@@ -145,18 +153,36 @@ export default class SeleccionarGrupo extends Component {
                     onChange={this.buscar}
                 />
 
-                <button
-                    id="agregar-todos"
-                    className="btn btn-primary"
-                    onClick={
-                        (e) => {
-                            e.preventDefault();
-                            this.handleClickAddAll();
+                {seleccionados.length !== groupSelect.length &&
+                    <button
+                        id="agregar-todos"
+                        className="btn btn-primary"
+                        onClick={
+                            (e) => {
+                                e.preventDefault();
+                                this.handleClickAddAll();
+                            }
                         }
-                    }
-                >
-                    Agregar todos
-                </button>
+                    >
+                        Agregar todos
+                    </button>
+                }
+
+
+                {seleccionados.length === groupSelect.length &&
+                    <button
+                        id="quitar-todos"
+                        className="btn btn-primary"
+                        onClick={
+                            (e) => {
+                                e.preventDefault();
+                                this.handleClickDeleteAll();
+                            }
+                        }
+                    >
+                        Quitar todos
+                    </button>
+                }
 
                 {allSelected &&
                     <p>

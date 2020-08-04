@@ -128,6 +128,7 @@ export default class AdministracionFormulariosComponent extends Component {
                 <div className="section-content">
                     <div className="flex-input-add">
                         <h4 className="mr-2">ADMINISTRADOR DE FORMULARIOS</h4>
+
                         <button
                             onClick={(e) => {
                                 e.preventDefault();
@@ -136,6 +137,8 @@ export default class AdministracionFormulariosComponent extends Component {
                         >
                             <AddIcon className="morph" />
                         </button></div>
+                        <hr />
+                        <br />
                     {allForms &&
                         <table>
                             <thead>

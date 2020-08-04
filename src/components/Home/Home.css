@@ -79,7 +79,7 @@ select {
     padding: 10px;
     margin-bottom: 20px;
     color: #717171;
-    background-color: #f9f9f969 !important;
+    /* background-color: #f9f9f969 !important; */
 }
 
 .uploadNomina {

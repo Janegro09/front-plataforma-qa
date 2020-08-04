@@ -194,6 +194,8 @@ export default class PartiturasComponent extends Component {
 
                 <div className="section-content">
                     <h4>PARTITURAS</h4>
+                    <hr />
+                    <br />
                     <div className="flex-input-add">
                         <input onChange={this.buscar} className="form-control" placeholder="Buscar por nombre de archivo" />
                         {HELPER_FUNCTIONS.checkPermission('POST|analytics/partitures/new') &&

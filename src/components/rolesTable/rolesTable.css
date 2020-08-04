@@ -39,7 +39,7 @@ img {
     width: 60px;
 }
 .tabla_parent {
-  max-width: calc(100% - 2em);
+  /* max-width: calc(100% - 2em); */
   margin: auto;
   overflow: hidden;
   width: 100vw;
@@ -429,7 +429,7 @@ svg {
 }
 
 .form-control{
-  background-color: #f9f9f969;
+  /* background-color: #f9f9f969; */
   border-radius: 4px !important;
   margin-right: 8px;
   border-bottom: 1px solid #e4e4e4;

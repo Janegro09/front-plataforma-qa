@@ -61,7 +61,7 @@ img {
 }
 
 .tabla_parent {
-  max-width: calc(100% - 2em);
+  /* max-width: calc(100% - 2em); */
   margin: auto;
   overflow: hidden;
   width: 100vw;

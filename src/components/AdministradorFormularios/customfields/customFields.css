@@ -17,14 +17,6 @@ label.forInputs {
     color: #000;
 }
 
-input[type='text'] {
-    display: block;
-    width: 100%;
-    margin: 10px 0px 10px 0px;
-    padding: 5px 10px;
-    border: 1px solid #efeff3;
-    border-radius: 5px;
-}
 
 .PrivateSwitchBase-root-1 {
     padding:3px !important;

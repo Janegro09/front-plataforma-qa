@@ -598,10 +598,12 @@ export default class GroupsTable extends Component {
                 <div className="BtnInProgramas"> <button><a href="#programasSection">Programas</a></button> <hr></hr><button><a href="#gruposProgSection">Grupos</a></button></div>
 
 
-                <div className="section-content doble-section">
+                <div className="section-content">
                     {!this.state.createProgram &&
-                        <div id="programasSection" className="table-users ">
-                            <h4 className="marginBotton15">Programas</h4>
+                        <div id="programasSection" className="tabla_parent">
+                            <h4>PROGRAMAS</h4>
+                            <hr></hr>
+                            <br></br>
                             {!this.state.editProgram &&
                                 <div>
 
@@ -710,7 +712,7 @@ export default class GroupsTable extends Component {
                                 <div>
 
                                     {/* <CreateProgramsGroupComponent /> */}
-                                    <div className="table-parent-edit">
+                                    <div>
                                         <form onSubmit={this.edit} className="inputsEditUser addUserPadding">
                                             <span className="Label">Nombre</span>
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={userSelected.name ? userSelected.name : ''} />
@@ -769,7 +771,7 @@ export default class GroupsTable extends Component {
                         <div className="tabla_parent">
                             <h4 className="marginBotton15">Crear programa</h4>
                             {/* <CreateProgramsGroupComponent /> */}
-                            <div className="table-parent-edit">
+                            <div>
                                 <form onSubmit={this.crearPrograma} className="inputsEditUser addUserPadding">
                                     <span className="Label">Nombre</span>
                                     <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />

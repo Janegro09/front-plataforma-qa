@@ -785,7 +785,7 @@ body {
   font-weight: 300;
   padding: 9px;
   font-style: italic;
-  background-color: transparent;
+  /* background-color: transparent; */
   box-shadow: none;
   border-bottom: 1px solid;
 }

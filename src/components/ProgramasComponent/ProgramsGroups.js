@@ -28,8 +28,10 @@ export default class ProgramsGroups extends Component {
                 </div>
                 <SiderBarLeft />
 
-                <div className="section-content tabla_parent" id="gruposProgSection">
-                    <h4 className="marginBotton15">GRUPOS DE PROGRAMA</h4>
+                <div className="section-content" id="gruposProgSection">
+                    <h4>GRUPOS DE PROGRAMA</h4>
+                    <hr></hr>
+                    <br></br>
                     <div >
                         <ProgramsGroupComponent />
                     </div>

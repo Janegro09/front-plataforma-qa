@@ -241,13 +241,13 @@ export default class ProgramsGroupComponent extends Component {
                     {this.state.addGroup &&
                         <div>
                             <CreateProgramsGroupComponent />
-                            <button className="btn"
+                            <button className="btnClose"
                                 onClick={() => {
                                     this.setState({
                                         addGroup: false
                                     })
                                 }}
-                            >Cancelar</button>
+                            >x</button>
                         </div>
                     }
 

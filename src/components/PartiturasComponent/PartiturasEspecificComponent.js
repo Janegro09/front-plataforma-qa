@@ -23,7 +23,8 @@ export default class PartiturasEspecificComponent extends Component {
         loading: false,
         data: null,
         idUsuario: null,
-        filtredData: null
+        filtredData: null,
+        totalDisplayed: 20
     }
 
     buscar = (e) => {
@@ -75,6 +76,13 @@ export default class PartiturasEspecificComponent extends Component {
         this.setState({
             idUsuario: id
         });
+    }
+
+    showMore = () => {
+        let { totalDisplayed } = this.state;
+        totalDisplayed += 10;
+        this.setState({ totalDisplayed });
+        document.getElementById('ver-mas-partituras').focus();
     }
 
     dynamicSort = (property) => {
@@ -133,7 +141,7 @@ export default class PartiturasEspecificComponent extends Component {
     }
 
     render() {
-        let { loading, data, idUsuario, filtredData } = this.state;
+        let { loading, data, idUsuario, filtredData, totalDisplayed } = this.state;
         data = data ? data[0] : null;
 
         if (idUsuario) {
@@ -244,7 +252,7 @@ export default class PartiturasEspecificComponent extends Component {
                             </thead>
                             <tbody>
                                 {filtredData &&
-                                    filtredData.map(user => {
+                                    filtredData.slice(0,totalDisplayed).map(user => {
                                         return (
                                             <tr key={user.idDB}>
                                                 <td>{user.dni}</td>
@@ -272,6 +280,14 @@ export default class PartiturasEspecificComponent extends Component {
                                 }
                             </tbody>
                         </table>
+
+                        <button
+                            id="ver-mas-partituras"
+                            className="btn btn-primary"
+                            onClick={() => this.showMore()}
+                        >
+                            Ver más
+                        </button>
                     </div>
 
                 }

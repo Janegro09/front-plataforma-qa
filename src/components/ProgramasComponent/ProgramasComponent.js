@@ -712,7 +712,7 @@ export default class GroupsTable extends Component {
                                 <div>
 
                                     {/* <CreateProgramsGroupComponent /> */}
-                                    <div className="table-parent-edit">
+                                    <div>
                                         <form onSubmit={this.edit} className="inputsEditUser addUserPadding">
                                             <span className="Label">Nombre</span>
                                             <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={userSelected.name ? userSelected.name : ''} />
@@ -771,7 +771,7 @@ export default class GroupsTable extends Component {
                         <div className="tabla_parent">
                             <h4 className="marginBotton15">Crear programa</h4>
                             {/* <CreateProgramsGroupComponent /> */}
-                            <div className="table-parent-edit">
+                            <div>
                                 <form onSubmit={this.crearPrograma} className="inputsEditUser addUserPadding">
                                     <span className="Label">Nombre</span>
                                     <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />

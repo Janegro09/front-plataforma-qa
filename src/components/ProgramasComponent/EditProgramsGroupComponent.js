@@ -112,7 +112,7 @@ export default class EditProgramsGroupComponent extends Component {
                     HELPER_FUNCTIONS.backgroundLoading()
                 }
                 {HELPER_FUNCTIONS.checkPermission("GET|programs/groups/:id") &&
-                    <div className="table-parent-edit">
+                    <div>
                         <form onSubmit={this.addUser} className="inputsEditUser addUserPadding">
                             <span className="Label">Nombre</span>
                             <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={edit.name ? edit.name : ''} />

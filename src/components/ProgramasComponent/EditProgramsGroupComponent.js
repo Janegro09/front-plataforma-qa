@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import SelectGroup from './SelectGroup'
 import Global from '../../Global'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import axios from 'axios'
 import swal from 'sweetalert'
+import SelectEditarGrupos from './SelectEditarGrupos'
 
 export default class EditProgramsGroupComponent extends Component {
     constructor(props) {
@@ -14,13 +14,15 @@ export default class EditProgramsGroupComponent extends Component {
             editProgramGroup: true
         }
     }
-    
+
     addUser = (event) => {
         event.preventDefault()
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
+
+
         const bodyParameters = {
             name: this.name.value,
             description: this.description.value,
@@ -72,7 +74,6 @@ export default class EditProgramsGroupComponent extends Component {
         })
 
         axios.get(Global.getAllProgramsGroups + '/' + id, { headers: { Authorization: bearer } }).then(response => {
-            console.log('la response: ', response.data)
             if (response.data.Data[0].assignedGroups.length > 0) {
                 this.setState({
                     loading: false,
@@ -122,7 +123,7 @@ export default class EditProgramsGroupComponent extends Component {
                             <span className="Label">Usuarios asignados</span>
                             {/* enviar defaultValue={user.group ? user.group : ''}  */}
                             {specific &&
-                                <SelectGroup getValue={(c) => this.usersAssign = c} defaultValue={specific.length > 0 ? specific : ''} idGroup={edit.id} />
+                                <SelectEditarGrupos getValue={(c) => this.usersAssign = c} defaultValue={specific} idGroup={edit.id} />
                             }
                             <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Editar Grupo de Programas</button>
                         </form>

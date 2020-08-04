@@ -168,20 +168,15 @@ class SelectGroup extends Component {
             const token = tokenUser
             const bearer = `Bearer ${token}`
 
-            axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
+            axios.get(Global.getGroups, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                let usuarios = []
-                let data = response.data.Data
-                for (let i = 0; i < data.length; i++) {
-                    usuarios.push(data[i])
-                }
 
                 this.setState({
-                    allUsers: usuarios,
+                    allUsers: response.data.Data,
                     loading: false
                 })
 
-                this.searchDefault()
+                this.searchDefault();
 
             })
                 .catch((e) => {
@@ -228,7 +223,7 @@ class SelectGroup extends Component {
                         usuariosSeleccionados.map((usuario, key) => {
                             return (
                                 <div key={key}>
-                                    <p>{`${usuario.id} - ${usuario.name} ${usuario.lastName}`}</p>
+                                    <p>{`${usuario.id} - ${usuario.group}`}</p>
                                     <button onClick={
                                         (e) => {
                                             e.preventDefault()
@@ -251,7 +246,6 @@ class SelectGroup extends Component {
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Apellido</th>
                         </tr>
                     </thead>
 
@@ -264,8 +258,7 @@ class SelectGroup extends Component {
                                         this.seleccionado(usuario)
                                     }}>
                                         <td>{usuario.id}</td>
-                                        <td>{usuario.name}</td>
-                                        <td>{usuario.lastName}</td>
+                                        <td>{usuario.group}</td>
                                     </tr>
                                 )
                             })

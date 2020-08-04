@@ -136,6 +136,8 @@ export default class ModeloDePartiturasComponent extends Component {
 
                     
                     </div>
+                    <hr />
+                    <br />
                     {data &&
                         <table>
                             <thead>

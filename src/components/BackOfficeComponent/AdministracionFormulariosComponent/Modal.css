@@ -37,7 +37,7 @@
     flex-direction: column;
     padding: 22px;
     height: 530px;
-    
+    justify-content: space-around;
 }
 
 .formulario > select {
@@ -46,4 +46,5 @@
 
 .label {
     position: inherit !important;
+    margin-bottom: 0;
 }

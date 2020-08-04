@@ -71,6 +71,10 @@ display: none;
   font-family: sans-serif;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  margin:0;
+}
+
 .side__bar_inverse {
   background-color: #333;
   border-color: #080808;
@@ -374,7 +378,7 @@ hr {
   margin-right: 8p;
   border-radius: 7px;
   margin-right: 1px;
-  margin-bottom: 3px;
+  /* margin-bottom: 3px; */
   color: white;
   border: 2px solid transparent;
   transition: 0.1s;
@@ -382,6 +386,8 @@ hr {
   transition: all 0.15s ease-in-out;
   -webkit-box-shadow: 0 0.125rem 0.625rem rgb(22 170 255 / 33%), 0 0.0625rem 0.125rem rgb(22 170 255 / 50%);
 }
+
+
 
 .morph:hover {
   /* box-shadow: 0px 0px 6px 2px #ffffffb0, 5px 5px 8px 0px rgba(0, 0, 0, 0.06), 1px 1px 5px 0px rgba(2, 3, 0, 0.20); */
@@ -587,5 +593,18 @@ hr {
 .tableIconstableIconsPerfilamiento {
   display: flex;
   justify-content: space-between;
+} 
+ 
+.btnClose {
+  background-color: white;
+  color: black;
+  border-radius: 50px;
+  -webkit-box-shadow: 0px 0px 19px 4px rgba(0,0,0,0.10);
+  padding: 13px;
+  width: 53px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 17px;
 } 
  

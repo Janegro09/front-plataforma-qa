@@ -598,10 +598,12 @@ export default class GroupsTable extends Component {
                 <div className="BtnInProgramas"> <button><a href="#programasSection">Programas</a></button> <hr></hr><button><a href="#gruposProgSection">Grupos</a></button></div>
 
 
-                <div className="section-content doble-section">
+                <div className="section-content">
                     {!this.state.createProgram &&
-                        <div id="programasSection" className="table-users ">
-                            <h4 className="marginBotton15">Programas</h4>
+                        <div id="programasSection" className="tabla_parent">
+                            <h4>PROGRAMAS</h4>
+                            <hr></hr>
+                            <br></br>
                             {!this.state.editProgram &&
                                 <div>
 

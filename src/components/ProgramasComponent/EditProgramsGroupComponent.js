@@ -123,13 +123,13 @@ export default class EditProgramsGroupComponent extends Component {
                             <SelectGroup getValue={(c) => this.usersAssign = c} defaultValue={specific ? specific : ''} idGroup={edit.id} />
                             <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Editar Grupo de Programas</button>
                         </form>
-                        <button
+                        <button className="btnClose"
                             onClick={() => {
                                 this.setState({
                                     editProgramGroup: false
                                 })
                             }}
-                        >Cancelar</button>
+                        >x</button>
                     </div>
                 }
 

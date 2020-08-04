@@ -47,9 +47,7 @@
     margin: 15px 0;
 }
 
-.mainButtons input[type='text'] {
-    width: 75% !important;
-}
+
 
 .step {
     justify-content: space-between;

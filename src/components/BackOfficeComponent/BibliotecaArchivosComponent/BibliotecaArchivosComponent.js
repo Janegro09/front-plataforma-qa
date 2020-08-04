@@ -165,6 +165,8 @@ export default class BibliotecaArchivosComponent extends Component {
 
                 <div className="section-content">
                     <h4>BIBLIOTECA DE ARCHIVOS</h4>
+                    <hr />
+                    <br />
                     {seccionSeleccionada &&
                         <select onChange={(e) => {
                             e.preventDefault();

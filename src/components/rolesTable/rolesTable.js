@@ -226,6 +226,8 @@ export default class RolesTable extends Component {
 
                 <div className="tabla_parent">
                     <h4>ROLES</h4>
+                    <hr />
+                    <br />
                     <div className="flex-input-add">
                         {/* Buscador */}
                         {HELPER_FUNCTIONS.checkPermission("GET|roles/:id") &&

@@ -24,7 +24,7 @@ export default class EditProgramsGroupComponent extends Component {
         const bodyParameters = {
             name: this.name.value,
             description: this.description.value,
-            usersAssign: this.usersAssign
+            usersGroupsAssign: this.usersAssign
         }
 
         this.setState({
@@ -72,10 +72,11 @@ export default class EditProgramsGroupComponent extends Component {
         })
 
         axios.get(Global.getAllProgramsGroups + '/' + id, { headers: { Authorization: bearer } }).then(response => {
-            if (response.data.Data[0].assignedUsers.length > 0) {
+            console.log('la response: ', response.data)
+            if (response.data.Data[0].assignedGroups.length > 0) {
                 this.setState({
                     loading: false,
-                    specific: response.data.Data[0].assignedUsers
+                    specific: response.data.Data[0].assignedGroups
                 })
             } else {
                 this.setState({ loading: false });
@@ -99,8 +100,8 @@ export default class EditProgramsGroupComponent extends Component {
             });
     }
     render() {
-        const { edit } = this.props
-        const { specific, editProgramGroup } = this.state
+        const { edit } = this.props;
+        const { specific, editProgramGroup } = this.state;
 
         if (!editProgramGroup) {
             window.location.reload(window.location.href);
@@ -120,7 +121,9 @@ export default class EditProgramsGroupComponent extends Component {
                             <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} defaultValue={edit.description ? edit.description : ''} />
                             <span className="Label">Usuarios asignados</span>
                             {/* enviar defaultValue={user.group ? user.group : ''}  */}
-                            <SelectGroup getValue={(c) => this.usersAssign = c} defaultValue={specific ? specific : ''} idGroup={edit.id} />
+                            {specific &&
+                                <SelectGroup getValue={(c) => this.usersAssign = c} defaultValue={specific.length > 0 ? specific : ''} idGroup={edit.id} />
+                            }
                             <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Editar Grupo de Programas</button>
                         </form>
                         <button

@@ -18,6 +18,7 @@ class SelectGroup extends Component {
             allUsers: null,
             usuariosSeleccionados: []
         };
+
     }
 
     handleInputChange = (value) => {
@@ -163,51 +164,50 @@ class SelectGroup extends Component {
         this.setState({
             loading: true
         })
-        setTimeout(() => {
-            const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-            const token = tokenUser
-            const bearer = `Bearer ${token}`
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
 
-            axios.get(Global.getGroups, { headers: { Authorization: bearer } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-
-                this.setState({
-                    allUsers: response.data.Data,
-                    loading: false
-                })
-
-                this.searchDefault();
-
+        axios.get(Global.getGroups, { headers: { Authorization: bearer } }).then(response => {
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            console.log('la response data: ', response.data.Data)
+            this.setState({
+                allUsers: response.data.Data,
+                loading: false
             })
-                .catch((e) => {
-                    // Si hay algún error en el request lo deslogueamos
 
-                    if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                        HELPER_FUNCTIONS.logout()
-                    } else {
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                        this.setState({
-                            error: true,
-                            redirect: true,
-                            loading: false
-                        })
-                        swal("Error!", "Hubo un problema", "error");
-                    }
-                    console.log("Error: ", e)
-                });
-        }, 1000);
+            this.searchDefault();
+
+        })
+            .catch((e) => {
+                // Si hay algún error en el request lo deslogueamos
+
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    this.setState({
+                        error: true,
+                        redirect: true,
+                        loading: false
+                    })
+                    swal("Error!", "Hubo un problema", "error");
+                }
+                console.log("Error: ", e)
+            });
 
     }
 
     render() {
-        let { usuariosReturn, usuariosSeleccionados } = this.state
-        let arrayAEnviar = []
+        let { usuariosReturn, usuariosSeleccionados } = this.state;
+        let arrayAEnviar = [];
+
         usuariosSeleccionados.map(usuario => {
-            arrayAEnviar.push(usuario.idDB)
+            arrayAEnviar.push(usuario.id)
             return true;
         })
 
-        this.props.getValue(arrayAEnviar)
+        this.props.getValue(arrayAEnviar);
 
 
         return (

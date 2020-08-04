@@ -15,7 +15,7 @@ export default class CreateProgramsGroupComponent extends Component {
         const bodyParameters = {
             name: this.name.value,
             description: this.description.value,
-            usersAssign: this.usersAssign
+            usersGroupsAssign: this.usersAssign
         }
 
         axios.post(

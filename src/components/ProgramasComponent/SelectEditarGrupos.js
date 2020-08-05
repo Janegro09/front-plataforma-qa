@@ -41,7 +41,7 @@ export default class SelectEditarGrupos extends Component {
                 //     redirect: true
                 // })
                 swal("Genial!", "Usuario desasignado", "success");
-                
+
             }).catch(e => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
@@ -137,14 +137,16 @@ export default class SelectEditarGrupos extends Component {
                     {defaultValue &&
                         defaultValue.map((usuario, key) => {
                             return (
-                                <div key={key}>
-                                    <p>{`${usuario.id} - ${usuario.group}`}</p>
-                                    <button onClick={
-                                        (e) => {
-                                            e.preventDefault()
-                                            this.quitarUsuario(usuario)
-                                        }
-                                    }>x</button>
+                                <div className="etiquetas">
+                                    <div className="etiqueta" key={key}>
+                                        <p>{`${usuario.id} - ${usuario.group}`}</p>
+                                        <button onClick={
+                                            (e) => {
+                                                e.preventDefault()
+                                                this.quitarUsuario(usuario)
+                                            }
+                                        }>x</button>
+                                    </div>
                                 </div>
                             )
                         })

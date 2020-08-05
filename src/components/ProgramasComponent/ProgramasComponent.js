@@ -752,14 +752,14 @@ export default class GroupsTable extends Component {
                                         </form>
                                     </div>
 
-                                    <button
+                                    <button className="btnClose"
                                         onClick={() => {
                                             this.setState({
                                                 editProgram: false
                                             })
                                         }}
                                     >
-                                        Cancelar
+                                        x
                                     </button>
                                 </div>
                             }
@@ -791,13 +791,13 @@ export default class GroupsTable extends Component {
                                     <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} required />
                                     <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Programas</button>
                                 </form>
-                                <button onClick={
+                                <button className="btnClose" onClick={
                                     () => {
                                         this.setState({
                                             createProgram: false
                                         })
                                     }
-                                }>X</button>
+                                }>x</button>
                             </div>
                         </div>
                     }

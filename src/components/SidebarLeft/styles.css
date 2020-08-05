@@ -405,18 +405,17 @@ hr {
   display: flex;
   padding: 10px 0px 10px 5px;
   height: 43px;
-  border: 1px solid #03a9f4;
+  border: 1px solid #cccccc;
   border-radius: 4px;
 }
 
 .etiqueta > p {
-  color: #03a9f4;
-  margin-right: 5px;
+  margin: 0 5px 0 5px
 }
 
-.etiqueta > .button {
-  color: #03a9f4;
-  margin-right: 5px;
+.etiqueta > button {
+  margin: 0 5px 0 5px;
+  color: #404040;
 }
 
 .marginArrow {

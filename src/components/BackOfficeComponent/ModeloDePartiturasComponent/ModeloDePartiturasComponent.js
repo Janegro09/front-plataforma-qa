@@ -100,7 +100,7 @@ export default class ModeloDePartiturasComponent extends Component {
                     this.setState({
                         loading: false
                     })
-                    swal("Error!", "Hubo un problema", "error");
+                    // swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
             });

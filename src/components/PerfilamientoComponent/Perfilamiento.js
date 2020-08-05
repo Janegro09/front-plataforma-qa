@@ -198,7 +198,7 @@ export default class Perfilamiento extends Component {
                     this.setState({
                         loading: false
                     })
-                    swal("Error!", "Hubo un problema", "error");
+                    // swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
             });

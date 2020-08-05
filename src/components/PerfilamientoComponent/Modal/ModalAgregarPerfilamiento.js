@@ -21,8 +21,8 @@ export default class Modal extends Component {
         });
 
         swal({
-            title: "Estás por actualizar la nómina de usuarios",
-            text: `Nombre del archivo: ${event.target.files[0].name}, tené en cuenta que los cambios son irreversibles.`,
+            title: "Estás por subir una base consilidada",
+            text: `Nombre del archivo: ${event.target.files[0].name}`,
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -56,13 +56,13 @@ export default class Modal extends Component {
                                 HELPER_FUNCTIONS.logout()
                             } else {
                                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                                swal("Error!", "Hubo un problema al agregar la nómina", "error");
+                                swal("Error!", "Hubo un problema al subir la base", "error");
                             }
                             console.log("Error: ", e)
                         });
 
                 } else {
-                    swal("Nómina NO actualizada!");
+                    swal("NO actualizada!");
                 }
             });
 

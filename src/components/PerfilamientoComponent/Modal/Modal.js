@@ -71,7 +71,6 @@ export default class Modal extends Component {
         axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             let losP = response.data.Data.filter(data => data.section === 'P');
-
             this.setState({
                 allPrograms: losP,
                 programsFiltered: losP,

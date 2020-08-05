@@ -8,9 +8,7 @@
 section {
     width: 100%;
     display: flex;
-    background-color: #ffffff2e;
     flex-flow: row wrap;
-    -webkit-box-shadow: 0px 0px 6px 1px #9596981c;
     justify-content: space-between;
 }
 

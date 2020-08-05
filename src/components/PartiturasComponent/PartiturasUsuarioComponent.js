@@ -190,7 +190,8 @@ export default class PartiturasUsuarioComponent extends Component {
 
                 {data &&
                     <div className="section-content">
-                        <h2>Archivo actual</h2>
+                        <h4>Archivo actual</h4>
+                        <br />
                         <table>
                             <thead>
                                 <tr>
@@ -212,8 +213,9 @@ export default class PartiturasUsuarioComponent extends Component {
                                 </tr>
                             </tbody>
                         </table>
-
-                        <h2>Usuario actual</h2>
+                        <br />
+                        <h4>Usuario actual</h4>
+                        <br />
                         {this.getUsersColumns()}
 
                         <section>

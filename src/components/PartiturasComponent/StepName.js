@@ -418,7 +418,8 @@ export default class StepName extends Component {
 
                 {data &&
                     <div className="section-content">
-                        <h2 className="titulo">Archivo Actual</h2>
+                        <h4>Archivo Actual</h4>
+                        <br />
                         <table>
                             <thead>
                                 <tr>
@@ -439,8 +440,9 @@ export default class StepName extends Component {
                                 </tr>
                             </tbody>
                         </table>
-
-                        <h2 className="titulo">Usuario Actual</h2>
+                        <br />
+                        <h4>Usuario Actual</h4>
+                        <br />
                         {this.getUsersColumns()}
 
                         {step &&
@@ -455,7 +457,8 @@ export default class StepName extends Component {
                                 >
                                     Enviar
                                 </button>
-                                <h2 className="titulo">Nombre: {step.name}</h2>
+                                <h4>Nombre: {step.name}</h4> 
+                                <br />
                                 <article className="seccion">
                                     <h6 className="titulo-seccion">Archivos de apoyo</h6>
                                     {/* Custom file sync */}

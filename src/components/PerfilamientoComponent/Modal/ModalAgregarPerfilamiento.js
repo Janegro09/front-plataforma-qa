@@ -21,7 +21,7 @@ export default class Modal extends Component {
         });
 
         swal({
-            title: "Estás por subir una base consilidada",
+            title: "Estás por subir una base consolidada",
             text: `Nombre del archivo: ${event.target.files[0].name}`,
             icon: "warning",
             buttons: true,
@@ -35,8 +35,6 @@ export default class Modal extends Component {
                     const bearer = `Bearer ${token}`
                     // Crear form data y añadir fichero
                     const formData = new FormData();
-
-
 
                     formData.append(
                         'file',
@@ -87,15 +85,15 @@ export default class Modal extends Component {
                             }
                         }>x</button>
                     </div>
-                   
+
                     {loaded && selectedFile !== null &&
 
                         <LoadingBar />
                     }
 
-     
+
                     <div className="input-file">
-                        <label className="labelFileInput" htmlFor="file">Subir nómina (Sólo archivos CSV)</label>
+                        <label className="labelFileInput" htmlFor="file">Subir base consolidada</label>
                         <input type="file" name="file" onChange={this.fileChange} />
                     </div>
                 </div>

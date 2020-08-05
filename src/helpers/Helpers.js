@@ -44,29 +44,89 @@ export const HELPER_FUNCTIONS = {
         temp.map(value => {
             switch (value) {
                 case 'new':
-                    nameReturn += 'puede agregar '
+                    nameReturn += 'agregar '
                     break;
                 case 'update':
-                    nameReturn += 'puede actualizar '
+                    nameReturn += 'actualizar '
                     break;
                 case 'delete':
-                    nameReturn += 'puede borrar '
+                    nameReturn += 'borrar '
                     break;
                 case 'get':
-                    nameReturn += 'puede consultar '
+                    nameReturn += 'consultar '
                     break;
                 case 'diabled':
-                    nameReturn += 'puede desactivar '
+                    nameReturn += 'desactivar '
                     break;
                 case 'passchange':
-                    nameReturn += 'puede cambiar la contraseña '
+                    nameReturn += 'cambiar la contraseña '
                     break;
                 case 'importNomina':
-                    nameReturn += 'puede importar una nueva nomina '
+                    nameReturn += 'importar una nueva nomina '
+                    break;
+                case 'create':
+                    nameReturn += 'crear '
+                    break;
+                case 'unassignUser':
+                    nameReturn += 'desasignar usuarios '
+                    break;
+                case 'customfields':
+                    nameReturn += 'campos personalizados '
+                    break;
+                case 'users':
+                    nameReturn += 'usuarios '
+                    break;
+                case 'groups':
+                    nameReturn += 'grupos '
+                    break;
+                case 'modify':
+                    nameReturn += 'modificar '
+                    break;
+                case 'downloadFile':
+                    nameReturn += 'descargar '
+                    break;
+                case 'file':
+                    nameReturn += 'archivo '
+                    break;
+                case 'getColumns':
+                    nameReturn += 'obtener columnas '
+                    break;
+                case 'unassignGroup':
+                    nameReturn += 'desasignar grupo '
+                    break;
+                case 'assignProgram':
+                    nameReturn += 'asignar programa '
+                    break;
+                case 'exports':
+                    nameReturn += 'exportar '
+                    break;
+                case 'deleteFile':
+                    nameReturn += 'eliminar '
+                    break;
+                case 'newFile':
+                    nameReturn += 'agregar '
+                    break;
+                case 'download':
+                    nameReturn += 'descargar '
+                    break;
+                case 'newGroup':
+                    nameReturn += 'nuevo grupo de perfilamiento '
+                    break;
+                case 'getGroups':
+                    nameReturn += 'obtener grupos de perfilamiento '
+                    break;
+                case 'changePartitureStatus':
+                    nameReturn += 'cambiar estado de partitura '
+                    break;
+                case 'uploadFile':
+                    nameReturn += 'subir archivo '
+                    break;
+                case 'getPublicFile':
+                    nameReturn += 'obtener archivo publico '
                     break;
 
                 default:
-                    nameReturn += value
+                    nameReturn += value + ' '
                     break;
             }
             return true

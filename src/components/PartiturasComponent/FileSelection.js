@@ -110,7 +110,7 @@ export default class FileSelection extends Component {
     }
     render() {
         let { data, dataFiltered, arrayToSend } = this.state;
-
+        console.log(arrayToSend.length >= 1)
         return (
             <>
                 {data &&
@@ -170,14 +170,16 @@ export default class FileSelection extends Component {
                                 Ver mas
                         </button>
                         </div>
-                        <button className="buttonSiguiente"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                this.props.getData(arrayToSend);
-                            }}
-                        >
-                            Siguiente
-                        </button>
+                        {arrayToSend.length >= 1 &&
+                            <button className="buttonSiguiente"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    this.props.getData(arrayToSend);
+                                }}
+                            >
+                                Siguiente
+                            </button>
+                        }
                     </>
 
                 }

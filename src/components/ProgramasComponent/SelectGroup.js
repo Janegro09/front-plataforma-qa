@@ -238,9 +238,15 @@ class SelectGroup extends Component {
 
                 </div>
 
-                <input type="text" placeholder="Buscar" ref={(c) => {
-                    this.searched = c
-                }} onChange={this.buscar} />
+                <input
+                    className="form-control"
+                    type="text"
+                    placeholder="Buscar"
+                    ref={(c) => {
+                        this.searched = c
+                    }}
+                    onChange={this.buscar}
+                />
                 <table>
                     <thead>
                         <tr>

@@ -157,6 +157,7 @@ export default class SelectEditarGrupos extends Component {
                     id='input-value'
                     type="text"
                     onChange={this.buscar}
+                    className="form-control"
                 />
 
                 {usuariosReturn.length > 0 &&

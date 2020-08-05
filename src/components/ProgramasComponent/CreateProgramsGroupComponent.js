@@ -51,7 +51,7 @@ export default class CreateProgramsGroupComponent extends Component {
                         <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />
                         <span className="Label">Descripción</span>
                         <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} required />
-                        <span className="Label">Usuarios asignados</span>
+                        <span className="Label">Grupos asignados</span>
                         <SelectGroup getValue={(c) => this.usersAssign = c} />
                         <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Grupo de Programas</button>
                     </form>

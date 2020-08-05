@@ -120,7 +120,7 @@ export default class EditProgramsGroupComponent extends Component {
                             <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={edit.name ? edit.name : ''} />
                             <span className="Label">Descripción</span>
                             <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} defaultValue={edit.description ? edit.description : ''} />
-                            <span className="Label">Usuarios asignados</span>
+                            <span className="Label">Grupos asignados</span>
                             {/* enviar defaultValue={user.group ? user.group : ''}  */}
                             {specific &&
                                 <SelectEditarGrupos getValue={(c) => this.usersAssign = c} defaultValue={specific} idGroup={edit.id} />

@@ -239,6 +239,9 @@ export default class StepName extends Component {
     }
 
     subirArchivo = () => {
+        if (!this.archivoSeleccionado) {
+            return;
+        }
         let data = this.archivoSeleccionado[0];
         let { id, idStep, idUsuario } = this.props.match.params;
 

@@ -222,7 +222,8 @@ class SelectGroup extends Component {
                     {usuariosSeleccionados &&
                         usuariosSeleccionados.map((usuario, key) => {
                             return (
-                                <div key={key}>
+                               <div className="etiquetas">
+                               <div className="etiqueta" key={key}>
                                     <p>{`${usuario.id} - ${usuario.group}`}</p>
                                     <button onClick={
                                         (e) => {
@@ -230,6 +231,7 @@ class SelectGroup extends Component {
                                             this.quitarUsuario(usuario)
                                         }
                                     }>x</button>
+                                </div>
                                 </div>
                             )
                         })

@@ -164,6 +164,7 @@ export default class PartiturasEspecificComponent extends Component {
                 {data &&
                     <div className="section-content">
                         <h4>ARCHIVO ACTUAL</h4>
+                        <br />
                         <table>
                             <thead>
                                 <tr>
@@ -197,6 +198,7 @@ export default class PartiturasEspecificComponent extends Component {
                         </table>
                         <br></br>
                         <h4>USUARIOS</h4>
+                        <br />
                         <input onChange={this.buscar} className="form-control" placeholder="Buscar por usuario | Nombre o DNI" />
                         <br></br>
                         <table>

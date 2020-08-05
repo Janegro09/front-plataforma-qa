@@ -26,7 +26,7 @@ const LoadingBar = () => {
     return (
         <div className="loading-bar">
             <div className="contenedor-barra">
-                <h1 className="mensaje">Cargando...</h1>
+                <h3 className="mensaje">Cargando...</h3>
                 <Progress done='100' />
             </div>
         </div>

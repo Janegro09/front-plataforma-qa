@@ -29,7 +29,7 @@ export default class Modal extends Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    
+
                     const tokenUser = JSON.parse(sessionStorage.getItem("token"))
                     const token = tokenUser
                     const bearer = `Bearer ${token}`
@@ -78,7 +78,7 @@ export default class Modal extends Component {
         const { loaded, selectedFile } = this.state;
         return (
             <div className="modal uploadPerfilamiento" id="modal-casero">
-                <div className="hijo">
+                <div className="hijo modalPerfilamiento">
                     <div className="boton-cerrar">
                         <button onClick={
                             (e) => {
@@ -87,13 +87,15 @@ export default class Modal extends Component {
                             }
                         }>x</button>
                     </div>
-
+                   
                     {loaded && selectedFile !== null &&
 
                         <LoadingBar />
                     }
+
+     
                     <div className="input-file">
-                        <label htmlFor="file">Subir nómina (Sólo archivos CSV)</label>
+                        <label className="labelFileInput" htmlFor="file">Subir nómina (Sólo archivos CSV)</label>
                         <input type="file" name="file" onChange={this.fileChange} />
                     </div>
                 </div>

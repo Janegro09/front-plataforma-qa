@@ -275,20 +275,20 @@ export default class Perfilamiento extends Component {
                                         <td>{row.name}</td>
                                         <td>{row.program ? row.program.name : '-'}</td>
                                         <td className="tableIconstableIconsPerfilamiento">
-                                            <button onClick={(e) => {
+                                            <button data-toggle="tooltip" data-placement="top" title="Cuartiles" onClick={(e) => {
                                                 e.preventDefault()
                                                 this.cargarCuartil(row);
 
                                                 // /analytics/file/:fileId/cuartiles
                                             }}><AssessmentIcon style={{ fontSize: 15 }} /></button>
 
-                                            <button onClick={(e) => {
+                                            <button data-toggle="tooltip" data-placement="top" title="Perfilamientos" onClick={(e) => {
                                                 e.preventDefault()
                                                 this.cargarPerfilamientos(row);
                                                 // /analytics/file/:fileId/perfilamiento
                                             }}><RecentActorsIcon style={{ fontSize: 15 }} /></button>
 
-                                            <button onClick={(e) => {
+                                            <button data-toggle="tooltip" data-placement="top" title="Asignar programa" onClick={(e) => {
                                                 e.preventDefault()
                                                 this.asignarPrograma(row.id)
                                             }}><AssignmentReturnIcon style={{ fontSize: 15 }} /></button>

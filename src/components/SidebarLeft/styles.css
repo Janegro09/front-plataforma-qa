@@ -608,3 +608,12 @@ hr {
   font-size: 17px;
 } 
  
+.modalPerfilamiento {
+  display: flex;
+  justify-content: center;
+  height: 200px !important;
+}
+
+.labelFileInput {
+  margin-top: 83px;
+}

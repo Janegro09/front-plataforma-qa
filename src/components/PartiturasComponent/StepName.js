@@ -617,6 +617,7 @@ export default class StepName extends Component {
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' &&
                                             <article>
                                                 <h6 className="titulo-seccion">Responsable</h6>
+                                                <hr />
                                                 {customFields &&
                                                     <CustomFields
                                                         fields={customFields}
@@ -635,6 +636,7 @@ export default class StepName extends Component {
 
                                             <article>
                                                 <h6 className="titulo-seccion">Gerente</h6>
+                                                <hr />
                                                 {customFields &&
                                                     <CustomFields
                                                         disabled={this.state.role !== 'GERENTE' && this.state.role !== 'ADMINISTRATOR'}
@@ -656,6 +658,7 @@ export default class StepName extends Component {
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' &&
                                             <article>
                                                 <h6 className="titulo-seccion">Coordinador On Site</h6>
+                                                <hr />
                                                 {customFields &&
                                                     <CustomFields
                                                         disabled={this.state.role !== 'GERENTE' && this.state.role !== 'ADMINISTRATOR'}
@@ -675,6 +678,7 @@ export default class StepName extends Component {
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' && this.state.role !== 'GERENTE' &&
                                             <article>
                                                 <h6 className="titulo-seccion">Administrador</h6>
+                                                <hr />
                                                 {customFields &&
                                                     <CustomFields
                                                         disabled={this.state.role === 'GERENTE' || this.state.role === 'RESPONSABLE' || this.state.role === 'LIDER' || this.state.role === 'REPRESENTANTE'}
@@ -694,6 +698,7 @@ export default class StepName extends Component {
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' && this.state.role !== 'GERENTE' &&
                                             <article>
                                                 <h6 className="titulo-seccion">Coach</h6>
+                                                <hr />
                                                 {customFields &&
                                                     <CustomFields
                                                         fields={customFields}

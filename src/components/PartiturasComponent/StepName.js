@@ -322,7 +322,7 @@ export default class StepName extends Component {
                             <td>
                                 {(users.improvment === "+" ?
                                     <ExpandLessIcon className="arrowUp" /> : (users.improvment === "+-" ?
-                                    <ImportExportRoundedIcon /> : <ExpandMoreIcon className="arrowDown" />))}
+                                        <ImportExportRoundedIcon /> : <ExpandMoreIcon className="arrowDown" />))}
                             </td>
                             {ReturnData.actual.map((value, key) => {
                                 return <th key={key}>{value}</th>
@@ -418,8 +418,10 @@ export default class StepName extends Component {
 
                 {data &&
                     <div className="section-content">
-                        <h4>Archivo Actual</h4>
+                        <h4>PARTITURAS</h4>
+                        <hr />
                         <br />
+                        <p>Archivo Actual</p>
                         <table>
                             <thead>
                                 <tr>
@@ -441,8 +443,7 @@ export default class StepName extends Component {
                             </tbody>
                         </table>
                         <br />
-                        <h4>Usuario Actual</h4>
-                        <br />
+                        <p>Usuario Actual</p>
                         {this.getUsersColumns()}
 
                         {step &&
@@ -457,7 +458,7 @@ export default class StepName extends Component {
                                 >
                                     Enviar
                                 </button>
-                                <h4>Nombre: {step.name}</h4> 
+                                <h4>Nombre: {step.name}</h4>
                                 <br />
                                 <article className="seccion">
                                     <h6 className="titulo-seccion">Archivos de apoyo</h6>
@@ -471,7 +472,7 @@ export default class StepName extends Component {
                                                         onClick={(e) => {
                                                             e.preventDefault();
                                                             this.descargarArchivo(archivo.id);
-                                                        }} 
+                                                        }}
                                                         className="nombreArchivo"
                                                     >
                                                         <p>{archivo.name}</p>
@@ -603,8 +604,8 @@ export default class StepName extends Component {
                                             <label htmlFor="imp">Improvment</label>
                                             <select name="improvment" id="imp" defaultValue={step.improvment} disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'}
                                                 onChange={
-                                                this.armarObjeto
-                                            }>
+                                                    this.armarObjeto
+                                                }>
                                                 <option value="">Selecciona</option>
                                                 <option value="+">Mejoro</option>
                                                 <option value="+-">Sigue igual</option>
@@ -721,22 +722,22 @@ export default class StepName extends Component {
 
                                     <div className="formSubirArchivo">
 
-                                    {this.state.valueCoach === 'file' &&
-                                        <>
-                                            <h6 className="titulo-seccion">Subir Audio</h6>
-                                            <input type="file" onChange={(e) => { this.archivoSeleccionado = e.target.files }} />
-                                            <button className="buttonupload" onClick={(e) => { e.preventDefault(); this.subirArchivo() }}>
-                                                Subir el archivo
+                                        {this.state.valueCoach === 'file' &&
+                                            <>
+                                                <h6 className="titulo-seccion">Subir Audio</h6>
+                                                <input type="file" onChange={(e) => { this.archivoSeleccionado = e.target.files }} />
+                                                <button className="buttonupload" onClick={(e) => { e.preventDefault(); this.subirArchivo() }}>
+                                                    Subir el archivo
                                             </button>
-                                        </>
-                                    }
+                                            </>
+                                        }
 
-                                    {this.state.valueCoach === 'record' &&
-                                        <>
-                                            <h6 className="titulo-seccion">Grabar Audio</h6>
-                                            <RecordAudio ids={this.props.match.params} />
-                                        </>
-                                    }
+                                        {this.state.valueCoach === 'record' &&
+                                            <>
+                                                <h6 className="titulo-seccion">Grabar Audio</h6>
+                                                <RecordAudio ids={this.props.match.params} />
+                                            </>
+                                        }
 
                                     </div>
                                     <div className="archivosCargados">

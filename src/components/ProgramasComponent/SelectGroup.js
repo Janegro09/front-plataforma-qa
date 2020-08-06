@@ -222,16 +222,16 @@ class SelectGroup extends Component {
                     {usuariosSeleccionados &&
                         usuariosSeleccionados.map((usuario, key) => {
                             return (
-                               <div className="etiquetas">
-                               <div className="etiqueta" key={key}>
-                                    <p>{`${usuario.id} - ${usuario.group}`}</p>
-                                    <button onClick={
-                                        (e) => {
-                                            e.preventDefault()
-                                            this.quitarUsuario(usuario)
-                                        }
-                                    }>x</button>
-                                </div>
+                                <div className="etiquetas">
+                                    <div className="etiqueta" key={key}>
+                                        <p>{`${usuario.id} - ${usuario.group}`}</p>
+                                        <button onClick={
+                                            (e) => {
+                                                e.preventDefault()
+                                                this.quitarUsuario(usuario)
+                                            }
+                                        }>x</button>
+                                    </div>
                                 </div>
                             )
                         })

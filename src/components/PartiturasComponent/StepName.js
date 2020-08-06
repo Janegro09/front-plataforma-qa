@@ -427,8 +427,8 @@ export default class StepName extends Component {
                                 <tr>
                                     <th>Fechas</th>
                                     <th>Nombre</th>
-                                    <th className="tableIcons">Estado de partitura</th>
-                                    <th className="tableIcons">Archivos incluídos</th>
+                                    <th className="tableIcons">Estado</th>
+                                    <th className="tableIcons">Archivos</th>
                                 </tr>
                             </thead>
                             <tbody>

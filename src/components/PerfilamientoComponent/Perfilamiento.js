@@ -248,7 +248,7 @@ export default class Perfilamiento extends Component {
                 {data && id &&
                     <Modal idFile={id} />
                 }
-                
+
                 {agregarPerfilamiento &&
                     <ModalAgregarPerfilamiento />
                 }
@@ -311,6 +311,7 @@ export default class Perfilamiento extends Component {
                 }
 
                 <button
+                    style={{ position: 'absolute', right: '50%' }}
                     id="ver-mas"
                     className="btn btn-primary"
                     onClick={

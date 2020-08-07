@@ -189,7 +189,7 @@ export default class CustomFields extends Component {
                                                 }
 
                                                 return (
-                                                    <div className="labelsInputs">
+                                                    <div className="labelsInputs" key={value}>
                                                         <Checkbox disabled={disabled} id={v} name={value.sectionName} checked={defVal} onChange={(e) => { this.changeValues(e, value, v); }} />
                                                         <label className="forInputs">{v}</label>
                                                     </div>

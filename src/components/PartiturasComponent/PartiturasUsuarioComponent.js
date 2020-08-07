@@ -23,7 +23,8 @@ export default class PartiturasUsuarioComponent extends Component {
         loading: false,
         data: null,
         redirect: false,
-        id: null
+        id: null,
+        volver: false
     }
 
     modificarEstado = (StepId) => {
@@ -61,6 +62,11 @@ export default class PartiturasUsuarioComponent extends Component {
             id
         });
 
+    }
+
+    volverAtras = () => {
+        const { volver } = this.state;
+        this.setState({ volver: !volver });
     }
 
     getUsersColumns() {
@@ -166,13 +172,17 @@ export default class PartiturasUsuarioComponent extends Component {
             });
     }
     render() {
-        let { data, redirect, id, loading } = this.state;
+        let { data, redirect, id, loading, volver } = this.state;
         data = data ? data[0] : null;
         let date = new Date();
         date = moment(date);
 
         if (redirect) {
             return <Redirect to={'/partituras/step/' + this.props.match.params.id + '/' + this.props.match.params.idUsuario + '/' + id} />
+        }
+
+        if (volver) {
+            return <Redirect to={'/partituras/' + this.props.match.params.id} />
         }
 
         return (
@@ -190,6 +200,15 @@ export default class PartiturasUsuarioComponent extends Component {
 
                 {data &&
                     <div className="section-content">
+
+                        <button
+                            className="btn btn-primary ml-10"
+                            style={{ position: 'absolute', transform: 'translate(-1px, -42px)' }}
+                            onClick={() => { this.volverAtras() }}
+                        >
+                            Paso anterior
+                        </button>
+
                         <h4>PARTITURAS</h4>
                         <hr />
                         <br />

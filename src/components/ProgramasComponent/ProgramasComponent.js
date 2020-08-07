@@ -349,13 +349,12 @@ export default class GroupsTable extends Component {
 
 
     handleTurno = (event) => {
-        event.preventDefault()
-        console.log("El turno de la farmacia")
-        this.turno = event.target.value
+        event.preventDefault();
+        this.turno = event.target.value;
     }
 
     crearPrograma = (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
@@ -369,21 +368,25 @@ export default class GroupsTable extends Component {
             syncGroups: this.usersAssign.length > 0 ? this.usersAssign : [],
             description: this.description.value
         }
+
         this.setState({
             loading: true
-        })
+        });
+
         axios.post(
             Global.newPrograms,
             bodyParameters,
             config
         ).then(response => {
             sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-            this.setState({
-                redirect: true,
-                loading: false,
-                redireccion: true
-            })
-            swal("Programa creado!", "Ya se encuentra registrado", "success");
+            swal("Programa creado!", "Ya se encuentra registrado", "success").then(() => {
+                this.setState({
+                    redirect: true,
+                    loading: false,
+                    redireccion: true
+                })
+            });
+
         }).catch(e => {
             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                 HELPER_FUNCTIONS.logout()
@@ -407,8 +410,6 @@ export default class GroupsTable extends Component {
             this.setState({ selected: 'M' });
 
         }
-
-        console.log("El estado cambiado: ", this.state.selected)
     }
 
     componentDidMount() {
@@ -455,7 +456,6 @@ export default class GroupsTable extends Component {
         if (allPrograms) {
 
             const data = programsFiltered.filter(program => {
-                console.log("Selected: ", selected)
                 if (this.title) {
                     if (this.title.value === '' || this.title.value === null) {
                         return (program.section === selected || program.section === 'notSpecify')
@@ -586,7 +586,7 @@ export default class GroupsTable extends Component {
         }
 
         return (
-            <div>
+            <>
                 {this.state.loading &&
                     HELPER_FUNCTIONS.backgroundLoading()
                 }
@@ -770,46 +770,40 @@ export default class GroupsTable extends Component {
                     {this.state.createProgram && this.state.okProgramas &&
                         <div className="tabla_parent">
                             <h4 className="marginBotton15">Crear programa</h4>
-                            {/* <CreateProgramsGroupComponent /> */}
-                            <div>
-                                <form onSubmit={this.crearPrograma} className="inputsEditUser addUserPadding">
-                                    <span className="Label">Nombre</span>
-                                    <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />
-                                    <span className="Label">Parent program</span>
-                                    <SelectGroupParent getValue={(c) => this.parentProgram = c} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''} />
-                                    <span className="Label">Section</span>
-                                    <select onChange={this.handleTurno}>
-                                        <option value="M">Monitoreo</option>
-                                        <option value="P">Perfilamiento</option>
-                                    </select>
-                                    {this.state.gruposDeProgramas &&
+                            <form onSubmit={this.crearPrograma} className="inputsEditUser addUserPadding">
+                                <span className="Label">Nombre</span>
+                                <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />
+                                <span className="Label">Parent program</span>
+                                <SelectGroupParent getValue={(c) => this.parentProgram = c} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''} />
+                                <span className="Label">Section</span>
+                                <select onChange={this.handleTurno}>
+                                    <option value="M">Monitoreo</option>
+                                    <option value="P">Perfilamiento</option>
+                                </select>
+                                {this.state.gruposDeProgramas &&
 
-                                        <SelectGroupCreate getValue={(c) => this.usersAssign = c} defaultValue={this.state.gruposDeProgramas ? this.state.gruposDeProgramas : ''} />
+                                    <SelectGroupCreate getValue={(c) => this.usersAssign = c} defaultValue={this.state.gruposDeProgramas ? this.state.gruposDeProgramas : ''} />
 
-                                    }
-                                    <span className="Label">Description</span>
-                                    <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} required />
-                                    <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Programas</button>
-                                </form>
-                                <button className="btnClose" onClick={
-                                    () => {
-                                        this.setState({
-                                            createProgram: false
-                                        })
-                                    }
-                                }>x</button>
-                            </div>
+                                }
+                                <span className="Label">Description</span>
+                                <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} />
+                                <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Programas</button>
+                            </form>
+                            <button className="btnClose" onClick={
+                                () => {
+                                    this.setState({
+                                        createProgram: false
+                                    })
+                                }
+                            }>x</button>
+
                         </div>
                     }
-
-                    {/* {(!this.state.createProgram || !this.state.okProgramas) &&
-                        this.errordeCreacion()
-                    } */}
 
                 </div>
 
 
-            </div>
+            </>
         )
     }
 }

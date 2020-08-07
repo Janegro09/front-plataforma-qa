@@ -115,7 +115,7 @@ export default class Perfilamiento extends Component {
 
     borrar = (id) => {
         swal({
-            title: "Estás seguro? 🤔",
+            title: "Estás seguro?",
             text: "El archivo que se elimina no podrás recuperarlo...",
             icon: "warning",
             buttons: true,
@@ -137,7 +137,7 @@ export default class Perfilamiento extends Component {
                                 loading: false
                             })
                             if (response.data.Success) {
-                                swal("Ok! El archivo ha sido eliminado 😎", {
+                                swal("El archivo ha sido eliminado", {
                                     icon: "success",
                                 }).then(() => {
                                     window.location.reload(window.location.href);
@@ -159,7 +159,7 @@ export default class Perfilamiento extends Component {
                         })
 
                 } else {
-                    swal("El archivo se encuentra a salvo 😎");
+                    swal("El archivo se encuentra a salvo");
                 }
             });
     }
@@ -248,7 +248,7 @@ export default class Perfilamiento extends Component {
                 {data && id &&
                     <Modal idFile={id} />
                 }
-                
+
                 {agregarPerfilamiento &&
                     <ModalAgregarPerfilamiento />
                 }
@@ -311,6 +311,7 @@ export default class Perfilamiento extends Component {
                 }
 
                 <button
+                    style={{ position: 'absolute', right: '50%' }}
                     id="ver-mas"
                     className="btn btn-primary"
                     onClick={

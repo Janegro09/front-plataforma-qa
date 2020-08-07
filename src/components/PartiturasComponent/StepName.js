@@ -18,6 +18,7 @@ import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
+import { Redirect } from 'react-router-dom';
 
 export default class StepName extends Component {
 
@@ -32,7 +33,8 @@ export default class StepName extends Component {
         step: null,
         instances: null,
         valueCoach: '-',
-        role: false
+        role: false,
+        volver: false
     }
 
     asignarArchivos = () => {
@@ -280,6 +282,11 @@ export default class StepName extends Component {
             });
     }
 
+    volverAtras = () => {
+        const { volver } = this.state;
+        this.setState({ volver: !volver });
+    }
+
     getUsersColumns() {
         let { data } = this.state;
 
@@ -395,8 +402,12 @@ export default class StepName extends Component {
     }
 
     render() {
-        let { data, customFields, abrirModalAsignarArchivos, archivosSeleccionados, value, loading, step } = this.state;
+        let { data, customFields, abrirModalAsignarArchivos, archivosSeleccionados, value, loading, step, volver } = this.state;
         data = data ? data[0] : null;
+
+        if (volver) {
+            return <Redirect to={'/partituras/' + this.props.match.params.id} />
+        }
 
         let contadorAudios = 0;
         return (
@@ -418,6 +429,13 @@ export default class StepName extends Component {
 
                 {data &&
                     <div className="section-content">
+                        <button
+                            className="btn btn-primary ml-10"
+                            style={{ position: 'absolute', transform: 'translate(-1px, -42px)' }}
+                            onClick={() => { this.volverAtras() }}
+                        >
+                            Paso anterior
+                        </button>
                         <h4>PARTITURAS</h4>
                         <hr />
                         <br />

@@ -350,7 +350,11 @@ export default class GroupsTable extends Component {
 
     handleTurno = (event) => {
         event.preventDefault();
+        let { userSelected } = this.state;
+        userSelected = userSelected ? userSelected.section = event.target.value : null;
+
         this.turno = event.target.value;
+        this.setState({ userSelected });
     }
 
     crearPrograma = (e) => {
@@ -709,48 +713,45 @@ export default class GroupsTable extends Component {
                             }
 
                             {this.state.editProgram && this.state.ok &&
-                                <div>
+                                <>
+                                    <form onSubmit={this.edit} className="inputsEditUser addUserPadding">
+                                        <span className="Label">Nombre</span>
+                                        <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={userSelected.name ? userSelected.name : ''} />
+                                        <span className="Label">Parent program</span>
 
-                                    {/* <CreateProgramsGroupComponent /> */}
-                                    <div>
-                                        <form onSubmit={this.edit} className="inputsEditUser addUserPadding">
-                                            <span className="Label">Nombre</span>
-                                            <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={userSelected.name ? userSelected.name : ''} />
-                                            <span className="Label">Parent program</span>
+                                        {this.state.componenteSelectUsuarios !== null &&
 
-                                            {this.state.componenteSelectUsuarios !== null &&
+                                            this.state.componenteSelectUsuarios
+                                        }
+                                        <span className="Label">Section</span>
 
-                                                this.state.componenteSelectUsuarios
+                                        <select value={userSelected.section} onChange={this.handleTurno}>
+                                            <option value="-">Selecciona...</option>
+                                            <option value="M">Monitoreo</option>
+                                            <option value="P">Perfilamiento</option>
+                                        </select>
+                                        <div className="etiquetas">
+                                            {this.state.specificGroup && this.state.componenteSelectGrupos !== null &&
+                                                this.state.specificGroup[0].assignedGroups.map(grupo => {
+                                                    return (
+                                                        <div className="etiqueta">
+                                                            <p>{grupo.name}</p>
+                                                            <button onClick={(e) => {
+                                                                e.preventDefault()
+                                                                this.desasignarGrupo(grupo.id)
+                                                            }}>x</button>
+                                                        </div>
+                                                    )
+                                                })
                                             }
-                                            <span className="Label">Section</span>
-                                            <select onChange={this.handleTurno}>
-                                                <option value="-">Selecciona...</option>
-                                                <option value="M" selected={userSelected.section === 'M'}>Monitoreo</option>
-                                                <option value="P" selected={userSelected.section === 'P'}>Perfilamiento</option>
-                                            </select>
-                                            <div className="etiquetas">
-                                                {this.state.specificGroup && this.state.componenteSelectGrupos !== null &&
-                                                    this.state.specificGroup[0].assignedGroups.map(grupo => {
-                                                        return (
-                                                            <div className="etiqueta">
-                                                                <p>{grupo.name}</p>
-                                                                <button onClick={(e) => {
-                                                                    e.preventDefault()
-                                                                    this.desasignarGrupo(grupo.id)
-                                                                }}>x</button>
-                                                            </div>
-                                                        )
-                                                    })
-                                                }
-                                            </div>
-                                            {this.state.componenteSelectGrupos !== null &&
-                                                this.state.componenteSelectGrupos
-                                            }
-                                            <span className="Label">Description</span>
-                                            <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} defaultValue={userSelected.description ? userSelected.description : ''} />
-                                            <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Editar Programas</button>
-                                        </form>
-                                    </div>
+                                        </div>
+                                        {this.state.componenteSelectGrupos !== null &&
+                                            this.state.componenteSelectGrupos
+                                        }
+                                        <span className="Label">Description</span>
+                                        <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} defaultValue={userSelected.description ? userSelected.description : ''} />
+                                        <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Editar Programas</button>
+                                    </form>
 
                                     <button className="btnClose"
                                         onClick={() => {
@@ -761,7 +762,7 @@ export default class GroupsTable extends Component {
                                     >
                                         x
                                     </button>
-                                </div>
+                                </>
                             }
 
                         </div>
@@ -777,6 +778,7 @@ export default class GroupsTable extends Component {
                                 <SelectGroupParent getValue={(c) => this.parentProgram = c} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''} />
                                 <span className="Label">Section</span>
                                 <select onChange={this.handleTurno}>
+                                    <option value="-">Selecciona...</option>
                                     <option value="M">Monitoreo</option>
                                     <option value="P">Perfilamiento</option>
                                 </select>

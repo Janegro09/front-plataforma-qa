@@ -181,7 +181,9 @@ export default class Perfilamiento extends Component {
         const bearer = `Bearer ${token}`
         axios.get(Global.getAllFiles, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            let respuesta = response.data.Data
+            let respuesta = response.data.Data;
+
+            console.log(respuesta);
 
             this.setState({
                 data: respuesta,

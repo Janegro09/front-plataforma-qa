@@ -256,24 +256,19 @@ export default class SeleccionarGrupo extends Component {
                             })
                             }
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td>
-                                    <button
-                                        id="ver-mas"
-                                        className="btn btn-primary"
-                                        onClick={
-                                            (e) => {
-                                                e.preventDefault();
-                                                this.handleClick();
-                                            }
-                                        }
-                                    >
-                                        Ver más
-                                    </button>
-                                </td>
-                            </tr>
-                        </tfoot>
+                        <button
+                            style={{ position: 'absolute', right: '50%' }}
+                            id="ver-mas"
+                            className="btn btn-primary"
+                            onClick={
+                                (e) => {
+                                    e.preventDefault();
+                                    this.handleClick();
+                                }
+                            }
+                        >
+                            Ver más
+                        </button>
                     </table>
                 }
             </>

@@ -183,8 +183,6 @@ export default class Perfilamiento extends Component {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             let respuesta = response.data.Data;
 
-            console.log(respuesta);
-
             this.setState({
                 data: respuesta,
                 dataFiltered: respuesta,

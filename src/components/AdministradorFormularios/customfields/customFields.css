@@ -22,6 +22,10 @@ label.forInputs {
     padding:3px !important;
 }
 
+.MuiIconButton-label > svg {
+    color: #03a9f4;
+}
+
 .labelsInputs {
     padding: 5px;
     margin: 5px 0;

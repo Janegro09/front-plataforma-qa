@@ -243,8 +243,10 @@ export default class PartiturasUsuarioComponent extends Component {
                                 data.instances.map(v =>
                                     (
                                         <article key={v.id}>
+                                            <div className="headerBox">
                                             <h6 className="titulo-semana">{v.name}</h6>
-                                            <p className={!moment(v.dates.expirationDate).isBefore(date) ? 'fecha' : 'fecha vencido'}>Venc. {moment(v.dates.expirationDate).format("DD/MM/YYYY")}</p>
+                                            <span className={!moment(v.dates.expirationDate).isBefore(date) ? 'fecha' : 'fecha vencido'}>Venc. {moment(v.dates.expirationDate).format("DD/MM/YYYY")}</span>
+                                            </div>
                                             <div className="steps">
                                                 {v.steps.length > 0 &&
                                                     v.steps.map(s => (

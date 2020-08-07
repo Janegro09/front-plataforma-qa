@@ -37,9 +37,6 @@ export default class SelectEditarGrupos extends Component {
                 config
             ).then(response => {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-                // this.setState({
-                //     redirect: true
-                // })
                 swal("Genial!", "Usuario desasignado", "success");
 
             }).catch(e => {

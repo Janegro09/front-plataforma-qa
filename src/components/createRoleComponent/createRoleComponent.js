@@ -43,7 +43,8 @@ export default class createRoleComponent extends Component {
 
         axios.post(Global.getRoles + "/new", bodyParameters, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
+                console.log(response.data)
                 if (response.data.Success) {
                     swal("Felicidades!", "Se ha creado el role correcamente", "success");
                     this.setState({

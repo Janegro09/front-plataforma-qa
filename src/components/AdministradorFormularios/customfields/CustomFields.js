@@ -177,7 +177,6 @@ export default class CustomFields extends Component {
                                     <>
                                         {value.values &&
                                             value.values.map(v => {
-                                                console.log('v: ', v);
                                                 let vals = value.defaultValue.split('@');
                                                 let defVal = false;
                                                 for (let i of vals) {

@@ -788,7 +788,7 @@ export default class GroupsTable extends Component {
 
                                     }
                                     <span className="Label">Description</span>
-                                    <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} required />
+                                    <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} />
                                     <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Programas</button>
                                 </form>
                                 <button className="btnClose" onClick={

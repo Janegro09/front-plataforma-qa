@@ -85,7 +85,7 @@ export default class SelectEditarGrupos extends Component {
 
             axios.get(Global.getGroups, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                console.log('la response data: ', response.data.Data)
+
                 let { defaultValue } = this.props;
                 this.setState({
                     allUsers: response.data.Data,
@@ -123,9 +123,8 @@ export default class SelectEditarGrupos extends Component {
         defaultValue.map(usuario => {
             arrayAEnviar.push(usuario.id)
             return true;
-        })
+        });
 
-        console.log('arry a enviar: ', arrayAEnviar)
         this.props.getValue(arrayAEnviar);
 
         return (
@@ -135,10 +134,10 @@ export default class SelectEditarGrupos extends Component {
                 }
                 <div>
                     {defaultValue &&
-                        defaultValue.map((usuario, key) => {
+                        defaultValue.map((usuario) => {
                             return (
-                                <div className="etiquetas">
-                                    <div className="etiqueta" key={key}>
+                                <div className="etiquetas" key={usuario.id}>
+                                    <div className="etiqueta">
                                         <p>{`${usuario.id} - ${usuario.group}`}</p>
                                         <button onClick={
                                             (e) => {

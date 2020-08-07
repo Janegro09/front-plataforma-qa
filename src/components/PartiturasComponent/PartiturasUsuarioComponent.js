@@ -225,7 +225,7 @@ export default class PartiturasUsuarioComponent extends Component {
                                     (
                                         <article key={v.id}>
                                             <h6 className="titulo-semana">{v.name}</h6>
-                                            <p className={!moment(v.dates.expirationDate).isBefore(date) ? 'fecha' : 'fecha vencido'}>{moment(v.dates.expirationDate).format("DD/MM/YYYY")}</p>
+                                            <p className={!moment(v.dates.expirationDate).isBefore(date) ? 'fecha' : 'fecha vencido'}>Venc. {moment(v.dates.expirationDate).format("DD/MM/YYYY")}</p>
                                             <div className="steps">
                                                 {v.steps.length > 0 &&
                                                     v.steps.map(s => (
@@ -244,7 +244,7 @@ export default class PartiturasUsuarioComponent extends Component {
                                                     ))
                                                 }
                                             </div>
-                                            <hr />
+                                          
                                         </article>
                                     )
                                 )

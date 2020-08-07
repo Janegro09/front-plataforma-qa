@@ -104,8 +104,13 @@ export default class ProgramsGroupComponent extends Component {
                         if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                             HELPER_FUNCTIONS.logout()
                         } else {
-                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                            swal("Error!", "Hubo un problema", "error");
+                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token));
+                            if (e.response.data.Message) {
+                                swal("Error!", `${e.response.data.Message}`, "error");
+                            } else {
+                                swal("Error!", `Hubo un problema`, "error");
+
+                            }
                         }
                         console.log("Error: ", e)
                     });

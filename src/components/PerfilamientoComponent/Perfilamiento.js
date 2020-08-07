@@ -27,7 +27,7 @@ export default class Perfilamiento extends Component {
             cuartilSeleccionado: null,
             perfilamientos: false,
             loading: false,
-            totalDisplayed: 20
+            totalDisplayed: 15
         }
     }
 
@@ -310,7 +310,7 @@ export default class Perfilamiento extends Component {
                     </table>
                 }
                
-                <button
+                <div
                     id="ver-mas"
                     className="ver-mas"
                     onClick={
@@ -321,8 +321,8 @@ export default class Perfilamiento extends Component {
                     }
                 >
                     Ver más
-                </button>
-                
+                </div>
+               
             </div>
         )
     }

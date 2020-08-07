@@ -256,7 +256,7 @@ export default class SeleccionarGrupo extends Component {
                             })
                             }
                         </tbody>
-                        <button
+                        <div
                             id="ver-mas"
                             className="ver-mas"
                             onClick={
@@ -267,7 +267,7 @@ export default class SeleccionarGrupo extends Component {
                             }
                         >
                             Ver más
-                        </button>
+                        </div>
                     </table>
                 }
             </>

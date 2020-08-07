@@ -37,9 +37,11 @@
     -o-transition: all 0.15s ease-in-out;
     -moz-transition: all 0.15s ease-in-out;
     -webkit-transition: all 0.15s ease-in-out;
+    cursor: pointer;
 }
 
 .ver-mas:hover {
     color: white;
     background-color: #03a9f4;
+    border: 1px solid #03a9f4;
 }

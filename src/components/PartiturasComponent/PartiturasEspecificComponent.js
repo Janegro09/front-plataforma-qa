@@ -284,13 +284,13 @@ export default class PartiturasEspecificComponent extends Component {
                             </tbody>
                         </table>
 
-                        <button
+                        <div
                             id="ver-mas-partituras"
                             className="ver-mas"
                             onClick={() => this.showMore()}
                         >
                             Ver más
-                        </button>
+                        </div>
                     </div>
 
                 }

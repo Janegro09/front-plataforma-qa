@@ -311,10 +311,10 @@ export default class Perfilamiento extends Component {
                         </tbody>
                     </table>
                 }
-                <div>
+               
                 <button
                     id="ver-mas"
-                    className="btn btn-primary"
+                    className="ver-mas"
                     onClick={
                         (e) => {
                             e.preventDefault();
@@ -324,7 +324,7 @@ export default class Perfilamiento extends Component {
                 >
                     Ver más
                 </button>
-                </div>
+                
             </div>
         )
     }

@@ -257,9 +257,8 @@ export default class SeleccionarGrupo extends Component {
                             }
                         </tbody>
                         <button
-                            style={{ position: 'absolute', right: '50%' }}
                             id="ver-mas"
-                            className="btn btn-primary"
+                            className="ver-mas"
                             onClick={
                                 (e) => {
                                     e.preventDefault();

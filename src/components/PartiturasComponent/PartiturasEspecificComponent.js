@@ -286,9 +286,8 @@ export default class PartiturasEspecificComponent extends Component {
 
                         <button
                             id="ver-mas-partituras"
-                            className="btn btn-primary"
+                            className="ver-mas"
                             onClick={() => this.showMore()}
-                            style={{ position: 'absolute', right: '50%' }}
                         >
                             Ver más
                         </button>

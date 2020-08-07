@@ -6,7 +6,6 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import Global from '../../Global';
 import swal from 'sweetalert';
 import moment from 'moment';
-import './partitures.css';
 import { Redirect } from 'react-router-dom';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';

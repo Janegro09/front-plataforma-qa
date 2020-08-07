@@ -65,16 +65,4 @@ article .steps span {
     border-radius: 0px !important;
 }
 
-#ver-mas {
-    position: relative;
-    background-color: transparent;
-    color: #03a9f4;
-    border: 1px solid;
-    width: 100%;
-    border-radius: 5px;
-}
 
-#ver-mas:hover {
-    color: white;
-    background-color: #03a9f4;
-}

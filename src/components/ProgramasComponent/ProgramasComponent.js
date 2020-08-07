@@ -349,9 +349,8 @@ export default class GroupsTable extends Component {
 
 
     handleTurno = (event) => {
-        event.preventDefault()
-        console.log("El turno de la farmacia")
-        this.turno = event.target.value
+        event.preventDefault();
+        this.turno = event.target.value;
     }
 
     crearPrograma = (e) => {
@@ -411,8 +410,6 @@ export default class GroupsTable extends Component {
             this.setState({ selected: 'M' });
 
         }
-
-        console.log("El estado cambiado: ", this.state.selected)
     }
 
     componentDidMount() {
@@ -459,7 +456,6 @@ export default class GroupsTable extends Component {
         if (allPrograms) {
 
             const data = programsFiltered.filter(program => {
-                console.log("Selected: ", selected)
                 if (this.title) {
                     if (this.title.value === '' || this.title.value === null) {
                         return (program.section === selected || program.section === 'notSpecify')

@@ -31,8 +31,10 @@
 
 .partituresModels {
     height: 100%;
-    padding: 15px;
+    padding: 22px;
+    border-radius: 5px;
     display: flex;
+    min-height: 300px;
     flex-flow: column nowrap;
     justify-content: flex-start;
     align-items: center;

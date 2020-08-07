@@ -34,7 +34,7 @@ export default class Perfilamiento extends Component {
     verMas = () => {
         document.getElementById('ver-mas').focus();
         let { totalDisplayed } = this.state;
-        totalDisplayed += 5;
+        totalDisplayed += 15;
 
         this.setState({ totalDisplayed });
     }
@@ -309,9 +309,8 @@ export default class Perfilamiento extends Component {
                         </tbody>
                     </table>
                 }
-
+                <div>
                 <button
-                    style={{ position: 'absolute', right: '50%' }}
                     id="ver-mas"
                     className="btn btn-primary"
                     onClick={
@@ -323,6 +322,7 @@ export default class Perfilamiento extends Component {
                 >
                     Ver más
                 </button>
+                </div>
             </div>
         )
     }

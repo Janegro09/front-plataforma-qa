@@ -28,7 +28,8 @@ export default class RolesTable extends Component {
             changePassword: false,
             actualPage: 1,
             searchedUsers: [],
-            createGroup: false
+            createGroup: false,
+            totalDisplayed: 15
         }
     }
 
@@ -171,6 +172,7 @@ export default class RolesTable extends Component {
     render() {
         const allGroups = this.state.searchedUsers
         let pagina = this.getUsersPage(this.state.actualPage, allGroups)
+        let {totalDisplayed} = this.state
         let totalUsuarios = pagina.total
         let botones = []
         for (let index = this.state.actualPage - 1; index < pagina.cantOfPages; index++) {
@@ -272,7 +274,7 @@ export default class RolesTable extends Component {
 
                         <tbody>
                             {totalUsuarios &&
-                                totalUsuarios.slice(0,20).map((role, index) => {
+                                totalUsuarios.slice(0, totalDisplayed).map((role, index) => {
                                     return (
                                         <tr key={index}>
                                             <td>{role.role}</td>
@@ -296,13 +298,13 @@ export default class RolesTable extends Component {
                         </tbody>
                     </table>
 
-                    <div
+                    {/* <div
                             id="ver-mas-roles"
                             className="ver-mas"
                             onClick={() => this.showMore()}
                         >
                             <ExpandMoreIcon />
-                        </div>
+                        </div> */}
 
                     {/* <div className="botones">
                         {this.state.actualPage > 1 &&

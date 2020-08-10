@@ -6,10 +6,9 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import Global from '../../Global';
 import swal from 'sweetalert';
 import moment from 'moment';
-import './partitures.css';
 import { Redirect } from 'react-router-dom';
-import ArrowDropUpRoundedIcon from '@material-ui/icons/ArrowDropUpRounded';
-import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import TimerIcon from '@material-ui/icons/Timer';
@@ -23,7 +22,8 @@ export default class PartiturasUsuarioComponent extends Component {
         loading: false,
         data: null,
         redirect: false,
-        id: null
+        id: null,
+        volver: false
     }
 
     modificarEstado = (StepId) => {
@@ -61,6 +61,11 @@ export default class PartiturasUsuarioComponent extends Component {
             id
         });
 
+    }
+
+    volverAtras = () => {
+        const { volver } = this.state;
+        this.setState({ volver: !volver });
     }
 
     getUsersColumns() {
@@ -110,8 +115,8 @@ export default class PartiturasUsuarioComponent extends Component {
                         <tr>
                             <td>{(users.partitureStatus === 'pending' ? <TimerIcon className="clockIcon" /> : (users.partitureStatus === 'finished' ? <CheckIcon /> : <PlayArrowRoundedIcon />))}</td>
                             <td>{(users.improvment === "+" ?
-                                <ArrowDropUpRoundedIcon className="arrowUp" /> : (users.improvment === "+-" ?
-                                    <ArrowDropDownRoundedIcon className="arrowDown" /> : <ImportExportRoundedIcon />))}</td>
+                                <ExpandLessIcon className="arrowUp" /> : (users.improvment === "+-" ?
+                                    <ExpandMoreIcon className="arrowDown" /> : <ImportExportRoundedIcon />))}</td>
                             {ReturnData.actual.map((value, key) => {
                                 return <th key={key}>{value}</th>
                             })
@@ -166,13 +171,17 @@ export default class PartiturasUsuarioComponent extends Component {
             });
     }
     render() {
-        let { data, redirect, id, loading } = this.state;
+        let { data, redirect, id, loading, volver } = this.state;
         data = data ? data[0] : null;
         let date = new Date();
         date = moment(date);
 
         if (redirect) {
             return <Redirect to={'/partituras/step/' + this.props.match.params.id + '/' + this.props.match.params.idUsuario + '/' + id} />
+        }
+
+        if (volver) {
+            return <Redirect to={'/partituras/' + this.props.match.params.id} />
         }
 
         return (
@@ -190,8 +199,19 @@ export default class PartiturasUsuarioComponent extends Component {
 
                 {data &&
                     <div className="section-content">
-                        <h4>Archivo actual</h4>
+
+                        <button
+                            className="btn btn-primary ml-10"
+                            style={{ position: 'absolute', transform: 'translate(-1px, -42px)' }}
+                            onClick={() => { this.volverAtras() }}
+                        >
+                            Paso anterior
+                        </button>
+
+                        <h4>PARTITURAS</h4>
+                        <hr />
                         <br />
+                        <p>Archivo actual</p>
                         <table>
                             <thead>
                                 <tr>
@@ -214,8 +234,7 @@ export default class PartiturasUsuarioComponent extends Component {
                             </tbody>
                         </table>
                         <br />
-                        <h4>Usuario actual</h4>
-                        <br />
+                        <p>Usuario actual</p>
                         {this.getUsersColumns()}
 
                         <section>
@@ -223,8 +242,10 @@ export default class PartiturasUsuarioComponent extends Component {
                                 data.instances.map(v =>
                                     (
                                         <article key={v.id}>
+                                            <div className="headerBox">
                                             <h6 className="titulo-semana">{v.name}</h6>
-                                            <p className={!moment(v.dates.expirationDate).isBefore(date) ? 'fecha' : 'fecha vencido'}>{moment(v.dates.expirationDate).format("DD/MM/YYYY")}</p>
+                                            <span className={!moment(v.dates.expirationDate).isBefore(date) ? 'fecha' : 'fecha vencido'}>Venc. {moment(v.dates.expirationDate).format("DD/MM/YYYY")}</span>
+                                            </div>
                                             <div className="steps">
                                                 {v.steps.length > 0 &&
                                                     v.steps.map(s => (
@@ -243,7 +264,7 @@ export default class PartiturasUsuarioComponent extends Component {
                                                     ))
                                                 }
                                             </div>
-                                            <hr />
+                                          
                                         </article>
                                     )
                                 )

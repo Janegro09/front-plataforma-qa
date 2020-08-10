@@ -27,14 +27,14 @@ export default class Perfilamiento extends Component {
             cuartilSeleccionado: null,
             perfilamientos: false,
             loading: false,
-            totalDisplayed: 20
+            totalDisplayed: 15
         }
     }
 
     verMas = () => {
         document.getElementById('ver-mas').focus();
         let { totalDisplayed } = this.state;
-        totalDisplayed += 5;
+        totalDisplayed += 15;
 
         this.setState({ totalDisplayed });
     }
@@ -115,7 +115,7 @@ export default class Perfilamiento extends Component {
 
     borrar = (id) => {
         swal({
-            title: "Estás seguro? 🤔",
+            title: "Estás seguro?",
             text: "El archivo que se elimina no podrás recuperarlo...",
             icon: "warning",
             buttons: true,
@@ -137,7 +137,7 @@ export default class Perfilamiento extends Component {
                                 loading: false
                             })
                             if (response.data.Success) {
-                                swal("Ok! El archivo ha sido eliminado 😎", {
+                                swal("El archivo ha sido eliminado", {
                                     icon: "success",
                                 }).then(() => {
                                     window.location.reload(window.location.href);
@@ -159,7 +159,7 @@ export default class Perfilamiento extends Component {
                         })
 
                 } else {
-                    swal("El archivo se encuentra a salvo 😎");
+                    swal("El archivo se encuentra a salvo");
                 }
             });
     }
@@ -181,7 +181,7 @@ export default class Perfilamiento extends Component {
         const bearer = `Bearer ${token}`
         axios.get(Global.getAllFiles, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            let respuesta = response.data.Data
+            let respuesta = response.data.Data;
 
             this.setState({
                 data: respuesta,
@@ -248,7 +248,7 @@ export default class Perfilamiento extends Component {
                 {data && id &&
                     <Modal idFile={id} />
                 }
-                
+
                 {agregarPerfilamiento &&
                     <ModalAgregarPerfilamiento />
                 }
@@ -309,10 +309,10 @@ export default class Perfilamiento extends Component {
                         </tbody>
                     </table>
                 }
-
-                <button
+               
+                <div
                     id="ver-mas"
-                    className="btn btn-primary"
+                    className="ver-mas"
                     onClick={
                         (e) => {
                             e.preventDefault();
@@ -321,7 +321,8 @@ export default class Perfilamiento extends Component {
                     }
                 >
                     Ver más
-                </button>
+                </div>
+               
             </div>
         )
     }

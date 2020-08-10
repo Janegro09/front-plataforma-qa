@@ -1,8 +1,6 @@
 .stepInformation {
     display: flex;
     flex-flow: column nowrap;
-    background-color: #ffffff2e;
-    padding: 11px;
 }
 
 .stepInformation .information {
@@ -10,10 +8,11 @@
     flex-flow: row nowrap;
     justify-content: space-between;
     margin-top: 20px;
+    border-radius: 5px;
 }
 
 .stepInformation .information section {
-    border: 1px solid #e4e4e4;
+
     border-radius: 5px;
     width: 49%;
 }
@@ -132,7 +131,6 @@ article label {
 }
 
 .titulo-seccion {
-    font-weight: bold;
     font-size: 18px;
 }
 
@@ -146,7 +144,6 @@ article.coachingsAudios {
 
 .seccion {
     padding: 20px;
-    border: 1px solid #e4e4e4;
     border-radius: 5px;
     background: #ffffff2e;
     box-shadow: 0 0 6px 1px #9596981c;

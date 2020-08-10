@@ -18,6 +18,7 @@ import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
+import { Redirect } from 'react-router-dom';
 
 export default class StepName extends Component {
 
@@ -32,7 +33,8 @@ export default class StepName extends Component {
         step: null,
         instances: null,
         valueCoach: '-',
-        role: false
+        role: false,
+        volver: false
     }
 
     asignarArchivos = () => {
@@ -280,6 +282,11 @@ export default class StepName extends Component {
             });
     }
 
+    volverAtras = () => {
+        const { volver } = this.state;
+        this.setState({ volver: !volver });
+    }
+
     getUsersColumns() {
         let { data } = this.state;
 
@@ -322,7 +329,7 @@ export default class StepName extends Component {
                             <td>
                                 {(users.improvment === "+" ?
                                     <ExpandLessIcon className="arrowUp" /> : (users.improvment === "+-" ?
-                                    <ImportExportRoundedIcon /> : <ExpandMoreIcon className="arrowDown" />))}
+                                        <ImportExportRoundedIcon /> : <ExpandMoreIcon className="arrowDown" />))}
                             </td>
                             {ReturnData.actual.map((value, key) => {
                                 return <th key={key}>{value}</th>
@@ -395,8 +402,12 @@ export default class StepName extends Component {
     }
 
     render() {
-        let { data, customFields, abrirModalAsignarArchivos, archivosSeleccionados, value, loading, step } = this.state;
+        let { data, customFields, abrirModalAsignarArchivos, archivosSeleccionados, value, loading, step, volver } = this.state;
         data = data ? data[0] : null;
+
+        if (volver) {
+            return <Redirect to={'/partituras/' + this.props.match.params.id} />
+        }
 
         let contadorAudios = 0;
         return (
@@ -418,15 +429,24 @@ export default class StepName extends Component {
 
                 {data &&
                     <div className="section-content">
-                        <h4>Archivo Actual</h4>
+                        <button
+                            className="btn btn-primary ml-10"
+                            style={{ position: 'absolute', transform: 'translate(-1px, -42px)' }}
+                            onClick={() => { this.volverAtras() }}
+                        >
+                            Paso anterior
+                        </button>
+                        <h4>PARTITURAS</h4>
+                        <hr />
                         <br />
+                        <p>Archivo Actual</p>
                         <table>
                             <thead>
                                 <tr>
                                     <th>Fechas</th>
                                     <th>Nombre</th>
-                                    <th className="tableIcons">Estado de partitura</th>
-                                    <th className="tableIcons">Archivos incluídos</th>
+                                    <th className="tableIcons">Estado</th>
+                                    <th className="tableIcons">Archivos</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -441,8 +461,7 @@ export default class StepName extends Component {
                             </tbody>
                         </table>
                         <br />
-                        <h4>Usuario Actual</h4>
-                        <br />
+                        <p>Usuario Actual</p>
                         {this.getUsersColumns()}
 
                         {step &&
@@ -457,7 +476,7 @@ export default class StepName extends Component {
                                 >
                                     Enviar
                                 </button>
-                                <h4>Nombre: {step.name}</h4> 
+                                <h4>Nombre: {step.name}</h4>
                                 <br />
                                 <article className="seccion">
                                     <h6 className="titulo-seccion">Archivos de apoyo</h6>
@@ -471,7 +490,7 @@ export default class StepName extends Component {
                                                         onClick={(e) => {
                                                             e.preventDefault();
                                                             this.descargarArchivo(archivo.id);
-                                                        }} 
+                                                        }}
                                                         className="nombreArchivo"
                                                     >
                                                         <p>{archivo.name}</p>
@@ -603,8 +622,8 @@ export default class StepName extends Component {
                                             <label htmlFor="imp">Improvment</label>
                                             <select name="improvment" id="imp" defaultValue={step.improvment} disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'}
                                                 onChange={
-                                                this.armarObjeto
-                                            }>
+                                                    this.armarObjeto
+                                                }>
                                                 <option value="">Selecciona</option>
                                                 <option value="+">Mejoro</option>
                                                 <option value="+-">Sigue igual</option>
@@ -616,6 +635,7 @@ export default class StepName extends Component {
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' &&
                                             <article>
                                                 <h6 className="titulo-seccion">Responsable</h6>
+                                                <hr />
                                                 {customFields &&
                                                     <CustomFields
                                                         fields={customFields}
@@ -634,6 +654,7 @@ export default class StepName extends Component {
 
                                             <article>
                                                 <h6 className="titulo-seccion">Gerente</h6>
+                                                <hr />
                                                 {customFields &&
                                                     <CustomFields
                                                         disabled={this.state.role !== 'GERENTE' && this.state.role !== 'ADMINISTRATOR'}
@@ -655,6 +676,7 @@ export default class StepName extends Component {
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' &&
                                             <article>
                                                 <h6 className="titulo-seccion">Coordinador On Site</h6>
+                                                <hr />
                                                 {customFields &&
                                                     <CustomFields
                                                         disabled={this.state.role !== 'GERENTE' && this.state.role !== 'ADMINISTRATOR'}
@@ -674,6 +696,7 @@ export default class StepName extends Component {
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' && this.state.role !== 'GERENTE' &&
                                             <article>
                                                 <h6 className="titulo-seccion">Administrador</h6>
+                                                <hr />
                                                 {customFields &&
                                                     <CustomFields
                                                         disabled={this.state.role === 'GERENTE' || this.state.role === 'RESPONSABLE' || this.state.role === 'LIDER' || this.state.role === 'REPRESENTANTE'}
@@ -693,6 +716,7 @@ export default class StepName extends Component {
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' && this.state.role !== 'GERENTE' &&
                                             <article>
                                                 <h6 className="titulo-seccion">Coach</h6>
+                                                <hr />
                                                 {customFields &&
                                                     <CustomFields
                                                         fields={customFields}
@@ -721,22 +745,22 @@ export default class StepName extends Component {
 
                                     <div className="formSubirArchivo">
 
-                                    {this.state.valueCoach === 'file' &&
-                                        <>
-                                            <h6 className="titulo-seccion">Subir Audio</h6>
-                                            <input type="file" onChange={(e) => { this.archivoSeleccionado = e.target.files }} />
-                                            <button className="buttonupload" onClick={(e) => { e.preventDefault(); this.subirArchivo() }}>
-                                                Subir el archivo
+                                        {this.state.valueCoach === 'file' &&
+                                            <>
+                                                <h6 className="titulo-seccion">Subir Audio</h6>
+                                                <input type="file" onChange={(e) => { this.archivoSeleccionado = e.target.files }} />
+                                                <button className="buttonupload" onClick={(e) => { e.preventDefault(); this.subirArchivo() }}>
+                                                    Subir el archivo
                                             </button>
-                                        </>
-                                    }
+                                            </>
+                                        }
 
-                                    {this.state.valueCoach === 'record' &&
-                                        <>
-                                            <h6 className="titulo-seccion">Grabar Audio</h6>
-                                            <RecordAudio ids={this.props.match.params} />
-                                        </>
-                                    }
+                                        {this.state.valueCoach === 'record' &&
+                                            <>
+                                                <h6 className="titulo-seccion">Grabar Audio</h6>
+                                                <RecordAudio ids={this.props.match.params} />
+                                            </>
+                                        }
 
                                     </div>
                                     <div className="archivosCargados">

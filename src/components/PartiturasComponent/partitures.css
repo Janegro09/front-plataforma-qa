@@ -14,27 +14,27 @@ section {
 
 section article {
     width: 45%;
-    min-height: 400px;
+    min-height: 200px;
     box-sizing: border-box;
     padding: 15px;
-    margin: 5px 10px;
+    margin: 5px 0;
 }
 
-article h6 {
-    text-align: center;
+article {
+    border-radius: 5px;
+    background: #ffffff2e;
+    box-shadow: 0 0 6px 1px #9596981c;
 }
+
 
 .fecha {
-    color: #000;
+    color: #171717;
+    font-weight: 500;
+    font-size: 12px;
 }
 
 .fecha.vencido {
     color: #f00;
-}
-
-article .steps {
-    max-height: 100px;
-    margin-top: 5px;
 }
 
 article .steps span {
@@ -45,7 +45,6 @@ article .steps span {
     flex-flow: row nowrap;
     justify-content: flex-start;
     padding: 11px 11px 10px 12px;
-    margin-bottom: 9px;
 }
 
 article .steps span input {
@@ -60,8 +59,10 @@ article .steps span {
     cursor: pointer;
 }
 
-.titulo-semana {
-    font-weight: bold;
-    border-bottom: 1px solid #e4e4e4;
-    padding-bottom: 15px;
+
+.steps > span {
+    border-top: 1px solid #e4e4e4;
+    border-radius: 0px !important;
 }
+
+

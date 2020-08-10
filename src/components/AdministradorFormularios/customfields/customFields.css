@@ -22,13 +22,16 @@ label.forInputs {
     padding:3px !important;
 }
 
+.MuiIconButton-label > svg {
+    color: #03a9f4;
+}
+
 .labelsInputs {
     padding: 5px;
     margin: 5px 0;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-    border-bottom: 1px solid #e4e4e4;
 }
 
 textarea {

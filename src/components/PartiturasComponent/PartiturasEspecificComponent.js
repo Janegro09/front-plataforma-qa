@@ -163,8 +163,10 @@ export default class PartiturasEspecificComponent extends Component {
 
                 {data &&
                     <div className="section-content">
-                        <h4>ARCHIVO ACTUAL</h4>
+                        <h4>PARTITURAS</h4>
+                        <hr />
                         <br />
+                        <p>Archivo actual</p>
                         <table>
                             <thead>
                                 <tr>
@@ -197,8 +199,7 @@ export default class PartiturasEspecificComponent extends Component {
                             </tbody>
                         </table>
                         <br></br>
-                        <h4>USUARIOS</h4>
-                        <br />
+                        <p>Usuarios</p>
                         <input onChange={this.buscar} className="form-control" placeholder="Buscar por usuario | Nombre o DNI" />
                         <br></br>
                         <table>
@@ -254,7 +255,7 @@ export default class PartiturasEspecificComponent extends Component {
                             </thead>
                             <tbody>
                                 {filtredData &&
-                                    filtredData.slice(0,totalDisplayed).map(user => {
+                                    filtredData.slice(0, totalDisplayed).map(user => {
                                         return (
                                             <tr key={user.idDB}>
                                                 <td>{user.dni}</td>
@@ -283,13 +284,13 @@ export default class PartiturasEspecificComponent extends Component {
                             </tbody>
                         </table>
 
-                        <button
+                        <div
                             id="ver-mas-partituras"
-                            className="btn btn-primary"
+                            className="ver-mas"
                             onClick={() => this.showMore()}
                         >
                             Ver más
-                        </button>
+                        </div>
                     </div>
 
                 }

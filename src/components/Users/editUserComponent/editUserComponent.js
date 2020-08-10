@@ -238,7 +238,7 @@ export default class editUserComponent extends Component {
                         <input className="form-control" type="text" placeholder="" ref={(c) => this.puntoVenta = c} defaultValue={user.puntoVenta ? user.puntoVenta : ''} />
                         {/* <input type="text" placeholder="group" ref={(c) => this.group = c} defaultValue={user.group ? user.group : ''} /> */}
                         <SeleccionarGrupo getValue={(c) => this.group = c} defaultValue={user.group ? user.group : ''} />
-                        <select onChange={this.handleChangeTurno} className="form-control select-t">
+                        <select onChange={this.handleChangeTurno} className="form-control select-t" style={{ marginTop: '34px' }}>
                             <option value={user.turno ? user.turno : 'TM'}>{user.turno ? user.turno === 'TM' ? 'TM' : 'TT' : "TM"}</option>
                             <option value={user.turno ? user.turno === 'TM' ? 'TT' : 'TM' : 'TT'}>{user.turno ? user.turno === 'TT' ? 'TM' : 'TT' : "TT"}</option>
                         </select>

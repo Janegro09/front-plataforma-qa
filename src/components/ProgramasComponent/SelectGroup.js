@@ -117,46 +117,14 @@ class SelectGroup extends Component {
     buscar = () => {
         let searched
         if (this.searched && this.searched !== undefined) {
-            searched = this.searched.value.toLocaleLowerCase()
+            searched = this.searched.value.toLocaleLowerCase();
+            const { allUsers } = this.state;
 
-            let returnData = []
-            this.state.allUsers.map(user => {
-                let nameLastName = `${user.name} ${user.lastName}`
-                if (searched !== undefined) {
-                    if (user.id.indexOf(searched) >= 0) {
-                        returnData.push(user)
-                    } else if (nameLastName.indexOf(searched) >= 0) {
-                        returnData.push(user)
-                    } else {
-                        // Generamos parametros de busqueda 
-                        let nameDividido = nameLastName.split(' ');
-                        let busquedaDividida = searched.split(' ');
-                        let coincide = 0;
-                        for (let x = 0; x < nameDividido.length; x++) {
-                            for (let y = 0; y < busquedaDividida.length; y++) {
-                                if (nameDividido[x].indexOf(busquedaDividida[y]) >= 0) {
-                                    coincide++;
-                                }
-                            }
-                        }
-                        if (coincide === busquedaDividida.length) {
-                            returnData.push(user);
-                        }
-                    }
-                } else {
-                    returnData.push(user)
-                }
-                return true
-            })
+            let returnData = allUsers.filter(user => user.group.toLowerCase().includes(searched));
 
-            let returnDataFiltered = []
-            for (let i = 0; (i < 5) && (i < returnData.length); i++) {
-                returnDataFiltered.push(returnData[i]);
-
-            }
             this.setState({
-                usuariosReturn: returnDataFiltered
-            })
+                usuariosReturn: returnData
+            });
         }
     }
 
@@ -170,7 +138,6 @@ class SelectGroup extends Component {
 
         axios.get(Global.getGroups, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            console.log('la response data: ', response.data.Data)
             this.setState({
                 allUsers: response.data.Data,
                 loading: false
@@ -222,16 +189,16 @@ class SelectGroup extends Component {
                     {usuariosSeleccionados &&
                         usuariosSeleccionados.map((usuario, key) => {
                             return (
-                               <div className="etiquetas">
-                               <div className="etiqueta" key={key}>
-                                    <p>{`${usuario.id} - ${usuario.group}`}</p>
-                                    <button onClick={
-                                        (e) => {
-                                            e.preventDefault()
-                                            this.quitarUsuario(usuario)
-                                        }
-                                    }>x</button>
-                                </div>
+                                <div className="etiquetas">
+                                    <div className="etiqueta" key={key}>
+                                        <p>{`${usuario.id} - ${usuario.group}`}</p>
+                                        <button onClick={
+                                            (e) => {
+                                                e.preventDefault()
+                                                this.quitarUsuario(usuario)
+                                            }
+                                        }>x</button>
+                                    </div>
                                 </div>
                             )
                         })
@@ -260,6 +227,7 @@ class SelectGroup extends Component {
                     <tbody>
                         {usuariosReturn &&
                             usuariosReturn.map((usuario, key) => {
+                                console.log('usuario: ', usuario);
                                 return (
                                     <tr key={key} onClick={(e) => {
                                         e.preventDefault()

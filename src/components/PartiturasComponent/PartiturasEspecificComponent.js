@@ -16,6 +16,7 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
+
 export default class PartiturasEspecificComponent extends Component {
 
     state = {
@@ -289,7 +290,7 @@ export default class PartiturasEspecificComponent extends Component {
                             className="ver-mas"
                             onClick={() => this.showMore()}
                         >
-                            Ver más
+                            <ExpandMoreIcon />
                         </div>
                     </div>
 

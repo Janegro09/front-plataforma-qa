@@ -14,6 +14,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AssignmentReturnIcon from '@material-ui/icons/AssignmentReturn';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import AssessmentIcon from '@material-ui/icons/Assessment';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 export default class Perfilamiento extends Component {
     constructor(props) {
@@ -320,7 +321,7 @@ export default class Perfilamiento extends Component {
                         }
                     }
                 >
-                    Ver más
+                    <ExpandMoreIcon />
                 </div>
                
             </div>

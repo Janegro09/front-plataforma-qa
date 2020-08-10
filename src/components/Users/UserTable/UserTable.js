@@ -8,6 +8,7 @@ import swal from 'sweetalert'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 export default class UserTable extends Component {
     constructor(props) {
@@ -139,6 +140,14 @@ export default class UserTable extends Component {
         sessionStorage.clear()
         this.setState({ redirect: true })
     }
+
+    showMore = () => {
+        let { totalDisplayed } = this.state;
+        totalDisplayed += 10;
+        this.setState({ totalDisplayed });
+        document.getElementById('ver-mas-grupos').focus();
+    }
+
 
     getUsersPage = (page, allUsers) => {
         let total = []
@@ -316,7 +325,7 @@ export default class UserTable extends Component {
                         <tbody>
                             {totalUsuarios &&
 
-                                totalUsuarios.slice(0,20).map(user => {
+                                totalUsuarios.slice(0,15).map(user => {
                                     return (
                                         <tr id="parent" key={user.idDB}>
                                             <td >{user.id}</td>
@@ -346,8 +355,15 @@ export default class UserTable extends Component {
                             }
                         </tbody>
                     </table>
+                    <div
+                            id="ver-mas-grupos"
+                            className="ver-mas"
+                            onClick={() => this.showMore()}
+                        >
+                            <ExpandMoreIcon />
+                        </div>
 
-                    <div className="botones">
+                    {/* <div className="botones">
                         {this.state.actualPage > 1 &&
                             <button onClick={() => {
                                 this.setState({
@@ -366,11 +382,11 @@ export default class UserTable extends Component {
                             }}>►</button>
                         }
 
-                    </div>
+                    </div> */}
 
-                    {this.state.allUsers &&
+                    {/* {this.state.allUsers &&
                         <div className="cantUsuarios">Cantidad de usuarios: {this.state.allUsers.length}</div>
-                    }
+                    } */}
                 </div>
                 
             </div>

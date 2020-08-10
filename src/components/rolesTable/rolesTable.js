@@ -8,6 +8,7 @@ import swal from 'sweetalert'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
 export default class RolesTable extends Component {
@@ -98,11 +99,18 @@ export default class RolesTable extends Component {
         this.setState({ redirect: true })
     }
 
+    showMore = () => {
+        let { totalDisplayed } = this.state;
+        totalDisplayed += 10;
+        this.setState({ totalDisplayed });
+        document.getElementById('ver-mas-roles').focus();
+    }
+
     getUsersPage = (page, allGroups) => {
         let total = []
         let cantOfPages = 0
         if (allGroups !== null) {
-            const cantPerPage = 25
+            const cantPerPage = 15
             cantOfPages = Math.ceil(allGroups.length / cantPerPage)
 
             let index = (page - 1) * cantPerPage
@@ -288,7 +296,15 @@ export default class RolesTable extends Component {
                         </tbody>
                     </table>
 
-                    <div className="botones">
+                    <div
+                            id="ver-mas-roles"
+                            className="ver-mas"
+                            onClick={() => this.showMore()}
+                        >
+                            <ExpandMoreIcon />
+                        </div>
+
+                    {/* <div className="botones">
                         {this.state.actualPage > 1 &&
                             <button onClick={() => {
                                 this.setState({
@@ -307,7 +323,7 @@ export default class RolesTable extends Component {
                             }}>►</button>
                         }
 
-                    </div>
+                    </div> */}
                 </div>
             </div>
         )

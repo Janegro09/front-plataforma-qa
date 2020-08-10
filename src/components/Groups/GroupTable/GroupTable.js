@@ -8,6 +8,7 @@ import swal from 'sweetalert'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
 
@@ -96,6 +97,13 @@ export default class GroupsTable extends Component {
         sessionStorage.setItem("token", '')
         sessionStorage.clear()
         this.setState({ redirect: true })
+    }
+
+    showMore = () => {
+        let { totalDisplayed } = this.state;
+        totalDisplayed += 10;
+        this.setState({ totalDisplayed });
+        document.getElementById('ver-mas-grupos').focus();
     }
 
     getUsersPage = (page, allGroups) => {
@@ -294,7 +302,7 @@ export default class GroupsTable extends Component {
                         <tbody>
                             {totalUsuarios &&
 
-                                totalUsuarios.slice(0,20).map((group, index) => {
+                                totalUsuarios.slice(0,15).map((group, index) => {
 
                                     return (
                                         <tr key={index}>
@@ -320,7 +328,15 @@ export default class GroupsTable extends Component {
                         </tbody>
                     </table>
 
-                    <div className="botones">
+                    <div
+                            id="ver-mas-grupos"
+                            className="ver-mas"
+                            onClick={() => this.showMore()}
+                        >
+                           <ExpandMoreIcon />
+                        </div>
+
+                    {/* <div className="botones">
                         {this.state.actualPage > 1 &&
                             <button onClick={() => {
                                 this.setState({
@@ -339,7 +355,7 @@ export default class GroupsTable extends Component {
                             }}>►</button>
                         }
 
-                    </div>
+                    </div> */}
                 </div>
             </div>
         )

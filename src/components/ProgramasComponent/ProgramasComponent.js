@@ -263,7 +263,7 @@ export default class GroupsTable extends Component {
         const bodyParameters = {
             name: this.name.value,
             parentProgram: this.state.programEditReq.parentProgram,
-            section: this.turno,
+            section: this.state.selected,
             syncGroups: this.state.programEditReq.groupAssign,
             description: this.description.value
         }
@@ -350,11 +350,11 @@ export default class GroupsTable extends Component {
 
     handleTurno = (event) => {
         event.preventDefault();
-        let { userSelected } = this.state;
-        userSelected = userSelected ? userSelected.section = event.target.value : null;
+        let { selected } = this.state;
+        selected = selected ? selected = event.target.value : null;
 
         this.turno = event.target.value;
-        this.setState({ userSelected });
+        this.setState({ selected });
     }
 
     crearPrograma = (e) => {

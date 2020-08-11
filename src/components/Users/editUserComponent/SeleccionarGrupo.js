@@ -29,12 +29,6 @@ export default class SeleccionarGrupo extends Component {
         this.setState(prevState => {
             return { groupsToShow: prevState.groupsToShow + 5 }
         });
-
-        /**
-         * Se utiliza para no hacer doble click ya que al cargar más elementos 
-         * en la lista pierde el foco del botón
-         */
-        document.getElementById('ver-mas').focus();
     }
 
     handleClickAddAll = () => {
@@ -141,6 +135,10 @@ export default class SeleccionarGrupo extends Component {
 
     render() {
         const { groupSelect, groupsToShow, valueInput, allSelected, seleccionados } = this.state;
+        groupSelect.map(g => {
+            console.log(g);
+        });
+
         this.props.getValue(this.state.groupsToSend)
 
         return (
@@ -215,7 +213,7 @@ export default class SeleccionarGrupo extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {groupSelect.slice(0, groupsToShow).filter(result => valueInput ? result.label.trim().includes(valueInput) : true).map(group => {
+                            {groupSelect.filter(result => valueInput ? result.label.trim().includes(valueInput) : true).slice(0, groupsToShow).map(group => {
                                 return (
                                     <tr
                                         key={group.value}

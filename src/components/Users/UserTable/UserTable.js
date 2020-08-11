@@ -8,6 +8,7 @@ import swal from 'sweetalert'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 export default class UserTable extends Component {
     constructor(props) {
@@ -25,7 +26,8 @@ export default class UserTable extends Component {
             redirect: false,
             changePassword: false,
             actualPage: 1,
-            searchedUsers: []
+            searchedUsers: [],
+            totalDisplayed: 15
         }
     }
 
@@ -140,11 +142,19 @@ export default class UserTable extends Component {
         this.setState({ redirect: true })
     }
 
+    showMore = () => {
+        let { totalDisplayed } = this.state;
+        totalDisplayed += 10;
+        this.setState({ totalDisplayed });
+        document.getElementById('ver-mas-grupos').focus();
+    }
+
+
     getUsersPage = (page, allUsers) => {
         let total = []
         let cantOfPages = 0
         if (allUsers !== null) {
-            const cantPerPage = 25
+            const cantPerPage = 200
             cantOfPages = Math.ceil(allUsers.length / cantPerPage)
 
             let index = (page - 1) * cantPerPage
@@ -193,6 +203,7 @@ export default class UserTable extends Component {
     render() {
         const allUsers = this.state.searchedUsers
         let pagina = this.getUsersPage(this.state.actualPage, allUsers)
+        let {totalDisplayed} = this.state
         let totalUsuarios = pagina.total
         let botones = []
 
@@ -316,7 +327,7 @@ export default class UserTable extends Component {
                         <tbody>
                             {totalUsuarios &&
 
-                                totalUsuarios.slice(0,20).map(user => {
+                                totalUsuarios.slice(0, totalDisplayed).map(user => {
                                     return (
                                         <tr id="parent" key={user.idDB}>
                                             <td >{user.id}</td>
@@ -346,8 +357,15 @@ export default class UserTable extends Component {
                             }
                         </tbody>
                     </table>
+                    <div
+                            id="ver-mas-grupos"
+                            className="ver-mas"
+                            onClick={() => this.showMore()}
+                        >
+                            <ExpandMoreIcon />
+                    </div>
 
-                    <div className="botones">
+                    {/* <div className="botones">
                         {this.state.actualPage > 1 &&
                             <button onClick={() => {
                                 this.setState({
@@ -366,11 +384,11 @@ export default class UserTable extends Component {
                             }}>►</button>
                         }
 
-                    </div>
+                    </div> */}
 
-                    {this.state.allUsers &&
+                    {/* {this.state.allUsers &&
                         <div className="cantUsuarios">Cantidad de usuarios: {this.state.allUsers.length}</div>
-                    }
+                    } */}
                 </div>
                 
             </div>

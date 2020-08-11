@@ -8,6 +8,7 @@ import swal from 'sweetalert'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
 
@@ -28,7 +29,8 @@ export default class GroupsTable extends Component {
             changePassword: false,
             actualPage: 1,
             searchedUsers: [],
-            createGroup: false
+            createGroup: false,
+            totalDisplayed : 15
         }
     }
 
@@ -98,11 +100,18 @@ export default class GroupsTable extends Component {
         this.setState({ redirect: true })
     }
 
+    showMore = () => {
+        let { totalDisplayed } = this.state;
+        totalDisplayed += 10;
+        this.setState({ totalDisplayed });
+        document.getElementById('ver-mas-grupos').focus();
+    }
+
     getUsersPage = (page, allGroups) => {
         let total = []
         let cantOfPages = 0
         if (allGroups !== null) {
-            const cantPerPage = 25
+            const cantPerPage = 200
             cantOfPages = Math.ceil(allGroups.length / cantPerPage)
 
             let index = (page - 1) * cantPerPage
@@ -157,6 +166,7 @@ export default class GroupsTable extends Component {
     render() {
         const allGroups = this.state.searchedUsers
         let pagina = this.getUsersPage(this.state.actualPage, allGroups)
+        let {totalDisplayed} = this.state
         let totalUsuarios = pagina.total
         let botones = []
         for (let index = 0; index < pagina.cantOfPages; index++) {
@@ -294,7 +304,7 @@ export default class GroupsTable extends Component {
                         <tbody>
                             {totalUsuarios &&
 
-                                totalUsuarios.slice(0,20).map((group, index) => {
+                                totalUsuarios.slice(0, totalDisplayed).map((group, index) => {
 
                                     return (
                                         <tr key={index}>
@@ -320,7 +330,15 @@ export default class GroupsTable extends Component {
                         </tbody>
                     </table>
 
-                    <div className="botones">
+                    <div
+                            id="ver-mas-grupos"
+                            className="ver-mas"
+                            onClick={() => this.showMore()}
+                        >
+                           <ExpandMoreIcon />
+                        </div>
+
+                    {/* <div className="botones">
                         {this.state.actualPage > 1 &&
                             <button onClick={() => {
                                 this.setState({
@@ -339,7 +357,7 @@ export default class GroupsTable extends Component {
                             }}>►</button>
                         }
 
-                    </div>
+                    </div> */}
                 </div>
             </div>
         )

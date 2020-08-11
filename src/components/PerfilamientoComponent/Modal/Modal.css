@@ -14,7 +14,7 @@
 .hijo {
     width: 35%;
     height: auto;
-    max-height: 800px;
+    max-height: 400px;
     overflow-y: auto;
     background-color: white;
     color: black;

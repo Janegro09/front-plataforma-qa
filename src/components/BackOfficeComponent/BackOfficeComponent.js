@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import SiderbarLeft from '../SidebarLeft/SiderbarLeft'
 import './BackOfficeComponent.css'
 import UserAdminHeader from '../Users/userAdminHeader/userAdminHeader'
-import ListadoArchivosBackofficeComponent from './ListadoArchivosBackofficeComponent'
 import SubirNominaComponent from './SubirNominaComponent'
 
 export default class BackOfficeComponent extends Component {
@@ -14,10 +13,6 @@ export default class BackOfficeComponent extends Component {
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
                     <UserAdminHeader />
-                </div>
-
-                <div className="section-content">
-                    <ListadoArchivosBackofficeComponent />
                 </div>
 
                 <div className="section-content">

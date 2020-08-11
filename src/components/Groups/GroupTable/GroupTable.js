@@ -29,7 +29,8 @@ export default class GroupsTable extends Component {
             changePassword: false,
             actualPage: 1,
             searchedUsers: [],
-            createGroup: false
+            createGroup: false,
+            totalDisplayed : 15
         }
     }
 
@@ -110,7 +111,7 @@ export default class GroupsTable extends Component {
         let total = []
         let cantOfPages = 0
         if (allGroups !== null) {
-            const cantPerPage = 25
+            const cantPerPage = 200
             cantOfPages = Math.ceil(allGroups.length / cantPerPage)
 
             let index = (page - 1) * cantPerPage
@@ -165,6 +166,7 @@ export default class GroupsTable extends Component {
     render() {
         const allGroups = this.state.searchedUsers
         let pagina = this.getUsersPage(this.state.actualPage, allGroups)
+        let {totalDisplayed} = this.state
         let totalUsuarios = pagina.total
         let botones = []
         for (let index = 0; index < pagina.cantOfPages; index++) {
@@ -302,7 +304,7 @@ export default class GroupsTable extends Component {
                         <tbody>
                             {totalUsuarios &&
 
-                                totalUsuarios.slice(0,15).map((group, index) => {
+                                totalUsuarios.slice(0, totalDisplayed).map((group, index) => {
 
                                     return (
                                         <tr key={index}>

@@ -89,9 +89,6 @@ export default class ProgramsGroupComponent extends Component {
                     const bearer = `Bearer ${token}`
                     axios.delete(Global.getAllProgramsGroups + '/' + userInfo.id, { headers: { Authorization: bearer } }).then(response => {
                         sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                        this.setState({
-                            grupoBorrado: true
-                        })
                         swal("El grupo ha sido eliminado!", {
                             icon: "success",
                         }).then(value => {
@@ -155,7 +152,6 @@ export default class ProgramsGroupComponent extends Component {
         if (this.state.crearGrupoProgramas) {
             return <Redirect to={'/crearGrupoProgramas'} />
         }
-
 
         return (
             <div>

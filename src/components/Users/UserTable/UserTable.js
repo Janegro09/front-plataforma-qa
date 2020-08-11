@@ -26,7 +26,8 @@ export default class UserTable extends Component {
             redirect: false,
             changePassword: false,
             actualPage: 1,
-            searchedUsers: []
+            searchedUsers: [],
+            totalDisplayed: 15
         }
     }
 
@@ -153,7 +154,7 @@ export default class UserTable extends Component {
         let total = []
         let cantOfPages = 0
         if (allUsers !== null) {
-            const cantPerPage = 25
+            const cantPerPage = 200
             cantOfPages = Math.ceil(allUsers.length / cantPerPage)
 
             let index = (page - 1) * cantPerPage
@@ -202,6 +203,7 @@ export default class UserTable extends Component {
     render() {
         const allUsers = this.state.searchedUsers
         let pagina = this.getUsersPage(this.state.actualPage, allUsers)
+        let {totalDisplayed} = this.state
         let totalUsuarios = pagina.total
         let botones = []
 
@@ -325,7 +327,7 @@ export default class UserTable extends Component {
                         <tbody>
                             {totalUsuarios &&
 
-                                totalUsuarios.slice(0,15).map(user => {
+                                totalUsuarios.slice(0, totalDisplayed).map(user => {
                                     return (
                                         <tr id="parent" key={user.idDB}>
                                             <td >{user.id}</td>
@@ -361,7 +363,7 @@ export default class UserTable extends Component {
                             onClick={() => this.showMore()}
                         >
                             <ExpandMoreIcon />
-                        </div>
+                    </div>
 
                     {/* <div className="botones">
                         {this.state.actualPage > 1 &&

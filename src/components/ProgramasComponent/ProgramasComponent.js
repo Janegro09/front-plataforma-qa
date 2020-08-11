@@ -263,7 +263,7 @@ export default class GroupsTable extends Component {
         const bodyParameters = {
             name: this.name.value,
             parentProgram: this.state.programEditReq.parentProgram,
-            section: this.turno,
+            section: this.state.selected,
             syncGroups: this.state.programEditReq.groupAssign,
             description: this.description.value
         }
@@ -350,11 +350,11 @@ export default class GroupsTable extends Component {
 
     handleTurno = (event) => {
         event.preventDefault();
-        let { userSelected } = this.state;
-        userSelected = userSelected ? userSelected.section = event.target.value : null;
+        let { selected } = this.state;
+        selected = selected ? selected = event.target.value : null;
 
         this.turno = event.target.value;
-        this.setState({ userSelected });
+        this.setState({ selected });
     }
 
     crearPrograma = (e) => {
@@ -455,6 +455,7 @@ export default class GroupsTable extends Component {
         let botones = []
         let arrayDiv = []
         let assignedPrograms = []
+        let encontrado = false
 
 
         if (allPrograms) {
@@ -464,6 +465,7 @@ export default class GroupsTable extends Component {
                     if (this.title.value === '' || this.title.value === null) {
                         return (program.section === selected || program.section === 'notSpecify')
                     } else {
+                        encontrado = true;
                         return (program.name.toUpperCase().indexOf(this.title.value.toUpperCase()) >= 0);
                     }
                 } else {
@@ -473,7 +475,7 @@ export default class GroupsTable extends Component {
             })
 
             for (let index = 0; index < data.length; index++) {
-                if (assignedPrograms.indexOf(data[index].id) >= 0 || data[index].programParent !== '') {
+                if ((assignedPrograms.indexOf(data[index].id) >= 0 || data[index].programParent !== '') && !encontrado) {
                     continue
                 }
 
@@ -615,6 +617,7 @@ export default class GroupsTable extends Component {
                                         {/* Buscador */}
                                         {HELPER_FUNCTIONS.checkPermission("GET|groups/:id") &&
                                             <input
+                                                id="input-programa"
                                                 className="form-control"
                                                 type="text"
                                                 ref={(c) => {

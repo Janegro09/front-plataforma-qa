@@ -15,6 +15,8 @@ import SelectGroupCreate from './SelectGroupCreate'
 import SelectGroupEdit from './SelectGroupEdit'
 import SelectGroupParent from './SelectGroupParent'
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight';
+import TableParentProgram from './TableParentProgram';
+
 
 
 export default class GroupsTable extends Component {
@@ -780,7 +782,10 @@ export default class GroupsTable extends Component {
                                 <span className="Label">Nombre</span>
                                 <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} />
                                 <span className="Label">Parent program</span>
-                                <SelectGroupParent getValue={(c) => this.parentProgram = c} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''} />
+
+                                {/* <TableParentProgram getValue={(c) => this.parentProgram = c} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''}/> */}
+                                <SelectGroupParent getValue={(c) => this.parentProgram = c} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''}/>
+
                                 <span className="Label">Section</span>
                                 <select onChange={this.handleTurno}>
                                     <option value="-">Selecciona...</option>

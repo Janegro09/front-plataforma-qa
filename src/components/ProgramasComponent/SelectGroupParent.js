@@ -19,12 +19,14 @@ class SelectGroupParent extends Component {
     }
 
     handleInputChange = (value) => {
+        
         /**Aca es donde se arma el array a enviar */
         this.props.getValue(value)
         this.setState({
             modificado: value
         })
     };
+
 
     searchDefault = (value = undefined) => {
         /**Acá es donde se arma la lógica de los preseleccionados del select en caso de 
@@ -101,9 +103,8 @@ class SelectGroupParent extends Component {
                 options={options}
                 className="basic-multi-select"
                 classNamePrefix="select"
-                closeMenuOnSelect={false}
+                closeMenuOnSelect={true}
                 onChange={this.handleInputChange}
-                inputValue={this.state.value}
                 value={this.searchDefault()}
             />
         );

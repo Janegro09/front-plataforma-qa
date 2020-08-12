@@ -36,6 +36,7 @@ import PartiturasUsuariosComponent from './components/PartiturasComponent/Partit
 import StepName from './components/PartiturasComponent/StepName';
 import ProgramsGroups from './components/ProgramasComponent/ProgramsGroups';
 
+require('dotenv').config(); // Utilizamos este metodo para utilizar variables de entorno desde el archivo .env
 
 function App() {
   return (

@@ -1,4 +1,4 @@
-const BASE = 'https://api_plataformaqa.solucionesdigitalesteco.com.ar/api/v1'
+const BASE = process.env.REACT_APP_BASEAPI
 
 let Global = {
     login: `${BASE}/login`,

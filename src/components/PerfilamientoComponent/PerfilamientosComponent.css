@@ -105,8 +105,6 @@
 .cuartiles {
     display: flex;
     flex-flow: row wrap;
-    position: fixed;
-    bottom: 0;
     justify-content: flex-start;
     align-items: flex-start;
 }

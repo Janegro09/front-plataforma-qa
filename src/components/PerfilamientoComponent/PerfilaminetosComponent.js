@@ -68,6 +68,7 @@ export default class PerfilaminetosComponent extends Component {
 
                     if (!exists) {
                         for (let u = 0; u < users.length; u++) {
+                            // Buscamos si tambien existe en los otros cuartiles
                             const us = users[u];
                             if (assignedUsers.includes(us) && !assignedToAllUsers) continue;
                             usersToAssign.push(us)
@@ -176,6 +177,7 @@ export default class PerfilaminetosComponent extends Component {
             users: [],
             cuartiles: []
         }
+
 
         for (let i in tempGroup) {
             if (dataNew[i]) {
@@ -307,6 +309,8 @@ export default class PerfilaminetosComponent extends Component {
             newAssign.grupos.push(tempGroup);
 
         }
+
+        console.log(grupos)
 
         this.setState({
             grupos: newAssign.grupos,

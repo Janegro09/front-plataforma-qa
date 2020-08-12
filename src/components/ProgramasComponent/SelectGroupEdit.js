@@ -79,7 +79,6 @@ class SelectGroup extends Component {
                 classNamePrefix="select"
                 closeMenuOnSelect={false}
                 onChange={this.handleInputChange}
-                inputValue={this.state.value}
             />
         );
     }

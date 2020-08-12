@@ -57,8 +57,6 @@ class SelectGroup extends Component {
                 className="basic-multi-select"
                 classNamePrefix="select"
                 closeMenuOnSelect={false}
-                onChange={this.handleInputChange}
-                inputValue={this.state.value}
             />
         );
     }

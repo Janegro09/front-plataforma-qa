@@ -241,6 +241,14 @@ export default class PartiturasEspecificComponent extends Component {
                                     >
                                         Responsable
                                     </th>
+                                    <th
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            this.ascDesc('lider')
+                                        }}
+                                    >
+                                        Lider
+                                    </th>
                                     <th className="tableIcons">Estado</th>
                                     <th className="tableIcons"
                                         onClick={(e) => {
@@ -268,6 +276,7 @@ export default class PartiturasEspecificComponent extends Component {
                                                 })}</td>
                                                 <td>{user.cluster}</td>
                                                 <td>{user.responsable}</td>
+                                                <td>{user.lider}</td>
                                                 <td className="tableIcons">{(user.partitureStatus === 'pending' ? <TimerIcon className="timerIcon" /> : (user.partitureStatus === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon className="PlayArrowRoundedIcon" />))}</td>
 
                                                 <td className="tableIcons">{(user.improvment === "+" ?

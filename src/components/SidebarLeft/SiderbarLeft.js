@@ -24,6 +24,9 @@ export default class SiderbarLeft extends Component {
     }
 
     render() {
+
+        let viewBackoffice = false;
+
         return (
 
             <div className="side__bar">
@@ -45,7 +48,11 @@ export default class SiderbarLeft extends Component {
                             <li className="nameMenu"><NavLink to="/roles" activeClassName="active"><SecurityIcon className="IconoMenu" /></NavLink>Roles</li>
                         }
                         {/* BACKOFFICE */}
-                        {HELPER_FUNCTIONS.checkPermissionGroup("") &&
+<<<<<<< HEAD
+                        {(HELPER_FUNCTIONS.checkPermissionGroup("files") || HELPER_FUNCTIONS.checkPermissionGroup("x")) &&
+=======
+                        {(HELPER_FUNCTIONS.checkPermissionGroup("files") || HELPER_FUNCTIONS.checkPermissionGroup("")) &&
+>>>>>>> fb9fac76a8ce7d45adabf83842057bd551bd0f99
                             <li className="nameMenu"><NavLink to="/backoffice" activeClassName="active"><SettingsIcon className="IconoMenu" /></NavLink>Backoffice
                                 <span className="showme">
                                     {HELPER_FUNCTIONS.checkPermission("GET|analytics/partituresModels/:id") &&
@@ -60,7 +67,7 @@ export default class SiderbarLeft extends Component {
                                         <NavLink to="/exportar-bases-de-datos">Exportar bases de datos</NavLink>
                                     }
 
-                                    {HELPER_FUNCTIONS.checkPermission("GET|backoffice/exports") &&
+                                    {HELPER_FUNCTIONS.checkPermission("GET|files/:id") &&
                                         <NavLink to="/biblioteca">Biblioteca de archivos general</NavLink>
                                     }
                                 </span>

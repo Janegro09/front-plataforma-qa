@@ -350,11 +350,13 @@ export default class GroupsTable extends Component {
 
     handleTurno = (event) => {
         event.preventDefault();
+        let { userSelected } = this.state;
         let { selected } = this.state;
         selected = selected ? selected = event.target.value : null;
+        userSelected.section = selected
 
         this.turno = event.target.value;
-        this.setState({ selected });
+        this.setState({ selected, userSelected });
     }
 
     crearPrograma = (e) => {

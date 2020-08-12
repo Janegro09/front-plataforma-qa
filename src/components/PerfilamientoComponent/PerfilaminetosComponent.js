@@ -68,6 +68,7 @@ export default class PerfilaminetosComponent extends Component {
 
                     if (!exists) {
                         for (let u = 0; u < users.length; u++) {
+                            // Buscamos si tambien existe en los otros cuartiles
                             const us = users[u];
                             if (assignedUsers.includes(us) && !assignedToAllUsers) continue;
                             usersToAssign.push(us)
@@ -103,6 +104,7 @@ export default class PerfilaminetosComponent extends Component {
                         }
                     }
                 }
+                this.reasignUsers();
                 return true;
             })
         }
@@ -177,6 +179,7 @@ export default class PerfilaminetosComponent extends Component {
             cuartiles: []
         }
 
+
         for (let i in tempGroup) {
             if (dataNew[i]) {
                 tempGroup[i] = dataNew[i]
@@ -249,6 +252,19 @@ export default class PerfilaminetosComponent extends Component {
         })
     }
 
+    matchInAllCuartiles = (cuartiles, userId) => {
+        let necessaryMatch = cuartiles.length;
+        let matchs = 0;
+
+        for(let c of cuartiles) {
+            if(c.users.includes(userId)) {
+                matchs++
+            }
+        }
+
+        return necessaryMatch === matchs
+    }
+
     reasignUsers = () => {
         // Reasignamos todos los cuartiles
         const { grupos, cuartiles } = this.state
@@ -267,6 +283,21 @@ export default class PerfilaminetosComponent extends Component {
                 cluster: oldGroup.cluster,
                 users: [],
                 cuartiles: []
+            }
+            let cuartilesWithUsers = [];
+
+            for(let crt of oldGroup.cuartiles) {
+                let tempData = {
+                    name: crt.name,
+                    users: []
+                }
+                cuartiles.map(v => {
+                    if (v.name === crt.name) {
+                        tempData.users = v.users[crt.level];
+                    }
+                    return true;
+                })
+                cuartilesWithUsers.push(tempData);
             }
 
             // Reasignamos los usuarios
@@ -288,7 +319,8 @@ export default class PerfilaminetosComponent extends Component {
 
                 // Reasignamos los usuarios
                 cuartilUsers.map(dni => {
-                    if (!newAssign.assignedUsers.includes(dni) && !oldGroup.applyAllUsers) {
+                    let match = this.matchInAllCuartiles(cuartilesWithUsers, dni);
+                    if (!newAssign.assignedUsers.includes(dni) && !oldGroup.applyAllUsers && match) {
                         newAssign.assignedUsers.push(dni)
                         tempCuartil.usersToAssign.push(dni)
                         tempGroup.users.push(dni)

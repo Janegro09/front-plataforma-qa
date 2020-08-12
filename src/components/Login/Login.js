@@ -72,7 +72,7 @@ export default class Login extends Component {
                         username: '',
                         password: '',
                         wrongValidations: true,
-                        errorMessage: err.response.data.Message
+                        errorMessage: err.response ? err.response.data.Message : ""
                     })
                     console.warn(err)
                 });

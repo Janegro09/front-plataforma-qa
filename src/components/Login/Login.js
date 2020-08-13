@@ -105,7 +105,7 @@ export default class Login extends Component {
 
                             <span className="form-highlight"></span>
                             <span className="form-bar"></span>
-                            <label htmlFor="username" className="float-label">login</label>
+                            <label htmlFor="username" className="float-label">usuario</label>
                         </div>
 
                         <div id="form-login-password" className="form-group">
@@ -119,7 +119,7 @@ export default class Login extends Component {
 
                             <span className="form-highlight"></span>
                             <span className="form-bar"></span>
-                            <label htmlFor="password" className="float-label">password</label>
+                            <label htmlFor="password" className="float-label">contraseña</label>
                         </div>
 {/* 
                         <ReCAPTCHA
@@ -134,7 +134,7 @@ export default class Login extends Component {
                         /> */}
                         <div>
                             {/* Para deshabilitar el botón con el captcha agregarle disabled={!this.state["g-recaptcha-response"]} */}
-                            <button  className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Sign in</button>
+                            <button  className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Entrar</button>
                         </div>
                     </form>
                     {this.state.errorMessage !== '' &&

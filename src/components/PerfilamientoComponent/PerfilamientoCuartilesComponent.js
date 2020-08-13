@@ -63,6 +63,17 @@ export default class PerfilamientoCuartilesComponent extends Component {
                     VMax: (temp.Q3.VMax - temp.Q1.VMax) / 2
                 }
             }
+        } else if (!obj.VMax && !obj.VMin) {
+            temp.Q1 = {
+                VMax: fila.DefaultValues.Q1.VMax,
+                VMin: fila.VMin
+            }
+            temp.Q2 = {
+                VMax: fila.DefaultValues.Q2.VMax
+            }
+            temp.Q3 = {
+                VMax: fila.DefaultValues.Q3.VMax
+            }
         }
 
         let indice = -1
@@ -103,7 +114,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
         };
 
         // PARAMETROS REQUERIDOS, SOLO PASSWORD
-        const bodyParameters = result
+        const bodyParameters = result;
 
         axios.post(Global.reasignProgram + '/' + id + '/cuartiles', bodyParameters, config)
             .then(response => {
@@ -152,7 +163,9 @@ export default class PerfilamientoCuartilesComponent extends Component {
         axios.get(Global.reasignProgram + '/' + id + '/columns', { headers: { Authorization: bearer } }).then(response => {
             // sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             const { Data } = response.data;
+
             this.setState({ nombreColumnas: Data, dataFiltered: Data });
+
             let token2 = response.data.loggedUser.token
             axios.get(Global.reasignProgram + '/' + id + '/cuartiles', { headers: { Authorization: `Bearer ${token2}` } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));

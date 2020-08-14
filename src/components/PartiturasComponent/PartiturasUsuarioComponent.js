@@ -251,9 +251,12 @@ export default class PartiturasUsuarioComponent extends Component {
                                                     v.steps.map(s => (
                                                         <span key={s.id}>
                                                             <Checkbox
-                                                                onChange={() => {
-                                                                    this.modificarEstado(s.id);
-                                                                }}
+                                                                onClick={
+                                                                    (e) => {
+                                                                        e.preventDefault();
+                                                                        this.goToStep(s.id);
+                                                                    }
+                                                                }
                                                                 defaultChecked={s.completed} />
                                                             <p onClick={(e) => {
                                                                 e.preventDefault();

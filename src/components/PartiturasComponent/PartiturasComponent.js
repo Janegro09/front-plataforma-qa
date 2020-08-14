@@ -195,29 +195,31 @@ export default class PartiturasComponent extends Component {
 
                 <div className="section-content">
 
-                    {!withoutPartitures &&
-                        <>
-                            <h4>PARTITURAS</h4>
-                            <hr />
-                            <br />
-                            <div className="flex-input-add">
-                                <input onChange={this.buscar} className="form-control" placeholder="Buscar por nombre de archivo" />
-                                {HELPER_FUNCTIONS.checkPermission('POST|analytics/partitures/new') &&
-                                    <button className="addItem morph"
-                                        onClick={
-                                            (e) => {
-                                                e.preventDefault();
-                                                this.crearPartitura();
-                                            }
-                                        }
-                                    >
-                                        <AddIcon className="svgAddButton" style={{ fontSize: 33 }} />
 
-                                    </button>
-                                }
-                            </div>
-                        </>
-                    }
+                    <>
+                        <h4>PARTITURAS</h4>
+                        <hr />
+                        <br />
+                        <div className="flex-input-add">
+                            {!withoutPartitures &&
+                                < input onChange={this.buscar} className="form-control" placeholder="Buscar por nombre de archivo" />
+                            }
+                            {HELPER_FUNCTIONS.checkPermission('POST|analytics/partitures/new') &&
+                                <button className="addItem morph"
+                                    onClick={
+                                        (e) => {
+                                            e.preventDefault();
+                                            this.crearPartitura();
+                                        }
+                                    }
+                                >
+                                    <AddIcon className="svgAddButton" style={{ fontSize: 33 }} />
+
+                                </button>
+                            }
+                        </div>
+                    </>
+
 
                     {withoutPartitures &&
                         <div className="alert alert-warning">No hay partituras para mostrar</div>

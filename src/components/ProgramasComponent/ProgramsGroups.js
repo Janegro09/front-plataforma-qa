@@ -5,6 +5,7 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import SiderBarLeft from '../SidebarLeft/SiderbarLeft'
 import ProgramsGroupComponent from './ProgramsGroupComponent'
 import Logo from '../Home/logo_background.png';
+import UserAdminHeader from '../Users/userAdminHeader/userAdminHeader';
 
 export default class ProgramsGroups extends Component {
 
@@ -27,6 +28,7 @@ export default class ProgramsGroups extends Component {
                     <img src={Logo} alt="" title="Logo" className="logoFixed" />
                 </div>
                 <SiderBarLeft />
+                <UserAdminHeader />
 
                 <div className="section-content" id="gruposProgSection">
                     <h4>GRUPOS DE PROGRAMA</h4>

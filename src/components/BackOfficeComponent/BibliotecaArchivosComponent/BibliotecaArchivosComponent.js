@@ -17,7 +17,8 @@ export default class BibliotecaArchivosComponent extends Component {
             seccionSeleccionada: "filesLibraryPartitures",
             loading: false,
             respuesta: null,
-            selectedFile: null
+            selectedFile: null,
+            errorMessage: ''
         }
     }
 
@@ -128,9 +129,9 @@ export default class BibliotecaArchivosComponent extends Component {
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
-                        loading: false
+                        loading: false,
+                        errorMessage: e.response.data.Message
                     })
-                    swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
             });
@@ -141,7 +142,7 @@ export default class BibliotecaArchivosComponent extends Component {
     }
 
     render() {
-        let { seccionSeleccionada, respuesta, loading } = this.state;
+        let { seccionSeleccionada, respuesta, loading, errorMessage } = this.state;
         return (
             <div>
                 { loading &&
@@ -167,6 +168,7 @@ export default class BibliotecaArchivosComponent extends Component {
                     <h4>BIBLIOTECA DE ARCHIVOS</h4>
                     <hr />
                     <br />
+
                     {seccionSeleccionada &&
                         <select onChange={(e) => {
                             e.preventDefault();
@@ -175,6 +177,10 @@ export default class BibliotecaArchivosComponent extends Component {
                         }} defaultValue={seccionSeleccionada}>
                             <option value="filesLibraryPartitures">Librería de archivos partitura</option>
                         </select>
+                    }
+                    
+                    {errorMessage &&
+                        <div className="alert alert-warning">{errorMessage}</div>
                     }
 
                     {respuesta &&

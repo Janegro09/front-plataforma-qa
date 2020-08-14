@@ -15,9 +15,7 @@ import SelectGroupCreate from './SelectGroupCreate'
 import SelectGroupEdit from './SelectGroupEdit'
 import SelectGroupParent from './SelectGroupParent'
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight';
-import TableParentProgram from './TableParentProgram';
-
-
+import UserAdminHeader from '../Users/userAdminHeader/userAdminHeader';
 
 export default class GroupsTable extends Component {
     constructor(props) {
@@ -604,6 +602,7 @@ export default class GroupsTable extends Component {
                     <img src={Logo} alt="" title="Logo" className="logoFixed" />
                 </div>
                 <SiderBarLeft />
+                <UserAdminHeader />
 
                 <div className="BtnInProgramas"> <button><a href="#programasSection">Programas</a></button> <hr></hr><button><a href="#gruposProgSection">Grupos</a></button></div>
 

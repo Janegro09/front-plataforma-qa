@@ -25,7 +25,8 @@ export default class PartiturasComponent extends Component {
             idSpecific: '',
             modalAgregar: false,
             filtredData: null,
-            orderedData: null
+            orderedData: null,
+            withoutPartitures: false
         }
     }
 
@@ -160,9 +161,9 @@ export default class PartiturasComponent extends Component {
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
-                        loading: false
+                        loading: false,
+                        withoutPartitures: true
                     })
-                    swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
             });
@@ -170,7 +171,7 @@ export default class PartiturasComponent extends Component {
     }
 
     render() {
-        let { allPartitures, loading, specific, idSpecific, modalAgregar, filtredData } = this.state;
+        let { allPartitures, loading, specific, idSpecific, modalAgregar, filtredData, withoutPartitures } = this.state;
 
         if (specific) {
             return <Redirect to={`/partituras/${idSpecific}`} />
@@ -193,25 +194,34 @@ export default class PartiturasComponent extends Component {
                 }
 
                 <div className="section-content">
-                    <h4>PARTITURAS</h4>
-                    <hr />
-                    <br />
-                    <div className="flex-input-add">
-                        <input onChange={this.buscar} className="form-control" placeholder="Buscar por nombre de archivo" />
-                        {HELPER_FUNCTIONS.checkPermission('POST|analytics/partitures/new') &&
-                            <button className="addItem morph"
-                                onClick={
-                                    (e) => {
-                                        e.preventDefault();
-                                        this.crearPartitura();
-                                    }
-                                }
-                            >
-                                <AddIcon className="svgAddButton" style={{ fontSize: 33 }} />
 
-                            </button>
-                        }
-                    </div>
+                    {!withoutPartitures &&
+                        <>
+                            <h4>PARTITURAS</h4>
+                            <hr />
+                            <br />
+                            <div className="flex-input-add">
+                                <input onChange={this.buscar} className="form-control" placeholder="Buscar por nombre de archivo" />
+                                {HELPER_FUNCTIONS.checkPermission('POST|analytics/partitures/new') &&
+                                    <button className="addItem morph"
+                                        onClick={
+                                            (e) => {
+                                                e.preventDefault();
+                                                this.crearPartitura();
+                                            }
+                                        }
+                                    >
+                                        <AddIcon className="svgAddButton" style={{ fontSize: 33 }} />
+
+                                    </button>
+                                }
+                            </div>
+                        </>
+                    }
+
+                    {withoutPartitures &&
+                        <div className="alert alert-warning">No hay partituras para mostrar</div>
+                    }
                     {allPartitures !== null &&
                         <table>
                             <thead>
@@ -264,7 +274,7 @@ export default class PartiturasComponent extends Component {
                                                             }
                                                         }
                                                     >
-                                                        <DeleteIcon style={{ fontSize: 15 }}/>
+                                                        <DeleteIcon style={{ fontSize: 15 }} />
                                                     </button>
                                                 }
                                                 {!HELPER_FUNCTIONS.checkPermission('DELETE|analytics/partitures/:id') &&
@@ -284,7 +294,7 @@ export default class PartiturasComponent extends Component {
                         </table>
                     }
                 </div>
-            </div>
+            </div >
         )
     }
 }

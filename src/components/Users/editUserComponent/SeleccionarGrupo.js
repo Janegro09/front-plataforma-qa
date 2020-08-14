@@ -16,7 +16,8 @@ export default class SeleccionarGrupo extends Component {
             valueInput: "",
             groupsToShow: 10,
             allSelected: false,
-            seleccionados: []
+            seleccionados: [],
+            seleccionadosToShow: 10
         };
     }
 
@@ -134,7 +135,7 @@ export default class SeleccionarGrupo extends Component {
     }
 
     render() {
-        const { groupSelect, groupsToShow, valueInput, allSelected, seleccionados } = this.state;
+        const { groupSelect, groupsToShow, valueInput, allSelected, seleccionados, seleccionadosToShow } = this.state;
 
         this.props.getValue(this.state.groupsToSend)
 
@@ -184,21 +185,41 @@ export default class SeleccionarGrupo extends Component {
                         Has seleccionado todos los grupos
                     </p>
                 }
-
                 {!allSelected && seleccionados.length > 0 &&
-                    <div>
-                        Grupos agregados:
-                        <ul>
+                    <table className="table table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col" className="text-center">Grupos agregados</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             {
-                                seleccionados.map(seleccionado => {
+                                seleccionados.slice(0, seleccionadosToShow).map(seleccionado => {
                                     return (
-                                        <li key={seleccionado}>{seleccionado}</li>
+                                        <tr>
+                                            <td key={seleccionado}>{seleccionado}</td>
+                                        </tr>
                                     )
                                 })
                             }
-
-                        </ul>
-                    </div>
+                            {seleccionados.length > 0 &&
+                                <tr>
+                                    <td> 
+                                        <button 
+                                            className="btn btn-primary" 
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                this.setState(prevState => {
+                                                    return {seleccionadosToShow: prevState.seleccionadosToShow + 5}
+                                                })
+                                            }}>
+                                            Ver más
+                                        </button> 
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 }
 
                 {groupSelect &&

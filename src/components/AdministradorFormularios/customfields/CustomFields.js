@@ -121,6 +121,7 @@ export default class CustomFields extends Component {
             <>
                 {print &&
                     print.map(value => {
+                        console.log(value)
                         return (
                             <>
                                 <label className="main">{value.name}</label>
@@ -131,7 +132,7 @@ export default class CustomFields extends Component {
                                             this.changeValues(e, value);
                                         }} />
                                     }
-                                    {value.type === 'textarea' &&
+                                    {value.type === 'area' &&
                                         <textarea disabled={disabled} className="textarea" cols="30" rows="10" required={value.required} name={value.sectionName} />
                                     }
                                     {value.type === 'select' &&

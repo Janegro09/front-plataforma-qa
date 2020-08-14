@@ -9,6 +9,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChangePassword from '../../changePassword/ChangePassword'
 
 export default class UserTable extends Component {
     constructor(props) {
@@ -203,7 +204,7 @@ export default class UserTable extends Component {
     render() {
         const allUsers = this.state.searchedUsers
         let pagina = this.getUsersPage(this.state.actualPage, allUsers)
-        let {totalDisplayed} = this.state
+        let { totalDisplayed } = this.state
         let totalUsuarios = pagina.total
         let botones = []
 
@@ -318,6 +319,7 @@ export default class UserTable extends Component {
                                     this.ascDesc("razonSocial")
                                 }}>Empresa</th>
                                 <th>Sector</th>
+                                <th>Cambiar contraseña</th>
                                 <th className="tableIcons">Estado</th>
                                 <th className="tableIcons">Editar</th>
                                 <th className="tableIcons">Eliminar</th>
@@ -337,6 +339,9 @@ export default class UserTable extends Component {
                                             <td>{user.legajo}</td>
                                             <td>{user.razonSocial}</td>
                                             <td>{user.equipoEspecifico}</td>
+                                            <td>
+                                                <ChangePassword user={user} />
+                                            </td>
                                             <td className="tablaVariables"><div className={` ${!user.userActive ? "estadoInactivo " : 'estadoActivo'}`}></div></td>
                                             {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
                                                 <td id="child" className="celdaBtnHover" onClick={e => this.editUser(e, user)}><EditIcon style={{ fontSize: 15 }} /></td>
@@ -358,11 +363,11 @@ export default class UserTable extends Component {
                         </tbody>
                     </table>
                     <div
-                            id="ver-mas-grupos"
-                            className="ver-mas"
-                            onClick={() => this.showMore()}
-                        >
-                            <ExpandMoreIcon />
+                        id="ver-mas-grupos"
+                        className="ver-mas"
+                        onClick={() => this.showMore()}
+                    >
+                        <ExpandMoreIcon />
                     </div>
 
                     {/* <div className="botones">
@@ -390,7 +395,7 @@ export default class UserTable extends Component {
                         <div className="cantUsuarios">Cantidad de usuarios: {this.state.allUsers.length}</div>
                     } */}
                 </div>
-                
+
             </div>
         )
     }

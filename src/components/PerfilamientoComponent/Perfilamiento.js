@@ -26,6 +26,7 @@ export default class Perfilamiento extends Component {
             agregarPerfilamiento: false,
             cuartiles: false,
             cuartilSeleccionado: null,
+            nameCuartilSelected: '',
             perfilamientos: false,
             loading: false,
             totalDisplayed: 15
@@ -212,7 +213,8 @@ export default class Perfilamiento extends Component {
             return <Redirect
                 to={{
                     pathname: '/perfilamiento/cuartiles',
-                    cuartilSeleccionado: cuartilSeleccionado.id
+                    cuartilSeleccionado: cuartilSeleccionado.id,
+                    nameCuartilSelected: cuartilSeleccionado.name
                 }}
             />
         }
@@ -221,7 +223,8 @@ export default class Perfilamiento extends Component {
             return <Redirect
                 to={{
                     pathname: '/perfilamiento/perfilamientos',
-                    cuartilSeleccionado: cuartilSeleccionado.id
+                    cuartilSeleccionado: cuartilSeleccionado.id,
+                    nameCuartilSelected: cuartilSeleccionado.name
                 }}
             />
         }

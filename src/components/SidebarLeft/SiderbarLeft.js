@@ -24,11 +24,7 @@ export default class SiderbarLeft extends Component {
     }
 
     render() {
-
-        let viewBackoffice = false;
-
         return (
-
             <div className="side__bar">
                 <div className="side__bar_container side__bar_inverse">
                     <ul className="parent__menu_holder side__bar_inverse">
@@ -79,11 +75,6 @@ export default class SiderbarLeft extends Component {
                                 </span>
                             </li>
                         }
-                        {/* PERFILAMIENTO */}
-                        {/* {HELPER_FUNCTIONS.checkPermissionGroup("") &&
-                            <li className="nameMenu"><NavLink to="/perfilamiento" activeClassName="active"><GroupWorkIcon className="IconoMenu" /></NavLink>Perfilamiento
-                            </li>
-                        } */}
                         {/* ANALYTICS */}
                         {HELPER_FUNCTIONS.checkPermissionGroup("analytics") &&
                             <li className="nameMenu">

@@ -135,9 +135,6 @@ export default class SeleccionarGrupo extends Component {
 
     render() {
         const { groupSelect, groupsToShow, valueInput, allSelected, seleccionados } = this.state;
-        groupSelect.map(g => {
-            console.log(g);
-        });
 
         this.props.getValue(this.state.groupsToSend)
 

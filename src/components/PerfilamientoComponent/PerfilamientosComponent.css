@@ -102,16 +102,23 @@
     border-radius: 3px;
 }
 
+.cuartilesHide {
+    display: none;
+}
+
 .cuartiles {
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-start;
     align-items: flex-start;
+    margin-top: 20px;
+    border-top: 1px solid #e2e2e2;
+    padding-top: 20px;
 }
 
 .cuartiles .cuartil {
     background-color: #efefef;
-    -webkit-box-shadow: 3px -2px 6px 1px #0000000d;
+    /* -webkit-box-shadow: 3px -2px 6px 1px #0000000d; */
     width: 150px;
     padding: 5px;
     text-align: center;

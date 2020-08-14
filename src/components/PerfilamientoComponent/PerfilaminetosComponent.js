@@ -256,8 +256,8 @@ export default class PerfilaminetosComponent extends Component {
         let necessaryMatch = cuartiles.length;
         let matchs = 0;
 
-        for(let c of cuartiles) {
-            if(c.users.includes(userId)) {
+        for (let c of cuartiles) {
+            if (c.users.includes(userId)) {
                 matchs++
             }
         }
@@ -286,7 +286,7 @@ export default class PerfilaminetosComponent extends Component {
             }
             let cuartilesWithUsers = [];
 
-            for(let crt of oldGroup.cuartiles) {
+            for (let crt of oldGroup.cuartiles) {
                 let tempData = {
                     name: crt.name,
                     users: []
@@ -536,6 +536,7 @@ export default class PerfilaminetosComponent extends Component {
 
     render() {
         let { cuartiles, grupos, allUsers, assignedUsers, redirect, id, redirectCuartiles, loading } = this.state;
+        let { nameCuartilSelected } = this.props.location;
 
         if (redirect) {
             return <Redirect to="/perfilamiento" />
@@ -545,7 +546,8 @@ export default class PerfilaminetosComponent extends Component {
             return <Redirect
                 to={{
                     pathname: '/perfilamiento/cuartiles',
-                    cuartilSeleccionado: id
+                    cuartilSeleccionado: id,
+                    nameCuartilSelected: nameCuartilSelected
                 }} />
         }
 
@@ -557,6 +559,9 @@ export default class PerfilaminetosComponent extends Component {
                 <SideBarLeft />
 
                 <div className="section-content">
+                    {nameCuartilSelected &&
+                        <div className="alert alert-primary">{nameCuartilSelected}</div>
+                    }
                     <h6 className="titulo-seccion">Grupos</h6>
                     <div className="headerResultados">
                         {cuartiles.length > 0 &&
@@ -580,7 +585,6 @@ export default class PerfilaminetosComponent extends Component {
                     </div>
 
                     <div className="grupos">
-                        {/*  */}
                         {grupos &&
                             grupos.map((v, key) => {
                                 return (

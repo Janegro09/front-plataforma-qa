@@ -214,6 +214,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
     render() {
 
         const { nombreColumnas, dataFiltered, redirect, result, id, redirectPerfilamientos, loading } = this.state;
+        let { nameCuartilSelected } = this.props.location;
 
         if (redirect) {
             return <Redirect to="/perfilamiento" />
@@ -223,7 +224,8 @@ export default class PerfilamientoCuartilesComponent extends Component {
             return <Redirect
                 to={{
                     pathname: '/perfilamiento/perfilamientos',
-                    cuartilSeleccionado: id
+                    cuartilSeleccionado: id,
+                    nameCuartilSelected: nameCuartilSelected
                 }} />
         }
 
@@ -237,6 +239,9 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 <SideBarLeft />
 
                 <div className="section-content">
+                    {nameCuartilSelected &&
+                        <div className="alert alert-primary">{nameCuartilSelected}</div>
+                    }
                     <button onClick={this.enviar} className="buttonSiguiente">Guardar</button>
                     <button onClick={(e) => {
                         e.preventDefault();

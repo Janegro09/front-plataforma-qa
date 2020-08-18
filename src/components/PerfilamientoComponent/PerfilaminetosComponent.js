@@ -174,7 +174,7 @@ export default class PerfilaminetosComponent extends Component {
             id: parseInt(Date.now() * Math.random()),
             name: `Nuevo grupo ${grupos.length + 1}`,
             applyAllUsers: false,
-            cluster: "Convergente",
+            cluster: '',
             users: [],
             cuartiles: []
         }
@@ -407,7 +407,10 @@ export default class PerfilaminetosComponent extends Component {
                 cuartilAssign: []
             }
 
-
+            if (tempData.cluster === '') {
+                swal("Error", "Debes seleccionar un cluster", "error");
+                return false;
+            }
 
             group.cuartiles.map(v => {
                 let Q = parseInt(v.level[1])
@@ -612,6 +615,7 @@ export default class PerfilaminetosComponent extends Component {
                                                 }}
                                                 value={v.cluster}
                                             >
+                                                <option value="">Selecciona...</option>
                                                 <option value="Convergente">Convergente</option>
                                                 <option value="Mantenimiento">Mantenimiento</option>
                                                 <option value="Benchmark">Benchmark</option>

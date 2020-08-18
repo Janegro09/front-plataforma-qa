@@ -572,7 +572,7 @@ export default class StepName extends Component {
                                             <div className="uploadAudioMon">
 
                                                 {step.requestedMonitorings - contadorAudios > 0 &&
-                                                    <select value={this.state.value} onChange={this.handleChange} disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'}>
+                                                    <select value={this.state.value} onChange={this.handleChange} disabled={this.state.role === 'REPRESENTANTE'}>
                                                         <option value="-">Selecciona...</option>
                                                         <option value="file">Audio</option>
                                                         <option value="message">Mensaje</option>
@@ -606,25 +606,25 @@ export default class StepName extends Component {
                                             </div>
 
                                             <label htmlFor="ddt">Detalle de transacción / Oportunidades indentificadas</label>
-                                            <textarea disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'} className="textarea" name="detalleTransaccion" id="ddt" cols="30" rows="10" defaultValue={step.detalleTransaccion} onChange={this.armarObjeto}></textarea>
+                                            <textarea disabled={this.state.role === 'REPRESENTANTE'} className="textarea" name="detalleTransaccion" id="ddt" cols="30" rows="10" defaultValue={step.detalleTransaccion} onChange={this.armarObjeto}></textarea>
 
                                             <label htmlFor="cr">Causa Raíz / Descripción del patrón a mejorar</label>
-                                            <textarea disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'} className="textarea" name="patronMejora" id="cr" cols="30" rows="10" defaultValue={step.patronMejora} onChange={
+                                            <textarea disabled={this.state.role === 'REPRESENTANTE'} className="textarea" name="patronMejora" id="cr" cols="30" rows="10" defaultValue={step.patronMejora} onChange={
                                                 this.armarObjeto
                                             }
                                             ></textarea>
 
                                             <label htmlFor="cdr">Compromiso del representante</label>
-                                            <textarea disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'} className="textarea" name="compromisoRepresentante" id="cdr" cols="30" rows="10" defaultValue={step.compromisoRepresentante} onChange={
+                                            <textarea disabled={this.state.role === 'REPRESENTANTE'} className="textarea" name="compromisoRepresentante" id="cdr" cols="30" rows="10" defaultValue={step.compromisoRepresentante} onChange={
                                                 this.armarObjeto
                                             }></textarea>
                                             <label htmlFor="cdr">Resultados del representante</label>
-                                            <textarea disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'} className="textarea" name="resultadosRepresentante" id="rp" cols="30" rows="10" defaultValue={step.resultadosRepresentante} onChange={
+                                            <textarea disabled={this.state.role === 'REPRESENTANTE'} className="textarea" name="resultadosRepresentante" id="rp" cols="30" rows="10" defaultValue={step.resultadosRepresentante} onChange={
                                                 this.armarObjeto
                                             }></textarea>
                                             <div className="margin-top-20"></div>
                                             <label htmlFor="imp">Improvment</label>
-                                            <select name="improvment" id="imp" defaultValue={step.improvment} disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'}
+                                            <select name="improvment" id="imp" defaultValue={step.improvment} disabled={this.state.role === 'REPRESENTANTE'}
                                                 onChange={
                                                     this.armarObjeto
                                                 }>

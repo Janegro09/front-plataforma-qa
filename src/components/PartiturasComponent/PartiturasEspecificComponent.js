@@ -233,6 +233,7 @@ export default class PartiturasEspecificComponent extends Component {
                                     >
                                         Cluster
                                     </th>
+                                    <th>Grupo asignado</th>
                                     <th
                                         onClick={(e) => {
                                             e.preventDefault();
@@ -275,6 +276,7 @@ export default class PartiturasEspecificComponent extends Component {
                                                     return <p key={data.date}>{moment(data.date).format("DD/MM/YYYY")} - {data.section} - {data.user}<br /></p>
                                                 })}</td>
                                                 <td>{user.cluster}</td>
+                                                <td>{data.grupoAssigned}</td>
                                                 <td>{user.responsable}</td>
                                                 <td>{user.lider}</td>
                                                 <td className="tableIcons">{(user.partitureStatus === 'pending' ? <TimerIcon className="timerIcon" /> : (user.partitureStatus === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon className="PlayArrowRoundedIcon" />))}</td>

@@ -395,17 +395,19 @@ export default class PerfilaminetosComponent extends Component {
 
     enviarModificacion = (e) => {
         e.preventDefault();
-        const { grupos, id } = this.state
+        const { grupos, id } = this.state;
         let dataSend = []
         // Preparamos el array para enviar con un for para enviarlos ordenados
         for (let i = 0; i < grupos.length; i++) {
             const group = grupos[i];
             let tempData = {
                 name: group.name.trim(),
-                assignAllUsers: group.applyAllUsers,
+                AssignAllUsers: group.applyAllUsers,
                 cluster: group.cluster,
                 cuartilAssign: []
             }
+
+
 
             group.cuartiles.map(v => {
                 let Q = parseInt(v.level[1])
@@ -424,6 +426,9 @@ export default class PerfilaminetosComponent extends Component {
                 dataSend.push(tempData)
             }
         }
+
+        // console.log(dataSend);
+        // debugger;
 
 
         swal(`¿Esta seguro que desea modificar el perfilamiento?: `)
@@ -587,6 +592,7 @@ export default class PerfilaminetosComponent extends Component {
                     <div className="grupos">
                         {grupos &&
                             grupos.map((v, key) => {
+                                console.log(v)
                                 return (
                                     <div className="grupoPerfilamiento" id={key} key={key} draggable onDragStart={this.dragStartG} onDragOver={this.dragOverG} onDragEnd={this.dragEndG}>
                                         <p>Usuarios asignados: {v.users.length} - {Math.ceil((v.users.length / allUsers.length) * 100)}%</p>
@@ -595,7 +601,7 @@ export default class PerfilaminetosComponent extends Component {
                                             <label>Aplicar al 100% de los usuarios.
                                                 <input type="checkbox" id="aplicarall" onChange={() => {
                                                     this.updateAssign(v.id)
-                                                }} ref={e => this.assignAllUsers = e} />
+                                                }} ref={e => this.assignAllUsers = e} defaultChecked={v.applyAllUsers} />
                                             </label>
 
                                             <select
@@ -604,7 +610,7 @@ export default class PerfilaminetosComponent extends Component {
                                                     e.preventDefault();
                                                     this.changeSelect(v.id)
                                                 }}
-                                                defaultValue={v.cluster}
+                                                value={v.cluster}
                                             >
                                                 <option value="Convergente">Convergente</option>
                                                 <option value="Mantenimiento">Mantenimiento</option>

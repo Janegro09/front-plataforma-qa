@@ -110,7 +110,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
     }
 
     guardarModel = () => {
-        let { modelSelected, modelsOfCuartiles, result } = this.state;
+        let { modelSelected, result } = this.state;
         let modelName = document.getElementById('model-name').value;
         console.log('modelSelected', modelSelected)
         if (modelName.trim() === '') {
@@ -183,7 +183,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
     }
 
     selectModels = (e) => {
-        let { modelSelected, modelsOfCuartiles, result, nameModelSelected } = this.state;
+        let { modelSelected, modelsOfCuartiles, result } = this.state;
         let idModelSelected = e.target.value;
 
         if (idModelSelected.trim()) {

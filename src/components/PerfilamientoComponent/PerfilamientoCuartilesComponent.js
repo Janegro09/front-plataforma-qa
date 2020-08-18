@@ -19,7 +19,12 @@ export default class PerfilamientoCuartilesComponent extends Component {
             redirect: false,
             id: null,
             redirectPerfilamientos: false,
-            loading: false
+            loading: false,
+            name: '',
+            values: '',
+            modelsOfCuartiles: [],
+            modelSelected: {},
+            nameModelSelected: ''
         }
     }
 
@@ -104,6 +109,103 @@ export default class PerfilamientoCuartilesComponent extends Component {
         });
     }
 
+    guardarModel = () => {
+        let { modelSelected, modelsOfCuartiles, result } = this.state;
+        let modelName = document.getElementById('model-name').value;
+        console.log('modelSelected', modelSelected)
+        if (modelName.trim() === '') {
+            swal("Atención", "No se puede enviar un nombre vacío", "info").then(() => {
+                this.componentDidMount();
+            })
+        } else {
+            result = JSON.stringify(result);
+            let token = JSON.parse(sessionStorage.getItem('token'))
+            const config = {
+                headers: { Authorization: `Bearer ${token}` }
+            };
+
+            const bodyParameters = {
+                name: modelName,
+                values: result
+            }
+
+            if (Object.keys(modelSelected).length > 0) {
+                axios.put(Global.newModel + '/' + modelSelected._id, bodyParameters, config)
+                    .then(response => {
+                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                        if (response.data.Success) {
+                            swal("Felicidades!", "Se ha modificado el modelo correctamente", "success").then(() => {
+                                this.componentDidMount();
+                            })
+                        }
+
+                    })
+                    .catch(e => {
+                        if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                            HELPER_FUNCTIONS.logout()
+                        } else {
+                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                            swal("Atención", "No se ha creado el modelo", "info");
+                            this.setState({
+                                redirect: true
+                            })
+                        }
+                        console.log("Error: ", e)
+                    })
+            } else {
+                axios.post(Global.newModel, bodyParameters, config)
+                    .then(response => {
+                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                        if (response.data.Success) {
+                            swal("Felicidades!", "Se ha creado el modelo correctamente", "success").then(() => {
+                                this.componentDidMount();
+                            })
+                        }
+
+                    })
+                    .catch(e => {
+                        if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                            HELPER_FUNCTIONS.logout()
+                        } else {
+                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                            swal("Atención", "No se ha creado el modelo", "info");
+                            this.setState({
+                                redirect: true
+                            })
+                        }
+                        console.log("Error: ", e)
+                    })
+            }
+
+
+        }
+
+    }
+
+    selectModels = (e) => {
+        let { modelSelected, modelsOfCuartiles, result, nameModelSelected } = this.state;
+        let idModelSelected = e.target.value;
+
+        if (idModelSelected.trim()) {
+            modelSelected = modelsOfCuartiles.find(element => element._id === idModelSelected);
+            if (modelSelected) {
+                result = JSON.parse(modelSelected.values);
+                this.setState({
+                    result,
+                    modelSelected,
+                    nameModelSelected: modelSelected.name
+                })
+            }
+        } else {
+            this.setState({
+                result: [],
+                modelSelected: {},
+                nameModelSelected: ''
+            })
+        }
+
+    }
+
     enviar = (e) => {
         e.preventDefault();
         const { id, result } = this.state;
@@ -121,6 +223,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 if (response.data.Success) {
                     swal("Felicidades!", "Cuartiles modificados!", "success").then(() => {
+                        console.log(response.data);
                         window.location.reload(window.location.href);
                     })
                 } else {
@@ -168,7 +271,8 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
             let token2 = response.data.loggedUser.token
             axios.get(Global.reasignProgram + '/' + id + '/cuartiles', { headers: { Authorization: `Bearer ${token2}` } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                // sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                let token3 = response.data.loggedUser.token
                 let final = [];
                 let result = response.data.Data.cuartiles
                 for (let index = 0; index < result.length; index++) {
@@ -192,10 +296,18 @@ export default class PerfilamientoCuartilesComponent extends Component {
                     }
                     final.push(temp)
                 }
-                this.setState({
-                    result: final,
-                    loading: false
+                axios.get(Global.newModel, { headers: { Authorization: `Bearer ${token3}` } }).then(response => {
+                    sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                    console.log('ALFREDOOO: ', response.data);
+                    this.setState({
+                        result: final,
+                        loading: false,
+                        modelsOfCuartiles: response.data.Data || []
+                    })
+
+
                 })
+
             })
         })
             .catch((e) => {
@@ -213,8 +325,10 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
     render() {
 
-        const { nombreColumnas, dataFiltered, redirect, result, id, redirectPerfilamientos, loading } = this.state;
+        const { nombreColumnas, dataFiltered, redirect, result, id, redirectPerfilamientos, loading, modelsOfCuartiles, nameModelSelected } = this.state;
         let { nameCuartilSelected } = this.props.location;
+
+        console.log('en el render: ', modelsOfCuartiles);
 
         if (redirect) {
             return <Redirect to="/perfilamiento" />
@@ -240,7 +354,33 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
                 <div className="section-content">
                     {nameCuartilSelected &&
-                        <div className="alert alert-primary">{nameCuartilSelected}</div>
+                        <>
+                            {modelsOfCuartiles &&
+                                <select onChange={this.selectModels}>
+                                    <option value="">Selecciona...</option>
+                                    {modelsOfCuartiles.map(cuartil => {
+                                        return (
+                                            <option value={cuartil._id} key={cuartil._id}>{cuartil.name}</option>
+                                        )
+                                    })
+
+                                    }
+                                </select>
+                            }
+                            <input id="model-name" type="text" placeholder="Nombre del modelo" defaultValue={nameModelSelected} />
+                            <button
+                                className="btn btn-primary"
+                                onClick={
+                                    (e) => {
+                                        e.preventDefault();
+                                        this.guardarModel();
+                                    }
+                                }
+                            >
+                                Guardar
+                            </button>
+                            <div className="alert alert-primary">{nameCuartilSelected}</div>
+                        </>
                     }
                     <button onClick={this.enviar} className="buttonSiguiente">Guardar</button>
                     <button onClick={(e) => {

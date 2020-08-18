@@ -27,6 +27,7 @@ let Global = {
     getAllPartitures: `${BASE}/analytics/partitures`,
     getAllPartituresModel: `${BASE}/analytics/partituresModels`,
     exportsDatabase: `${BASE}/backoffice/exports`,
+    newModel: `${BASE}/analytics/cuartilesModels`,
 }
 
 export default Global;

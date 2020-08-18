@@ -618,6 +618,10 @@ export default class StepName extends Component {
                                             <textarea disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'} className="textarea" name="compromisoRepresentante" id="cdr" cols="30" rows="10" defaultValue={step.compromisoRepresentante} onChange={
                                                 this.armarObjeto
                                             }></textarea>
+                                            <label htmlFor="cdr">Resultados del representante</label>
+                                            <textarea disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'} className="textarea" name="resultadosRepresentante" id="rp" cols="30" rows="10" defaultValue={step.resultadosRepresentante} onChange={
+                                                this.armarObjeto
+                                            }></textarea>
                                             <div className="margin-top-20"></div>
                                             <label htmlFor="imp">Improvment</label>
                                             <select name="improvment" id="imp" defaultValue={step.improvment} disabled={this.state.role !== 'LIDER' && this.state.role !== 'ADMINISTRATOR'}

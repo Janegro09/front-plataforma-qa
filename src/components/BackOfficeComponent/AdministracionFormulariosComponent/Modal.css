@@ -35,7 +35,7 @@
 .formulario {
     display: flex;
     flex-direction: column;
-    padding: 22px;
+    padding: 22px 22px 50px 22px;
     height: 530px;
     justify-content: space-around;
 }

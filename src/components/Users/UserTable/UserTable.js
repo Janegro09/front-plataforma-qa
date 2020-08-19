@@ -319,8 +319,8 @@ export default class UserTable extends Component {
                                     this.ascDesc("razonSocial")
                                 }}>Empresa</th>
                                 <th>Sector</th>
-                                <th>Cambiar contraseña</th>
                                 <th className="tableIcons">Estado</th>
+                                <th className="tableIcons">Cambiar contraseña</th>
                                 <th className="tableIcons">Editar</th>
                                 <th className="tableIcons">Eliminar</th>
                             </tr>
@@ -339,12 +339,12 @@ export default class UserTable extends Component {
                                             <td>{user.legajo}</td>
                                             <td>{user.razonSocial}</td>
                                             <td>{user.equipoEspecifico}</td>
+                                            <td className="tablaVariables"><div className={` ${!user.userActive ? "estadoInactivo " : 'estadoActivo'}`}></div></td>
                                             {HELPER_FUNCTIONS.checkPermission('POST|users/passchange/:id') &&
                                                 <td>
                                                     <ChangePassword user={user} />
                                                 </td>
                                             }
-                                            <td className="tablaVariables"><div className={` ${!user.userActive ? "estadoInactivo " : 'estadoActivo'}`}></div></td>
                                             {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
                                                 <td id="child" className="celdaBtnHover" onClick={e => this.editUser(e, user)}><EditIcon style={{ fontSize: 15 }} /></td>
                                             }

@@ -31,16 +31,26 @@ export default class PerfilamientoCuartilesComponent extends Component {
     buscar = () => {
         const { nombreColumnas } = this.state
         let searched = this.searched.value.toLowerCase()
-        const result = nombreColumnas.filter(word => word.columnName.toLowerCase().includes(searched));
 
-        this.setState({
-            dataFiltered: result
-        })
+        if (searched) {
+            const result = nombreColumnas.filter(word => word.columnName.toLowerCase().includes(searched));
+            this.setState({
+                dataFiltered: result
+            })
+        } else {
+            this.setState({
+                dataFiltered: nombreColumnas
+            })
+        }
+
+
     }
 
     seleccionarFila = (fila, orden, obj = {}) => {
         let { result } = this.state;
-
+        console.log(fila)
+        console.log(orden)
+        console.log(obj)
         let temp = {
             "QName": fila.columnName,
             "Qorder": orden,
@@ -264,14 +274,12 @@ export default class PerfilamientoCuartilesComponent extends Component {
         const bearer = `Bearer ${token}`
 
         axios.get(Global.reasignProgram + '/' + id + '/columns', { headers: { Authorization: bearer } }).then(response => {
-            // sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             const { Data } = response.data;
 
             this.setState({ nombreColumnas: Data, dataFiltered: Data });
 
             let token2 = response.data.loggedUser.token
             axios.get(Global.reasignProgram + '/' + id + '/cuartiles', { headers: { Authorization: `Bearer ${token2}` } }).then(response => {
-                // sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                 let token3 = response.data.loggedUser.token
                 let final = [];
                 let result = response.data.Data.cuartiles
@@ -298,14 +306,11 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 }
                 axios.get(Global.newModel, { headers: { Authorization: `Bearer ${token3}` } }).then(response => {
                     sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                    console.log('ALFREDOOO: ', response.data);
                     this.setState({
                         result: final,
                         loading: false,
                         modelsOfCuartiles: response.data.Data || []
                     })
-
-
                 })
 
             })
@@ -417,9 +422,10 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
                                             return true;
                                         })
+                                        console.log('e: ', exists)
 
                                         return (
-                                            <tr key={key}>
+                                            <tr key={columna.columnName}>
                                                 <td>{columna.columnName}</td>
                                                 <td>{`[${columna.VMin} - ${columna.VMax}]`}</td>
                                                 <td>
@@ -436,7 +442,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                     // defaultValue={exists.Qorder ? 'ASC' : 'DESC'}
                                                     >
                                                         <option value="DESC">DESC</option>
-                                                        <option value="ASC" selected={exists.Qorder && exists.Qorder === 'ASC'}>ASC</option>
+                                                        <option value="ASC" defaultValue={exists.Qorder && exists.Qorder === 'ASC'}>ASC</option>
                                                     </select>
                                                 </td>
                                                 <td>

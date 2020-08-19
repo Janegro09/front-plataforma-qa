@@ -353,7 +353,10 @@ export default class GroupsTable extends Component {
         let { userSelected } = this.state;
         let { selected } = this.state;
         selected = selected ? selected = event.target.value : null;
-        userSelected.section = selected
+
+        if (userSelected) {
+            userSelected.section = selected;
+        }
 
         this.turno = event.target.value;
         this.setState({ selected, userSelected });
@@ -783,7 +786,7 @@ export default class GroupsTable extends Component {
                                 <span className="Label">Parent program</span>
 
                                 {/* <TableParentProgram getValue={(c) => this.parentProgram = c} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''}/> */}
-                                <SelectGroupParent getValue={(c) => this.parentProgram = c} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''}/>
+                                <SelectGroupParent getValue={(c) => this.parentProgram = c} defaultValue={this.state.allPrograms ? this.state.allPrograms : ''} />
 
                                 <span className="Label">Section</span>
                                 <select onChange={this.handleTurno}>

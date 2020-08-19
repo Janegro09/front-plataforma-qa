@@ -128,7 +128,7 @@ export default class CustomFields extends Component {
 
                                 <div className="contenedor-checkbox">
                                     {value.type === 'text' &&
-                                        <input disabled={disabled} type="text" required={value.required} name={value.sectionName} value={value.defaultValue} onChange={(e) => {
+                                        <input disabled={disabled} type="text" required={value.required} className="form-control" name={value.sectionName} value={value.defaultValue} onChange={(e) => {
                                             this.changeValues(e, value);
                                         }} />
                                     }

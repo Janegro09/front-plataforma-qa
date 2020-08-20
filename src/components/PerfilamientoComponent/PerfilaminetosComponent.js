@@ -273,7 +273,7 @@ export default class PerfilaminetosComponent extends Component {
     reasignUsers = (g = false) => {
         // Reasignamos todos los cuartiles
         let { grupos, cuartiles } = this.state
-        if(g) {
+        if (g) {
             grupos = g;
         }
         let newAssign = {
@@ -489,7 +489,7 @@ export default class PerfilaminetosComponent extends Component {
             values: []
         }
 
-        for(let g of grupos) {
+        for (let g of grupos) {
             let tempData = {
                 applyAllUsers: g.applyAllUsers,
                 cluster: g.cluster,
@@ -497,7 +497,7 @@ export default class PerfilaminetosComponent extends Component {
                 cuartiles: []
             }
 
-            for(let c of g.cuartiles) {
+            for (let c of g.cuartiles) {
                 tempData.cuartiles.push({ name: c.name, level: c.level })
             }
 
@@ -510,7 +510,7 @@ export default class PerfilaminetosComponent extends Component {
         let token = tokenUser
         let bearer = `Bearer ${token}`;
         this.setState({ loading: true });
-        let response = await axios.post(Global.perfilamientosModel, modelSend ,{ headers: { Authorization: bearer }});
+        let response = await axios.post(Global.perfilamientosModel, modelSend, { headers: { Authorization: bearer } });
         sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         this.setState({ loading: false })
         swal('Excelente', "Modelo guardado correctamente", "success")
@@ -546,7 +546,7 @@ export default class PerfilaminetosComponent extends Component {
 
                 axios.get(Global.perfilamientosModel, { headers: { Authorization: bearer } }).then(response => {
 
-                   let perfilamientosModel = response.data.Data;
+                    let perfilamientosModel = response.data.Data;
                     sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
                     this.setState({
@@ -556,13 +556,13 @@ export default class PerfilaminetosComponent extends Component {
                         loading: false,
                         models: perfilamientosModel
                     });
-    
+
                     if (c) {
                         // Creamos los grupos existentes en orden
                         for (let i = 0; i < c.length; i++) {
                             const r = c[i]
                             let cuartiles = []
-    
+
                             r.cuartilAssign.map(c => {
                                 cuartiles.push({
                                     name: c.cuartil,
@@ -571,7 +571,7 @@ export default class PerfilaminetosComponent extends Component {
                                 })
                                 return true;
                             })
-    
+
                             this.agregarGrupo({
                                 id: parseInt(Date.now() * Math.random()),
                                 name: r.name,
@@ -579,10 +579,10 @@ export default class PerfilaminetosComponent extends Component {
                                 cluster: r.cluster,
                                 cuartiles
                             })
-    
+
                         }
-    
-    
+
+
                         this.reasignUsers();
                     }
                 })
@@ -597,13 +597,13 @@ export default class PerfilaminetosComponent extends Component {
     modelChange = (e) => {
         const { id, value } = e.target;
         let { modeloSelected, models, grupos } = this.state
-        if(id === "modelSelected") {
+        if (id === "modelSelected") {
             // Cambiamos el modelo seleccionado
             modeloSelected = models.find(element => element.name === value);
             grupos = JSON.parse(modeloSelected.values);
             this.setState({ modeloSelected })
             this.reasignUsers(grupos);
-        } else if(id === "modelName"){
+        } else if (id === "modelName") {
             // Modificamos el nombre del modelo
             modeloSelected.name = value;
             this.setState({ modeloSelected })
@@ -649,7 +649,7 @@ export default class PerfilaminetosComponent extends Component {
                                 })
                             }
                         </select>
-                        <input id="modelName" value={modeloSelected.name} onChange={this.modelChange}/>
+                        <input id="modelName" value={modeloSelected.name} onChange={this.modelChange} />
 
                         {!modeloSelected.values &&
                             <button className="btn" onClick={this.guardarModelo}>Guardar</button>
@@ -687,9 +687,9 @@ export default class PerfilaminetosComponent extends Component {
 
                     <div className="grupos">
                         {grupos &&
-                            grupos.map((v, key) => {
+                            grupos.map((v) => {
                                 return (
-                                    <div className="grupoPerfilamiento" id={key} key={key} draggable onDragStart={this.dragStartG} onDragOver={this.dragOverG} onDragEnd={this.dragEndG}>
+                                    <div className="grupoPerfilamiento" id={v.id} key={v.id} draggable onDragStart={this.dragStartG} onDragOver={this.dragOverG} onDragEnd={this.dragEndG}>
                                         <p>Usuarios asignados: {v.users.length} - {Math.ceil((v.users.length / allUsers.length) * 100)}%</p>
                                         <div className="acciones">
                                             <input className="form-control" type="text" value={v.name} onChange={(e) => this.changeName(v.id)} id={v.id} />

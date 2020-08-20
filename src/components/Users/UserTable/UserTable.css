@@ -16,23 +16,7 @@
 
 
 
-#child {
 
-opacity: 0;
-}
-#child2 {
-
-  opacity: 0;
-}
-#parent:hover #child { /* this works */
-    
-  opacity: 1;
-}
-
-#parent:hover #child2 { /* this works */
-    
-  opacity: 1;
-}
 
 
 td {

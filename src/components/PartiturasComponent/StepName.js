@@ -588,7 +588,7 @@ export default class StepName extends Component {
                                                 }
 
                                                 {value === 'message' &&
-                                                    <input type="text" placeholder="Mensaje explicando el porque no pudo cargar audios" name="" id="texto" />
+                                                    <input type="text" className="form-control" placeholder="Mensaje explicando el porque no pudo cargar audios" name="" id="texto" />
                                                 }
 
                                                 {value !== '-' &&

@@ -47,8 +47,9 @@ class SelectGroup extends Component {
     }
 
     render() {
-        let options = this.state.groupSelect
-        this.props.getValue(this.state.groupsToSend)
+        let options = this.state.groupSelect;
+        this.props.getValue(this.state.groupsToSend);
+        
         return (
             <Select
                 isMulti
@@ -57,6 +58,7 @@ class SelectGroup extends Component {
                 className="basic-multi-select"
                 classNamePrefix="select"
                 closeMenuOnSelect={false}
+                onChange={this.handleInputChange}
             />
         );
     }

@@ -14,7 +14,8 @@ export default class RecordAudio extends Component {
         isRecording: false,
         blobURL: '',
         isBlocked: false,
-        dataSend: null
+        dataSend: null,
+        stopRec: false
     }
 
     componentDidMount() {
@@ -41,8 +42,8 @@ export default class RecordAudio extends Component {
 
     send = (file) => {
         let formData = new FormData();
-        formData.append( 'file', file )
-        
+        formData.append('file', file)
+
         let { id, idStep, idUsuario } = this.props.ids;
 
         // /analytics/partitures/:id/:userId/:stepId/files?section=monitorings
@@ -74,33 +75,42 @@ export default class RecordAudio extends Component {
             .getMp3()
             .then(([buffer, blob]) => {
                 const blobURL = URL.createObjectURL(blob)
-                const dataSend = new Blob( [blob], {
+                const dataSend = new Blob([blob], {
                     type: 'audio/mp3'
 
-                } );
-                this.setState({ dataSend ,blobURL, isRecording: false });
+                });
+                this.setState({ dataSend, blobURL, isRecording: false, stopRec: true });
             }).catch((e) => console.log(e));
     };
 
     render() {
-        const { dataSend } = this.state;
+        const { dataSend, isRecording, stopRec } = this.state;
         return (
             <div className="recordSection">
                 <audio src={this.state.blobURL} controls="controls" type="audio/mp3" id="audio" />
                 <div className='mainButtons'>
-                    <button className="controlButtons green" onClick={this.start} disabled={this.state.isRecording}>
-                        Grabar
-                    </button>
-                    <button className="controlButtons red" onClick={this.stop} disabled={!this.state.isRecording}>
-                        Parar
-                    </button>
+                    {!isRecording &&
+                        <button className="controlButtons green" onClick={this.start} disabled={this.state.isRecording}>
+                            Grabar
+                        </button>
+                    }
+
+                    {isRecording &&
+                        <button className="controlButtons red" onClick={this.stop} disabled={!this.state.isRecording}>
+                            Parar
+                         </button>
+                    }
                 </div>
-                <button className="controlButtons" onClick={(e) => {
-                    e.preventDefault();
-                    this.send(dataSend);
-                }} disabled={!dataSend}>
-                    Enviar
-                </button>
+
+                {stopRec && !isRecording &&
+                    <button className="controlButtons" onClick={(e) => {
+                        e.preventDefault();
+                        this.send(dataSend);
+                    }} disabled={!dataSend}>
+                        Enviar
+                    </button>
+                }
+                
 
             </div>
         )

@@ -513,7 +513,43 @@ export default class PerfilaminetosComponent extends Component {
         let response = await axios.post(Global.perfilamientosModel, modelSend, { headers: { Authorization: bearer } });
         sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         this.setState({ loading: false })
-        swal('Excelente', "Modelo guardado correctamente", "success")
+        swal('Excelente', "Modelo guardado correctamente", "success");
+        this.componentDidMount();
+    }
+
+    edit = async () => {
+        const { modeloSelected, grupos } = this.state;
+        let modelSend = {
+            name: modeloSelected.name,
+            values: []
+        }
+
+        for (let g of grupos) {
+            let tempData = {
+                applyAllUsers: g.applyAllUsers,
+                cluster: g.cluster,
+                name: g.name,
+                cuartiles: []
+            }
+
+            for (let c of g.cuartiles) {
+                tempData.cuartiles.push({ name: c.name, level: c.level })
+            }
+
+            modelSend.values.push(tempData);
+        }
+
+        modelSend.values = JSON.stringify(modelSend.values);
+
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let token = tokenUser
+        let bearer = `Bearer ${token}`;
+        this.setState({ loading: true });
+        let response = await axios.put(Global.perfilamientosModel + '/' + this.state.modeloSelected._id, modelSend, { headers: { Authorization: bearer } });
+        sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+        this.setState({ loading: false })
+        swal('Excelente', "Modelo modificado correctamente", "success")
+        this.componentDidMount();
     }
 
     componentDidMount() {
@@ -657,7 +693,15 @@ export default class PerfilaminetosComponent extends Component {
                         }
 
                         {modeloSelected.values &&
-                            <button className="btn">Modificar</button>
+                            <button 
+                                className="btn"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    this.edit();
+                                }}
+                            >
+                                Modificar
+                            </button>
 
                         }
 

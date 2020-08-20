@@ -634,11 +634,23 @@ export default class PerfilaminetosComponent extends Component {
         const { id, value } = e.target;
         let { modeloSelected, models, grupos } = this.state
         if (id === "modelSelected") {
-            // Cambiamos el modelo seleccionado
-            modeloSelected = models.find(element => element.name === value);
-            grupos = JSON.parse(modeloSelected.values);
-            this.setState({ modeloSelected })
-            this.reasignUsers(grupos);
+            if (value === '') {
+                // Cambiamos el modelo seleccionado
+                modeloSelected = {
+                    name: '',
+                    values: ''
+                };
+                grupos = [];
+                this.setState({ modeloSelected })
+                this.reasignUsers(grupos);
+            } else {
+                // Cambiamos el modelo seleccionado
+                modeloSelected = models.find(element => element.name === value);
+                grupos = JSON.parse(modeloSelected.values);
+                this.setState({ modeloSelected })
+                this.reasignUsers(grupos);
+            }
+
         } else if (id === "modelName") {
             // Modificamos el nombre del modelo
             modeloSelected.name = value;
@@ -677,6 +689,7 @@ export default class PerfilaminetosComponent extends Component {
                     }
                     <div className="modelosDePlantillas">
                         <select id="modelSelected" onChange={this.modelChange}>
+                            <option value="">Selecciona...</option>
                             {models &&
                                 models.map((v, i) => {
                                     return (
@@ -732,74 +745,75 @@ export default class PerfilaminetosComponent extends Component {
                     <div className="grupos">
                         {grupos &&
                             grupos.map((v) => {
-                                return (
-                                    <div className="grupoPerfilamiento" id={v.id} key={v.id} draggable onDragStart={this.dragStartG} onDragOver={this.dragOverG} onDragEnd={this.dragEndG}>
-                                        <p>Usuarios asignados: {v.users.length} - {Math.ceil((v.users.length / allUsers.length) * 100)}%</p>
-                                        <div className="acciones">
-                                            <input className="form-control" type="text" value={v.name} onChange={(e) => this.changeName(v.id)} id={v.id} />
-                                            <label>Aplicar al 100% de los usuarios.
-                                                <input type="checkbox" id="aplicarall" onChange={() => {
-                                                    this.updateAssign(v.id)
-                                                }} ref={e => this.assignAllUsers = e} defaultChecked={v.applyAllUsers} />
-                                            </label>
-
-                                            <select
-                                                ref={e => this.select = e}
-                                                onChange={(e) => {
+                                if (v) {                                  
+                                    return (
+                                        <div className="grupoPerfilamiento" id={v.id} key={v.id} draggable onDragStart={this.dragStartG} onDragOver={this.dragOverG} onDragEnd={this.dragEndG}>
+                                            <p>Usuarios asignados: {v.users.length} - {Math.ceil((v.users.length / allUsers.length) * 100)}%</p>
+                                            <div className="acciones">
+                                                <input className="form-control" type="text" value={v.name} onChange={(e) => this.changeName(v.id)} id={v.id} />
+                                                <label>Aplicar al 100% de los usuarios.
+                                                    <input type="checkbox" id="aplicarall" onChange={() => {
+                                                        this.updateAssign(v.id)
+                                                    }} ref={e => this.assignAllUsers = e} checked={v.applyAllUsers} />
+                                                </label>
+    
+                                                <select
+                                                    ref={e => this.select = e}
+                                                    onChange={(e) => {
+                                                        e.preventDefault();
+                                                        this.changeSelect(v.id)
+                                                    }}
+                                                    value={v.cluster}
+                                                >
+                                                    <option value="">Selecciona...</option>
+                                                    <option value="Mantenimiento">Mantenimiento</option>
+                                                    <option value="Benchmark">Benchmark</option>
+                                                    <option value="Comportamental">Comportamental</option>
+                                                    <option value="Sustentable">Sustentable</option>
+                                                    <option value="Desarrollo">Desarrollo</option>
+                                                </select>
+                                                <button onClick={(e) => {
                                                     e.preventDefault();
-                                                    this.changeSelect(v.id)
-                                                }}
-                                                value={v.cluster}
-                                            >
-                                                <option value="">Selecciona...</option>
-                                                <option value="Convergente">Convergente</option>
-                                                <option value="Mantenimiento">Mantenimiento</option>
-                                                <option value="Benchmark">Benchmark</option>
-                                                <option value="Comportamental">Comportamental</option>
-                                                <option value="Sustentable">Sustentable</option>
-                                                <option value="Desarrollo">Desarrollo</option>
-                                            </select>
-                                            <button onClick={(e) => {
-                                                e.preventDefault();
-                                                this.eliminarGrupo(v.id)
-                                            }}> <DeleteIcon /></button>
+                                                    this.eliminarGrupo(v.id)
+                                                }}> <DeleteIcon /></button>
+                                            </div>
+                                            <div className="cuartilesAsignados" onDrop={(e) => this.onDrop(e, v.name)} onDragOver={(e) => e.preventDefault()}>
+                                                {v.cuartiles &&
+                                                    v.cuartiles.map((value, key) => {
+                                                        let claseColor = ""
+                                                        switch (value.level) {
+                                                            case 'Q1':
+                                                                claseColor = 'green';
+                                                                break;
+                                                            case 'Q2':
+                                                                claseColor = 'yellow';
+                                                                break;
+                                                            case 'Q3':
+                                                                claseColor = 'orange';
+                                                                break;
+                                                            case 'Q4':
+                                                                claseColor = 'red';
+                                                                break;
+                                                            default:
+                                                                claseColor = 'gray';
+                                                                break;
+    
+                                                        }
+                                                        return (
+                                                            <span className={claseColor} key={key}>
+                                                                <p>{`${value.name} - ${value.level}`}</p>
+                                                                <button onClick={(e) => { e.preventDefault(); this.eliminarCuartil(v.name, value.name, value.level) }}>x</button>
+                                                            </span>
+                                                        )
+                                                    })
+    
+                                                }
+                                                {/* 
+                                                </span> */}
+                                            </div>
                                         </div>
-                                        <div className="cuartilesAsignados" onDrop={(e) => this.onDrop(e, v.name)} onDragOver={(e) => e.preventDefault()}>
-                                            {v.cuartiles &&
-                                                v.cuartiles.map((value, key) => {
-                                                    let claseColor = ""
-                                                    switch (value.level) {
-                                                        case 'Q1':
-                                                            claseColor = 'green';
-                                                            break;
-                                                        case 'Q2':
-                                                            claseColor = 'yellow';
-                                                            break;
-                                                        case 'Q3':
-                                                            claseColor = 'orange';
-                                                            break;
-                                                        case 'Q4':
-                                                            claseColor = 'red';
-                                                            break;
-                                                        default:
-                                                            claseColor = 'gray';
-                                                            break;
-
-                                                    }
-                                                    return (
-                                                        <span className={claseColor} key={key}>
-                                                            <p>{`${value.name} - ${value.level}`}</p>
-                                                            <button onClick={(e) => { e.preventDefault(); this.eliminarCuartil(v.name, value.name, value.level) }}>x</button>
-                                                        </span>
-                                                    )
-                                                })
-
-                                            }
-                                            {/* 
-                                            </span> */}
-                                        </div>
-                                    </div>
-                                )
+                                    )
+                                }
                             })
 
                         }

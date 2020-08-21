@@ -8,17 +8,17 @@
     justify-content: center;
     align-items: center;
     z-index: 10000;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .hijo {
     width: 35%;
     height: auto;
-    /* max-height: 400px; */
-    overflow-y: auto;
     background-color: white;
     color: black;
-    position: relative;
+    min-width: 330px;
+    border-radius: 5px;
+    max-height: 700px;
 }
 
 .boton-cerrar {
@@ -32,11 +32,7 @@
     width: -webkit-fill-available;
 }
 
-.hijo > table {
+.hijo>table {
     margin: 15px;
     width: -webkit-fill-available;
-}
-
-.uploadPerfilamiento {
-    
 }

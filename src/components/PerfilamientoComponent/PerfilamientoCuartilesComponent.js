@@ -24,7 +24,8 @@ export default class PerfilamientoCuartilesComponent extends Component {
             values: '',
             modelsOfCuartiles: [],
             modelSelected: {},
-            nameModelSelected: ''
+            nameModelSelected: '',
+            used: []
         }
     }
 
@@ -46,11 +47,12 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
     }
 
-    seleccionarFila = (fila, orden, obj = {}) => {
-        let { result } = this.state;
-        console.log(fila)
-        console.log(orden)
-        console.log(obj)
+    seleccionarFila = (fila, orden, obj = {}, exists) => {
+        let { result, used } = this.state;
+        if (exists) {  
+            used.push(exists);
+        }
+
         let temp = {
             "QName": fila.columnName,
             "Qorder": orden,
@@ -79,16 +81,14 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 }
             }
         } else if (!obj.VMax && !obj.VMin) {
-            temp.Q1 = {
-                VMax: fila.DefaultValues.Q1.VMax,
-                VMin: fila.VMin
-            }
-            temp.Q2 = {
-                VMax: fila.DefaultValues.Q2.VMax
-            }
-            temp.Q3 = {
-                VMax: fila.DefaultValues.Q3.VMax
-            }
+            used.map(e => {
+                if (temp.QName === e.QName) {
+                    temp.Q1 = e.Q1;
+                    temp.Q2 = e.Q2;
+                    temp.Q3 = e.Q3;
+                    temp.Q4 = e.Q4;
+                }
+            })
         }
 
         let indice = -1
@@ -101,12 +101,15 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
         if (indice === -1) {
             this.setState({
-                result: [...result, temp]
+                result: [...result, temp],
+                used
             })
-        } else {
+        }
+        else {
             result.splice(indice, 1);
             this.setState({
-                result
+                result,
+                used
             })
         }
 
@@ -122,7 +125,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
     guardarModel = () => {
         let { modelSelected, result } = this.state;
         let modelName = document.getElementById('model-name').value;
-        console.log('modelSelected', modelSelected)
+
         if (modelName.trim() === '') {
             swal("Atención", "No se puede enviar un nombre vacío", "info").then(() => {
                 this.componentDidMount();
@@ -233,7 +236,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 if (response.data.Success) {
                     swal("Felicidades!", "Cuartiles modificados!", "success").then(() => {
-                        console.log(response.data);
                         window.location.reload(window.location.href);
                     })
                 } else {
@@ -333,8 +335,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
         const { nombreColumnas, dataFiltered, redirect, result, id, redirectPerfilamientos, loading, modelsOfCuartiles, nameModelSelected } = this.state;
         let { nameCuartilSelected } = this.props.location;
 
-        console.log('en el render: ', modelsOfCuartiles);
-
         if (redirect) {
             return <Redirect to="/perfilamiento" />
         }
@@ -422,7 +422,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
                                             return true;
                                         })
-                                        console.log('e: ', exists)
 
                                         return (
                                             <tr key={columna.columnName}>
@@ -455,7 +454,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                             let element = document.getElementById("VMin" + key);
                                                             obj.VMin = parseFloat(element.value)
                                                         }}
-                                                        defaultValue={exists !== '' ? exists.Q1.VMax : ''}
+                                                        defaultValue={exists?.Q1 ? exists.Q1.VMax : ''}
                                                         disabled={exists !== ''}
                                                     />
                                                 </td>
@@ -506,7 +505,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                                 document.getElementById("VMax" + key).disabled = true;
                                                                 document.getElementById(key).disabled = true;
                                                             }
-                                                            this.seleccionarFila(columna, orden, obj);
+                                                            this.seleccionarFila(columna, orden, obj, exists);
                                                         }}
                                                     />
                                                 </td>

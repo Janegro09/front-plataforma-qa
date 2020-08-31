@@ -168,9 +168,10 @@ export default class AdministracionFormulariosComponent extends Component {
                                                 }
                                                 {form.values.length > 0 &&
                                                     form.values.map((value, key) => {
+                                                        console.log(value);
                                                         return (
                                                             <div key={key}>
-                                                                {value}
+                                                                {value.value}
                                                             </div>
                                                         )
                                                     })

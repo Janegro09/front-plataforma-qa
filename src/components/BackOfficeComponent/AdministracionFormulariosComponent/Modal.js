@@ -180,9 +180,9 @@ export default class Modal extends Component {
 
                 for (let i of respuesta.values) {
                     if (!valueArray) {
-                        valueArray = i;
+                        valueArray = i.value;
                     } else {
-                        valueArray += `, ${i}`;
+                        valueArray += `, ${i.value}`;
                     }
                 }
 

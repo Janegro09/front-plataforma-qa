@@ -406,7 +406,7 @@ export default class StepName extends Component {
         data = data ? data[0] : null;
 
         if (volver) {
-            return <Redirect to={'/partituras/' + this.props.match.params.id} />
+            return <Redirect to={'/partituras/' + this.props.match.params.id + '/' + this.props.match.params.idUsuario} />
         }
 
         let contadorAudios = 0;

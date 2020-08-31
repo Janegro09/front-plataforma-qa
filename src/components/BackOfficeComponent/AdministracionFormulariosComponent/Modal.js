@@ -12,15 +12,28 @@ export default class Modal extends Component {
         this.state = {
             id: null,
             value: '',
-            valueArray: '',
+            valueArray: [],
             valueSelect: 'text',
             valueSelectMP: 'P',
             valueSelectPerfilamiento: 'RESP',
             esRequerido: true,
+            esCalibrable: false,
             formato: '',
             descripcion: '',
-            loading: false
+            loading: false,
+            allForms: null
         };
+    }
+
+    handleChangecustomFieldsSync = (e) => {
+        let { value, id } = e.target;
+        let { valueArray } = this.state;
+        for(let v of valueArray) {
+            if(v.value === id && v.customFieldsSync !== undefined && value) {
+                v.customFieldsSync = value;
+            }
+        }
+        this.setState({ valueArray })
     }
 
     cerrarModal = () => {
@@ -40,9 +53,9 @@ export default class Modal extends Component {
         this.setState({ descripcion: event.target.value });
     }
 
-    handleChangeArray = (event) => {
-        this.setState({ valueArray: event.target.value });
-    }
+    // handleChangeArray = (event) => {
+    //     this.setState({ valueArray: event.target.value });
+    // }
 
     handleChangeSelect = (event) => {
         this.setState({ valueSelect: event.target.value });
@@ -62,10 +75,16 @@ export default class Modal extends Component {
         this.setState({ esRequerido: condicional });
     }
 
+    handleChangeCalibrable = (event) => {
+        let { esCalibrable } = this.state;
+        let condicional = esCalibrable ? false : true
+        this.setState({ esCalibrable: condicional });
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
         let error = false;
-        let { id, esRequerido, value, valueArray, valueSelect, valueSelectMP, valueSelectPerfilamiento, formato, descripcion } = this.state;
+        let { id, esRequerido, value, valueArray, esCalibrable, valueSelect, valueSelectMP, valueSelectPerfilamiento, formato, descripcion } = this.state;
 
         // Validaciones
         if (!value) {
@@ -86,22 +105,15 @@ export default class Modal extends Component {
         let bodyParameters = {
             "name": value,
             "type": valueSelect,
-            "values": [],
+            "values": valueArray,
             "required": esRequerido,
             "format": formato,
             "description": descripcion,
             "section": valueSelectMP,
-            "subsection": valueSelectPerfilamiento
+            "subsection": valueSelectPerfilamiento,
+            "calibrable": esCalibrable
         }
 
-        if (valueArray) {
-            let temp = valueArray.split(',');
-
-            for (let item of temp) {
-                item = item.trim();
-                bodyParameters.values.push(item)
-            }
-        }
 
         // Hacer rekes
         this.setState({
@@ -162,64 +174,140 @@ export default class Modal extends Component {
 
     componentDidMount() {
         let { idEditar } = this.props;
+        
 
-        if (idEditar) {
-            // Hacer rekes a get specifi
-            this.setState({
-                loading: true
-            })
+        this.setState({
+            loading: true
+        })
 
-            const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-            const token = tokenUser
-            const bearer = `Bearer ${token}`
-            axios.get(Global.getAllForms + '/' + idEditar, { headers: { Authorization: bearer } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                let respuesta = response.data.Data[0];
-
-                let valueArray = '';
-
-                for (let i of respuesta.values) {
-                    if (!valueArray) {
-                        valueArray = i.value;
-                    } else {
-                        valueArray += `, ${i.value}`;
-                    }
-                }
-
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
+        axios.get(Global.getAllForms, { headers: { Authorization: bearer } }).then(response => {
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            
+            if (idEditar) {
                 this.setState({
-                    id: idEditar,
-                    loading: false,
-                    value: respuesta.name,
-                    valueSelect: respuesta.type,
-                    valueArray,
-                    esRequerido: respuesta.required,
-                    formato: respuesta.format,
-                    descripcion: respuesta.description,
-                    valueSelectMP: respuesta.section,
-                    valueSelectPerfilamiento: respuesta.subsection
+                    loading: true
                 })
+    
+                const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+                const token = tokenUser
+                const bearer = `Bearer ${token}`
+                axios.get(Global.getAllForms + '/' + idEditar, { headers: { Authorization: bearer } }).then(response => {
+                    sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+    
+                    console.log('reques: ', response.data);
+    
+                    let respuesta = response.data.Data[0];
+                    let valueArray = respuesta.values;
+    
+                    this.setState({
+                        id: idEditar,
+                        loading: false,
+                        value: respuesta.name,
+                        valueSelect: respuesta.type,
+                        valueArray,
+                        esRequerido: respuesta.required,
+                        esCalibrable: respuesta.calibrable,
+                        formato: respuesta.format,
+                        descripcion: respuesta.description,
+                        valueSelectMP: respuesta.section,
+                        valueSelectPerfilamiento: respuesta.subsection
+                    })
+    
+    
+    
+                })
+                    .catch((e) => {
+                        // Si hay algún error en el request lo deslogueamos
+                        if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                            HELPER_FUNCTIONS.logout()
+                        } else {
+                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                            this.setState({
+                                loading: false
+                            })
+                            swal("Error!", "Hubo un problema", "error");
+                        }
+                        console.log("Error: ", e)
+                    });
+            }
 
 
-
+            this.setState({
+                allForms: response.data.Data,
+                loading: false
             })
-                .catch((e) => {
-                    // Si hay algún error en el request lo deslogueamos
-                    if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                        HELPER_FUNCTIONS.logout()
+
+        })
+            .catch((e) => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    this.setState({
+                        loading: false
+                    })
+                    swal("Error!", "Hubo un problema", "error");
+                }
+                console.log("Error: ", e)
+            });
+
+    }
+
+    viewValues = (e) => {
+        const { value } = e.target;
+        let { valueArray } = this.state;
+
+        
+        if(value){
+            valueArray = [];
+            let values = value.split(',');
+            for(let v of values) {
+                if(v){
+                    let td = {}
+                    if(v.indexOf('#') === 0){
+                        // Quiere decir que es una condicion
+                        v = v.slice(1, v.length);
+                        td = {
+                            value: v,
+                            customFieldsSync: null
+                        }                    
                     } else {
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                        this.setState({
-                            loading: false
-                        })
-                        swal("Error!", "Hubo un problema", "error");
+                        td.value = v;
                     }
-                    console.log("Error: ", e)
-                });
+                    valueArray.push(td);
+                }
+            }
+
         }
+
+        this.setState({ valueArray })
+
+    }
+
+    convertArrayValues = (ArrayValues) => {
+        let Str = "";
+
+        for(let a of ArrayValues) {
+            let v = ""
+            console.log(a)
+            if(a.customFieldsSync){
+                v = `#`;
+            }
+            v += a.value
+
+            Str = Str ? Str + `, ${v}` : v;
+        }
+
+        return Str;
     }
 
     render() {
-        let { valueSelect, valueSelectMP } = this.state;
+        let { valueSelect, valueSelectMP, allForms, valueArray } = this.state;
+
+
         return (
             <div className="modal" id="modal-casero">
                 <div className="hijo">
@@ -249,27 +337,59 @@ export default class Modal extends Component {
                         {valueSelect && valueSelect !== 'text' && valueSelect !== 'area' &&
                             <>
                                 <label htmlFor="input1" className="label">Valores (opciones separadas con coma): *</label>
-                                <input className="form-control" type="text" id="input1" value={this.state.valueArray} onChange={this.handleChangeArray} required />
+                                <input className="form-control" type="text" defaultValue={this.convertArrayValues(valueArray)} id="input1" onBlur={this.viewValues} required />
                             </>
                         }
 
                         {valueSelect === 'text' &&
                             <>
                                 <label htmlFor="input2" className="label">Formato</label>
-                                <input className="form-control" type="text" id="input2" value={this.state.formato || '' } onChange={this.handleChangeFormato} />
+                                <input className="form-control" type="text" id="input2" value={this.state.formato || ''} onChange={this.handleChangeFormato} />
                             </>
                         }
                         <div className="flexContent">
-                        <input type="checkbox" name="esRequerido" checked={this.state.esRequerido} onChange={this.handleChangeRequired} id="checkbox" />
-                        <label htmlFor="checkbox" className="label">* ¿Es requerido? </label>
+                            <input type="checkbox" name="esRequerido" checked={this.state.esRequerido} onChange={this.handleChangeRequired} id="checkbox" />
+                            <label htmlFor="checkbox" className="label">* ¿Es requerido? </label>
                         </div>
                         <label htmlFor="descr" className="label">Descripcion: </label>
                         <input type="text" id="descr" placeholder="Descricpión" value={this.state.descripcion || ''} onChange={this.handleChangeDescripcion} />
-                        
+
                         <select value={this.state.valueSelectMP} onChange={this.handleChangeSelectMP}>
                             <option value="P">Perfilamiento</option>
                             <option value="M">Monitoreo</option>
                         </select>
+
+                        {(valueArray && valueSelect !== 'text' && valueSelect !== 'area') && this.state.valueSelectMP === 'M' &&
+                            <>
+
+                            <div className="flexContent">
+                                <input type="checkbox" name="esCalibrable" checked={this.state.esCalibrable} onChange={this.handleChangeCalibrable} id="checkbox" />
+                                <label htmlFor="checkbox" className="label">* ¿Es calibrable? </label>
+                            </div>
+                            {valueArray.map((v, i) => {
+                                if(v.customFieldsSync !== undefined && v.customFieldsSync !== null) {
+                                    return (
+                                        <div key={i}>
+                                            <small>Condicional para {v.value}</small>
+                                            <select id={v.value} value={v?.customFieldsSync[0]?.id} onChange={this.handleChangecustomFieldsSync}>
+                                                <option value="">Selecciona...</option>
+                                                {allForms &&
+                                                    allForms.map(form => {
+                                                        if(form.section === 'M' ) {
+                                                            return <option key={form.id} value={form.id}>{form.name}</option>
+                                                        }else {
+                                                            return true;
+                                                        }
+                                                    })
+                                                }
+                                            </select>
+                                        </div>
+                                    )
+                                }
+                            })
+                            }
+                            </>
+                        }
 
                         {valueSelectMP === 'P' &&
                             <select value={this.state.valueSelectPerfilamiento} onChange={this.handleChangeSelectPerfilamiento}>
@@ -280,7 +400,7 @@ export default class Modal extends Component {
                                 <option value="COACH">Coach</option>
                             </select>
                         }
-                        
+
                         <input className="inputGuardar" type="submit" value="Guardar" />
                     </form>
                 </div>

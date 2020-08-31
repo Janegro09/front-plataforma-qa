@@ -352,8 +352,8 @@ export default class Modal extends Component {
                             <label htmlFor="checkbox" className="label">* ¿Es requerido? </label>
                         </div>
                         <label htmlFor="descr" className="label">Descripcion: </label>
-                        <input type="text" id="descr" placeholder="Descricpión" value={this.state.descripcion || ''} onChange={this.handleChangeDescripcion} />
-
+                        <input className="form-control" type="text" id="descr" placeholder="Descricpión" value={this.state.descripcion || ''} onChange={this.handleChangeDescripcion} />
+                        
                         <select value={this.state.valueSelectMP} onChange={this.handleChangeSelectMP}>
                             <option value="P">Perfilamiento</option>
                             <option value="M">Monitoreo</option>

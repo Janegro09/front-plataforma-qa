@@ -28,8 +28,8 @@ export default class Modal extends Component {
     handleChangecustomFieldsSync = (e) => {
         let { value, id } = e.target;
         let { valueArray } = this.state;
-        for(let v of valueArray) {
-            if(v.value === id && v.customFieldsSync !== undefined && value) {
+        for (let v of valueArray) {
+            if (v.value === id && v.customFieldsSync !== undefined && value) {
                 v.customFieldsSync = value;
             }
         }
@@ -102,6 +102,8 @@ export default class Modal extends Component {
             return false;
         }
 
+        console.log('valueArray: ', valueArray);
+
         let bodyParameters = {
             "name": value,
             "type": valueSelect,
@@ -122,6 +124,9 @@ export default class Modal extends Component {
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
+
+        console.log(bodyParameters);
+        debugger;
 
         if (!id) {
             axios.post(Global.getAllForms + "/new", bodyParameters, { headers: { Authorization: bearer } })
@@ -174,7 +179,7 @@ export default class Modal extends Component {
 
     componentDidMount() {
         let { idEditar } = this.props;
-        
+
 
         this.setState({
             loading: true
@@ -185,23 +190,23 @@ export default class Modal extends Component {
         const bearer = `Bearer ${token}`
         axios.get(Global.getAllForms, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            
+
             if (idEditar) {
                 this.setState({
                     loading: true
                 })
-    
+
                 const tokenUser = JSON.parse(sessionStorage.getItem("token"))
                 const token = tokenUser
                 const bearer = `Bearer ${token}`
                 axios.get(Global.getAllForms + '/' + idEditar, { headers: { Authorization: bearer } }).then(response => {
                     sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-    
+
                     console.log('reques: ', response.data);
-    
+
                     let respuesta = response.data.Data[0];
                     let valueArray = respuesta.values;
-    
+
                     this.setState({
                         id: idEditar,
                         loading: false,
@@ -215,9 +220,9 @@ export default class Modal extends Component {
                         valueSelectMP: respuesta.section,
                         valueSelectPerfilamiento: respuesta.subsection
                     })
-    
-    
-    
+
+
+
                 })
                     .catch((e) => {
                         // Si hay algún error en el request lo deslogueamos
@@ -260,20 +265,20 @@ export default class Modal extends Component {
         const { value } = e.target;
         let { valueArray } = this.state;
 
-        
-        if(value){
+
+        if (value) {
             valueArray = [];
             let values = value.split(',');
-            for(let v of values) {
-                if(v){
+            for (let v of values) {
+                if (v) {
                     let td = {}
-                    if(v.indexOf('#') === 0){
+                    if (v.indexOf('#') === 0) {
                         // Quiere decir que es una condicion
                         v = v.slice(1, v.length);
                         td = {
                             value: v,
                             customFieldsSync: null
-                        }                    
+                        }
                     } else {
                         td.value = v;
                     }
@@ -290,10 +295,10 @@ export default class Modal extends Component {
     convertArrayValues = (ArrayValues) => {
         let Str = "";
 
-        for(let a of ArrayValues) {
+        for (let a of ArrayValues) {
             let v = ""
-            console.log(a)
-            if(a.customFieldsSync){
+            a.value = a.value.trim();
+            if (a.customFieldsSync) {
                 v = `#`;
             }
             v += a.value
@@ -353,7 +358,7 @@ export default class Modal extends Component {
                         </div>
                         <label htmlFor="descr" className="label">Descripcion: </label>
                         <input className="form-control" type="text" id="descr" placeholder="Descricpión" value={this.state.descripcion || ''} onChange={this.handleChangeDescripcion} />
-                        
+
                         <select value={this.state.valueSelectMP} onChange={this.handleChangeSelectMP}>
                             <option value="P">Perfilamiento</option>
                             <option value="M">Monitoreo</option>
@@ -362,32 +367,37 @@ export default class Modal extends Component {
                         {(valueArray && valueSelect !== 'text' && valueSelect !== 'area') && this.state.valueSelectMP === 'M' &&
                             <>
 
-                            <div className="flexContent">
-                                <input type="checkbox" name="esCalibrable" checked={this.state.esCalibrable} onChange={this.handleChangeCalibrable} id="checkbox" />
-                                <label htmlFor="checkbox" className="label">* ¿Es calibrable? </label>
-                            </div>
-                            {valueArray.map((v, i) => {
-                                if(v.customFieldsSync !== undefined && v.customFieldsSync !== null) {
-                                    return (
-                                        <div key={i}>
-                                            <small>Condicional para {v.value}</small>
-                                            <select id={v.value} value={v?.customFieldsSync[0]?.id} onChange={this.handleChangecustomFieldsSync}>
-                                                <option value="">Selecciona...</option>
-                                                {allForms &&
-                                                    allForms.map(form => {
-                                                        if(form.section === 'M' ) {
-                                                            return <option key={form.id} value={form.id}>{form.name}</option>
-                                                        }else {
-                                                            return true;
-                                                        }
-                                                    })
-                                                }
-                                            </select>
-                                        </div>
-                                    )
+                                <div className="flexContent">
+                                    <input type="checkbox" name="esCalibrable" checked={this.state.esCalibrable} onChange={this.handleChangeCalibrable} id="checkbox" />
+                                    <label htmlFor="checkbox" className="label">* ¿Es calibrable? </label>
+                                </div>
+                                {valueArray.map((v, i) => {
+                                    console.log('v: ', v)
+                                    if (v.customFieldsSync !== undefined) {
+                                        let defValue = '';
+                                        if (v.customFieldsSync?.length > 0) {
+                                            defValue = v.customFieldsSync[0].id
+                                        }
+                                        return (
+                                            <div key={i}>
+                                                <small>Condicional para {v.value}</small>
+                                                <select id={v.value} value={defValue} onChange={this.handleChangecustomFieldsSync}>
+                                                    <option value="">Selecciona...</option>
+                                                    {allForms &&
+                                                        allForms.map(form => {
+                                                            if (form.section === 'M') {
+                                                                return <option key={form.id} value={form.id}>{form.name}</option>
+                                                            } else {
+                                                                return true;
+                                                            }
+                                                        })
+                                                    }
+                                                </select>
+                                            </div>
+                                        )
+                                    }
+                                })
                                 }
-                            })
-                            }
                             </>
                         }
 

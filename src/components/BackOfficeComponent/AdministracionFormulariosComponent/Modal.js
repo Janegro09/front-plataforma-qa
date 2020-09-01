@@ -77,7 +77,7 @@ export default class Modal extends Component {
 
     handleChangeCalibrable = (event) => {
         let { esCalibrable } = this.state;
-        let condicional = esCalibrable ? false : true
+        let condicional = !esCalibrable;
         this.setState({ esCalibrable: condicional });
     }
 

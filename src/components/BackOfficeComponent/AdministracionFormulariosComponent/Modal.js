@@ -81,6 +81,29 @@ export default class Modal extends Component {
         this.setState({ esCalibrable: condicional });
     }
 
+    separateIds = (valueArray) => {
+
+        let temp = [];
+        valueArray.map(value => {
+
+            if (value.value.includes("#")) {
+                value.value = value.value.slice(1, value.value.length);
+            }
+
+            let objTemp = {
+                value: value.value
+            }
+            if (value.customFieldsSync) {
+                objTemp = { ...objTemp, customFieldsSync: value.customFieldsSync[0].id }
+            }
+
+            temp.push(objTemp);
+
+        })
+
+        return temp;
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
         let error = false;
@@ -107,7 +130,7 @@ export default class Modal extends Component {
         let bodyParameters = {
             "name": value,
             "type": valueSelect,
-            "values": valueArray,
+            "values": this.separateIds(valueArray),
             "required": esRequerido,
             "format": formato,
             "description": descripcion,
@@ -116,7 +139,6 @@ export default class Modal extends Component {
             "calibrable": esCalibrable
         }
 
-
         // Hacer rekes
         this.setState({
             loading: true
@@ -124,9 +146,6 @@ export default class Modal extends Component {
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
-
-        console.log(bodyParameters);
-        debugger;
 
         if (!id) {
             axios.post(Global.getAllForms + "/new", bodyParameters, { headers: { Authorization: bearer } })

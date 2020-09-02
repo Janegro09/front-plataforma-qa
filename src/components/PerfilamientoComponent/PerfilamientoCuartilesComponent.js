@@ -48,11 +48,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
     }
 
     seleccionarFila = (fila, orden, obj = {}, exists) => {
-        console.log('fila: ', fila);
-        console.log('orden: ', orden);
-        console.log('obj: ', obj);
-        console.log('exists: ', exists);
-
         let { result, used } = this.state;
         if (exists) {
             used.push(exists);
@@ -93,6 +88,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                     temp.Q3 = e.Q3;
                     temp.Q4 = e.Q4;
                 }
+                return true;
             })
         }
 
@@ -298,13 +294,11 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
             let token2 = response.data.loggedUser.token
             axios.get(Global.reasignProgram + '/' + id + '/cuartiles', { headers: { Authorization: `Bearer ${token2}` } }).then(response => {
-                console.log('segundo rekes: ', response.data.Data);
                 let token3 = response.data.loggedUser.token
                 let final = [];
                 let result = response.data.Data.cuartiles
                 for (let index = 0; index < result.length; index++) {
                     let element = result[index];
-                    console.log('element: ', element)
                     let temp = {
                         "QName": element.name,
                         "Qorder": element.order,
@@ -352,9 +346,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
         const { nombreColumnas, dataFiltered, redirect, result, id, redirectPerfilamientos, loading, modelsOfCuartiles, nameModelSelected } = this.state;
         let { nameCuartilSelected } = this.props.location;
-
-        console.log('result: ', result);
-        console.log('dataFiltered: ', dataFiltered);
 
         if (redirect) {
             return <Redirect to="/perfilamiento" />
@@ -460,12 +451,17 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                         disabled={exists !== ''}
                                                         defaultValue={orden}
                                                     >
-                                                        <option value={orden}>{orden}</option>
-                                                        {orden !== 'ASC' &&
-                                                            <option value="ASC">ASC</option>
+                                                        {orden === 'ASC' &&
+                                                            <>
+                                                                <option value="ASC">ASC</option>
+                                                                <option value="DESC">DESC</option>
+                                                            </>
                                                         }
-                                                        {orden !== 'DESC' &&
-                                                            <option value="DESC">DESC</option>
+                                                        {orden === 'DESC' &&
+                                                            <>
+                                                                <option value="DESC">DESC</option>
+                                                                <option value="ASC">ASC</option>
+                                                            </>
                                                         }
                                                     </select>
                                                 </td>
@@ -530,6 +526,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                                 document.getElementById("VMax" + key).disabled = true;
                                                                 document.getElementById(key).disabled = true;
                                                             }
+   
                                                             this.seleccionarFila(columna, orden, obj, exists);
                                                         }}
                                                     />

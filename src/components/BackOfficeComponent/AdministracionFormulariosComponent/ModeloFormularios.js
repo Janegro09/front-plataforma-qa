@@ -66,6 +66,7 @@ export default class ModeloFormularios extends Component {
             } else {
                 temp.push(seccion);
             }
+            return true;
         })
 
         this.setState({ cantSecciones: temp });
@@ -73,14 +74,13 @@ export default class ModeloFormularios extends Component {
     }
 
     deleteQuestion = (q, section) => {
-        console.log('q: ', q);
-        // console.log('section: ', section);
-        let { cantSecciones } = this.state;
         section.customFields.map(p => {
             if (p.customField === q.customField) {
                 console.log(q);
             }
+            return true;
         })
+
     }
 
     sendForm = (event) => {

@@ -813,7 +813,9 @@ export default class PerfilaminetosComponent extends Component {
                                             </div>
                                         </div>
                                     )
-                                } 
+                                } else {
+                                    return (<></>)
+                                }
                             })
 
                         }

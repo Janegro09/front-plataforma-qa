@@ -98,7 +98,7 @@ export default class Modal extends Component {
             }
 
             temp.push(objTemp);
-
+            return true;
         })
 
         return temp;

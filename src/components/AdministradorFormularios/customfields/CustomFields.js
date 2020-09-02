@@ -139,7 +139,7 @@ export default class CustomFields extends Component {
                                         <select disabled={disabled} required={value.required} name={value.sectionName} value={value.defaultValue} onChange={(e) => this.changeValues(e, value)}>
                                             <option value='-'>Selecciona...</option>
                                             {value.values.map(v => {
-                                                return <option value={v}>{v}</option>
+                                                return <option value={v.value}>{v.value}</option>
                                             })
                                             }
                                         </select>
@@ -155,7 +155,7 @@ export default class CustomFields extends Component {
                                                     let section = value.defaultValue.split('|');
                                                     let defVal = section[1];
                                                     section = section[0];
-                                                    if (section === v && defVal === 'on') {
+                                                    if (section === v.value && defVal === 'on') {
                                                         defVal = 'on';
                                                     } else {
                                                         defVal = false;
@@ -164,8 +164,8 @@ export default class CustomFields extends Component {
 
                                                     return (
                                                         <div className="labelsInputs">
-                                                            <input disabled={disabled} type="radio" name={value.sectionName} checked={defVal} onChange={(e) => this.changeValues(e, value, v)} />
-                                                            <label className="forInputs">{v}</label>
+                                                            <input disabled={disabled} type="radio" name={value.sectionName} checked={defVal} onChange={(e) => this.changeValues(e, value, v.value)} />
+                                                            <label className="forInputs">{v.value}</label>
                                                         </div>
                                                     )
 
@@ -184,15 +184,15 @@ export default class CustomFields extends Component {
                                                     let section = i.split('|');
                                                     let temp = section[1];
                                                     section = section[0];
-                                                    if (section === v && temp === 'true') {
+                                                    if (section === v.value && temp === 'true') {
                                                         defVal = true;
                                                     }
                                                 }
 
                                                 return (
                                                     <div className="labelsInputs" key={value}>
-                                                        <Checkbox disabled={disabled} id={v} name={value.sectionName} checked={defVal} onChange={(e) => { this.changeValues(e, value, v); }} />
-                                                        <label className="forInputs">{v}</label>
+                                                        <Checkbox disabled={disabled} id={v.value} name={value.sectionName} checked={defVal} onChange={(e) => { this.changeValues(e, value, v.value); }} />
+                                                        <label className="forInputs">{v.value}</label>
                                                     </div>
                                                 )
                                             })

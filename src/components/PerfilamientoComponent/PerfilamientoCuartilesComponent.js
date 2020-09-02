@@ -49,7 +49,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
     seleccionarFila = (fila, orden, obj = {}, exists) => {
         let { result, used } = this.state;
-        if (exists) {  
+        if (exists) {
             used.push(exists);
         }
 
@@ -83,11 +83,14 @@ export default class PerfilamientoCuartilesComponent extends Component {
         } else if (!obj.VMax && !obj.VMin) {
             used.map(e => {
                 if (temp.QName === e.QName) {
+                    // ACA ENTRA CUANDO SE SELECCIONA LA FILA 
                     temp.Q1 = e.Q1;
                     temp.Q2 = e.Q2;
                     temp.Q3 = e.Q3;
                     temp.Q4 = e.Q4;
+                    temp.Qorder = e.Qorder;
                 }
+                return true;
             })
         }
 
@@ -260,6 +263,17 @@ export default class PerfilamientoCuartilesComponent extends Component {
         })
     }
 
+    calcularOrdenColumna = (columna, result) => {
+        let name = columna.columnName;
+        let order = result.filter(data => data.QName === name)
+
+        if (order.length > 0) {
+            return order[0].Qorder;
+        } else {
+            return 'DESC';
+        }
+    }
+
     componentDidMount() {
         const { cuartilSeleccionado } = this.props.location;
         if (cuartilSeleccionado === undefined) {
@@ -311,7 +325,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                     this.setState({
                         result: final,
                         loading: false,
-                        modelsOfCuartiles: response.data.Data || []
+                        modelsOfCuartiles: response.data.Data || [],
                     })
                 })
 
@@ -407,7 +421,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                             </thead>
                             <tbody>
                                 {dataFiltered.map((columna, key) => {
-                                    let orden = 'DESC';
+                                    let orden = this.calcularOrdenColumna(columna, result);
                                     let obj = {
 
                                     }
@@ -419,7 +433,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                 orden = v.Qorder
                                                 exists = v
                                             }
-
                                             return true;
                                         })
 
@@ -438,10 +451,20 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                             }
                                                         }
                                                         disabled={exists !== ''}
-                                                    // defaultValue={exists.Qorder ? 'ASC' : 'DESC'}
+                                                        defaultValue={orden}
                                                     >
-                                                        <option value="DESC">DESC</option>
-                                                        <option value="ASC" defaultValue={exists.Qorder && exists.Qorder === 'ASC'}>ASC</option>
+                                                        {orden === 'ASC' &&
+                                                            <>
+                                                                <option value="ASC">ASC</option>
+                                                                <option value="DESC">DESC</option>
+                                                            </>
+                                                        }
+                                                        {orden === 'DESC' &&
+                                                            <>
+                                                                <option value="DESC">DESC</option>
+                                                                <option value="ASC">ASC</option>
+                                                            </>
+                                                        }
                                                     </select>
                                                 </td>
                                                 <td>
@@ -505,6 +528,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                                 document.getElementById("VMax" + key).disabled = true;
                                                                 document.getElementById(key).disabled = true;
                                                             }
+   
                                                             this.seleccionarFila(columna, orden, obj, exists);
                                                         }}
                                                     />

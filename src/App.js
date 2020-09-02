@@ -35,6 +35,8 @@ import PartiturasEspecificComponent from './components/PartiturasComponent/Parti
 import PartiturasUsuariosComponent from './components/PartiturasComponent/PartiturasUsuarioComponent';
 import StepName from './components/PartiturasComponent/StepName';
 import ProgramsGroups from './components/ProgramasComponent/ProgramsGroups';
+import FormulariosComponent from './components/BackOfficeComponent/AdministracionFormulariosComponent/FormulariosComponent';
+import ModeloFormularios from './components/BackOfficeComponent/AdministracionFormulariosComponent/ModeloFormularios';
 
 require('dotenv').config(); // Utilizamos este metodo para utilizar variables de entorno desde el archivo .env
 
@@ -44,7 +46,9 @@ function App() {
       <Switch>
         <Route exact path="/" component={Login} />
         <Route path="/addUser" component={addUserComponent} />
-        <Route path="/administracion-formularios" component={AdministracionFormulariosComponent} />
+        <Route exact path="/administracion-formularios" component={AdministracionFormulariosComponent} />
+        <Route exact path="/administracion-formularios/formularios" component={FormulariosComponent} />
+        <Route exact path="/administracion-formularios/modelo-formularios" component={ModeloFormularios} />
         <Route path="/backoffice" component={BackOfficeComponent} />
         <Route path="/biblioteca" component={BibliotecaArchivosComponent} />
         <Route path="/borrarPrograma" component={DeleteProgramComponent} />

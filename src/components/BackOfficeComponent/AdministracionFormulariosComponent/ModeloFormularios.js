@@ -72,6 +72,22 @@ export default class ModeloFormularios extends Component {
 
     }
 
+    deleteQuestion = (q, section) => {
+        console.log('q: ', q);
+        // console.log('section: ', section);
+        let { cantSecciones } = this.state;
+        section.customFields.map(p => {
+            if (p.customField === q.customField) {
+                console.log(q);
+            }
+        })
+    }
+
+    sendForm = (event) => {
+        event.preventDefault();
+        console.log('enviamos');
+    }
+
     componentDidMount() {
         this.setState({
             loading: true
@@ -108,7 +124,7 @@ export default class ModeloFormularios extends Component {
 
 
     render() {
-        let { loading, cantSecciones } = this.state;
+        let { loading, cantSecciones, allForms } = this.state;
 
         return (
             <>
@@ -123,7 +139,7 @@ export default class ModeloFormularios extends Component {
                 <div className="container">
                     <h4>Modelo de formularios</h4>
 
-                    <form>
+                    <form onSubmit={this.sendForm}>
                         <div className="form-group">
                             <label htmlFor="nombre">Nombre</label>
                             <input
@@ -152,34 +168,58 @@ export default class ModeloFormularios extends Component {
 
                         {cantSecciones.length > 0 &&
                             cantSecciones.map(seccion => {
-                                console.log('seccion: ', seccion.customFields[0].cantQuestions);
                                 return (
                                     <div key={seccion.cant} className="modelo-field">
-                                        <input type="text" defaultValue={seccion.name} />
+                                        <div>
+                                            <input type="text" defaultValue={seccion.name} />
+
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={(e) => { e.preventDefault(); this.agregarField(seccion); }}
+                                            >
+                                                agregar
+                                            </button>
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={(e) => { e.preventDefault(); this.eliminar(seccion); }}
+                                            >
+                                                eliminar
+                                            </button>
+                                        </div>
 
 
                                         {seccion.customFields.length > 0 &&
                                             seccion.customFields.map(field => {
-                                                return <input type="text" placeholder="pregunta" key={field.customField} />;
+                                                return (
+                                                    <div key={field.customField}>
+                                                        <input type="text" placeholder="pregunta" />
+                                                        <select>
+                                                            <option>Preguntas...</option>
+                                                            {allForms.length > 0 &&
+                                                                allForms.map(form => {
+                                                                    return (
+                                                                        <option key={form.id}>{form.name}</option>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </select>
+
+                                                        <button
+                                                            className="btn btn-primary"
+                                                            onClick={(e) => {e.preventDefault(); this.deleteQuestion(field, seccion)}}
+                                                        >
+                                                            Eliminar pregunta
+                                                        </button>
+                                                    </div>
+
+                                                )
                                             })
                                         }
-
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={(e) => { e.preventDefault(); this.agregarField(seccion); }}
-                                        >
-                                            agregar
-                                        </button>
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={(e) => { e.preventDefault(); this.eliminar(seccion); }}
-                                        >
-                                            eliminar
-                                        </button>
                                     </div>
                                 )
                             })
                         }
+
                         <button type="submit" className="btn btn-primary">Enviar</button>
                     </form>
                 </div>

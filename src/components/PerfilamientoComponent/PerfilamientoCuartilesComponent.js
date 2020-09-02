@@ -48,8 +48,13 @@ export default class PerfilamientoCuartilesComponent extends Component {
     }
 
     seleccionarFila = (fila, orden, obj = {}, exists) => {
+        console.log('fila: ', fila);
+        console.log('orden: ', orden);
+        console.log('obj: ', obj);
+        console.log('exists: ', exists);
+
         let { result, used } = this.state;
-        if (exists) {  
+        if (exists) {
             used.push(exists);
         }
 
@@ -260,6 +265,17 @@ export default class PerfilamientoCuartilesComponent extends Component {
         })
     }
 
+    calcularOrdenColumna = (columna, result) => {
+        let name = columna.columnName;
+        let order = result.filter(data => data.QName === name)
+
+        if (order.length > 0) {
+            return order[0].Qorder;
+        } else {
+            return 'DESC';
+        }
+    }
+
     componentDidMount() {
         const { cuartilSeleccionado } = this.props.location;
         if (cuartilSeleccionado === undefined) {
@@ -282,11 +298,13 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
             let token2 = response.data.loggedUser.token
             axios.get(Global.reasignProgram + '/' + id + '/cuartiles', { headers: { Authorization: `Bearer ${token2}` } }).then(response => {
+                console.log('segundo rekes: ', response.data.Data);
                 let token3 = response.data.loggedUser.token
                 let final = [];
                 let result = response.data.Data.cuartiles
                 for (let index = 0; index < result.length; index++) {
                     let element = result[index];
+                    console.log('element: ', element)
                     let temp = {
                         "QName": element.name,
                         "Qorder": element.order,
@@ -311,7 +329,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                     this.setState({
                         result: final,
                         loading: false,
-                        modelsOfCuartiles: response.data.Data || []
+                        modelsOfCuartiles: response.data.Data || [],
                     })
                 })
 
@@ -334,6 +352,9 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
         const { nombreColumnas, dataFiltered, redirect, result, id, redirectPerfilamientos, loading, modelsOfCuartiles, nameModelSelected } = this.state;
         let { nameCuartilSelected } = this.props.location;
+
+        console.log('result: ', result);
+        console.log('dataFiltered: ', dataFiltered);
 
         if (redirect) {
             return <Redirect to="/perfilamiento" />
@@ -407,7 +428,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                             </thead>
                             <tbody>
                                 {dataFiltered.map((columna, key) => {
-                                    let orden = 'DESC';
+                                    let orden = this.calcularOrdenColumna(columna, result);
                                     let obj = {
 
                                     }
@@ -419,7 +440,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                 orden = v.Qorder
                                                 exists = v
                                             }
-
                                             return true;
                                         })
 
@@ -438,10 +458,15 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                             }
                                                         }
                                                         disabled={exists !== ''}
-                                                    // defaultValue={exists.Qorder ? 'ASC' : 'DESC'}
+                                                        defaultValue={orden}
                                                     >
-                                                        <option value="DESC">DESC</option>
-                                                        <option value="ASC" defaultValue={exists.Qorder && exists.Qorder === 'ASC'}>ASC</option>
+                                                        <option value={orden}>{orden}</option>
+                                                        {orden !== 'ASC' &&
+                                                            <option value="ASC">ASC</option>
+                                                        }
+                                                        {orden !== 'DESC' &&
+                                                            <option value="DESC">DESC</option>
+                                                        }
                                                     </select>
                                                 </td>
                                                 <td>

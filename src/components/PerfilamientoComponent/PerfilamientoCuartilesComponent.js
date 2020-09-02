@@ -83,10 +83,12 @@ export default class PerfilamientoCuartilesComponent extends Component {
         } else if (!obj.VMax && !obj.VMin) {
             used.map(e => {
                 if (temp.QName === e.QName) {
+                    // ACA ENTRA CUANDO SE SELECCIONA LA FILA 
                     temp.Q1 = e.Q1;
                     temp.Q2 = e.Q2;
                     temp.Q3 = e.Q3;
                     temp.Q4 = e.Q4;
+                    temp.Qorder = e.Qorder;
                 }
                 return true;
             })

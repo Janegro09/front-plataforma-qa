@@ -560,6 +560,7 @@ export default class PerfilaminetosComponent extends Component {
             })
             return;
         }
+
         let id = cuartilSeleccionado;
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
@@ -568,7 +569,6 @@ export default class PerfilaminetosComponent extends Component {
         this.setState({ loading: true });
 
         axios.get(Global.getAllFiles + '/' + id + '/cuartiles?getUsers=true', { headers: { Authorization: bearer } }).then(response => {
-
             token = response.data.loggedUser.token
             bearer = `Bearer ${token}`
             let respuesta = response.data.Data
@@ -706,7 +706,7 @@ export default class PerfilaminetosComponent extends Component {
                         }
 
                         {modeloSelected.values &&
-                            <button 
+                            <button
                                 className="btn"
                                 onClick={(e) => {
                                     e.preventDefault();
@@ -745,7 +745,7 @@ export default class PerfilaminetosComponent extends Component {
                     <div className="grupos">
                         {grupos &&
                             grupos.map((v) => {
-                                if (v) {                                  
+                                if (v) {
                                     return (
                                         <div className="grupoPerfilamiento" id={v.id} key={v.id} draggable onDragStart={this.dragStartG} onDragOver={this.dragOverG} onDragEnd={this.dragEndG}>
                                             <p>Usuarios asignados: {v.users.length} - {Math.ceil((v.users.length / allUsers.length) * 100)}%</p>
@@ -756,7 +756,7 @@ export default class PerfilaminetosComponent extends Component {
                                                         this.updateAssign(v.id)
                                                     }} ref={e => this.assignAllUsers = e} checked={v.applyAllUsers} />
                                                 </label>
-    
+
                                                 <select
                                                     ref={e => this.select = e}
                                                     onChange={(e) => {
@@ -797,7 +797,7 @@ export default class PerfilaminetosComponent extends Component {
                                                             default:
                                                                 claseColor = 'gray';
                                                                 break;
-    
+
                                                         }
                                                         return (
                                                             <span className={claseColor} key={key}>
@@ -806,7 +806,7 @@ export default class PerfilaminetosComponent extends Component {
                                                             </span>
                                                         )
                                                     })
-    
+
                                                 }
                                                 {/* 
                                                 </span> */}

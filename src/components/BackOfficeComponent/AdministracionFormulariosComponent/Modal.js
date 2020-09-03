@@ -280,6 +280,24 @@ export default class Modal extends Component {
 
     }
 
+    quitarParentesis = (string) => {
+        let stringSinParentesis = '';
+        for (let i = 0; i < string.length; i++) {
+            if (string[i] !== '(' && string[i] !== '1' && string[i] !== '0' && string[i] !== ')') {
+                stringSinParentesis += string[i];
+            }
+        }
+
+        return stringSinParentesis;
+    }
+
+    validarParametrizacion = (numero) => {
+        if (numero !== "1" && numero !== "0") {
+            swal('Error', 'Mal parametrizado, tiene que ser 1 o 0.', 'error');
+            return;
+        }
+    }
+
     viewValues = (e) => {
         const { value } = e.target;
         let { valueArray } = this.state;
@@ -289,6 +307,7 @@ export default class Modal extends Component {
             valueArray = [];
             let values = value.split(',');
             for (let v of values) {
+                console.log('el v', v)
                 if (v) {
                     let td = {}
                     if (v.indexOf('#') === 0) {
@@ -297,6 +316,15 @@ export default class Modal extends Component {
                         td = {
                             value: v,
                             customFieldsSync: null
+                        }
+                    } else if (v.indexOf('(') !== -1) {
+                        let numero = v.match(/\d+/)[0];
+
+                        this.validarParametrizacion(numero);
+
+                        td = {
+                            value: this.quitarParentesis(v),
+                            parametrizacionValue: numero
                         }
                     } else {
                         td.value = v;
@@ -307,6 +335,8 @@ export default class Modal extends Component {
 
         }
 
+        console.log('value array: ', valueArray);
+
         this.setState({ valueArray })
 
     }
@@ -316,7 +346,7 @@ export default class Modal extends Component {
 
         for (let a of ArrayValues) {
             let v = ""
-            a.value = a.value.trim();
+            a.value = a.value?.trim();
             if (a.customFieldsSync) {
                 v = `#`;
             }

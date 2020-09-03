@@ -125,8 +125,6 @@ export default class Modal extends Component {
             return false;
         }
 
-        console.log('valueArray: ', valueArray);
-
         let bodyParameters = {
             "name": value,
             "type": valueSelect,
@@ -221,8 +219,6 @@ export default class Modal extends Component {
                 axios.get(Global.getAllForms + '/' + idEditar, { headers: { Authorization: bearer } }).then(response => {
                     sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
-                    console.log('reques: ', response.data);
-
                     let respuesta = response.data.Data[0];
                     let valueArray = respuesta.values;
 
@@ -307,12 +303,10 @@ export default class Modal extends Component {
             valueArray = [];
             let values = value.split(',');
             for (let v of values) {
-                console.log('el v', v)
                 if (v) {
                     let td = {}
-                    if (v.indexOf('#') === 0) {
-                        // Quiere decir que es una condicion
-                        v = v.slice(1, v.length);
+                    if (v.indexOf('#') !== -1) {
+                        v = v.replace("#",'');
                         td = {
                             value: v,
                             customFieldsSync: null
@@ -334,8 +328,6 @@ export default class Modal extends Component {
             }
 
         }
-
-        console.log('value array: ', valueArray);
 
         this.setState({ valueArray })
 
@@ -421,7 +413,6 @@ export default class Modal extends Component {
                                     <label htmlFor="checkbox" className="label">* ¿Es calibrable? </label>
                                 </div>
                                 {valueArray.map((v, i) => {
-                                    console.log('v: ', v)
                                     if (v.customFieldsSync !== undefined) {
                                         let defValue = '';
                                         if (v.customFieldsSync?.length > 0) {

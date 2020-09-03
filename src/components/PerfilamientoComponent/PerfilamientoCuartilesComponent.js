@@ -477,7 +477,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                             let element = document.getElementById("VMin" + key);
                                                             obj.VMin = parseFloat(element.value)
                                                         }}
-                                                        defaultValue={exists?.Q1 ? exists.Q1.VMax : ''}
+                                                        defaultValue={exists?.Q1 ? exists.Q1.VMax : columna.VMax}
                                                         disabled={exists !== ''}
                                                     />
                                                 </td>
@@ -494,7 +494,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                                 let element = document.getElementById("VMax" + key);
                                                                 obj.VMax = parseFloat(element.value)
                                                             }}
-                                                            defaultValue={exists !== '' ? exists.Q3.VMax : ''}
+                                                            defaultValue={exists !== '' ? exists.Q3.VMax : columna.VMax}
                                                             disabled={exists !== ''}
                                                         />
                                                     }
@@ -504,6 +504,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                             id={"VMax" + key}
                                                             type="text"
                                                             placeholder="VMax"
+                                                            defaultValue={columna.VMax}
                                                             onChange={(e) => {
                                                                 e.preventDefault()
                                                                 let element = document.getElementById("VMax" + key);

@@ -28,11 +28,13 @@ export default class Modal extends Component {
     handleChangecustomFieldsSync = (e) => {
         let { value, id } = e.target;
         let { valueArray } = this.state;
+
         for (let v of valueArray) {
             if (v.value === id && v.customFieldsSync !== undefined && value) {
                 v.customFieldsSync = value;
             }
         }
+
         this.setState({ valueArray })
     }
 
@@ -93,8 +95,9 @@ export default class Modal extends Component {
             let objTemp = {
                 value: value.value
             }
-            if (value.customFieldsSync) {
-                objTemp = { ...objTemp, customFieldsSync: value.customFieldsSync[0].id }
+
+            if (value.customFieldsSync !== undefined) {
+                objTemp = { ...objTemp, customFieldsSync: value.customFieldsSync }
             }
 
             temp.push(objTemp);
@@ -436,6 +439,8 @@ export default class Modal extends Component {
                                             </div>
                                         )
                                     }
+
+                                    return true;
                                 })
                                 }
                             </>

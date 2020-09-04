@@ -77,12 +77,10 @@ export default class AdministracionFormulariosComponent extends Component {
     }
 
     formularios = () => {
-        console.log('a')
         this.setState({ goToFormularios: true });
     }
 
     modeloFormularios = () => {
-        console.log('b');
         this.setState({ goToModeloFormularios: true });
     }
 
@@ -97,8 +95,6 @@ export default class AdministracionFormulariosComponent extends Component {
         const bearer = `Bearer ${token}`
         axios.get(Global.getAllForms, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-
-            console.log(response.data.Data);
 
             this.setState({
                 allForms: response.data.Data,
@@ -213,7 +209,6 @@ export default class AdministracionFormulariosComponent extends Component {
                                                 }
                                                 {form.values.length > 0 &&
                                                     form.values.map((value, key) => {
-                                                        console.log(value);
                                                         return (
                                                             <div key={key}>
                                                                 {value.value}

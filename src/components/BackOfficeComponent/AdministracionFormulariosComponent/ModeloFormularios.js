@@ -6,6 +6,7 @@ import axios from 'axios';
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
 import swal from 'sweetalert';
 import './Modal.css';
+import moment from 'moment';
 
 export default class ModeloFormularios extends Component {
 
@@ -19,7 +20,8 @@ export default class ModeloFormularios extends Component {
             subsection: "",
             description: "",
             parts: []
-        }
+        },
+        models: null
     }
 
     agregar = (event) => {
@@ -102,7 +104,32 @@ export default class ModeloFormularios extends Component {
 
     sendForm = (event) => {
         event.preventDefault();
-        console.log('enviamos');
+        let { dataToSend, cantSecciones } = this.state;
+
+        dataToSend.parts = cantSecciones;
+
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
+        axios.post(Global.newFormModel, dataToSend, config)
+            .then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                if (response.data.Success) {
+                    swal("Felicidades!", "Se ha creado el modelo correctamente", "success");
+                }
+
+            })
+            .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Atención", "No se ha agregado el grupo", "info");
+                }
+                console.log("Error: ", e)
+            })
     }
 
     handleChange = (e) => {
@@ -153,11 +180,14 @@ export default class ModeloFormularios extends Component {
             loading: true
         })
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-        const token = tokenUser
-        const bearer = `Bearer ${token}`
+        let tokenUser = JSON.parse(sessionStorage.getItem("token"));
+        let token = tokenUser;
+        let bearer = `Bearer ${token}`;
+
         axios.get(Global.getAllForms, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+
+            token = response.data.loggedUser.token;
+            bearer = `Bearer ${token}`;
 
             // ACÁ VAN A QUEDAR LAS DE M
             let allForms = response.data.Data.filter(form => form.section === 'M');
@@ -165,6 +195,11 @@ export default class ModeloFormularios extends Component {
             this.setState({
                 allForms,
                 loading: false
+            })
+
+            axios.get(Global.newFormModel, { headers: { Authorization: bearer } }).then(response => {
+                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                this.setState({ models: response.data.Data })
             })
 
         })
@@ -185,7 +220,7 @@ export default class ModeloFormularios extends Component {
 
 
     render() {
-        let { loading, cantSecciones, allForms } = this.state;
+        let { loading, cantSecciones, allForms, models } = this.state;
 
         return (
             <>
@@ -198,7 +233,7 @@ export default class ModeloFormularios extends Component {
                 </div>
 
                 <div className="container">
-                    <h4>Modelo de formularios</h4>
+                    <h4>Crear nuevo modelo</h4>
 
                     <form onSubmit={this.sendForm}>
                         <div className="form-group">
@@ -301,6 +336,40 @@ export default class ModeloFormularios extends Component {
 
                         <button type="submit" className="btn btn-primary">Enviar</button>
                     </form>
+
+                    <h4>Modelo de formularios</h4>
+
+                    {models &&
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Creado</th>
+                                    <th>Descripción</th>
+                                    <th>Partes</th>
+                                    <th>Sección</th>
+                                    <th>Subsección</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    models.map(model => {
+                                        return (
+                                            <tr key={model.id}>
+                                                <td>{model.name}</td>
+                                                <td>{moment(model.createdAt).format("DD/MM/YYYY")}</td>
+                                                <td>{model.description}</td>
+                                                <td>{model.parts}</td>
+                                                <td>{model.section}</td>
+                                                <td>{model.subsection}</td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+
+                            </tbody>
+                        </table>
+                    }
                 </div>
             </>
         )

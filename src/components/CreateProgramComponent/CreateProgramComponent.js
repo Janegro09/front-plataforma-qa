@@ -29,7 +29,6 @@ export default class createGroupComponent extends Component {
     }
 
     modifyUser = (e) => {
-        // e.preventDefault()
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }

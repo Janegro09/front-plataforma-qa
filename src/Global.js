@@ -28,7 +28,8 @@ let Global = {
     getAllPartituresModel: `${BASE}/analytics/partituresModels`,
     exportsDatabase: `${BASE}/backoffice/exports`,
     newModel: `${BASE}/analytics/cuartilesModels`,
-    perfilamientosModel: `${BASE}/analytics/perfilamientosModel`
+    perfilamientosModel: `${BASE}/analytics/perfilamientosModel`,
+    newFormModel: `${BASE}/forms/models`
 }
 
 export default Global;

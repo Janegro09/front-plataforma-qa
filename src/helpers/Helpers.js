@@ -140,5 +140,14 @@ export const HELPER_FUNCTIONS = {
                 <div className="lds-ripple"><div></div><div></div></div>
             </div>
         )
+    },
+    generateCustomId: (securityLevel = 10) => {
+        let id = '';
+
+        for (let i = 0; i < securityLevel; i++) {
+            id += (Date.now() * Math.random()).toString();
+        }
+
+        return id;
     }
 } 

@@ -12,7 +12,14 @@ export default class ModeloFormularios extends Component {
     state = {
         allForms: null,
         loading: false,
-        cantSecciones: []
+        cantSecciones: [],
+        dataToSend: {
+            name: "",
+            section: "M",
+            subsection: "",
+            description: "",
+            parts: []
+        }
     }
 
     agregar = (event) => {
@@ -21,15 +28,15 @@ export default class ModeloFormularios extends Component {
 
         if (cantSecciones.length === 0) {
             cantSecciones.push({
-                cant: 1,
+                id: HELPER_FUNCTIONS.generateCustomId(10),
                 name: `Modelo de formulario ${1}`,
-                customFields: [{ question: `Nombre de la pregunta ${1}`, customField: "id78412874dadnkasj", cantQuestions: 0 }]
+                customFields: [{ question: "", customField: "", id: HELPER_FUNCTIONS.generateCustomId(10) }]
             })
         } else {
             cantSecciones.push({
-                cant: cantSecciones.length + 1,
+                id: HELPER_FUNCTIONS.generateCustomId(10),
                 name: `Modelo de formulario ${cantSecciones.length + 1}`,
-                customFields: [{ question: `Ingrese pregunta`, customField: "id78412874dadnkasj", cantQuestions: 0 }]
+                customFields: [{ question: "", customField: "", id: HELPER_FUNCTIONS.generateCustomId(10) }]
             })
         }
 
@@ -48,19 +55,19 @@ export default class ModeloFormularios extends Component {
 
     agregarField = (seccion) => {
         let { cantSecciones } = this.state;
-        let idSeccion = seccion.cant;
+        let idSeccion = seccion.id;
 
         // MODIFICO EL QUE QUIERO EDITAR
-        let edited = cantSecciones.filter(seccion => seccion.cant === idSeccion);
-        // edited[0].customFields[0].cantQuestions = edited[0].customFields[0].cantQuestions + 1;
+        let edited = cantSecciones.filter(seccion => seccion.id === idSeccion);
 
         // LO BUSCO Y LO PISO EN EL ARRAY
         let temp = []
         cantSecciones.map(seccion => {
-            if (seccion.cant === edited[0].cant) {
+            console.log(seccion);
+            if (seccion.id === edited[0].id) {
                 console.log('agrega: ', edited[0].customFields)
                 edited[0].customFields.push({
-                    question: "nombre de la pregunta", customField: Date.now()
+                    question: "", customField: "", id: HELPER_FUNCTIONS.generateCustomId(10)
                 })
                 temp.push(edited[0]);
             } else {
@@ -74,18 +81,71 @@ export default class ModeloFormularios extends Component {
     }
 
     deleteQuestion = (q, section) => {
-        section.customFields.map(p => {
-            if (p.customField === q.customField) {
-                console.log(q);
-            }
-            return true;
-        })
+        let { cantSecciones } = this.state;
+        let temp = [];
 
+        for (let i = 0; i < cantSecciones.length; i++) {
+            for (let j = 0; j < cantSecciones[i].customFields.length; j++) {
+                if (cantSecciones[i].customFields[j].id !== q.id) {
+                    temp.push(cantSecciones[i].customFields[j]);
+                }
+
+            }
+
+            cantSecciones[i].customFields = temp;
+
+        }
+
+
+        this.setState({ cantSecciones });
     }
 
     sendForm = (event) => {
         event.preventDefault();
         console.log('enviamos');
+    }
+
+    handleChange = (e) => {
+        let { id, value } = e.target;
+        let { dataToSend } = this.state;
+
+        if (value !== '') {
+            dataToSend[id] = value;
+        }
+
+        this.setState({ dataToSend });
+    }
+
+    handleChangeQuestion = (e) => {
+        let { value, name, parentNode } = e.target;
+        let { cantSecciones } = this.state
+        const idField = parentNode.id;
+        const idFather = parentNode.dataset.parent;
+        let sectionSearched = -1;
+        if (idField && name === 'nameQuestion') {
+            sectionSearched = cantSecciones.findIndex(element => element.id == idField);
+        } else if (name !== 'nameQuestion') {
+            sectionSearched = cantSecciones.findIndex(element => element.id == idFather);
+
+        }
+
+        if (idFather && sectionSearched !== -1) {
+            // Estamos modificando los parametros de una pregunta
+            let findField = cantSecciones[sectionSearched]?.customFields?.findIndex(element => element.id == idField);
+            if (findField !== -1) {
+                cantSecciones[sectionSearched].customFields[findField][name] = value;
+            }
+
+            console.log(cantSecciones[sectionSearched].customFields[findField][name], name);
+            // cantSecciones[sectionSearched][name] = value;
+        } else if (sectionSearched !== -1 && name === 'nameQuestion') {
+            cantSecciones[sectionSearched].name = value;
+            // Estamos modificando los parametros de una seccion
+        }
+
+        this.setState({ cantSecciones })
+
+        console.log(cantSecciones);
     }
 
     componentDidMount() {
@@ -99,10 +159,11 @@ export default class ModeloFormularios extends Component {
         axios.get(Global.getAllForms, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
-            console.log(response.data.Data);
+            // ACÁ VAN A QUEDAR LAS DE M
+            let allForms = response.data.Data.filter(form => form.section === 'M');
 
             this.setState({
-                allForms: response.data.Data,
+                allForms,
                 loading: false
             })
 
@@ -141,21 +202,23 @@ export default class ModeloFormularios extends Component {
 
                     <form onSubmit={this.sendForm}>
                         <div className="form-group">
-                            <label htmlFor="nombre">Nombre</label>
+                            <label htmlFor="name">Nombre</label>
                             <input
                                 type="text"
                                 className="form-control"
-                                id="nombre"
+                                id="name"
                                 autoComplete="off"
+                                onChange={this.handleChange}
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="descripcion">Descripción</label>
+                            <label htmlFor="description">Descripción</label>
                             <input
                                 type="text"
                                 className="form-control"
-                                id="descripcion"
+                                id="description"
                                 autoComplete="off"
+                                onChange={this.handleChange}
                             />
                         </div>
 
@@ -167,11 +230,17 @@ export default class ModeloFormularios extends Component {
                         </button>
 
                         {cantSecciones.length > 0 &&
-                            cantSecciones.map(seccion => {
+                            cantSecciones.map((seccion, i) => {
+                                console.log(seccion)
                                 return (
-                                    <div key={seccion.cant} className="modelo-field">
-                                        <div>
-                                            <input type="text" defaultValue={seccion.name} />
+                                    <div key={i} className="modelo-field">
+                                        <div id={seccion.id}>
+                                            <input
+                                                name="nameQuestion"
+                                                type="text"
+                                                value={seccion.name}
+                                                onChange={this.handleChangeQuestion}
+                                            />
 
                                             <button
                                                 className="btn btn-primary"
@@ -191,14 +260,24 @@ export default class ModeloFormularios extends Component {
                                         {seccion.customFields.length > 0 &&
                                             seccion.customFields.map(field => {
                                                 return (
-                                                    <div key={field.customField}>
-                                                        <input type="text" placeholder="pregunta" />
-                                                        <select>
+                                                    <div key={field.id} id={field.id} data-parent={seccion.id}>
+                                                        <input
+                                                            name="question"
+                                                            type="text"
+                                                            placeholder="pregunta"
+                                                            onChange={this.handleChangeQuestion}
+                                                            value={field.question}
+                                                        />
+                                                        <select
+                                                            name="customField"
+                                                            onChange={this.handleChangeQuestion}
+                                                            value={field.customField}
+                                                        >
                                                             <option>Preguntas...</option>
                                                             {allForms.length > 0 &&
                                                                 allForms.map(form => {
                                                                     return (
-                                                                        <option key={form.id}>{form.name}</option>
+                                                                        <option value={form.id} key={form.id}>{form.name}</option>
                                                                     )
                                                                 })
                                                             }
@@ -206,7 +285,7 @@ export default class ModeloFormularios extends Component {
 
                                                         <button
                                                             className="btn btn-primary"
-                                                            onClick={(e) => {e.preventDefault(); this.deleteQuestion(field, seccion)}}
+                                                            onClick={(e) => { e.preventDefault(); this.deleteQuestion(field, seccion) }}
                                                         >
                                                             Eliminar pregunta
                                                         </button>

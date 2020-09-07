@@ -152,31 +152,31 @@ export default class AdministracionFormulariosComponent extends Component {
                 <div className="section-content">
                     <div className="flex-input-add">
                         <h4 className="mr-2">ADMINISTRADOR DE FORMULARIOS</h4>
-
-                        <button
+                        <div className="containerDefaultBotons">
+                        <button className="btnDefault"
                             onClick={(e) => {
                                 e.preventDefault();
                                 this.abrirModal();
                             }}
                         >
-                            <AddIcon className="morph" />
+                            + FORMULARIO
                         </button>
 
                         <button
-                            className="btn btn-outline-primary m-1"
+                            className="btnDefault"
                             onClick={this.formularios}
                         >
-                            Formularios
+                            + FORMULARIOS
                         </button>
 
                         <button
-                            className="btn btn-outline-primary m-1"
+                            className="btnDefault"
                             onClick={this.modeloFormularios}
 
                         >
-                            Modelo de formularios
+                           + MODELO 
                         </button>
-
+                        </div>
                     </div>
                     <hr />
                     <br />

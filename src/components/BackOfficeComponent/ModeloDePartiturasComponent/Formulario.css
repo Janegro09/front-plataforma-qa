@@ -75,7 +75,7 @@
 .AllInstances .instance .AllSteps {
     padding: 5px;
     overflow-y: scroll;
-    -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.17);
+    /* -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.17); */
 }
 
 .AllInstances .instance .AllSteps .step {

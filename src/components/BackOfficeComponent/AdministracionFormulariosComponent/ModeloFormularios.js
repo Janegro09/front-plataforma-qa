@@ -7,6 +7,7 @@ import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
 import swal from 'sweetalert';
 import './Modal.css';
 import moment from 'moment';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export default class ModeloFormularios extends Component {
 
@@ -258,10 +259,10 @@ export default class ModeloFormularios extends Component {
                         </div>
 
                         <button
-                            className="btn btn-primary"
+                            className="btnDefaultBorder ver-mas"
                             onClick={this.agregar}
                         >
-                            +
+                            + AGREGAR FORMULARIO
                         </button>
 
                         {cantSecciones.length > 0 &&
@@ -270,25 +271,28 @@ export default class ModeloFormularios extends Component {
                                 return (
                                     <div key={i} className="modelo-field">
                                         <div id={seccion.id}>
+                                          <div className="flexAlign">
                                             <input
+                                                className="form-control margin-top-10 marginBotton15"
                                                 name="nameQuestion"
                                                 type="text"
                                                 value={seccion.name}
                                                 onChange={this.handleChangeQuestion}
                                             />
-
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={(e) => { e.preventDefault(); this.agregarField(seccion); }}
-                                            >
-                                                agregar
-                                            </button>
-                                            <button
-                                                className="btn btn-primary"
+                                           <button
+                                                className="btnDefault"
                                                 onClick={(e) => { e.preventDefault(); this.eliminar(seccion); }}
                                             >
-                                                eliminar
+                                                <DeleteIcon />
                                             </button>
+                                            </div>
+                                            <button
+                                                className="pregButton btnDefaultBorderLight marginBotton15"
+                                                onClick={(e) => { e.preventDefault(); this.agregarField(seccion); }}
+                                            >
+                                                + AGREGAR PREGUNTA
+                                            </button>
+ 
                                         </div>
 
 
@@ -296,7 +300,9 @@ export default class ModeloFormularios extends Component {
                                             seccion.customFields.map(field => {
                                                 return (
                                                     <div key={field.id} id={field.id} data-parent={seccion.id}>
+                                                       <div className="flexAlign ">
                                                         <input
+                                                            className="form-control marginBotton15"
                                                             name="question"
                                                             type="text"
                                                             placeholder="pregunta"
@@ -318,12 +324,13 @@ export default class ModeloFormularios extends Component {
                                                             }
                                                         </select>
 
-                                                        <button
-                                                            className="btn btn-primary"
+                                                        <button className="btnDefaultLight"
+                                                            
                                                             onClick={(e) => { e.preventDefault(); this.deleteQuestion(field, seccion) }}
                                                         >
-                                                            Eliminar pregunta
+                                                            QUITAR
                                                         </button>
+                                                        </div>
                                                     </div>
 
                                                 )
@@ -334,10 +341,10 @@ export default class ModeloFormularios extends Component {
                             })
                         }
 
-                        <button type="submit" className="btn btn-primary">Enviar</button>
+                        <button type="submit" className="btn btn-primary btnEnviarCond morph margin-top-10">Enviar</button>
                     </form>
 
-                    <h4>Modelo de formularios</h4>
+                    <h4 className="margin-top-70">Modelo de formularios</h4>
 
                     {models &&
                         <table>

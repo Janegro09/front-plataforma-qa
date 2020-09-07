@@ -430,8 +430,8 @@ export default class StepName extends Component {
                 {data &&
                     <div className="section-content">
                         <button
-                            className="btn btn-primary ml-10"
-                            style={{ position: 'absolute', transform: 'translate(-1px, -42px)' }}
+                            className="btn pasoAnterior"
+                            
                             onClick={() => { this.volverAtras() }}
                         >
                             Paso anterior

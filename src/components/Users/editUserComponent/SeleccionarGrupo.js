@@ -168,7 +168,7 @@ export default class SeleccionarGrupo extends Component {
                 {seleccionados.length === groupSelect.length &&
                     <button
                         id="quitar-todos"
-                        className="btn btn-primary"
+                        className="quitarTodos"
                         onClick={
                             (e) => {
                                 e.preventDefault();

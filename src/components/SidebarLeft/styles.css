@@ -388,7 +388,7 @@ h4 {
   transition: 0.1s;
   background-color: #03a9f4;
   transition: all 0.15s ease-in-out;
-  -webkit-box-shadow: 0 0.125rem 0.625rem rgb(22 170 255 / 33%), 0 0.0625rem 0.125rem rgb(22 170 255 / 50%);
+  -webkit-box-shadow: 0 0.125rem 0.125rem rgb(22 170 255 / 33%), 0 0.0625rem 0.125rem rgb(22 170 255 / 50%);
 }
 
 
@@ -730,3 +730,199 @@ tr {
   right: 113px;
 
 }
+
+.quitarTodos {
+  color: black;
+  padding: 10px;
+  float: right;
+}
+
+
+
+
+/* DARK MODE */
+
+
+/* 
+
+body {
+  font-family: "Roboto", 'Helvetica Neue, Helvetica, Arial', sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #e4e4e4;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background-color: #272727 !important;
+  transition: background-color 1s ease;
+}
+
+.form-control {
+  background-color: #f9f9f905;
+  border-radius: 4px !important;
+  margin-right: 8px;
+  border-bottom: 1px solid #e4e4e40d;
+  color: #969696;
+}
+
+tr {
+  border-bottom: 1px solid #e4e4e40d;
+}
+
+.logoBackground {
+  display: flex;
+  height: 100vh;
+  position: fixed;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+  z-index: -1;
+  opacity: 0.1;
+}
+
+.button-change-pass {
+  padding: 10px;
+  background: #eaebef03;
+  border-radius: 5px;
+  color: #e7e7e7;
+  cursor: pointer;
+  border: 1px solid #353535;
+  right: 10px;
+  font-weight: 500;
+  float: right;
+  transition: 0.3s;
+  min-width: 138px;
+}
+
+table tbody tr:hover {
+  background-color: #e8e7e70f !important;
+}
+
+.estadoActivo {
+  height: 8px;
+  width: 8px;
+  border-radius: 50px;
+  background-color: #2cf52c9e!important;
+  margin: auto;
+}
+
+.celdaBtnHover:hover {
+  background-color: #8080800d; 
+  cursor: pointer;
+
+.css-yk16xz-control {
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: hsl(0deg 0% 97% / 8%);
+    border-color: hsl(0deg 0% 21%);
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    cursor: default;
+    display: -webkit-box;
+    display: -webkit-flex;
+    padding: 15px;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    min-height: 38px;
+    outline: 0 !important;
+    position: relative;
+    -webkit-transition: all 100ms;
+    transition: all 100ms;
+    box-sizing: border-box;
+}
+
+
+.css-1uccc91-singleValue {
+    color: hsl(0deg 0% 52%);
+    margin-left: 2px;
+    margin-right: 2px;
+    max-width: calc(100% - 8px);
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    box-sizing: border-box;
+}
+
+#agregar-uno {
+  color: #e7e7e7;
+}
+
+.modelo-field {
+    margin: 10px 0px 10px 0px;
+    border: 1px solid #313131;
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color: #ffffff05;
+}
+
+.btnDefaultBorderLight {
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 11px;
+    width: 100%;
+    background-color: #dcdcdc26;
+    transition: all 0.15s ease-in-out;
+    -o-transition: all 0.15s ease-in-out;
+    -moz-transition: all 0.15s ease-in-out;
+    -webkit-transition: all 0.15s ease-in-out;
+}
+
+.btnDefaultBorderLight:hover {
+    background-color: #e4e5e63b;
+}
+
+.containerIn {
+    display: flex;
+    position: fixed;
+    right: 0;
+    background-color: #272727;
+    font-size: 14px;
+    padding: 9px;
+    z-index: 1;
+    align-items: baseline;
+    border-radius: 0px 0px 0px 7px;
+    -webkit-box-shadow: -2px -2px 23px 1px #0000004d;
+}
+
+.css-1rhbuit-multiValue {
+    border-radius: 2px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    margin: 2px;
+    border: 1px solid #363636;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.css-12jo7m5 {
+    border-radius: 2px;
+    font-size: 85%;
+    overflow: hidden;
+    padding: 3px;
+    padding-left: 6px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+*/
+
+/* FIN DARK MODE */

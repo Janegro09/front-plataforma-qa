@@ -43,8 +43,6 @@ export default class ModeloFormularios extends Component {
             })
         }
 
-        console.log(cantSecciones)
-
         this.setState({ cantSecciones });
     }
 
@@ -66,9 +64,7 @@ export default class ModeloFormularios extends Component {
         // LO BUSCO Y LO PISO EN EL ARRAY
         let temp = []
         cantSecciones.map(seccion => {
-            console.log(seccion);
             if (seccion.id === edited[0].id) {
-                console.log('agrega: ', edited[0].customFields)
                 edited[0].customFields.push({
                     question: "", customField: "", id: HELPER_FUNCTIONS.generateCustomId(10)
                 })
@@ -164,16 +160,12 @@ export default class ModeloFormularios extends Component {
                 cantSecciones[sectionSearched].customFields[findField][name] = value;
             }
 
-            console.log(cantSecciones[sectionSearched].customFields[findField][name], name);
-            // cantSecciones[sectionSearched][name] = value;
         } else if (sectionSearched !== -1 && name === 'nameQuestion') {
             cantSecciones[sectionSearched].name = value;
-            // Estamos modificando los parametros de una seccion
         }
 
         this.setState({ cantSecciones })
 
-        console.log(cantSecciones);
     }
 
     componentDidMount() {
@@ -267,7 +259,6 @@ export default class ModeloFormularios extends Component {
 
                         {cantSecciones.length > 0 &&
                             cantSecciones.map((seccion, i) => {
-                                console.log(seccion)
                                 return (
                                     <div key={i} className="modelo-field">
                                         <div id={seccion.id}>

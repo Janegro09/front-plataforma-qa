@@ -159,14 +159,14 @@ export default class AdministracionFormulariosComponent extends Component {
                                 this.abrirModal();
                             }}
                         >
-                            + FORMULARIO
+                            + CAMPO PERSONALIZADO
                         </button>
 
                         <button
                             className="btnDefault"
                             onClick={this.formularios}
                         >
-                            + FORMULARIOS
+                            FORMULARIOS
                         </button>
 
                         <button
@@ -174,7 +174,7 @@ export default class AdministracionFormulariosComponent extends Component {
                             onClick={this.modeloFormularios}
 
                         >
-                           + MODELO 
+                           MODELOS DE FORMULARIO
                         </button>
                         </div>
                     </div>

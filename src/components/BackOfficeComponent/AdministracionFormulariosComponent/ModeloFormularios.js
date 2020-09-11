@@ -8,6 +8,7 @@ import swal from 'sweetalert';
 import './Modal.css';
 import moment from 'moment';
 import ModalModeloFormulariosComponent from './ModalModeloFormularios';
+import { Redirect } from 'react-router-dom';
 
 export default class ModeloFormularios extends Component {
 
@@ -22,6 +23,7 @@ export default class ModeloFormularios extends Component {
             description: "",
             parts: []
         },
+        redirect: false,
         models: null,
         modalModeloFormulario: false
     }
@@ -30,9 +32,69 @@ export default class ModeloFormularios extends Component {
         this.setState({ modalModeloFormulario: true });
     }
 
+    componentDidMount = () => {
+        this.setState({
+            loading: true
+        })
+
+        let tokenUser = JSON.parse(sessionStorage.getItem("token"));
+        let token = tokenUser;
+        let bearer = `Bearer ${token}`;
+
+        
+        axios.get(Global.newFormModel, { headers: { Authorization: bearer } }).then(response => {
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+
+            // ACÁ VAN A QUEDAR LAS DE M
+
+            this.setState({
+                loading: false,
+                models: response.data.Data
+            })
+
+        })
+            .catch((e) => {
+                // Si hay algún error en el request lo deslogueamos
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    this.setState({
+                        loading: false
+                    })
+                    swal("Error!", "Hubo un problema", "error");
+                }
+                console.log("Error: ", e)
+            });
+    }
+
+    ver = (e) => {
+        const { id } = e.target.dataset;
+
+        let redirect = `/administracion-formularios/modelo-formularios/${id}`;
+
+        this.setState({ redirect })
+
+    }
+
+    eliminar = (e) => {
+        const { id } = e.target.dataset;
+
+        console.log("Eliminamos", id)
+    }
+
+    editar = (e) => {
+        const { id } = e.target.dataset;
+
+        console.log("Editamos", id)
+    }
 
     render() {
-        let { loading, cantSecciones, allForms, models, modalModeloFormulario } = this.state;
+        let { loading, cantSecciones, allForms, models, modalModeloFormulario, redirect } = this.state;
+
+        if(redirect) {
+            return <Redirect to={redirect} />
+        }
 
         return (
             <>
@@ -76,6 +138,7 @@ export default class ModeloFormularios extends Component {
                                     <th>Partes</th>
                                     <th>Sección</th>
                                     <th>Subsección</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -89,6 +152,13 @@ export default class ModeloFormularios extends Component {
                                                 <td>{model.parts}</td>
                                                 <td>{model.section}</td>
                                                 <td>{model.subsection}</td>
+                                                <td>
+                                                    <button type="button" data-id={model.id} onClick={this.ver}>Ver</button>
+
+                                                    <button type="button" data-id={model.id} onClick={this.eliminar}>Eliminar</button>
+
+                                                    <button type="button" data-id={model.id} onClick={this.editar}>Editar</button>
+                                                </td>
                                             </tr>
                                         )
                                     })

@@ -11,6 +11,11 @@
     background-color: rgba(0,0,0,0.5);
 }
 
+.modal-formularios .hijo {
+    width: 60%;
+    padding: 20px;
+}
+
 .hijo {
     width: 35%;
     height: auto;

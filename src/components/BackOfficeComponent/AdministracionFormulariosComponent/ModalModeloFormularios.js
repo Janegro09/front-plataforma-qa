@@ -44,7 +44,9 @@ export default class ModalModeloFormulariosComponent extends Component {
             .then(response => {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 if (response.data.Success) {
-                    swal("Felicidades!", "Se ha creado el modelo correctamente", "success");
+                    swal("Felicidades!", "Se ha creado el modelo correctamente", "success").then(() => {
+                        this.componentDidMount();
+                    })
                 }
 
             })
@@ -63,9 +65,7 @@ export default class ModalModeloFormulariosComponent extends Component {
         let { id, value } = e.target;
         let { dataToSend } = this.state;
 
-        if (value !== '') {
-            dataToSend[id] = value;
-        }
+        dataToSend[id] = value;
 
         this.setState({ dataToSend });
     }
@@ -93,9 +93,8 @@ export default class ModalModeloFormulariosComponent extends Component {
 
     handleChangeQuestion = (e) => {
         let { value, name, parentNode } = e.target;
-        console.log('e', value, name, parentNode );
+        // console.log('e', value, name, parentNode );
 
-        
         let { cantSecciones } = this.state;
 
         const idField = parentNode.id;
@@ -108,6 +107,8 @@ export default class ModalModeloFormulariosComponent extends Component {
 
         }
 
+        console.log(sectionSearched, name)
+
         if (idFather && sectionSearched !== -1) {
             // Estamos modificando los parametros de una pregunta
             let findField = cantSecciones[sectionSearched]?.customFields?.findIndex(element => element.id == idField);
@@ -116,6 +117,7 @@ export default class ModalModeloFormulariosComponent extends Component {
             }
 
         } else if (sectionSearched !== -1 && name === 'nameQuestion') {
+            console.log('nombre dek poadre', value)
             cantSecciones[sectionSearched].name = value;
         }
 
@@ -126,9 +128,9 @@ export default class ModalModeloFormulariosComponent extends Component {
 
     eliminar = (seccion) => {
         let { cantSecciones } = this.state;
-        let idDelete = seccion.cant;
+        let idDelete = seccion.id;
 
-        cantSecciones = cantSecciones.filter(seccion => seccion.cant !== idDelete);
+        cantSecciones = cantSecciones.filter(seccion => seccion.id !== idDelete);
         this.setState({ cantSecciones });
     }
 
@@ -229,10 +231,10 @@ export default class ModalModeloFormulariosComponent extends Component {
 
     render() {
 
-        let { loading, cantSecciones, allForms, models, modalModeloFormulario } = this.state;
+        let { loading, cantSecciones, allForms, models, modalModeloFormulario, dataToSend } = this.state;
 
         return (
-            <div className="modal" id="modal-casero2">
+            <div className="modal modal-formularios" id="modal-casero2">
                 <div className="hijo">
                     <div className="boton-cerrar">
                         <button onClick={
@@ -255,6 +257,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                                 id="name"
                                 autoComplete="off"
                                 onChange={this.handleChange}
+                                value={dataToSend.name}
                             />
                         </div>
                         <div className="form-group">
@@ -265,6 +268,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                                 id="description"
                                 autoComplete="off"
                                 onChange={this.handleChange}
+                                value={dataToSend.description}
                             />
                         </div>
 
@@ -279,8 +283,8 @@ export default class ModalModeloFormulariosComponent extends Component {
                             cantSecciones.map((seccion, i) => {
                                 return (
                                     <div key={i} className="modelo-field">
-                                        <div id={seccion.id}>
-                                            <div className="flexAlign">
+                                        <div >
+                                            <div className="flexAlign" id={seccion.id}>
                                                 <input
                                                     className="form-control margin-top-10 marginBotton15"
                                                     name="nameQuestion"
@@ -308,8 +312,8 @@ export default class ModalModeloFormulariosComponent extends Component {
                                         {seccion.customFields.length > 0 &&
                                             seccion.customFields.map(field => {
                                                 return (
-                                                    <div key={field.id} id={field.id} data-parent={seccion.id}>
-                                                        <div className="flexAlign ">
+                                                    <div key={field.id} >
+                                                        <div className="flexAlign " id={field.id} data-parent={seccion.id}>
                                                             <input
                                                                 className="form-control marginBotton15"
                                                                 name="question"
@@ -324,7 +328,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                                                                 value={field.customField}
                                                             >
                                                                 <option>Preguntas...</option>
-                                                                {allForms.length > 0 &&
+                                                                {allForms?.length > 0 &&
                                                                     allForms.map(form => {
                                                                         return (
                                                                             <option value={form.id} key={form.id}>{form.name}</option>

@@ -18,6 +18,10 @@ export default class componentName extends Component {
         data: null
     }
 
+    changeSelection = (e) => {
+        console.log(e.target)
+    }
+
     componentDidMount = () => {
         const { id } = this.props.match.params;
 
@@ -64,10 +68,9 @@ export default class componentName extends Component {
     }
 
     getCustomField = (value, index) => {
-        console.log(value)
         return (
             <article key={index}>
-                <p>{value.name}</p>
+                <p>{value.question || value.name}</p>
                 
                 {value.type === 'select' &&
                     <>
@@ -102,7 +105,7 @@ export default class componentName extends Component {
                             return (
                                <>
                                 <label>{cf.value}</label>
-                                <input type="radio" name={value.id}/>
+                                <input type="radio" name={value.id} onChange={this.changeSelection}/>
                                 {cf.customFieldsSync &&
                                     <div className="conditionalCF" >
                                         {

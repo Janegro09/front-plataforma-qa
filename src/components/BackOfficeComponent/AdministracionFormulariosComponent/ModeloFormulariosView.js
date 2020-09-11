@@ -19,7 +19,24 @@ export default class componentName extends Component {
     }
 
     changeSelection = (e) => {
-        console.log(e.target)
+        const { name, parentNode } = e.target;
+
+
+        let child = false;
+        let childsOfParentNode = parentNode.childNodes;
+        for(let c of childsOfParentNode) {
+            const { classList, localName } = c;
+            if(localName === 'div' && classList.contains('conditionalCF')){
+                child = c;
+            }
+        }
+
+
+        
+
+
+        console.log(name, parentNode);
+        console.log(child)
     }
 
     componentDidMount = () => {
@@ -74,7 +91,7 @@ export default class componentName extends Component {
                 
                 {value.type === 'select' &&
                     <>
-                        <select name={value.id}>
+                        <select name={value.questionId}>
                             <option>Selecciona...</option>
                             {value.values.map((cf, ind) => {
                                 return (<option value={cf.value}>{cf.value}</option>)
@@ -87,13 +104,13 @@ export default class componentName extends Component {
 
                 {value.type === 'text' &&
                     <>
-                        <input type="text" placeholder={value.name}/>
+                        <input type="text" name={value.questionId} placeholder={value.name}/>
                     </>
                 }
 
                 {value.type === 'area' &&
                     <>
-                        <textarea>
+                        <textarea name={value.questionId}>
 
                         </textarea>
                     </>
@@ -103,17 +120,17 @@ export default class componentName extends Component {
                     <>
                         {value.values.map((cf, ind) => {
                             return (
-                               <>
+                               <span>
                                 <label>{cf.value}</label>
-                                <input type="radio" name={value.id} onChange={this.changeSelection}/>
+                                <input type="radio" name={value.questionId} onChange={this.changeSelection}/>
                                 {cf.customFieldsSync &&
-                                    <div className="conditionalCF" >
+                                    <div className="conditionalCF" data-parent={value.questionId}>
                                         {
                                             this.getCustomField(cf.customFieldsSync[0], 1)
                                         }
                                     </div>
                                 }
-                               </> 
+                               </ span> 
                             )
                         })
 
@@ -122,9 +139,9 @@ export default class componentName extends Component {
                 }
 
                 {value.type === 'checkbox' &&
-                    <>
-                        <input type="checkbox"/>
-                    </>
+                    <span>
+                        <input type="checkbox" name={value.questionId}/>
+                    </span>
                 }
             </article>
         )

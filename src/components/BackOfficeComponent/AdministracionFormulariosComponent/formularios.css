@@ -29,6 +29,10 @@
 
 }
 
+.conditionalCF {
+    display: none;
+}
+
 .formsOfMonitorings section article p {
     margin: 0;
 }

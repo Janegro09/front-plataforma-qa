@@ -15,7 +15,8 @@ export default class componentName extends Component {
     state = {
         loading: false,
         redirect: false,
-        data: null
+        data: null,
+        responses: []
     }
 
     changeSelection = (e) => {
@@ -84,7 +85,8 @@ export default class componentName extends Component {
             });
     }
 
-    getCustomField = (value, index) => {
+    getCustomField = (value, index, sectionId) => {
+        console.group("Sección: ", value, index, sectionId);
         return (
             <article key={index}>
                 <p>{value.question || value.name}</p>
@@ -122,11 +124,11 @@ export default class componentName extends Component {
                             return (
                                <span>
                                 <label>{cf.value}</label>
-                                <input type="radio" name={value.questionId} onChange={this.changeSelection}/>
+                                <input type="radio" name={value.id} data-question={value.questionId} data-section={sectionId} onChange={this.changeSelection}/>
                                 {cf.customFieldsSync &&
                                     <div className="conditionalCF" data-parent={value.questionId}>
                                         {
-                                            this.getCustomField(cf.customFieldsSync[0], 1)
+                                            this.getCustomField({...cf.customFieldsSync[0], questionId: value.questionId}, 1, sectionId)
                                         }
                                     </div>
                                 }
@@ -181,7 +183,7 @@ export default class componentName extends Component {
                                             <h6>{v.name}</h6>
                                             {v.customFields &&
                                                 v.customFields.map((val, index) => {
-                                                    return this.getCustomField(val, index);
+                                                    return this.getCustomField(val, index, v);
                                                 })
                                             }
                                         </section>

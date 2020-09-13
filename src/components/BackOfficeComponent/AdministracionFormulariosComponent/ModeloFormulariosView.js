@@ -20,8 +20,9 @@ export default class componentName extends Component {
     }
 
     changeSelection = (e) => {
-        const { name, parentNode } = e.target;
-
+        const { name, value, parentNode } = e.target;
+        let { responses } = this.state;
+        const { question, section, cfid } = e.target.dataset;
 
         let child = false;
         let childsOfParentNode = parentNode.childNodes;
@@ -32,12 +33,25 @@ export default class componentName extends Component {
             }
         }
 
+        let rsp = responses.find(elem => elem.section === section && elem.question === question);
 
-        
+        // Si cfid y question estan definidos entonces estamos hablando de la primera pregunta, si solo esta definido el cfid entonces estamos hblando de algun child
+        if(question && cfid) {
+            // Entonces estamos hablando del response padre
+            if(!rsp) {
+                rsp = {
+                    section,
+                    question,
+                    response: {
+                        data: value
+                    }
+                }
+            } else {
+                rsp.response = { data: value }
+            }
+        }
 
-
-        console.log(name, parentNode);
-        console.log(child)
+        console.log(question, section, cfid, value);
     }
 
     componentDidMount = () => {
@@ -86,17 +100,17 @@ export default class componentName extends Component {
     }
 
     getCustomField = (value, index, sectionId) => {
-        console.group("Sección: ", value, index, sectionId);
+        console.log(value, index, sectionId);
         return (
             <article key={index}>
                 <p>{value.question || value.name}</p>
                 
                 {value.type === 'select' &&
                     <>
-                        <select name={value.questionId}>
+                        <select data-question={value.questionId} data-cfid={value.id} data-section={sectionId} onChange={this.changeSelection}>
                             <option>Selecciona...</option>
                             {value.values.map((cf, ind) => {
-                                return (<option value={cf.value}>{cf.value}</option>)
+                                return (<option value={cf.value} key={ind}>{cf.value}</option>)
                             })
 
                             }
@@ -104,19 +118,19 @@ export default class componentName extends Component {
                     </>
                 }
 
-                {value.type === 'text' &&
-                    <>
-                        <input type="text" name={value.questionId} placeholder={value.name}/>
+                {/* {value.type === 'text' &&
+                    <>        return true;
+                        <input type="text" placeholder={value.name}/>
                     </>
-                }
+                } */}
 
-                {value.type === 'area' &&
+                {/* {value.type === 'area' &&
                     <>
                         <textarea name={value.questionId}>
 
                         </textarea>
                     </>
-                }
+                } */}
                 
                 {value.type === 'radio' &&
                     <>
@@ -140,11 +154,11 @@ export default class componentName extends Component {
                     </>
                 }
 
-                {value.type === 'checkbox' &&
+                {/* {value.type === 'checkbox' &&
                     <span>
                         <input type="checkbox" name={value.questionId}/>
                     </span>
-                }
+                } */}
             </article>
         )
     }
@@ -183,7 +197,7 @@ export default class componentName extends Component {
                                             <h6>{v.name}</h6>
                                             {v.customFields &&
                                                 v.customFields.map((val, index) => {
-                                                    return this.getCustomField(val, index, v);
+                                                    return this.getCustomField(val, index, v.id);
                                                 })
                                             }
                                         </section>

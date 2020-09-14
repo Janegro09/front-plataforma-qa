@@ -41,7 +41,7 @@ export default class ModeloFormularios extends Component {
         let token = tokenUser;
         let bearer = `Bearer ${token}`;
 
-        
+
         axios.get(Global.newFormModel, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
@@ -80,7 +80,46 @@ export default class ModeloFormularios extends Component {
     eliminar = (e) => {
         const { id } = e.target.dataset;
 
-        console.log("Eliminamos", id)
+        swal({
+            title: "Estas seguro?",
+            text: "Estas por eliminar un modelo de formulario, no podrás recuperarlo",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    const config = {
+                        headers: { Authorization: `Bearer ${token}` }
+                    };
+                    axios.delete(Global.newFormModel + "/" + id, config)
+                        .then(response => {
+                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            if (response.data.Success) {
+                                swal("Felicidades!", "Modelo de formulario eliminado correctamente", "success").then(() => {
+                                    window.location.reload(window.location.href);
+                                });
+                            }
+
+                        })
+                        .catch(e => {
+                            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                                HELPER_FUNCTIONS.logout()
+                            } else {
+                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                swal("Error al eliminar!", {
+                                    icon: "error",
+                                });
+
+                            }
+                            console.log("Error: ", e)
+                        })
+
+                } else {
+                    swal("No se elimino nada");
+                }
+            });
     }
 
     editar = (e) => {
@@ -92,7 +131,7 @@ export default class ModeloFormularios extends Component {
     render() {
         let { loading, cantSecciones, allForms, models, modalModeloFormulario, redirect } = this.state;
 
-        if(redirect) {
+        if (redirect) {
             return <Redirect to={redirect} />
         }
 

@@ -6,6 +6,7 @@ import swal from 'sweetalert';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import { Redirect } from 'react-router-dom';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
+import Checkbox from '@material-ui/core/Checkbox';
 
 
 export default class PerfilamientoCuartilesComponent extends Component {
@@ -516,8 +517,8 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                 </td>
 
                                                 <td>
-                                                    <input
-                                                        type="checkbox"
+                                                    
+                                                    <Checkbox
                                                         checked={exists !== ''}
                                                         onChange={() => {
                                                             if (document.getElementById(key).disabled) {

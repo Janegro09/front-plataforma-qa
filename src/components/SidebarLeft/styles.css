@@ -726,9 +726,12 @@ tr {
   border-radius: 5px;
   color: #03a9f4;
   border: 1px solid #03a9f4;
-  background-color: transparent !important;
+  background-color: #ffffffba !important;
   right: 113px;
+}
 
+.pasoAnterior:hover {
+  color: #03a9f4 !important;
 }
 
 .quitarTodos {
@@ -738,6 +741,28 @@ tr {
 }
 
 
+.uploadIcon {
+  font-size: 4.5em !important;
+  color: white;
+}
+
+.btnArticle {
+  text-align: center;
+  border: 5px solid white;
+  border-radius: 5px;
+}
+
+.btnArticle:hover {
+  border: 5px solid white;
+}
+
+.btn:hover {
+  color: white;
+}
+
+.contenedorBtnArticle {
+
+}
 
 
 /* DARK MODE */

@@ -208,8 +208,10 @@ export default class ModalModeloFormulariosComponent extends Component {
                 loading: false
             })
 
-            axios.get(Global.newFormModel, { headers: { Authorization: bearer } }).then(response => {
+            let { id } = this.props;
+            axios.get(Global.newFormModel + '/' + id, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                console.log("La response: ", response.data.Data);
                 this.setState({ models: response.data.Data })
             })
 
@@ -232,7 +234,7 @@ export default class ModalModeloFormulariosComponent extends Component {
     render() {
 
         let { loading, cantSecciones, allForms, models, modalModeloFormulario, dataToSend } = this.state;
-
+        console.log('models: ', models)
         return (
             <div className="modal modal-formularios" id="modal-casero2">
                 <div className="hijo">
@@ -245,117 +247,124 @@ export default class ModalModeloFormulariosComponent extends Component {
                         }>x</button>
                     </div>
 
-                    {/* LO NUEVO VA AQUI */}
-                    <h4>EDITAR nuevo modelo</h4>
+                    {models &&
+                        <>
+                            {/* LO NUEVO VA AQUI */}
+                            <h4>EDITAR nuevo modelo</h4>
 
-                    <form onSubmit={this.sendForm}>
-                        <div className="form-group">
-                            <label htmlFor="name">Nombre</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="name"
-                                autoComplete="off"
-                                onChange={this.handleChange}
-                                value={dataToSend.name}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="description">Descripción</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="description"
-                                autoComplete="off"
-                                onChange={this.handleChange}
-                                value={dataToSend.description}
-                            />
-                        </div>
+                            <form onSubmit={this.sendForm}>
+                                <div className="form-group">
+                                    <label htmlFor="name">Nombre</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="name"
+                                        autoComplete="off"
+                                        onChange={this.handleChange}
+                                        defaultValue={models[0].name}
+                                        // value={dataToSend.name}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="description">Descripción</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="description"
+                                        autoComplete="off"
+                                        onChange={this.handleChange}
+                                        defaultValue={models[0].description}
+                                        // value={dataToSend.description}
+                                    />
+                                </div>
 
-                        <button
-                            className="btnDefaultBorder ver-mas"
-                            onClick={this.agregar}
-                        >
-                            + AGREGAR FORMULARIO
-                        </button>
+                                <button
+                                    className="btnDefaultBorder ver-mas"
+                                    onClick={this.agregar}
+                                >
+                                    + AGREGAR FORMULARIO
+                                </button>
 
-                        {cantSecciones.length > 0 &&
-                            cantSecciones.map((seccion, i) => {
-                                return (
-                                    <div key={i} className="modelo-field">
-                                        <div >
-                                            <div className="flexAlign" id={seccion.id}>
-                                                <input
-                                                    className="form-control margin-top-10 marginBotton15"
-                                                    name="nameQuestion"
-                                                    type="text"
-                                                    value={seccion.name}
-                                                    onChange={this.handleChangeQuestion}
-                                                />
-                                                <button
-                                                    className="btnDefault"
-                                                    onClick={(e) => { e.preventDefault(); this.eliminar(seccion); }}
-                                                >
-                                                    <DeleteIcon />
-                                                </button>
-                                            </div>
-                                            <button
-                                                className="pregButton btnDefaultBorderLight marginBotton15"
-                                                onClick={(e) => { e.preventDefault(); this.agregarField(seccion); }}
-                                            >
-                                                + AGREGAR PREGUNTA
-                                            </button>
-
-                                        </div>
-
-
-                                        {seccion.customFields.length > 0 &&
-                                            seccion.customFields.map(field => {
-                                                return (
-                                                    <div key={field.id} >
-                                                        <div className="flexAlign " id={field.id} data-parent={seccion.id}>
-                                                            <input
-                                                                className="form-control marginBotton15"
-                                                                name="question"
-                                                                type="text"
-                                                                placeholder="pregunta"
-                                                                onChange={this.handleChangeQuestion}
-                                                                value={field.question}
-                                                            />
-                                                            <select
-                                                                name="customField"
-                                                                onChange={this.handleChangeQuestion}
-                                                                value={field.customField}
-                                                            >
-                                                                <option>Preguntas...</option>
-                                                                {allForms?.length > 0 &&
-                                                                    allForms.map(form => {
-                                                                        return (
-                                                                            <option value={form.id} key={form.id}>{form.name}</option>
-                                                                        )
-                                                                    })
-                                                                }
-                                                            </select>
-
-                                                            <button className="btnDefaultLight"
-
-                                                                onClick={(e) => { e.preventDefault(); this.deleteQuestion(field, seccion) }}
-                                                            >
-                                                                QUITAR
-                                                            </button>
-                                                        </div>
+                                {cantSecciones.length > 0 &&
+                                    cantSecciones.map((seccion, i) => {
+                                        return (
+                                            <div key={i} className="modelo-field">
+                                                <div >
+                                                    <div className="flexAlign" id={seccion.id}>
+                                                        <input
+                                                            className="form-control margin-top-10 marginBotton15"
+                                                            name="nameQuestion"
+                                                            type="text"
+                                                            value={seccion.name}
+                                                            onChange={this.handleChangeQuestion}
+                                                        />
+                                                        <button
+                                                            className="btnDefault"
+                                                            onClick={(e) => { e.preventDefault(); this.eliminar(seccion); }}
+                                                        >
+                                                            <DeleteIcon />
+                                                        </button>
                                                     </div>
+                                                    <button
+                                                        className="pregButton btnDefaultBorderLight marginBotton15"
+                                                        onClick={(e) => { e.preventDefault(); this.agregarField(seccion); }}
+                                                    >
+                                                        + AGREGAR PREGUNTA
+                                                    </button>
 
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                )
-                            })
-                        }
+                                                </div>
 
-                        <button type="submit" className="btn btn-primary btnEnviarCond morph margin-top-10">Enviar</button>
-                    </form>
+
+                                                {seccion.customFields.length > 0 &&
+                                                    seccion.customFields.map(field => {
+                                                        return (
+                                                            <div key={field.id} >
+                                                                <div className="flexAlign " id={field.id} data-parent={seccion.id}>
+                                                                    <input
+                                                                        className="form-control marginBotton15"
+                                                                        name="question"
+                                                                        type="text"
+                                                                        placeholder="pregunta"
+                                                                        onChange={this.handleChangeQuestion}
+                                                                        value={field.question}
+                                                                    />
+                                                                    <select
+                                                                        name="customField"
+                                                                        onChange={this.handleChangeQuestion}
+                                                                        value={field.customField}
+                                                                    >
+                                                                        <option>Preguntas...</option>
+                                                                        {allForms?.length > 0 &&
+                                                                            allForms.map(form => {
+                                                                                return (
+                                                                                    <option value={form.id} key={form.id}>{form.name}</option>
+                                                                                )
+                                                                            })
+                                                                        }
+                                                                    </select>
+
+                                                                    <button className="btnDefaultLight"
+
+                                                                        onClick={(e) => { e.preventDefault(); this.deleteQuestion(field, seccion) }}
+                                                                    >
+                                                                        QUITAR
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+                                        )
+                                    })
+                                }
+
+                                <button type="submit" className="btn btn-primary btnEnviarCond morph margin-top-10">Enviar</button>
+                            </form>
+                        </>
+                    }
+
                 </div>
             </div>
         )

@@ -27,15 +27,16 @@ export default class ModeloFormularios extends Component {
         redirect: false,
         models: null,
         modalModeloFormulario: false,
-        ModalEditarModeloFormularios: false
+        ModalEditarModeloFormularios: false,
+        idToEdit: null
     }
 
     abrirModalModeloFormularios = () => {
         this.setState({ modalModeloFormulario: true });
     }
 
-    abrirModalEditarModeloFormularios = () => {
-        this.setState({ ModalEditarModeloFormularios: true });
+    abrirModalEditarModeloFormularios = (id) => {
+        this.setState({ ModalEditarModeloFormularios: true, idToEdit: id });
     }
 
     componentDidMount = () => {
@@ -135,7 +136,7 @@ export default class ModeloFormularios extends Component {
     }
 
     render() {
-        let { loading, cantSecciones, allForms, models, modalModeloFormulario, ModalEditarModeloFormularios, redirect } = this.state;
+        let { loading, cantSecciones, allForms, models, modalModeloFormulario, ModalEditarModeloFormularios, idToEdit, redirect } = this.state;
 
         if (redirect) {
             return <Redirect to={redirect} />
@@ -148,7 +149,7 @@ export default class ModeloFormularios extends Component {
                 }
 
                 {ModalEditarModeloFormularios &&
-                    <ModalEditarModelo />
+                    <ModalEditarModelo id={idToEdit} />
                 }
                 {loading &&
                     HELPER_FUNCTIONS.backgroundLoading()
@@ -209,7 +210,7 @@ export default class ModeloFormularios extends Component {
                                                     <button type="button" data-id={model.id} onClick={
                                                         (e) => {
                                                             e.preventDefault();
-                                                            this.abrirModalEditarModeloFormularios()
+                                                            this.abrirModalEditarModeloFormularios(model.id)
                                                         }
                                                     }>Editar</button>
                                                 </td>

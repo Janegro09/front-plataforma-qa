@@ -538,17 +538,19 @@ h4 {
 }
 
 .buttonGral {
-    position: fixed;
-    top: -45px;
-    font-size: 50px;
-    border: 1px solid white;
-    border-radius: 50%;
-    color: white;
-    width: 115px;
-    height: 113px;
-    padding: 33px 38px 22px 2px;
-    right: -51px;
-    color: white;
+  position: fixed;
+  top: -47px;
+  -webkit-box-shadow: 6px -4px 33px 24px rgba(0,0,0,0.35);
+  font-size: 40px;
+  font-weight: 300;
+  border: 1px solid #ffffff69;
+  border-radius: 50%;
+  color: white;
+  width: 115px;
+  height: 113px;
+  padding: 41px 38px 22px 2px;
+  right: -51px;
+  color: white;
 }
 
 .flexContent {
@@ -617,8 +619,40 @@ h4 {
   top: 50px;
   right: 22%;
   font-size: 17px;
+  transition: all 0.15s ease-in-out;
+} 
+
+.btnClose:hover {
+  background-color: #03a9f4;
+  color: white;
+}
+
+.btnCloseModal {
+  background-color: white;
+  color: black;
+  border-radius: 50px;
+  -webkit-box-shadow: 0px 0px 19px 4px rgba(0,0,0,0.10);
+  padding: 13px;
+  width: 50px;
+  position: absolute;
+  top: 50px;
+  right: 22%;
+  font-size: 17px;
 } 
  
+.btnCloseModalDos {
+  position: absolute; 
+  top: 6px;
+  right: 16px;
+  font-size: 19px;
+}
+
+.btnCloseModalTres {
+  position: absolute;
+  right: 8px;
+  font-size: 19px;
+}
+
 .modalPerfilamiento {
   display: flex;
   justify-content: center;

@@ -281,7 +281,7 @@ export default class Formulario extends Component {
         return (
             <div className="modal" id="modal-casero">
                 <div className="hijo">
-                    <div className="boton-cerrar">
+                    <div className="btnCloseModalTres">
                         <button
                             onClick={
                                 (e) => {

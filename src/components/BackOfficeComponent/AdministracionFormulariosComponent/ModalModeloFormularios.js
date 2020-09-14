@@ -234,9 +234,9 @@ export default class ModalModeloFormulariosComponent extends Component {
         let { loading, cantSecciones, allForms, models, modalModeloFormulario, dataToSend } = this.state;
 
         return (
-            <div className="modal modal-formularios" id="modal-casero2">
+            <div className="modal modal-formularios" id="modal-casero2" >
                 <div className="hijo">
-                    <div className="boton-cerrar">
+                    <div className="btnCloseModalDos">
                         <button onClick={
                             (e) => {
                                 e.preventDefault()

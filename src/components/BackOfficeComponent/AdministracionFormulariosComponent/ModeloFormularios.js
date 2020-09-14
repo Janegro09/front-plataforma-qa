@@ -8,6 +8,7 @@ import swal from 'sweetalert';
 import './Modal.css';
 import moment from 'moment';
 import ModalModeloFormulariosComponent from './ModalModeloFormularios';
+import ModalEditarModelo from './ModalEditarModelo';
 import { Redirect } from 'react-router-dom';
 
 export default class ModeloFormularios extends Component {
@@ -25,11 +26,16 @@ export default class ModeloFormularios extends Component {
         },
         redirect: false,
         models: null,
-        modalModeloFormulario: false
+        modalModeloFormulario: false,
+        ModalEditarModeloFormularios: false
     }
 
     abrirModalModeloFormularios = () => {
         this.setState({ modalModeloFormulario: true });
+    }
+
+    abrirModalEditarModeloFormularios = () => {
+        this.setState({ ModalEditarModeloFormularios: true });
     }
 
     componentDidMount = () => {
@@ -129,7 +135,7 @@ export default class ModeloFormularios extends Component {
     }
 
     render() {
-        let { loading, cantSecciones, allForms, models, modalModeloFormulario, redirect } = this.state;
+        let { loading, cantSecciones, allForms, models, modalModeloFormulario, ModalEditarModeloFormularios, redirect } = this.state;
 
         if (redirect) {
             return <Redirect to={redirect} />
@@ -139,6 +145,10 @@ export default class ModeloFormularios extends Component {
             <>
                 {modalModeloFormulario &&
                     <ModalModeloFormulariosComponent />
+                }
+
+                {ModalEditarModeloFormularios &&
+                    <ModalEditarModelo />
                 }
                 {loading &&
                     HELPER_FUNCTIONS.backgroundLoading()
@@ -196,7 +206,12 @@ export default class ModeloFormularios extends Component {
 
                                                     <button type="button" data-id={model.id} onClick={this.eliminar}>Eliminar</button>
 
-                                                    <button type="button" data-id={model.id} onClick={this.editar}>Editar</button>
+                                                    <button type="button" data-id={model.id} onClick={
+                                                        (e) => {
+                                                            e.preventDefault();
+                                                            this.abrirModalEditarModeloFormularios()
+                                                        }
+                                                    }>Editar</button>
                                                 </td>
                                             </tr>
                                         )

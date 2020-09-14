@@ -20,38 +20,98 @@ export default class componentName extends Component {
     }
 
     changeSelection = (e) => {
+        e.preventDefault();
         const { name, value, parentNode } = e.target;
         let { responses } = this.state;
-        const { question, section, cfid } = e.target.dataset;
+        const { question, section, parent } = e.target.dataset;
 
-        let child = false;
-        let childsOfParentNode = parentNode.childNodes;
-        for(let c of childsOfParentNode) {
-            const { classList, localName } = c;
-            if(localName === 'div' && classList.contains('conditionalCF')){
-                child = c;
-            }
-        }
-
-        let rsp = responses.find(elem => elem.section === section && elem.question === question);
-
-        // Si cfid y question estan definidos entonces estamos hablando de la primera pregunta, si solo esta definido el cfid entonces estamos hblando de algun child
-        if(question && cfid) {
-            // Entonces estamos hablando del response padre
-            if(!rsp) {
-                rsp = {
-                    section,
-                    question,
-                    response: {
-                        data: value
-                    }
+        const changeValue = ({id, value, parent}, object) => {
+            // Buscar en object el padre y le agregamos un child
+            if(object.id === parent) {
+                object.child = {
+                    id,
+                    data: value
                 }
-            } else {
-                rsp.response = { data: value }
+                return object;
+            } else if(object.child) {
+                return changeValue({ id, value, parent }, object.child);
+            } else{
+                return false;
             }
         }
 
-        console.log(question, section, cfid, value);
+        if(!value && value !== '') return true;
+        console.log(question, section, parent);
+
+        let respIndex = responses.findIndex(elem => elem.section === section && elem.question === question);
+        let q = false;
+        if(respIndex !== -1) {
+            q = responses[respIndex];
+        }
+
+        if(!q) {
+            // Creamos la respuesta
+            q = {
+                section,
+                question,
+                response: {}
+            }
+        }
+
+        if(!parent) {
+            // Entonces significa que estamos respondiendo una pregunta padre
+            q.response = { 
+                data: value,
+                id: name
+            }
+        } else if(respIndex !== -1) {
+            // Entonces estamos contestando una pregunta hija
+
+            let c = changeValue({ id: name, value, parent }, q.response);
+
+
+            console.log('ccccc', c);
+        } else return false;
+
+        
+        if(respIndex !== -1){
+            responses[respIndex] = q;
+        } else {
+            responses.push(q);
+        }
+        this.setState({ responses });
+
+
+        // question
+        // let child = false;
+        // let childsOfParentNode = parentNode.childNodes;
+        // for(let c of childsOfParentNode) {
+        //     const { classList, localName } = c;
+        //     if(localName === 'div' && classList.contains('conditionalCF')){
+        //         child = c;
+        //     }
+        // }
+
+        // let rsp = responses.find(elem => elem.section === section && elem.question === question);
+
+        // // Si cfid y question estan definidos entonces estamos hablando de la primera pregunta, si solo esta definido el cfid entonces estamos hblando de algun child
+        // if(question && cfid) {
+        //     // Entonces estamos hablando del response padre
+        //     console.log('pregunta padre');
+        //     if(!rsp) {
+        //         rsp = {
+        //             section,
+        //             question,
+        //             response: {
+        //                 data: value
+        //             }
+        //         }
+        //     } else {
+        //         rsp.response = { data: value }
+        //     }
+        // }
+
+        // console.log(question, section, cfid, value);
     }
 
     componentDidMount = () => {
@@ -99,53 +159,143 @@ export default class componentName extends Component {
             });
     }
 
-    getCustomField = (value, index, sectionId) => {
-        console.log(value, index, sectionId);
+    getDefaultValue = (id, question, section) => {
+        const { responses } = this.state;
+        let q = responses.find(elem => elem.question === question && elem.section === section);
+
+        const getById = (id, values) => {
+            if(!values) return "";
+            let valrtn = "";
+            if(values.id && values.id === id) {
+                valrtn = values.data
+            } else if(values.child) {
+                valrtn = getById(id, values.child);
+            }
+
+            return valrtn;
+        }
+
+        return getById(id, q?.response)
+    }
+
+
+    getCustomField = (value, sectionId) => {
+        let index = (Date.now() * Math.random()).toString();
+
+        let defaultValue = this.getDefaultValue(value.id ,value.questionId, sectionId);
+        let childs = []
         return (
             <article key={index}>
                 <p>{value.question || value.name}</p>
                 
                 {value.type === 'select' &&
+                
                     <>
-                        <select data-question={value.questionId} data-cfid={value.id} data-section={sectionId} onChange={this.changeSelection}>
+                        <select 
+                            data-question={value.questionId} 
+                            data-parent={value.parentId} 
+                            data-section={sectionId} 
+                            value={defaultValue}
+                            name={value.id}
+                            onChange={this.changeSelection}
+                        >
                             <option>Selecciona...</option>
                             {value.values.map((cf, ind) => {
+                                if(cf.customFieldsSync) {
+                                    childs.push(cf.customFieldsSync[0])
+                                }
+                                
                                 return (<option value={cf.value} key={ind}>{cf.value}</option>)
+
+
                             })
+
 
                             }
                         </select>
+                        {childs.length > 0 &&
+                            childs.map((cf, ind) => {
+                                return (
+                                    <div className="conditionalCF">
+                                    {
+                                        this.getCustomField({
+                                            ...cf,
+                                            questionId: value.questionId,
+                                            parentId: value.id
+                                            }, sectionId)
+                                    }
+                                    </div>)
+                            } )
+
+                        }
                     </>
                 }
 
-                {/* {value.type === 'text' &&
-                    <>        return true;
-                        <input type="text" placeholder={value.name}/>
+                {value.type === 'text' &&
+                    <>      
+                    <span>
+                        <label>{value.name}</label>
+                        <input 
+                            type="text" 
+                            placeholder={value.name}
+                            data-section={sectionId} 
+                            data-question={value.questionId} 
+                            data-parent={value.parentId} 
+                            onBlur={this.changeSelection}
+                            name={value.id} 
+                            defaultValue={defaultValue}
+                            />
+                    </span>
                     </>
-                } */}
+                }
 
-                {/* {value.type === 'area' &&
+                {value.type === 'area' &&
                     <>
-                        <textarea name={value.questionId}>
+                        <span>
+                            <label>{value.name}</label>
+                            <textarea 
+                                data-section={sectionId} 
+                                data-question={value.questionId} 
+                                data-parent={value.parentId} 
+                                onBlur={this.changeSelection}
+                                name={value.id} 
+                                defaultValue={defaultValue}
+                            >
 
-                        </textarea>
+                            </textarea>
+                        </span>
                     </>
-                } */}
+                }
                 
                 {value.type === 'radio' &&
                     <>
                         {value.values.map((cf, ind) => {
                             return (
                                <span>
-                                <label>{cf.value}</label>
-                                <input type="radio" name={value.id} data-question={value.questionId} data-section={sectionId} onChange={this.changeSelection}/>
-                                {cf.customFieldsSync &&
-                                    <div className="conditionalCF" data-parent={value.questionId}>
-                                        {
-                                            this.getCustomField({...cf.customFieldsSync[0], questionId: value.questionId}, 1, sectionId)
-                                        }
-                                    </div>
-                                }
+                                    <label>{cf.value}</label>
+
+                                    <input 
+                                        type="radio" 
+                                        checked={cf.value === defaultValue}
+                                        value={cf.value} 
+                                        name={value.id} 
+                                        data-section={sectionId} 
+                                        data-question={value.questionId} 
+                                        data-parent={value.parentId} 
+                                        onChange={this.changeSelection}
+                                    />
+
+                                    {cf.customFieldsSync &&
+                                        <div className="conditionalCF">
+                                            {
+                                                this.getCustomField({
+                                                    ...cf.customFieldsSync[0],
+                                                    questionId: value.questionId,
+                                                    parentId: value.id
+                                                    }, sectionId)
+                                            }
+                                        </div>
+                                    }
                                </ span> 
                             )
                         })
@@ -154,11 +304,42 @@ export default class componentName extends Component {
                     </>
                 }
 
-                {/* {value.type === 'checkbox' &&
-                    <span>
-                        <input type="checkbox" name={value.questionId}/>
-                    </span>
-                } */}
+                {value.type === 'checkbox' &&
+                    <>
+                        {value.values.map((cf, ind) => {
+                            return (
+                            <span>
+                                    <label>{cf.value}</label>
+
+                                    <input 
+                                        type="checkbox" 
+                                        checked={cf.value === defaultValue}
+                                        value={cf.value} 
+                                        name={value.id} 
+                                        data-section={sectionId} 
+                                        data-question={value.questionId} 
+                                        data-parent={value.parentId} 
+                                        onChange={this.changeSelection}
+                                    />
+
+                                    {cf.customFieldsSync &&
+                                        <div className="conditionalCF">
+                                            {
+                                                this.getCustomField({
+                                                    ...cf.customFieldsSync[0],
+                                                    questionId: value.questionId,
+                                                    parentId: value.id
+                                                    }, sectionId)
+                                            }
+                                        </div>
+                                    }
+                            </ span> 
+                            )
+                        })
+
+                        }
+                    </>
+                }
             </article>
         )
     }
@@ -197,7 +378,7 @@ export default class componentName extends Component {
                                             <h6>{v.name}</h6>
                                             {v.customFields &&
                                                 v.customFields.map((val, index) => {
-                                                    return this.getCustomField(val, index, v.id);
+                                                    return this.getCustomField(val, v.id);
                                                 })
                                             }
                                         </section>

@@ -417,7 +417,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                     <th>Orden</th>
                                     <th>Objetivo VMin</th>
                                     <th>Objetivo VMax</th>
-                                    <th>Seleccionar</th>
+                                    <th className="tableIcons">Seleccionar</th>
                                 </tr>
                             </thead>
                             <tbody>

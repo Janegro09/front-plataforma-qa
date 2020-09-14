@@ -479,8 +479,7 @@ export default class StepName extends Component {
                                 </button>
                                 <h4>Nombre: {step.name}</h4>
                                 <br />
-                                <article className="btn btn-info btnArticle" 
-                                
+                                <article className="btnArticle" 
                                 onClick={(e) => {
                                             e.preventDefault();
                                             this.asignarArchivos();

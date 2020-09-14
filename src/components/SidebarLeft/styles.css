@@ -743,26 +743,45 @@ tr {
 
 .uploadIcon {
   font-size: 4.5em !important;
+  color: #03a9f4;
+
+}
+
+.uploadIcon > svg {
+  color: #03a9f4;
+  
+} 
+
+
+.btnArticle:hover > svg {
   color: white;
+
 }
 
 .btnArticle {
+  padding: 10px;
   text-align: center;
-  border: 5px solid white;
+  border: 1px solid #03a9f4;
   border-radius: 5px;
+  color: #03a9f4;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
 }
 
 .btnArticle:hover {
-  border: 5px solid white;
+  background-color: #03a9f4;
+  color: white;
+}
+
+.btnArticle:hover {
+  border: 1px solid #03a9f4;
 }
 
 .btn:hover {
   color: white;
 }
 
-.contenedorBtnArticle {
 
-}
 
 
 /* DARK MODE */

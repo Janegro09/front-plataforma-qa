@@ -373,6 +373,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 <SideBarLeft />
 
                 <div className="section-content">
+                    <div className="flexAlign">
                     {nameCuartilSelected &&
                         <>
                             {modelsOfCuartiles &&
@@ -387,7 +388,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                     }
                                 </select>
                             }
-                            <input id="model-name" type="text" placeholder="Nombre del modelo" defaultValue={nameModelSelected} />
+                            <input className="form-control" id="model-name" type="text" placeholder="Nombre del modelo" defaultValue={nameModelSelected} />
                             <button
                                 className="btn btn-primary"
                                 onClick={
@@ -399,9 +400,11 @@ export default class PerfilamientoCuartilesComponent extends Component {
                             >
                                 Guardar
                             </button>
+                            
+                            <br></br>
                             <div className="alert alert-primary">{nameCuartilSelected}</div>
                         </>
-                    }
+                    }</div>
                     <button onClick={this.enviar} className="buttonSiguiente">Guardar</button>
                     <button onClick={(e) => {
                         e.preventDefault();

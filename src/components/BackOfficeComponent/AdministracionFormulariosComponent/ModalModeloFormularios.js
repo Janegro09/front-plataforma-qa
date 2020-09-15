@@ -160,22 +160,28 @@ export default class ModalModeloFormulariosComponent extends Component {
     }
 
 
-    deleteQuestion = (q, section) => {
+    deleteQuestion = (field, section) => {
         let { cantSecciones } = this.state;
         let temp = [];
 
-        for (let i = 0; i < cantSecciones.length; i++) {
-            for (let j = 0; j < cantSecciones[i].customFields.length; j++) {
-                if (cantSecciones[i].customFields[j].id !== q.id) {
-                    temp.push(cantSecciones[i].customFields[j]);
-                }
+        for(let s of cantSecciones) {
+            let td = {
+                ...s
+            }
+            
+            if(s.id === section) {
+                td.customFields = [];
+                for(let cf of s.customFields) {
+                    if(cf.id === field) continue;
 
+                    td.customFields.push(cf);
+                }
             }
 
-            cantSecciones[i].customFields = temp;
-
+            temp.push(td);
         }
 
+        cantSecciones = temp;
 
         this.setState({ cantSecciones });
     }
@@ -276,7 +282,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                             className="btnDefaultBorder ver-mas"
                             onClick={this.agregar}
                         >
-                            + AGREGAR FORMULARIO
+                            + AGREGAR SECCIÓN
                         </button>
 
                         {cantSecciones.length > 0 &&
@@ -339,7 +345,7 @@ export default class ModalModeloFormulariosComponent extends Component {
 
                                                             <button className="btnDefaultLight"
 
-                                                                onClick={(e) => { e.preventDefault(); this.deleteQuestion(field, seccion) }}
+                                                                onClick={(e) => { e.preventDefault(); this.deleteQuestion(field.id, seccion.id) }}
                                                             >
                                                                 QUITAR
                                                             </button>

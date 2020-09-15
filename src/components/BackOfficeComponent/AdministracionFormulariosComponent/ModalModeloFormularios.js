@@ -101,9 +101,9 @@ export default class ModalModeloFormulariosComponent extends Component {
         const idFather = parentNode.dataset.parent;
         let sectionSearched = -1;
         if (idField && name === 'nameQuestion') {
-            sectionSearched = cantSecciones.findIndex(element => element.id == idField);
+            sectionSearched = cantSecciones.findIndex(element => element.id === idField);
         } else if (name !== 'nameQuestion') {
-            sectionSearched = cantSecciones.findIndex(element => element.id == idFather);
+            sectionSearched = cantSecciones.findIndex(element => element.id === idFather);
 
         }
 
@@ -111,7 +111,7 @@ export default class ModalModeloFormulariosComponent extends Component {
 
         if (idFather && sectionSearched !== -1) {
             // Estamos modificando los parametros de una pregunta
-            let findField = cantSecciones[sectionSearched]?.customFields?.findIndex(element => element.id == idField);
+            let findField = cantSecciones[sectionSearched]?.customFields?.findIndex(element => element.id === idField);
             if (findField !== -1) {
                 cantSecciones[sectionSearched].customFields[findField][name] = value;
             }
@@ -237,7 +237,7 @@ export default class ModalModeloFormulariosComponent extends Component {
 
     render() {
 
-        let { loading, cantSecciones, allForms, models, modalModeloFormulario, dataToSend } = this.state;
+        let { cantSecciones, allForms, dataToSend } = this.state;
 
         return (
             <div className="modal modal-formularios" id="modal-casero2" >

@@ -7,7 +7,6 @@ import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
 import Global from '../../../Global'
 import moment from 'moment';
 import Modal from './Modal'
-import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Redirect } from 'react-router-dom';

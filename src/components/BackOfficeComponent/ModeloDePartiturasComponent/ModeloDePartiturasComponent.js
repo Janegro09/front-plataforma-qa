@@ -9,8 +9,6 @@ import moment from 'moment'
 import Formulario from './Formulario'
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
-
 
 export default class ModeloDePartiturasComponent extends Component {
     constructor(props) {

@@ -40,11 +40,11 @@ export default class ModalModeloFormulariosComponent extends Component {
             headers: { Authorization: `Bearer ${token}` }
         };
 
-        axios.post(Global.newFormModel, dataToSend, config)
+        axios.put(Global.newFormModel + '/' + dataToSend.id, dataToSend, config)
             .then(response => {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 if (response.data.Success) {
-                    swal("Felicidades!", "Se ha creado el modelo correctamente", "success").then(() => {
+                    swal("Felicidades!", "Se ha modficado el modelo correctamente", "success").then(() => {
                         this.componentDidMount();
                     })
                 }
@@ -107,8 +107,6 @@ export default class ModalModeloFormulariosComponent extends Component {
 
         }
 
-        console.log(sectionSearched, name)
-
         if (idFather && sectionSearched !== -1) {
             // Estamos modificando los parametros de una pregunta
             let findField = cantSecciones[sectionSearched]?.customFields?.findIndex(element => element.id == idField);
@@ -121,7 +119,6 @@ export default class ModalModeloFormulariosComponent extends Component {
             cantSecciones[sectionSearched].name = value;
         }
 
-        console.log(cantSecciones)
         this.setState({ cantSecciones })
 
     }
@@ -211,8 +208,12 @@ export default class ModalModeloFormulariosComponent extends Component {
             let { id } = this.props;
             axios.get(Global.newFormModel + '/' + id, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                console.log("La response: ", response.data.Data);
-                this.setState({ models: response.data.Data })
+
+                let dataToSend = response.data.Data[0] || false;
+                if(dataToSend) {
+                    this.setState({ dataToSend })
+                    this.partsTocantSecciones();
+                }
             })
 
         })
@@ -231,10 +232,38 @@ export default class ModalModeloFormulariosComponent extends Component {
             });
     }
 
+    partsTocantSecciones = () => {
+        let { cantSecciones, dataToSend } = this.state;
+        const { parts } = dataToSend;
+
+        cantSecciones = [];
+
+        for(let p of parts) {
+            let customFields = []
+
+            for(let cf of p.customFields) {
+
+                let td = {
+                    id: cf.questionId,
+                    question: cf.question,
+                    customField: cf.id
+                }
+
+                customFields.push(td)
+
+            }
+
+            p.customFields = customFields;
+
+            cantSecciones.push(p);
+        }
+
+        this.setState({ cantSecciones });
+    }
+
     render() {
 
-        let { loading, cantSecciones, allForms, models, modalModeloFormulario, dataToSend } = this.state;
-        console.log('models: ', models)
+        let { loading, cantSecciones, allForms, dataToSend } = this.state;
         return (
             <div className="modal modal-formularios" id="modal-casero2">
                 <div className="hijo">
@@ -247,10 +276,10 @@ export default class ModalModeloFormulariosComponent extends Component {
                         }>x</button>
                     </div>
 
-                    {models &&
+                    {dataToSend &&
                         <>
                             {/* LO NUEVO VA AQUI */}
-                            <h4>EDITAR nuevo modelo</h4>
+                            <h4>Editar modelo: {dataToSend.id}</h4>
 
                             <form onSubmit={this.sendForm}>
                                 <div className="form-group">
@@ -261,7 +290,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                                         id="name"
                                         autoComplete="off"
                                         onChange={this.handleChange}
-                                        defaultValue={models[0].name}
+                                        defaultValue={dataToSend.name}
                                         // value={dataToSend.name}
                                     />
                                 </div>
@@ -273,7 +302,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                                         id="description"
                                         autoComplete="off"
                                         onChange={this.handleChange}
-                                        defaultValue={models[0].description}
+                                        defaultValue={dataToSend.description}
                                         // value={dataToSend.description}
                                     />
                                 </div>

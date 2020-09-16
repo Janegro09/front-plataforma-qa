@@ -186,7 +186,7 @@ export default class Modal extends Component {
                     HELPER_FUNCTIONS.backgroundLoading()
                 }
                 <div className="hijo">
-                    <div className="boton-cerrar">
+                    <div className="btnCloseModalTres">
                         <button onClick={
                             (e) => {
                                 e.preventDefault()

@@ -154,10 +154,12 @@ export default class editUserComponent extends Component {
                 <div className="logoBackground">
                     <img src={Logo} alt="" title="Logo" className="logoFixed" />
                 </div>
-
+                <section className="section-content">
                 {user !== null &&
-                    <form className="inputsEditUser">
-
+                    <form className="inputsEditUser addUserPadding">
+                <h4>Editar Usuario</h4>
+                    <hr />
+                    <br />  
                         <div className="Label headEditUser">ID
                         <input className={`form-control ${!user.userActive ? "Inactivo " : 'Activo'}`} type="text" placeholder="id" name="id" ref={(c) => this.id = c} defaultValue={user.id ? user.id : ''} disabled />
                             <select onChange={this.handleChangeStatus}>
@@ -246,17 +248,18 @@ export default class editUserComponent extends Component {
                     </form>
                 }
 
-                <div className="section-content">
+               
                     {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
                         <button className="btn btn-primary guardar-cambios" alt="sign in"
                             onClick={(e) => {
                                 e.preventDefault();
                                 this.modifyUser()
                             }}
-                        >Guardar cambios</button>
+                        >Guardar</button>
                     }
-                </div>
-
+                    
+             
+                    </section>
             </div>
         )
     }

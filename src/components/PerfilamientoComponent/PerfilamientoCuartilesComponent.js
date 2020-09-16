@@ -373,11 +373,15 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 <SideBarLeft />
 
                 <div className="section-content">
+                <h4>CUARTILES</h4>
+                    <hr />
+                    <br />
+                    <div className="alert alert-secondary">{nameCuartilSelected}</div>
                     <div className="flexAlign">
                     {nameCuartilSelected &&
                         <>
                             {modelsOfCuartiles &&
-                                <select onChange={this.selectModels}>
+                                <select className="contextoSelect" onChange={this.selectModels}>
                                     <option value="">Selecciona...</option>
                                     {modelsOfCuartiles.map(cuartil => {
                                         return (
@@ -390,7 +394,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                             }
                             <input className="form-control" id="model-name" type="text" placeholder="Nombre del modelo" defaultValue={nameModelSelected} />
                             <button
-                                className="btn btn-primary"
+                                className="guardarSecundario"
                                 onClick={
                                     (e) => {
                                         e.preventDefault();
@@ -398,11 +402,11 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                     }
                                 }
                             >
-                                Guardar
+                                Guardar modelo
                             </button>
                             
                             <br></br>
-                            <div className="alert alert-primary">{nameCuartilSelected}</div>
+                           
                         </>
                     }</div>
                     <button onClick={this.enviar} className="buttonSiguiente">Guardar</button>
@@ -410,7 +414,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                         e.preventDefault();
                         this.perfilamientos()
                     }} className="buttonSiguiente perfilamientos"> <RecentActorsIcon /> Perfilamientos</button>
-                    <input className="form-control" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
+                    <input className="form-control flex-input-add" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
                     {nombreColumnas &&
                         <table>
                             <thead>
@@ -522,6 +526,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                 <td>
                                                     
                                                     <Checkbox
+                                                    
                                                         checked={exists !== ''}
                                                         onChange={() => {
                                                             if (document.getElementById(key).disabled) {

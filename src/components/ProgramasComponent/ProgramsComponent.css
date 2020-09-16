@@ -78,13 +78,7 @@ table th {
   text-align: left;
 }
 
-table svg {
-  /* color: #565656; */
-}
 
-table svg:hover {
-  cursor: pointer;
-}
 
 .tableIcons {
   width: 73px;

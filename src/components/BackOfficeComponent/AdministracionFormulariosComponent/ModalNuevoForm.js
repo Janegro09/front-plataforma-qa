@@ -7,7 +7,7 @@ import Global from '../../../Global';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 
-export default class ModalModeloFormulariosComponent extends Component {
+export default class ModalNuevoForm extends Component {
 
     state = {
         allForms: null,
@@ -40,7 +40,10 @@ export default class ModalModeloFormulariosComponent extends Component {
             headers: { Authorization: `Bearer ${token}` }
         };
 
-        axios.post(Global.newFormModel, dataToSend, config)
+        console.log(dataToSend);
+        debugger;
+
+        axios.post(Global.getForms, dataToSend, config)
             .then(response => {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 if (response.data.Success) {

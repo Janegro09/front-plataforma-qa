@@ -7,9 +7,8 @@ import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
 import swal from 'sweetalert';
 import './Modal.css';
 import moment from 'moment';
-import DeleteIcon from '@material-ui/icons/Delete';
 
-import ModalModeloFormulariosComponent from './ModalNuevoForm';
+import ModalNuevoForm from './ModalNuevoForm';
 import ModalEditarModelo from './ModalEditarForm';
 import { Redirect } from 'react-router-dom';
 
@@ -148,6 +147,64 @@ export default class ModeloFormularios extends Component {
         this.setState({ dataToSend });
     }
 
+    abrirModalModeloFormularios = () => {
+        this.setState({ modalModeloFormulario: true });
+    }
+
+    ver = (e) => {
+        const { id } = e.target.dataset;
+
+        let redirect = `/administracion-formularios/modelo-formularios/${id}`;
+
+        this.setState({ redirect })
+
+    }
+
+    eliminar = (e) => {
+        const { id } = e.target.dataset;
+
+        swal({
+            title: "Estas seguro?",
+            text: "Estas por eliminar un formulario, no podrás recuperarlo",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    const config = {
+                        headers: { Authorization: `Bearer ${token}` }
+                    };
+                    axios.delete(Global.getForms + "/" + id, config)
+                        .then(response => {
+                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            if (response.data.Success) {
+                                swal("Felicidades!", "Modelo de formulario eliminado correctamente", "success").then(() => {
+                                    window.location.reload(window.location.href);
+                                });
+                            }
+
+                        })
+                        .catch(e => {
+                            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                                HELPER_FUNCTIONS.logout()
+                            } else {
+                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                swal("Error al eliminar!", {
+                                    icon: "error",
+                                });
+
+                            }
+                            console.log("Error: ", e)
+                        })
+
+                } else {
+                    swal("No se elimino nada");
+                }
+            });
+    }
+
     handleChangeQuestion = (e) => {
         let { value, name, parentNode } = e.target;
         let { cantSecciones } = this.state
@@ -202,7 +259,7 @@ export default class ModeloFormularios extends Component {
                 loading: false
             })
 
-            axios.get(Global.newFormModel, { headers: { Authorization: bearer } }).then(response => {
+            axios.get(Global.getForms, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                 this.setState({ models: response.data.Data })
             })
@@ -225,7 +282,7 @@ export default class ModeloFormularios extends Component {
 
 
     render() {
-        let { loading, cantSecciones, allForms, models, modalModeloFormulario, ModalEditarModeloFormularios, idToEdit, redirect } = this.state;
+        let { loading, models, modalModeloFormulario, ModalEditarModeloFormularios, idToEdit, redirect } = this.state;
 
         if (redirect) {
             return <Redirect to={redirect} />
@@ -234,7 +291,7 @@ export default class ModeloFormularios extends Component {
         return (
             <>
                 {modalModeloFormulario &&
-                    <ModalModeloFormulariosComponent />
+                    <ModalNuevoForm />
                 }
 
                 {ModalEditarModeloFormularios &&

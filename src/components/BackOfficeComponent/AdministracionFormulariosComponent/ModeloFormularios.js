@@ -136,7 +136,7 @@ export default class ModeloFormularios extends Component {
     }
 
     render() {
-        let { loading, cantSecciones, allForms, models, modalModeloFormulario, ModalEditarModeloFormularios, idToEdit, redirect } = this.state;
+        let { loading, models, modalModeloFormulario, ModalEditarModeloFormularios, idToEdit, redirect } = this.state;
 
         if (redirect) {
             return <Redirect to={redirect} />

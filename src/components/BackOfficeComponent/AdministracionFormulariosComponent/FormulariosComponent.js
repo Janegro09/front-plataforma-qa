@@ -9,6 +9,10 @@ import './Modal.css';
 import moment from 'moment';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+import ModalModeloFormulariosComponent from './ModalNuevoForm';
+import ModalEditarModelo from './ModalEditarForm';
+import { Redirect } from 'react-router-dom';
+
 export default class ModeloFormularios extends Component {
 
     state = {
@@ -151,15 +155,15 @@ export default class ModeloFormularios extends Component {
         const idFather = parentNode.dataset.parent;
         let sectionSearched = -1;
         if (idField && name === 'nameQuestion') {
-            sectionSearched = cantSecciones.findIndex(element => element.id == idField);
+            sectionSearched = cantSecciones.findIndex(element => element.id === idField);
         } else if (name !== 'nameQuestion') {
-            sectionSearched = cantSecciones.findIndex(element => element.id == idFather);
+            sectionSearched = cantSecciones.findIndex(element => element.id === idFather);
 
         }
 
         if (idFather && sectionSearched !== -1) {
             // Estamos modificando los parametros de una pregunta
-            let findField = cantSecciones[sectionSearched]?.customFields?.findIndex(element => element.id == idField);
+            let findField = cantSecciones[sectionSearched]?.customFields?.findIndex(element => element.id === idField);
             if (findField !== -1) {
                 cantSecciones[sectionSearched].customFields[findField][name] = value;
             }
@@ -221,130 +225,47 @@ export default class ModeloFormularios extends Component {
 
 
     render() {
-        let { loading, cantSecciones, allForms, models } = this.state;
+        let { loading, cantSecciones, allForms, models, modalModeloFormulario, ModalEditarModeloFormularios, idToEdit, redirect } = this.state;
+
+        if (redirect) {
+            return <Redirect to={redirect} />
+        }
 
         return (
             <>
+                {modalModeloFormulario &&
+                    <ModalModeloFormulariosComponent />
+                }
+
+                {ModalEditarModeloFormularios &&
+                    <ModalEditarModelo id={idToEdit} />
+                }
                 {loading &&
                     HELPER_FUNCTIONS.backgroundLoading()
                 }
+
+
                 <div className="header">
                     <SiderbarLeft />
                     <UserAdminHeader />
                 </div>
 
+
                 <div className="container">
-                    <h4>Crear nuevo formulario</h4>
 
-                    <form onSubmit={this.sendForm}>
-                        <div className="form-group">
-                            <label htmlFor="name">Nombre</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="name"
-                                autoComplete="off"
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="description">Descripción</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="description"
-                                autoComplete="off"
-                                onChange={this.handleChange}
-                            />
-                        </div>
+                    <h4 className="margin-top-70">Formularios</h4>
 
-                        <button
-                            className="btnDefaultBorder ver-mas"
-                            onClick={this.agregar}
-                        >
-                            + AGREGAR FORMULARIO
-                        </button>
-
-                        {cantSecciones.length > 0 &&
-                            cantSecciones.map((seccion, i) => {
-                                console.log(seccion)
-                                return (
-                                    <div key={i} className="modelo-field">
-                                        <div id={seccion.id}>
-                                          <div className="flexAlign">
-                                            <input
-                                                className="form-control margin-top-10 marginBotton15"
-                                                name="nameQuestion"
-                                                type="text"
-                                                value={seccion.name}
-                                                onChange={this.handleChangeQuestion}
-                                            />
-                                           <button
-                                                className="btnDefault"
-                                                onClick={(e) => { e.preventDefault(); this.eliminar(seccion); }}
-                                            >
-                                                <DeleteIcon />
-                                            </button>
-                                            </div>
-                                            <button
-                                                className="pregButton btnDefaultBorderLight marginBotton15"
-                                                onClick={(e) => { e.preventDefault(); this.agregarField(seccion); }}
-                                            >
-                                                + AGREGAR PREGUNTA
-                                            </button>
- 
-                                        </div>
-
-
-                                        {seccion.customFields.length > 0 &&
-                                            seccion.customFields.map(field => {
-                                                return (
-                                                    <div key={field.id} id={field.id} data-parent={seccion.id}>
-                                                       <div className="flexAlign ">
-                                                        <input
-                                                            className="form-control marginBotton15"
-                                                            name="question"
-                                                            type="text"
-                                                            placeholder="pregunta"
-                                                            onChange={this.handleChangeQuestion}
-                                                            value={field.question}
-                                                        />
-                                                        <select
-                                                            name="customField"
-                                                            onChange={this.handleChangeQuestion}
-                                                            value={field.customField}
-                                                        >
-                                                            <option>Preguntas...</option>
-                                                            {allForms.length > 0 &&
-                                                                allForms.map(form => {
-                                                                    return (
-                                                                        <option value={form.id} key={form.id}>{form.name}</option>
-                                                                    )
-                                                                })
-                                                            }
-                                                        </select>
-
-                                                        <button className="btnDefaultLight"
-                                                            
-                                                            onClick={(e) => { e.preventDefault(); this.deleteQuestion(field, seccion) }}
-                                                        >
-                                                            QUITAR
-                                                        </button>
-                                                        </div>
-                                                    </div>
-
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                )
-                            })
+                    <button
+                        className="btn btn-primary"
+                        onClick={
+                            (e) => {
+                                e.preventDefault();
+                                this.abrirModalModeloFormularios()
+                            }
                         }
-
-                        <button type="submit" className="btn btn-primary btnEnviarCond morph margin-top-10">Enviar</button>
-                    </form>
-
-                    <h4 className="margin-top-70">Modelo de formularios</h4>
+                    >
+                        +
+                    </button>
 
                     {models &&
                         <table>
@@ -354,8 +275,8 @@ export default class ModeloFormularios extends Component {
                                     <th>Creado</th>
                                     <th>Descripción</th>
                                     <th>Partes</th>
-                                    <th>Sección</th>
-                                    <th>Subsección</th>
+                                    <th>Programa</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -368,7 +289,18 @@ export default class ModeloFormularios extends Component {
                                                 <td>{model.description}</td>
                                                 <td>{model.parts}</td>
                                                 <td>{model.section}</td>
-                                                <td>{model.subsection}</td>
+                                                <td>
+                                                    <button type="button" data-id={model.id} onClick={this.ver}>Ver</button>
+
+                                                    <button type="button" data-id={model.id} onClick={this.eliminar}>Eliminar</button>
+
+                                                    <button type="button" data-id={model.id} onClick={
+                                                        (e) => {
+                                                            e.preventDefault();
+                                                            this.abrirModalEditarModeloFormularios(model.id)
+                                                        }
+                                                    }>Editar</button>
+                                                </td>
                                             </tr>
                                         )
                                     })

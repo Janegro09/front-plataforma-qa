@@ -6,7 +6,6 @@ import axios from 'axios';
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
 import swal from 'sweetalert';
 import './Modal.css';
-import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import './formularios.css';
 
@@ -21,7 +20,7 @@ export default class componentName extends Component {
 
     changeSelection = (e) => {
         e.preventDefault();
-        const { name, value, parentNode } = e.target;
+        const { name, value } = e.target;
         let { responses } = this.state;
         const { question, section, parent } = e.target.dataset;
 

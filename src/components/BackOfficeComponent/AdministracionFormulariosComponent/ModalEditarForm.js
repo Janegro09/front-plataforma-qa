@@ -40,7 +40,7 @@ export default class ModalModeloFormulariosComponent extends Component {
             headers: { Authorization: `Bearer ${token}` }
         };
 
-        axios.put(Global.newFormModel + '/' + dataToSend.id, dataToSend, config)
+        axios.put(Global.getForms + '/' + dataToSend.id, dataToSend, config)
             .then(response => {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 if (response.data.Success) {

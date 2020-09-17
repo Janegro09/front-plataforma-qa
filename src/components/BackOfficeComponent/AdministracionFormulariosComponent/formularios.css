@@ -15,7 +15,6 @@
 }
 
 .formsOfMonitorings {
-    border: 1px solid blue;
     padding: 20px 0;
 }
 
@@ -25,14 +24,28 @@
     box-sizing: border-box;
     padding: 10px 20px;
     margin: 10px 0;
-    background: #ccc;
+    background: #f0f0f0;
 
 }
 
 .conditionalCF {
-    /* display: none; */
+    display: none;
+}
+
+.active .conditionalCF {
+    display: block;
 }
 
 .formsOfMonitorings section article p {
     margin: 0;
+}
+
+.formsOfMonitorings section article span {
+    display: block;
+}
+
+
+
+.formsOfMonitorings section article span label {
+    margin-left: 5px;    
 }

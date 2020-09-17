@@ -201,7 +201,7 @@ export default class FormularioView extends Component {
                             <option>Selecciona...</option>
                             {value.values.map((cf, ind) => {
                                 if (cf.customFieldsSync) {
-                                    childs.push(cf.customFieldsSync[0])
+                                    childs.push({...cf.customFieldsSync[0], parentId: cf.value})
                                 }
 
                                 return (<option value={cf.value} key={ind}>{cf.value}</option>)
@@ -220,7 +220,7 @@ export default class FormularioView extends Component {
                                             this.getCustomField({
                                                 ...cf,
                                                 questionId: value.questionId,
-                                                parentId: value.id
+                                                parentId: cf.parentId
                                             }, sectionId)
                                         }
                                     </div>)
@@ -233,7 +233,6 @@ export default class FormularioView extends Component {
                 {value.type === 'text' &&
                     <>
                         <span>
-                            <label>{value.name}</label>
                             <input
                                 type="text"
                                 placeholder={value.name}
@@ -244,6 +243,8 @@ export default class FormularioView extends Component {
                                 name={value.id}
                                 defaultValue={defaultValue}
                             />
+                            <label>{value.name}</label>
+
                         </span>
                     </>
                 }
@@ -251,7 +252,6 @@ export default class FormularioView extends Component {
                 {value.type === 'area' &&
                     <>
                         <span>
-                            <label>{value.name}</label>
                             <textarea
                                 data-section={sectionId}
                                 data-question={value.questionId}
@@ -262,6 +262,8 @@ export default class FormularioView extends Component {
                             >
 
                             </textarea>
+                            <label>{value.name}</label>
+
                         </span>
                     </>
                 }
@@ -270,8 +272,7 @@ export default class FormularioView extends Component {
                     <>
                         {value.values.map((cf, ind) => {
                             return (
-                                <span>
-                                    <label>{cf.value}</label>
+                                <span className="active">
 
                                     <input
                                         type="radio"
@@ -283,6 +284,8 @@ export default class FormularioView extends Component {
                                         data-parent={value.parentId}
                                         onChange={this.changeSelection}
                                     />
+                                    <label>{cf.value}</label>
+
 
                                     {cf.customFieldsSync &&
                                         <div className="conditionalCF">
@@ -307,8 +310,7 @@ export default class FormularioView extends Component {
                     <>
                         {value.values.map((cf, ind) => {
                             return (
-                                <span>
-                                    <label>{cf.value}</label>
+                                <span className="active">
 
                                     <input
                                         type="checkbox"
@@ -320,6 +322,7 @@ export default class FormularioView extends Component {
                                         data-parent={value.parentId}
                                         onChange={this.changeSelection}
                                     />
+                                    <label>{cf.value}</label>
 
                                     {cf.customFieldsSync &&
                                         <div className="conditionalCF">
@@ -365,7 +368,7 @@ export default class FormularioView extends Component {
                         <>
                             <div className="margin-top-70">
                                 <small>{data.id}</small>
-                                <h4>Modelo de formulario: {data.name}</h4>
+                                <h4>Formulario: {data.name}</h4>
                                 <h6>{data.description}</h6>
                             </div>
 

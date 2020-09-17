@@ -47,7 +47,7 @@ export default class ModalNuevoForm extends Component {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 if (response.data.Success) {
                     swal("Felicidades!", "Se ha creado el modelo correctamente", "success").then(() => {
-                        this.componentDidMount();
+                        window.location.reload(window.location.href);
                     })
                 }
 
@@ -325,8 +325,6 @@ export default class ModalNuevoForm extends Component {
 
         let { cantSecciones, allForms, dataToSend, allPrograms, allModels } = this.state;
 
-        console.log(allModels);
-
         return (
             <div className="modal modal-formularios" id="modal-casero2" >
                 <div className="hijo">
@@ -340,7 +338,7 @@ export default class ModalNuevoForm extends Component {
                     </div>
 
                     {/* LO NUEVO VA AQUI */}
-                    <h4>Crear nuevo modelo</h4>
+                    <h4>Crear nuevo formulario</h4>
 
                     <form onSubmit={this.sendForm}>
                         {allModels &&

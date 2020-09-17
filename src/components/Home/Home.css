@@ -47,7 +47,7 @@
 }
 
 .containerIn {
-    display: flex;
+    /* display: flex;
     position: fixed;
     right: 0;
     background-color: #ebecf0;
@@ -55,7 +55,21 @@
     padding: 9px;
     align-items: baseline;
     border-radius: 0px 0px 0px 7px;
-    -webkit-box-shadow: -11px 8px 20px 1px #9596981c;
+    -webkit-box-shadow: -11px 8px 20px 1px #9596981c; */
+
+
+    display: flex;
+    position: fixed;
+    right: 0;
+    font-size: 14px;
+    padding: 9px;
+    align-items: center;
+    justify-content: flex-end;
+    height: 63px;
+    width: 100%;
+    border-radius: 0px 0px 0px 7px;
+    -webkit-box-shadow: -11px 8px 20px 1px #9596980d;
+    background-color: #ebecf0;
 }
 
 .containerIn:focus {

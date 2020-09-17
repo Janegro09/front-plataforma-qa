@@ -450,6 +450,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                 <td>{`[${columna.VMin} - ${columna.VMax}]`}</td>
                                                 <td>
                                                     <select
+                                                    className="selectOrden"
                                                         id={key}
                                                         onChange={
                                                             (e) => {

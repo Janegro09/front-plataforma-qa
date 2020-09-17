@@ -151,7 +151,18 @@ table svg:hover {
   .estadoActivo, .estadoInactivo {
     margin: initial !important;
   }
+  .headerSection {
+    color: white;
+    background-color: #495057;
+    border-color: #495057;
+    height: 50px;
+    border-radius: 3px;
+    display: flex;
+    position: static;
+    align-items: center;
+    padding: 15px;
 
+  } 
 
 }
 
@@ -493,7 +504,7 @@ button:focus {
 }
 
 .inputsEditUser {
-  width: 70%;
+  width: 34%;
   margin: auto;
   
 }
@@ -503,7 +514,8 @@ button:focus {
 }
 
 .section-content {
-  padding: 50px;
+  /* padding: 50px; */
+  padding: 93px 50px !important;
   margin-left: 44px;
 }
 

@@ -1,8 +1,27 @@
 .buttonExport {
     padding: 10px;
-    background: #039BE5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     color: #fff;
+    margin-top: 10%;
     border-radius: 5px;
+    height: 100%;
+    color: grey;
+    opacity: 0.6;
+    transition: all 0.15s ease-in-out;
+}
+
+.buttonExport:hover {
+    opacity: 0.8;
+
+}
+
+
+.buttonExport svg {
+    font-size: 14rem;
+    cursor: pointer;
 }
 
 .descargar {

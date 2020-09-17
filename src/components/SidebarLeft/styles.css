@@ -77,7 +77,8 @@ h1, h2, h3, h4, h5, h6 {
 
 
 .side__bar_inverse {
-  background-color: #212121;
+  /* background-color: #212121; */
+  background-color: #2e3338;
   border-color: #080808;
 }
 
@@ -208,7 +209,7 @@ div.content {
 }
 
 a:hover {
-  font-weight: 500;
+  color: white;
   text-decoration: none;
 }
 
@@ -220,9 +221,9 @@ a:hover {
   color: white;
   background-color: #333333;
   height: auto;
-  width: 200px;
+  width: auto;
   line-height: 32px;
-  text-align: center;
+  text-align: left;
   border-radius: 130px;
   padding: 20px;
   position: fixed;
@@ -358,6 +359,19 @@ hr {
   .side__bar {
     z-index: 2;
   }
+
+  .headerSection {
+    color: white;
+    background-color: #495057;
+    border-color: #495057;
+    height: 50px;
+    border-radius: 3px;
+    display: flex;
+    position: static;
+    align-items: center;
+    padding: 15px;
+  }
+  
 }
 
 .table-users>h4 {
@@ -866,6 +880,13 @@ tr {
   background-color: #495057;
   border-color: #495057;
 }
+
+.selectOrden {
+  margin: auto;
+}
+
+
+
 
 /* DARK MODE */
 

@@ -154,7 +154,7 @@ export default class ModeloFormularios extends Component {
     ver = (e) => {
         const { id } = e.target.dataset;
 
-        let redirect = `/administracion-formularios/modelo-formularios/${id}`;
+        let redirect = `/administracion-formularios/formularios/${id}`;
 
         this.setState({ redirect })
 
@@ -339,13 +339,14 @@ export default class ModeloFormularios extends Component {
                             <tbody>
                                 {
                                     models.map(model => {
+                                        console.log('model: ', model);
                                         return (
                                             <tr key={model.id}>
                                                 <td>{model.name}</td>
                                                 <td>{moment(model.createdAt).format("DD/MM/YYYY")}</td>
                                                 <td>{model.description}</td>
                                                 <td>{model.parts}</td>
-                                                <td>{model.section}</td>
+                                                <td>{model.program[0].name}</td>
                                                 <td>
                                                     <button type="button" data-id={model.id} onClick={this.ver}>Ver</button>
 

@@ -38,6 +38,7 @@ import ProgramsGroups from './components/ProgramasComponent/ProgramsGroups';
 import FormulariosComponent from './components/BackOfficeComponent/AdministracionFormulariosComponent/FormulariosComponent';
 import ModeloFormularios from './components/BackOfficeComponent/AdministracionFormulariosComponent/ModeloFormularios';
 import ViewModelOfForm from './components/BackOfficeComponent/AdministracionFormulariosComponent/ModeloFormulariosView';
+import FormularioView from './components/BackOfficeComponent/AdministracionFormulariosComponent/FormularioView';
 
 require('dotenv').config(); // Utilizamos este metodo para utilizar variables de entorno desde el archivo .env
 
@@ -52,6 +53,9 @@ function App() {
 
         <Route exact path="/administracion-formularios/modelo-formularios" component={ModeloFormularios} />
         <Route exact path="/administracion-formularios/modelo-formularios/:id" component={ViewModelOfForm} />
+
+        <Route exact path="/administracion-formularios/formularios/:id" component={FormularioView} />
+
         <Route path="/backoffice" component={BackOfficeComponent} />
         <Route path="/biblioteca" component={BibliotecaArchivosComponent} />
         <Route path="/borrarPrograma" component={DeleteProgramComponent} />

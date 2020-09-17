@@ -15,13 +15,15 @@ export default class ModalNuevoForm extends Component {
         cantSecciones: [],
         dataToSend: {
             name: "",
-            section: "M",
-            subsection: "",
             description: "",
-            parts: []
+            parts: [],
+            programId: ""
         },
         models: null,
-        modalModeloFormulario: false
+        modalModeloFormulario: false,
+        allPrograms: null,
+        selectedProgram: null,
+        allModels: null
     }
 
     cerrarModal = () => {
@@ -39,9 +41,6 @@ export default class ModalNuevoForm extends Component {
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-
-        console.log(dataToSend);
-        debugger;
 
         axios.post(Global.getForms, dataToSend, config)
             .then(response => {
@@ -167,15 +166,15 @@ export default class ModalNuevoForm extends Component {
         let { cantSecciones } = this.state;
         let temp = [];
 
-        for(let s of cantSecciones) {
+        for (let s of cantSecciones) {
             let td = {
                 ...s
             }
-            
-            if(s.id === section) {
+
+            if (s.id === section) {
                 td.customFields = [];
-                for(let cf of s.customFields) {
-                    if(cf.id === field) continue;
+                for (let cf of s.customFields) {
+                    if (cf.id === field) continue;
 
                     td.customFields.push(cf);
                 }
@@ -194,6 +193,61 @@ export default class ModalNuevoForm extends Component {
         window.location.reload(window.location.href);
     }
 
+    changeModel = (e) => {
+        e.preventDefault();
+        console.log('data: ', e.target.value);
+        let { dataToSend } = this.state;
+
+        let id = e.target.value;
+
+        if (id) {
+            let tokenUser = JSON.parse(sessionStorage.getItem("token"));
+            let token = tokenUser;
+            let bearer = `Bearer ${token}`;
+
+            axios.get(Global.newFormModel + '/' + id, { headers: { Authorization: bearer } }).then(response => {
+                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                if (response.data.Data.length > 0 && response.data.Data[0].parts) {
+                    dataToSend.parts = response.data.Data[0].parts;
+                    this.setState({
+                        dataToSend
+                    })
+
+                    this.partsTocantSecciones();
+                }
+
+            })
+        }
+    }
+
+    partsTocantSecciones = () => {
+        let { cantSecciones, dataToSend } = this.state;
+        const { parts } = dataToSend;
+
+        cantSecciones = [];
+
+        for (let p of parts) {
+            let customFields = []
+
+            for (let cf of p.customFields) {
+
+                let td = {
+                    id: cf.questionId,
+                    question: cf.question,
+                    customField: cf.id
+                }
+
+                customFields.push(td)
+
+            }
+
+            p.customFields = customFields;
+
+            cantSecciones.push(p);
+        }
+
+        this.setState({ cantSecciones });
+    }
 
     componentDidMount() {
         this.setState({
@@ -218,8 +272,37 @@ export default class ModalNuevoForm extends Component {
             })
 
             axios.get(Global.newFormModel, { headers: { Authorization: bearer } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                this.setState({ models: response.data.Data })
+                this.setState({ models: response.data.Data });
+                token = response.data.loggedUser.token;
+                bearer = `Bearer ${token}`;
+
+                this.setState({
+                    allForms
+                })
+
+                // newFormModel
+                axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
+                    let allProgramsM = response.data.Data.filter(program => program.section === 'M');
+
+                    this.setState({
+                        allPrograms: allProgramsM
+                    });
+
+                    token = response.data.loggedUser.token;
+                    bearer = `Bearer ${token}`;
+
+                    axios.get(Global.newFormModel, { headers: { Authorization: bearer } }).then(response => {
+                        sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                        this.setState({
+                            allModels: response.data.Data,
+                            loading: false
+                        })
+
+                    })
+
+                })
+
+
             })
 
         })
@@ -240,7 +323,9 @@ export default class ModalNuevoForm extends Component {
 
     render() {
 
-        let { cantSecciones, allForms, dataToSend } = this.state;
+        let { cantSecciones, allForms, dataToSend, allPrograms, allModels } = this.state;
+
+        console.log(allModels);
 
         return (
             <div className="modal modal-formularios" id="modal-casero2" >
@@ -258,6 +343,21 @@ export default class ModalNuevoForm extends Component {
                     <h4>Crear nuevo modelo</h4>
 
                     <form onSubmit={this.sendForm}>
+                        {allModels &&
+                            <>
+                                <div className="form-group">
+                                    <label htmlFor="name">Programa</label>
+                                    <select onChange={this.changeModel} >
+                                        <option value="">Selecciona...</option>
+                                        {allModels.map(model => {
+                                            return (
+                                                <option key={model.id} value={model.id}>{model.name}</option>
+                                            )
+                                        })}
+                                    </select>
+                                </div>
+                            </>
+                        }
                         <div className="form-group">
                             <label htmlFor="name">Nombre</label>
                             <input
@@ -280,6 +380,22 @@ export default class ModalNuevoForm extends Component {
                                 value={dataToSend.description}
                             />
                         </div>
+
+                        {allPrograms &&
+                            <>
+                                <div className="form-group">
+                                    <label htmlFor="name">Programa</label>
+                                    <select onChange={this.handleChange} value={dataToSend.programId} id='programId' >
+                                        <option value="">Selecciona...</option>
+                                        {allPrograms.map(program => {
+                                            return (
+                                                <option key={program.id} value={program.id}>{program.name}</option>
+                                            )
+                                        })}
+                                    </select>
+                                </div>
+                            </>
+                        }
 
                         <button
                             className="btnDefaultBorder ver-mas"

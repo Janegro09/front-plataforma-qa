@@ -30,7 +30,8 @@ let Global = {
     newModel: `${BASE}/analytics/cuartilesModels`,
     perfilamientosModel: `${BASE}/analytics/perfilamientosModel`,
     newFormModel: `${BASE}/forms/models`,
-    getForms: `${BASE}/forms`
+    getForms: `${BASE}/forms`,
+    monitoreos: `${BASE}/qa/monitoring`,
 }
 
 export default Global;

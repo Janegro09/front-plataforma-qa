@@ -28,10 +28,6 @@
 
 }
 
-.conditionalCF {
-    display: none;
-}
-
 .active .conditionalCF {
     display: block;
 }

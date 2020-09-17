@@ -237,6 +237,10 @@ export default class ModeloFormularios extends Component {
         console.log(cantSecciones);
     }
 
+    abrirModalEditarModeloFormularios = (id) => {
+        this.setState({ ModalEditarModeloFormularios: true, idToEdit: id });
+    }
+
     componentDidMount() {
         this.setState({
             loading: true

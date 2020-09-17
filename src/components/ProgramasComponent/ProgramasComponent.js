@@ -489,7 +489,7 @@ export default class GroupsTable extends Component {
                     <tr key={index}>
                         <td>{data[index].name}</td>
                         {HELPER_FUNCTIONS.checkPermission("PUT|programs/:id") &&
-                            <td class="tableIcons" onClick={e => this.editProgram(e, data[index])}><EditIcon style={{ fontSize: 15 }} /></td>
+                            <td className="tableIcons" onClick={e => this.editProgram(e, data[index])}><EditIcon style={{ fontSize: 15 }} /></td>
                         }
                         {HELPER_FUNCTIONS.checkPermission("DELETE|programs/:id") &&
                             <td onClick={e => this.deleteProgram(e, data[index])}><DeleteIcon style={{ fontSize: 15 }} /></td>
@@ -505,7 +505,7 @@ export default class GroupsTable extends Component {
                         let tempData = (
                             <tr key={index + 1 + j}>
                                 <td ><SubdirectoryArrowRightIcon className="ArrowRightIcon" /> {data[j].name}</td>
-                                <td class="tableIcons" onClick={e => this.editProgram(e, data[j])}><EditIcon style={{ fontSize: 15 }} /></td>
+                                <td className="tableIcons" onClick={e => this.editProgram(e, data[j])}><EditIcon style={{ fontSize: 15 }} /></td>
                                 <td onClick={e => this.deleteProgram(e, data[j])}><DeleteIcon style={{ fontSize: 15 }} /></td>
                             </tr>
                         )

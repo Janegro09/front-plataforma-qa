@@ -24,31 +24,30 @@ export default class componentName extends Component {
         let { responses } = this.state;
         const { question, section, parent } = e.target.dataset;
 
-        const changeValue = ({id, value, parent}, object) => {
+        const changeValue = ({ id, value, parent }, object) => {
             // Buscar en object el padre y le agregamos un child
-            if(object.id === parent) {
+            if (object.id === parent) {
                 object.child = {
                     id,
                     data: value
                 }
                 return object;
-            } else if(object.child) {
+            } else if (object.child) {
                 return changeValue({ id, value, parent }, object.child);
-            } else{
+            } else {
                 return false;
             }
         }
 
-        if(!value && value !== '') return true;
-        console.log(question, section, parent);
+        if (!value && value !== '') return true;
 
         let respIndex = responses.findIndex(elem => elem.section === section && elem.question === question);
         let q = false;
-        if(respIndex !== -1) {
+        if (respIndex !== -1) {
             q = responses[respIndex];
         }
 
-        if(!q) {
+        if (!q) {
             // Creamos la respuesta
             q = {
                 section,
@@ -57,60 +56,25 @@ export default class componentName extends Component {
             }
         }
 
-        if(!parent) {
+        if (!parent) {
             // Entonces significa que estamos respondiendo una pregunta padre
-            q.response = { 
+            q.response = {
                 data: value,
                 id: name
             }
-        } else if(respIndex !== -1) {
+        } else if (respIndex !== -1) {
             // Entonces estamos contestando una pregunta hija
-
             let c = changeValue({ id: name, value, parent }, q.response);
 
-
-            console.log('ccccc', c);
         } else return false;
 
-        
-        if(respIndex !== -1){
+
+        if (respIndex !== -1) {
             responses[respIndex] = q;
         } else {
             responses.push(q);
         }
         this.setState({ responses });
-
-
-        // question
-        // let child = false;
-        // let childsOfParentNode = parentNode.childNodes;
-        // for(let c of childsOfParentNode) {
-        //     const { classList, localName } = c;
-        //     if(localName === 'div' && classList.contains('conditionalCF')){
-        //         child = c;
-        //     }
-        // }
-
-        // let rsp = responses.find(elem => elem.section === section && elem.question === question);
-
-        // // Si cfid y question estan definidos entonces estamos hablando de la primera pregunta, si solo esta definido el cfid entonces estamos hblando de algun child
-        // if(question && cfid) {
-        //     // Entonces estamos hablando del response padre
-        //     console.log('pregunta padre');
-        //     if(!rsp) {
-        //         rsp = {
-        //             section,
-        //             question,
-        //             response: {
-        //                 data: value
-        //             }
-        //         }
-        //     } else {
-        //         rsp.response = { data: value }
-        //     }
-        // }
-
-        // console.log(question, section, cfid, value);
     }
 
     componentDidMount = () => {
@@ -126,16 +90,14 @@ export default class componentName extends Component {
         let token = tokenUser;
         let bearer = `Bearer ${token}`;
 
-        
+
         axios.get(Global.newFormModel + '/' + id, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
             // ACÁ VAN A QUEDAR LAS DE M
-            if(response.data.Data.length === 0) {
+            if (response.data.Data.length === 0) {
                 this.setState({ redirect: '/administracion-formularios/modelo-formularios' })
             } else {
-
-                console.log(response.data.Data[0]);
                 this.setState({
                     loading: false,
                     data: response.data.Data[0]
@@ -163,11 +125,11 @@ export default class componentName extends Component {
         let q = responses.find(elem => elem.question === question && elem.section === section);
 
         const getById = (id, values) => {
-            if(!values) return "";
+            if (!values) return "";
             let valrtn = "";
-            if(values.id && values.id === id) {
+            if (values.id && values.id === id) {
                 valrtn = values.data
-            } else if(values.child) {
+            } else if (values.child) {
                 valrtn = getById(id, values.child);
             }
 
@@ -181,29 +143,29 @@ export default class componentName extends Component {
     getCustomField = (value, sectionId) => {
         let index = (Date.now() * Math.random()).toString();
 
-        let defaultValue = this.getDefaultValue(value.id ,value.questionId, sectionId);
+        let defaultValue = this.getDefaultValue(value.id, value.questionId, sectionId);
         let childs = []
         return (
             <article key={index}>
                 <p>{value.question || value.name}</p>
-                
+
                 {value.type === 'select' &&
-                
+
                     <>
-                        <select 
-                            data-question={value.questionId} 
-                            data-parent={value.parentId} 
-                            data-section={sectionId} 
+                        <select
+                            data-question={value.questionId}
+                            data-parent={value.parentId}
+                            data-section={sectionId}
                             value={defaultValue}
                             name={value.id}
                             onChange={this.changeSelection}
                         >
                             <option>Selecciona...</option>
                             {value.values.map((cf, ind) => {
-                                if(cf.customFieldsSync) {
+                                if (cf.customFieldsSync) {
                                     childs.push(cf.customFieldsSync[0])
                                 }
-                                
+
                                 return (<option value={cf.value} key={ind}>{cf.value}</option>)
 
 
@@ -216,35 +178,35 @@ export default class componentName extends Component {
                             childs.map((cf, ind) => {
                                 return (
                                     <div className="conditionalCF">
-                                    {
-                                        this.getCustomField({
-                                            ...cf,
-                                            questionId: value.questionId,
-                                            parentId: value.id
+                                        {
+                                            this.getCustomField({
+                                                ...cf,
+                                                questionId: value.questionId,
+                                                parentId: value.id
                                             }, sectionId)
-                                    }
+                                        }
                                     </div>)
-                            } )
+                            })
 
                         }
                     </>
                 }
 
                 {value.type === 'text' &&
-                    <>      
-                    <span>
-                        <label>{value.name}</label>
-                        <input 
-                            type="text" 
-                            placeholder={value.name}
-                            data-section={sectionId} 
-                            data-question={value.questionId} 
-                            data-parent={value.parentId} 
-                            onBlur={this.changeSelection}
-                            name={value.id} 
-                            defaultValue={defaultValue}
+                    <>
+                        <span>
+                            <label>{value.name}</label>
+                            <input
+                                type="text"
+                                placeholder={value.name}
+                                data-section={sectionId}
+                                data-question={value.questionId}
+                                data-parent={value.parentId}
+                                onBlur={this.changeSelection}
+                                name={value.id}
+                                defaultValue={defaultValue}
                             />
-                    </span>
+                        </span>
                     </>
                 }
 
@@ -252,12 +214,12 @@ export default class componentName extends Component {
                     <>
                         <span>
                             <label>{value.name}</label>
-                            <textarea 
-                                data-section={sectionId} 
-                                data-question={value.questionId} 
-                                data-parent={value.parentId} 
+                            <textarea
+                                data-section={sectionId}
+                                data-question={value.questionId}
+                                data-parent={value.parentId}
                                 onBlur={this.changeSelection}
-                                name={value.id} 
+                                name={value.id}
                                 defaultValue={defaultValue}
                             >
 
@@ -265,22 +227,22 @@ export default class componentName extends Component {
                         </span>
                     </>
                 }
-                
+
                 {value.type === 'radio' &&
                     <>
-                        {value.values.map((cf, ind) => {
+                        {value.values.map(cf => {
                             return (
-                               <span>
+                                <span key={cf.value}>
                                     <label>{cf.value}</label>
 
-                                    <input 
-                                        type="radio" 
+                                    <input
+                                        type="radio"
                                         checked={cf.value === defaultValue}
-                                        value={cf.value} 
-                                        name={value.id} 
-                                        data-section={sectionId} 
-                                        data-question={value.questionId} 
-                                        data-parent={value.parentId} 
+                                        value={cf.value}
+                                        name={value.id}
+                                        data-section={sectionId}
+                                        data-question={value.questionId}
+                                        data-parent={value.parentId}
                                         onChange={this.changeSelection}
                                     />
 
@@ -291,11 +253,11 @@ export default class componentName extends Component {
                                                     ...cf.customFieldsSync[0],
                                                     questionId: value.questionId,
                                                     parentId: value.id
-                                                    }, sectionId)
+                                                }, sectionId)
                                             }
                                         </div>
                                     }
-                               </ span> 
+                                </ span>
                             )
                         })
 
@@ -305,19 +267,19 @@ export default class componentName extends Component {
 
                 {value.type === 'checkbox' &&
                     <>
-                        {value.values.map((cf, ind) => {
+                        {value.values.map(cf => {
                             return (
-                            <span>
+                                <span key={cf.value}>
                                     <label>{cf.value}</label>
 
-                                    <input 
-                                        type="checkbox" 
+                                    <input
+                                        type="checkbox"
                                         checked={cf.value === defaultValue}
-                                        value={cf.value} 
-                                        name={value.id} 
-                                        data-section={sectionId} 
-                                        data-question={value.questionId} 
-                                        data-parent={value.parentId} 
+                                        value={cf.value}
+                                        name={value.id}
+                                        data-section={sectionId}
+                                        data-question={value.questionId}
+                                        data-parent={value.parentId}
                                         onChange={this.changeSelection}
                                     />
 
@@ -328,11 +290,11 @@ export default class componentName extends Component {
                                                     ...cf.customFieldsSync[0],
                                                     questionId: value.questionId,
                                                     parentId: value.id
-                                                    }, sectionId)
+                                                }, sectionId)
                                             }
                                         </div>
                                     }
-                            </ span> 
+                                </ span>
                             )
                         })
 
@@ -345,14 +307,14 @@ export default class componentName extends Component {
 
     render() {
         const { loading, redirect, data } = this.state;
-        if(redirect) {
+        if (redirect) {
             return <Redirect to={redirect} />
         }
         return (
             <>
                 {loading &&
                     HELPER_FUNCTIONS.backgroundLoading()
-                } 
+                }
 
                 <div className="header">
                     <SiderbarLeft />
@@ -361,32 +323,32 @@ export default class componentName extends Component {
 
                 <div className="container">
 
-                {data &&
-                    <>
-                        <div className="margin-top-70">
-                            <small>{data.id}</small>
-                            <h4>Modelo de formulario: {data.name}</h4>
-                            <h6>{data.description}</h6>
-                        </div>
+                    {data &&
+                        <>
+                            <div className="margin-top-70">
+                                <small>{data.id}</small>
+                                <h4>Modelo de formulario: {data.name}</h4>
+                                <h6>{data.description}</h6>
+                            </div>
 
-                        <div className="formsOfMonitorings">
-                            {data.parts &&
-                                data.parts.map((v, i) => {
-                                    return (
-                                        <section key={i}>
-                                            <h6>{v.name}</h6>
-                                            {v.customFields &&
-                                                v.customFields.map((val, index) => {
-                                                    return this.getCustomField(val, v.id);
-                                                })
-                                            }
-                                        </section>
-                                    )
-                                })
-                            }
-                        </div>
-                    </>
-                }
+                            <div className="formsOfMonitorings">
+                                {data.parts &&
+                                    data.parts.map((v, i) => {
+                                        return (
+                                            <section key={i}>
+                                                <h6>{v.name}</h6>
+                                                {v.customFields &&
+                                                    v.customFields.map((val, index) => {
+                                                        return this.getCustomField(val, v.id);
+                                                    })
+                                                }
+                                            </section>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </>
+                    }
                 </div>
             </>
         )

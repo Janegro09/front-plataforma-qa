@@ -93,7 +93,6 @@ export default class ModalModeloFormulariosComponent extends Component {
 
     handleChangeQuestion = (e) => {
         let { value, name, parentNode } = e.target;
-        // console.log('e', value, name, parentNode );
 
         let { cantSecciones } = this.state;
 
@@ -115,7 +114,6 @@ export default class ModalModeloFormulariosComponent extends Component {
             }
 
         } else if (sectionSearched !== -1 && name === 'nameQuestion') {
-            console.log('nombre dek poadre', value)
             cantSecciones[sectionSearched].name = value;
         }
 
@@ -161,15 +159,15 @@ export default class ModalModeloFormulariosComponent extends Component {
         let { cantSecciones } = this.state;
         let temp = [];
 
-        for(let s of cantSecciones) {
+        for (let s of cantSecciones) {
             let td = {
                 ...s
             }
-            
-            if(s.id === section) {
+
+            if (s.id === section) {
                 td.customFields = [];
-                for(let cf of s.customFields) {
-                    if(cf.id === field) continue;
+                for (let cf of s.customFields) {
+                    if (cf.id === field) continue;
 
                     td.customFields.push(cf);
                 }
@@ -212,11 +210,11 @@ export default class ModalModeloFormulariosComponent extends Component {
             })
 
             let { id } = this.props;
-            axios.get(Global.newFormModel + '/' + id, { headers: { Authorization: bearer } }).then(response => {
+            axios.get(Global.getForms + '/' + id, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
                 let dataToSend = response.data.Data[0] || false;
-                if(dataToSend) {
+                if (dataToSend) {
                     this.setState({ dataToSend })
                     this.partsTocantSecciones();
                 }
@@ -244,10 +242,10 @@ export default class ModalModeloFormulariosComponent extends Component {
 
         cantSecciones = [];
 
-        for(let p of parts) {
+        for (let p of parts) {
             let customFields = []
 
-            for(let cf of p.customFields) {
+            for (let cf of p.customFields) {
 
                 let td = {
                     id: cf.questionId,
@@ -285,7 +283,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                     {dataToSend &&
                         <>
                             {/* LO NUEVO VA AQUI */}
-                            <h4>Editar modelo: {dataToSend.id}</h4>
+                            <h4>Editar formulario: {dataToSend.id}</h4>
 
                             <form onSubmit={this.sendForm}>
                                 <div className="form-group">
@@ -297,7 +295,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                                         autoComplete="off"
                                         onChange={this.handleChange}
                                         defaultValue={dataToSend.name}
-                                        // value={dataToSend.name}
+                                    // value={dataToSend.name}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -309,7 +307,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                                         autoComplete="off"
                                         onChange={this.handleChange}
                                         defaultValue={dataToSend.description}
-                                        // value={dataToSend.description}
+                                    // value={dataToSend.description}
                                     />
                                 </div>
 

@@ -215,21 +215,22 @@ export default class PerfilaminetosComponent extends Component {
     }
 
 
-    changeName = (id) => {
-        let newName = document.getElementById(id).value;
+    changeName = (item, e) => {
+        let newName = e.target.value;
+
         const { grupos } = this.state
         let dataReturn = []
 
         // Buscamos el array a modificar
         grupos.map(v => {
             let tempData = v;
-            if (v.id === id) {
+            if (v.id === item.id) {
                 tempData.name = newName
             }
             dataReturn.push(tempData)
             return true;
         })
-
+        
         this.setState({
             grupos: dataReturn
         })
@@ -757,7 +758,7 @@ export default class PerfilaminetosComponent extends Component {
                                         <div className="grupoPerfilamiento" id={v.id} key={v.id} draggable onDragStart={this.dragStartG} onDragOver={this.dragOverG} onDragEnd={this.dragEndG}>
                                             <p>Usuarios asignados: {v.users.length} - {Math.ceil((v.users.length / allUsers.length) * 100)}%</p>
                                             <div className="acciones">
-                                                <input className="form-control" type="text" value={v.name} onChange={(e) => this.changeName(v.id)} id={v.id} />
+                                                <input className="form-control" type="text" defaultValue={v.name} onChange={(e) => this.changeName(v, e)} id={v.id} />
                                                 <label>Aplicar al 100% de los usuarios.
                                                     <input type="checkbox" id="aplicarall" onChange={() => {
                                                         this.updateAssign(v.id)

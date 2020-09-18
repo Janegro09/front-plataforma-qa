@@ -76,13 +76,6 @@ table th {
 
 
 
-table svg {
-  /* color: #565656; */
-}
-
-table svg:hover {
-  cursor: pointer;
-}
 
 .tableIcons {
   width: 73px;

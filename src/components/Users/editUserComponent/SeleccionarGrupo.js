@@ -168,7 +168,7 @@ export default class SeleccionarGrupo extends Component {
                 {seleccionados.length === groupSelect.length &&
                     <button
                         id="quitar-todos"
-                        className="btn btn-primary"
+                        className="quitarTodos"
                         onClick={
                             (e) => {
                                 e.preventDefault();
@@ -186,7 +186,7 @@ export default class SeleccionarGrupo extends Component {
                     </p>
                 }
                 {!allSelected && seleccionados.length > 0 &&
-                    <table className="table table-dark">
+                    <table>
                         <thead>
                             <tr>
                                 <th scope="col" className="text-center">Grupos agregados</th>
@@ -204,21 +204,21 @@ export default class SeleccionarGrupo extends Component {
                             }
                             {seleccionados.length > 0 &&
                                 <tr>
-                                    <td> 
-                                        <button 
-                                            className="btn btn-primary" 
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                this.setState(prevState => {
-                                                    return {seleccionadosToShow: prevState.seleccionadosToShow + 5}
-                                                })
-                                            }}>
-                                            Ver más
-                                        </button> 
+                                    <td>
                                     </td>
                                 </tr>
                             }
                         </tbody>
+                        <button
+                            className="ver-mas"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                this.setState(prevState => {
+                                    return { seleccionadosToShow: prevState.seleccionadosToShow + 5 }
+                                })
+                            }}>
+                            Ver más
+                                        </button>
                     </table>
                 }
 
@@ -227,7 +227,7 @@ export default class SeleccionarGrupo extends Component {
                         <thead>
                             <tr>
                                 <th>Nombre del grupo</th>
-                                <th>Agregar</th>
+                                <th className="tableIcons">Agregar / Quitar</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -272,6 +272,8 @@ export default class SeleccionarGrupo extends Component {
                             })
                             }
                         </tbody>
+                    </table>
+                }
                         <div
                             id="ver-mas"
                             className="ver-mas"
@@ -284,8 +286,6 @@ export default class SeleccionarGrupo extends Component {
                         >
                             Ver más
                         </div>
-                    </table>
-                }
             </>
         )
     }

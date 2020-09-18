@@ -684,43 +684,50 @@ export default class PerfilaminetosComponent extends Component {
 
 
                 <div className="section-content">
+                <h4>Perfilamientos</h4>
+                    <hr />
+                    <br />
+                   
                     {nameCuartilSelected &&
-                        <div className="alert alert-primary">{nameCuartilSelected}</div>
+                        <div className="alert alert-secondary">{nameCuartilSelected}</div>
                     }
                     <div className="modelosDePlantillas">
-                        <select id="modelSelected" onChange={this.modelChange}>
-                            <option value="">Selecciona...</option>
-                            {models &&
-                                models.map((v, i) => {
-                                    return (
-                                        <option value={v.name} key={i}>{v.name}</option>
-                                    )
-                                })
+                        <div className="flexAlign">
+                            <select className="contextoSelect" id="modelSelected" onChange={this.modelChange}>
+                                <option value="">Selecciona...</option>
+                                {models &&
+                                    models.map((v, i) => {
+                                        return (
+                                            <option value={v.name} key={i}>{v.name}</option>
+                                        )
+                                    })
+                                }
+                            </select>
+                            <input className="form-control" id="modelName" value={modeloSelected.name} onChange={this.modelChange} />
+
+                            {!modeloSelected.values &&
+                                <button className="guardarSecundario" onClick={this.guardarModelo}>Guardar</button>
+
                             }
-                        </select>
-                        <input id="modelName" value={modeloSelected.name} onChange={this.modelChange} />
 
-                        {!modeloSelected.values &&
-                            <button className="btn" onClick={this.guardarModelo}>Guardar</button>
-
-                        }
-
-                        {modeloSelected.values &&
-                            <button
-                                className="btn"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    this.edit();
-                                }}
-                            >
-                                Modificar
+                            {modeloSelected.values &&
+                                <button
+                                    className="btn morph"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        this.edit();
+                                    }}
+                                >
+                                    Modificar
                             </button>
 
-                        }
+                            }
 
-
+                        </div>
                     </div>
                     <h6 className="titulo-seccion">Grupos</h6>
+                    <hr />
+                    <br />
                     <div className="headerResultados">
                         {cuartiles.length > 0 &&
                             <p>Usuarios sin asignar: {allUsers.length - assignedUsers.length} - {Math.ceil(100 - ((assignedUsers.length / allUsers.length) * 100))}%</p>
@@ -730,7 +737,7 @@ export default class PerfilaminetosComponent extends Component {
                                 <button onClick={(e) => {
                                     e.preventDefault();
                                     this.agregarGrupo();
-                                }} className="addItem morph"> <AddIcon className="svgAddButton" style={{ fontSize: 33 }} /></button>
+                                }} className="morph2"> <AddIcon className="svgAddButton" style={{ fontSize: 33 }} /></button>
                             }
                             <button onClick={(e) => {
                                 e.preventDefault();
@@ -827,7 +834,7 @@ export default class PerfilaminetosComponent extends Component {
                             cuartiles.map((v, key) => {
                                 return (
                                     <div key={key} className="cuartil">
-                                        <h6>{v.name}</h6>
+                                        <p>{v.name}</p>
                                         <div className="buttonsContain">
                                             <button id={`${v.name}|Q1`} className="green" draggable onDragStart={this.onDragStart}>Q1 ({v.users.Q1.length})</button>
                                             <button id={`${v.name}|Q2`} className="yellow" draggable onDragStart={this.onDragStart}>Q2 ({v.users.Q2.length})</button>

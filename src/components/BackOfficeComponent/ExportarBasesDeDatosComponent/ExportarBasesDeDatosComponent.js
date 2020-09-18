@@ -6,6 +6,7 @@ import axios from 'axios'
 import swal from 'sweetalert'
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers'
 import './ExportarBasesDeDatosComponent.css'
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import GetAppIcon from '@material-ui/icons/GetApp'
 
 export default class AdministracionFormulariosComponent extends Component {
@@ -61,25 +62,27 @@ export default class AdministracionFormulariosComponent extends Component {
                     <UserAdminHeader />
                 </div>
                 <div className="section-content">
-                    <h4>EXPORTAR BASE DE DATOS</h4>
+                    {/* <h4>EXPORTAR BASE DE DATOS</h4> */}
                     <hr />
                     <br />
-                    <button className="buttonExport"
+                    <div className="buttonExport">
+                    <CloudDownloadIcon 
                         onClick={(e) => {
                             e.preventDefault();
                             this.exportsDatabase();
                         }}
                     >
-                        Tabla de usuarios
-                    </button>
-
+                        
+                    </CloudDownloadIcon>
+                    <h6>EXPORTAR BASE DE DATOS</h6>
                     {urlUser !== '' &&
                         <a className="descargar" href={urlUser} onClick={() => {
                             setTimeout(() => {
                                 this.setState({ urlUser: '' });
                             }, 2000);
-                        }}><GetAppIcon />Descargar</a>
+                        }}>Descargar</a>
                     }
+                    </div>
 
                 </div>
             </>

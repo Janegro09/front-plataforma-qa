@@ -6,6 +6,7 @@ import swal from 'sweetalert';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import { Redirect } from 'react-router-dom';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
+import Checkbox from '@material-ui/core/Checkbox';
 
 
 export default class PerfilamientoCuartilesComponent extends Component {
@@ -372,10 +373,15 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 <SideBarLeft />
 
                 <div className="section-content">
+                <h4>CUARTILES</h4>
+                    <hr />
+                    <br />
+                    <div className="alert alert-secondary">{nameCuartilSelected}</div>
+                    <div className="flexAlign">
                     {nameCuartilSelected &&
                         <>
                             {modelsOfCuartiles &&
-                                <select onChange={this.selectModels}>
+                                <select className="contextoSelect" onChange={this.selectModels}>
                                     <option value="">Selecciona...</option>
                                     {modelsOfCuartiles.map(cuartil => {
                                         return (
@@ -386,9 +392,9 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                     }
                                 </select>
                             }
-                            <input id="model-name" type="text" placeholder="Nombre del modelo" defaultValue={nameModelSelected} />
+                            <input className="form-control" id="model-name" type="text" placeholder="Nombre del modelo" defaultValue={nameModelSelected} />
                             <button
-                                className="btn btn-primary"
+                                className="guardarSecundario"
                                 onClick={
                                     (e) => {
                                         e.preventDefault();
@@ -396,17 +402,19 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                     }
                                 }
                             >
-                                Guardar
+                                Guardar modelo
                             </button>
-                            <div className="alert alert-primary">{nameCuartilSelected}</div>
+                            
+                            <br></br>
+                           
                         </>
-                    }
+                    }</div>
                     <button onClick={this.enviar} className="buttonSiguiente">Guardar</button>
                     <button onClick={(e) => {
                         e.preventDefault();
                         this.perfilamientos()
                     }} className="buttonSiguiente perfilamientos"> <RecentActorsIcon /> Perfilamientos</button>
-                    <input className="form-control" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
+                    <input className="form-control flex-input-add" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
                     {nombreColumnas &&
                         <table>
                             <thead>
@@ -416,7 +424,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                     <th>Orden</th>
                                     <th>Objetivo VMin</th>
                                     <th>Objetivo VMax</th>
-                                    <th>Seleccionar</th>
+                                    <th className="tableIcons">Seleccionar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -442,6 +450,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                 <td>{`[${columna.VMin} - ${columna.VMax}]`}</td>
                                                 <td>
                                                     <select
+                                                    className="selectOrden"
                                                         id={key}
                                                         onChange={
                                                             (e) => {
@@ -516,8 +525,9 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                 </td>
 
                                                 <td>
-                                                    <input
-                                                        type="checkbox"
+                                                    
+                                                    <Checkbox
+                                                    
                                                         checked={exists !== ''}
                                                         onChange={() => {
                                                             if (document.getElementById(key).disabled) {

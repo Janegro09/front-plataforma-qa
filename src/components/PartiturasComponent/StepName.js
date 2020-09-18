@@ -18,6 +18,7 @@ import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { Redirect } from 'react-router-dom';
 
 export default class StepName extends Component {
@@ -430,8 +431,8 @@ export default class StepName extends Component {
                 {data &&
                     <div className="section-content">
                         <button
-                            className="btn btn-primary ml-10"
-                            style={{ position: 'absolute', transform: 'translate(-1px, -42px)' }}
+                            className="btn pasoAnterior"
+                            
                             onClick={() => { this.volverAtras() }}
                         >
                             Paso anterior
@@ -478,8 +479,13 @@ export default class StepName extends Component {
                                 </button>
                                 <h4>Nombre: {step.name}</h4>
                                 <br />
-                                <article className="seccion">
-                                    <h6 className="titulo-seccion">Archivos de apoyo</h6>
+                                <article className="btnArticle" 
+                                onClick={(e) => {
+                                            e.preventDefault();
+                                            this.asignarArchivos();
+
+                                        }}>
+                                    <h6 className="titulo-seccion">Subir archivos de apoyo</h6>
                                     {/* Custom file sync */}
                                     <div className="archivosCargados">
                                         {archivosSeleccionados &&
@@ -505,15 +511,8 @@ export default class StepName extends Component {
 
                                     </div>
 
-                                    <button className="btn"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            this.asignarArchivos();
-
-                                        }}
-                                    >
-                                        Asignar archivos
-                                    </button>
+                                    <CloudUploadIcon className="uploadIcon" />
+                                       
                                 </article>
                                 <div className="information">
 

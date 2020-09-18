@@ -37,6 +37,10 @@ import StepName from './components/PartiturasComponent/StepName';
 import ProgramsGroups from './components/ProgramasComponent/ProgramsGroups';
 import FormulariosComponent from './components/BackOfficeComponent/AdministracionFormulariosComponent/FormulariosComponent';
 import ModeloFormularios from './components/BackOfficeComponent/AdministracionFormulariosComponent/ModeloFormularios';
+import ViewModelOfForm from './components/BackOfficeComponent/AdministracionFormulariosComponent/ModeloFormulariosView';
+import FormularioView from './components/BackOfficeComponent/AdministracionFormulariosComponent/FormularioView';
+import Monitoreo from './components/QA/Monitoreo';
+import Calibraciones from './components/QA/Calibraciones';
 
 require('dotenv').config(); // Utilizamos este metodo para utilizar variables de entorno desde el archivo .env
 
@@ -48,7 +52,12 @@ function App() {
         <Route path="/addUser" component={addUserComponent} />
         <Route exact path="/administracion-formularios" component={AdministracionFormulariosComponent} />
         <Route exact path="/administracion-formularios/formularios" component={FormulariosComponent} />
+
         <Route exact path="/administracion-formularios/modelo-formularios" component={ModeloFormularios} />
+        <Route exact path="/administracion-formularios/modelo-formularios/:id" component={ViewModelOfForm} />
+
+        <Route exact path="/administracion-formularios/formularios/:id" component={FormularioView} />
+
         <Route path="/backoffice" component={BackOfficeComponent} />
         <Route path="/biblioteca" component={BibliotecaArchivosComponent} />
         <Route path="/borrarPrograma" component={DeleteProgramComponent} />
@@ -81,6 +90,8 @@ function App() {
         <Route exact path="/programas/grupos" component={ProgramsGroups} />
         <Route path="/roles" component={RolesComponent} />
         <Route path="/users" component={UsersComponent} />
+        <Route path="/monitoreo" component={Monitoreo} />
+        <Route path="/calibraciones" component={Calibraciones} />
       </Switch>
     </BrowserRouter>
   );

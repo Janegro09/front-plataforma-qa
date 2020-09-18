@@ -243,7 +243,7 @@ export default class GroupsTable extends Component {
                 }
 
                 <div className="tabla_parent">
-                    <h4>GRUPOS</h4>
+                    <h4 className="headerSection">GRUPOS</h4>
                     <hr />
                     <br />
                     <div className="flex-input-add">

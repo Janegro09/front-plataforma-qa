@@ -87,8 +87,12 @@ export default class createRoleComponent extends Component {
                 </div>
 
                 <section className="section-content">
-                    <h4>CREAR ROL</h4>
+                    
+                    
                     <form className="inputsEditUser addUserPadding" onSubmit={this.modifyUser}>
+                    <h4>CREAR ROL</h4>
+                    <hr />
+                    <br />
                         <span className="Label">Rol</span>
                         {HELPER_FUNCTIONS.checkPermission("POST|roles/:id") &&
 

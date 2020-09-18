@@ -78,13 +78,7 @@ table th {
   text-align: left;
 }
 
-table svg {
-  /* color: #565656; */
-}
 
-table svg:hover {
-  cursor: pointer;
-}
 
 .tableIcons {
   width: 73px;
@@ -552,8 +546,6 @@ input:checked+.slider:before {
   border-radius: 50%;
 }
 
-label {
-  top: unset;
-}
+
 
 /* FIN ESTILOS SWITCH */

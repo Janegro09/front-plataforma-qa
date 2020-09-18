@@ -77,7 +77,8 @@ h1, h2, h3, h4, h5, h6 {
 
 
 .side__bar_inverse {
-  background-color: #333;
+  /* background-color: #212121; */
+  background-color: #2e3338;
   border-color: #080808;
 }
 
@@ -203,7 +204,15 @@ div.content {
 
 .showme > a {
   color: white;
+  text-decoration: none;
+  font-size: 10px;
 }
+
+a:hover {
+  color: white;
+  text-decoration: none;
+}
+
 
 .nameMenu:hover .showme {
   display: flex;
@@ -211,9 +220,12 @@ div.content {
   justify-content: space-evenly;
   color: white;
   background-color: #333333;
-  width: 100px;
-  height: 100px;
-  text-align: center;
+  height: auto;
+  width: auto;
+  line-height: 32px;
+  text-align: left;
+  border-radius: 130px;
+  padding: 20px;
   position: fixed;
   transform: translate(51px, -51px);
   -webkit-box-shadow: inset 2px 0px 2px 0px rgba(0,0,0,0.25);
@@ -347,6 +359,19 @@ hr {
   .side__bar {
     z-index: 2;
   }
+
+  .headerSection {
+    color: white;
+    background-color: #495057;
+    border-color: #495057;
+    height: 50px;
+    border-radius: 3px;
+    display: flex;
+    position: static;
+    align-items: center;
+    padding: 15px;
+  }
+  
 }
 
 .table-users>h4 {
@@ -379,16 +404,27 @@ h4 {
 
 
 .morph {
-  margin-right: 8p;
-  border-radius: 7px;
+  border-radius: 3px;
   margin-right: 1px;
   /* margin-bottom: 3px; */
   color: white;
-  border: 2px solid transparent;
+  padding: 2px;
   transition: 0.1s;
   background-color: #03a9f4;
   transition: all 0.15s ease-in-out;
-  -webkit-box-shadow: 0 0.125rem 0.625rem rgb(22 170 255 / 33%), 0 0.0625rem 0.125rem rgb(22 170 255 / 50%);
+  -webkit-box-shadow: 0 0.125rem 0.125rem rgb(22 170 255 / 33%), 0 0.0625rem 0.125rem rgb(22 170 255 / 50%);
+}
+
+.morph2 {
+  border-radius: 3px;
+  margin-right: 1px;
+  /* margin-bottom: 3px; */
+  color: white;
+  padding: 2px;
+  transition: 0.1s;
+  background-color: #495057;
+  transition: all 0.15s ease-in-out;
+  -webkit-box-shadow: 0 0.125rem 0.125rem rgb(158 158 158 / 33%), 0 0.0625rem 0.125rem rgb(78 78 78 / 50%);
 }
 
 
@@ -499,11 +535,20 @@ h4 {
   margin-top: 20px;
 }
 
+.margin-top-10 {
+  margin-top: 10px;
+}
+
+.margin-top-70 {
+  margin-top: 70px;
+}
+
 .buttonSiguiente {
   /* float: right; */
   color: white;
   bottom: 40px;
   right: 40px;
+  z-index: 1;
   position: fixed;
   padding: 15px 20px;
   border-radius: 5px;
@@ -530,17 +575,19 @@ h4 {
 }
 
 .buttonGral {
-    position: fixed;
-    top: -45px;
-    font-size: 50px;
-    border: 1px solid white;
-    border-radius: 50%;
-    color: white;
-    width: 115px;
-    height: 113px;
-    padding: 33px 38px 22px 2px;
-    right: -51px;
-    color: white;
+  position: fixed;
+  top: -47px;
+  -webkit-box-shadow: 6px -4px 33px 24px rgba(0,0,0,0.35);
+  font-size: 40px;
+  font-weight: 300;
+  border: 1px solid #ffffff69;
+  border-radius: 50%;
+  color: white;
+  width: 115px;
+  height: 113px;
+  padding: 41px 38px 22px 2px;
+  right: -51px;
+  color: white;
 }
 
 .flexContent {
@@ -604,13 +651,45 @@ h4 {
   border-radius: 50px;
   -webkit-box-shadow: 0px 0px 19px 4px rgba(0,0,0,0.10);
   padding: 13px;
-  width: 53px;
+  width: 50px;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 50px;
+  right: 22%;
+  font-size: 17px;
+  transition: all 0.15s ease-in-out;
+} 
+
+.btnClose:hover {
+  background-color: #03a9f4;
+  color: white;
+}
+
+.btnCloseModal {
+  background-color: white;
+  color: black;
+  border-radius: 50px;
+  -webkit-box-shadow: 0px 0px 19px 4px rgba(0,0,0,0.10);
+  padding: 13px;
+  width: 50px;
+  position: absolute;
+  top: 50px;
+  right: 22%;
   font-size: 17px;
 } 
  
+.btnCloseModalDos {
+  position: absolute; 
+  top: 6px;
+  right: 16px;
+  font-size: 19px;
+}
+
+.btnCloseModalTres {
+  position: absolute;
+  right: 8px;
+  font-size: 19px;
+}
+
 .modalPerfilamiento {
   display: flex;
   justify-content: center;
@@ -636,3 +715,362 @@ h4 {
 tr {
   -webkit-transition: all 0.15s ease-in-out;
 }
+
+
+.btn .btn-outline-primary .m-1 {
+  background-color: red !important;
+}
+
+
+.btnDefault {
+  border: 1px solid transparent;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 10px;
+}
+
+.btnDefaultLight {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 10px;
+}
+
+.containerDefaultBotons {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 2%;
+}
+
+.btnDefault:hover {
+  border: 1px solid #9e9e9e1f;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.btnDefaultBorder {
+  border: 1px solid #b9b9b9;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 11px;
+  width: 100%;
+}
+
+.btnDefaultBorderLight {
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 11px;
+  width: 100%;
+  background-color: #ebecf0;
+  transition: all 0.15s ease-in-out;
+  -o-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  -webkit-transition: all 0.15s ease-in-out;
+}
+
+.btnDefaultBorderLight:hover {
+  background-color: #e4e5e6;
+}
+
+
+.btnDefaultBorder:hover {
+  border: 1px solid #888888;
+}
+
+.btnEnviarCond {
+  margin-bottom: 10px;
+  float: right;
+}
+
+.flexAlign {
+  display: flex;
+  align-items: baseline;
+}
+
+.pregButton {
+
+}
+
+.pasoAnterior {
+  position: fixed;
+  bottom: 21px;
+  height: 38px;
+  border-radius: 5px;
+  color: #03a9f4;
+  border: 1px solid #03a9f4;
+  background-color: #ffffffba !important;
+  right: 113px;
+}
+
+.pasoAnterior:hover {
+  color: #03a9f4 !important;
+}
+
+.quitarTodos {
+  color: black;
+  padding: 10px;
+  float: right;
+}
+
+.guardarSecundario{
+  bottom: 21px;
+  height: 38px;
+  border-radius: 3px;
+  width: 250px;
+  padding: 7px;
+  font-size: 12px;
+  color: #313131  ;
+  border: 1px solid #495057;
+  transition: all 0.15s ease-in-out;
+}
+
+.guardarSecundario:hover {
+  background-color: #495057;
+  border: 1px solid #495057;
+  color: white;
+}
+
+
+.uploadIcon {
+  font-size: 4.5em !important;
+  color: #03a9f4;
+
+}
+
+.uploadIcon > svg {
+  color: #03a9f4;
+  
+} 
+
+
+.btnArticle:hover > svg {
+  color: white;
+
+}
+
+.btnArticle {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #03a9f4;
+  border-radius: 5px;
+  color: #03a9f4;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.btnArticle:hover {
+  background-color: #03a9f4;
+  color: white;
+}
+
+.btnArticle:hover {
+  border: 1px solid #03a9f4;
+}
+
+.btn:hover {
+  color: white;
+}
+
+.contextoSelect {
+  margin-right: 8px;
+}
+
+
+.alert-secondary {
+  color: white;
+  background-color: #495057;
+  border-color: #495057;
+}
+
+.selectOrden {
+  margin: auto;
+}
+
+
+
+
+/* DARK MODE */
+
+
+/* 
+
+body {
+  font-family: "Roboto", 'Helvetica Neue, Helvetica, Arial', sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #e4e4e4;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background-color: #272727 !important;
+  transition: background-color 1s ease;
+}
+
+.form-control {
+  background-color: #f9f9f905;
+  border-radius: 4px !important;
+  margin-right: 8px;
+  border-bottom: 1px solid #e4e4e40d;
+  color: #969696;
+}
+
+tr {
+  border-bottom: 1px solid #e4e4e40d;
+}
+
+.logoBackground {
+  display: flex;
+  height: 100vh;
+  position: fixed;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+  z-index: -1;
+  opacity: 0.1;
+}
+
+.button-change-pass {
+  padding: 10px;
+  background: #eaebef03;
+  border-radius: 5px;
+  color: #e7e7e7;
+  cursor: pointer;
+  border: 1px solid #353535;
+  right: 10px;
+  font-weight: 500;
+  float: right;
+  transition: 0.3s;
+  min-width: 138px;
+}
+
+table tbody tr:hover {
+  background-color: #e8e7e70f !important;
+}
+
+.estadoActivo {
+  height: 8px;
+  width: 8px;
+  border-radius: 50px;
+  background-color: #2cf52c9e!important;
+  margin: auto;
+}
+
+.celdaBtnHover:hover {
+  background-color: #8080800d; 
+  cursor: pointer;
+
+.css-yk16xz-control {
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: hsl(0deg 0% 97% / 8%);
+    border-color: hsl(0deg 0% 21%);
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    cursor: default;
+    display: -webkit-box;
+    display: -webkit-flex;
+    padding: 15px;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    min-height: 38px;
+    outline: 0 !important;
+    position: relative;
+    -webkit-transition: all 100ms;
+    transition: all 100ms;
+    box-sizing: border-box;
+}
+
+
+.css-1uccc91-singleValue {
+    color: hsl(0deg 0% 52%);
+    margin-left: 2px;
+    margin-right: 2px;
+    max-width: calc(100% - 8px);
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    box-sizing: border-box;
+}
+
+#agregar-uno {
+  color: #e7e7e7;
+}
+
+.modelo-field {
+    margin: 10px 0px 10px 0px;
+    border: 1px solid #313131;
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color: #ffffff05;
+}
+
+.btnDefaultBorderLight {
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 11px;
+    width: 100%;
+    background-color: #dcdcdc26;
+    transition: all 0.15s ease-in-out;
+    -o-transition: all 0.15s ease-in-out;
+    -moz-transition: all 0.15s ease-in-out;
+    -webkit-transition: all 0.15s ease-in-out;
+}
+
+.btnDefaultBorderLight:hover {
+    background-color: #e4e5e63b;
+}
+
+.containerIn {
+    display: flex;
+    position: fixed;
+    right: 0;
+    background-color: #272727;
+    font-size: 14px;
+    padding: 9px;
+    z-index: 1;
+    align-items: baseline;
+    border-radius: 0px 0px 0px 7px;
+    -webkit-box-shadow: -2px -2px 23px 1px #0000004d;
+}
+
+.css-1rhbuit-multiValue {
+    border-radius: 2px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    margin: 2px;
+    border: 1px solid #363636;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.css-12jo7m5 {
+    border-radius: 2px;
+    font-size: 85%;
+    overflow: hidden;
+    padding: 3px;
+    padding-left: 6px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+*/
+
+/* FIN DARK MODE */

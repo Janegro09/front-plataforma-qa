@@ -28,11 +28,13 @@ export default class Modal extends Component {
     handleChangecustomFieldsSync = (e) => {
         let { value, id } = e.target;
         let { valueArray } = this.state;
+
         for (let v of valueArray) {
             if (v.value === id && v.customFieldsSync !== undefined && value) {
                 v.customFieldsSync = value;
             }
         }
+
         this.setState({ valueArray })
     }
 
@@ -93,8 +95,9 @@ export default class Modal extends Component {
             let objTemp = {
                 value: value.value
             }
-            if (value.customFieldsSync) {
-                objTemp = { ...objTemp, customFieldsSync: value.customFieldsSync[0].id }
+
+            if (value.customFieldsSync !== undefined) {
+                objTemp = { ...objTemp, customFieldsSync: value.customFieldsSync }
             }
 
             temp.push(objTemp);
@@ -124,8 +127,6 @@ export default class Modal extends Component {
             swal("Error", "Hubo un problema con los parámetros ingresados", "error");
             return false;
         }
-
-        console.log('valueArray: ', valueArray);
 
         let bodyParameters = {
             "name": value,
@@ -221,8 +222,6 @@ export default class Modal extends Component {
                 axios.get(Global.getAllForms + '/' + idEditar, { headers: { Authorization: bearer } }).then(response => {
                     sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
-                    console.log('reques: ', response.data);
-
                     let respuesta = response.data.Data[0];
                     let valueArray = respuesta.values;
 
@@ -280,6 +279,24 @@ export default class Modal extends Component {
 
     }
 
+    quitarParentesis = (string) => {
+        let stringSinParentesis = '';
+        for (let i = 0; i < string.length; i++) {
+            if (string[i] !== '(' && string[i] !== '1' && string[i] !== '0' && string[i] !== ')') {
+                stringSinParentesis += string[i];
+            }
+        }
+
+        return stringSinParentesis;
+    }
+
+    validarParametrizacion = (numero) => {
+        if (numero !== "1" && numero !== "0") {
+            swal('Error', 'Mal parametrizado, tiene que ser 1 o 0.', 'error');
+            return;
+        }
+    }
+
     viewValues = (e) => {
         const { value } = e.target;
         let { valueArray } = this.state;
@@ -291,12 +308,20 @@ export default class Modal extends Component {
             for (let v of values) {
                 if (v) {
                     let td = {}
-                    if (v.indexOf('#') === 0) {
-                        // Quiere decir que es una condicion
-                        v = v.slice(1, v.length);
+                    if (v.indexOf('#') !== -1) {
+                        v = v.replace("#",'');
                         td = {
                             value: v,
                             customFieldsSync: null
+                        }
+                    } else if (v.indexOf('(') !== -1) {
+                        let numero = v.match(/\d+/)[0];
+
+                        this.validarParametrizacion(numero);
+
+                        td = {
+                            value: this.quitarParentesis(v),
+                            parametrizacionValue: numero
                         }
                     } else {
                         td.value = v;
@@ -316,7 +341,7 @@ export default class Modal extends Component {
 
         for (let a of ArrayValues) {
             let v = ""
-            a.value = a.value.trim();
+            a.value = a.value?.trim();
             if (a.customFieldsSync) {
                 v = `#`;
             }
@@ -391,7 +416,6 @@ export default class Modal extends Component {
                                     <label htmlFor="checkbox" className="label">* ¿Es calibrable? </label>
                                 </div>
                                 {valueArray.map((v, i) => {
-                                    console.log('v: ', v)
                                     if (v.customFieldsSync !== undefined) {
                                         let defValue = '';
                                         if (v.customFieldsSync?.length > 0) {
@@ -415,6 +439,8 @@ export default class Modal extends Component {
                                             </div>
                                         )
                                     }
+
+                                    return true;
                                 })
                                 }
                             </>

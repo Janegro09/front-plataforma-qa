@@ -260,7 +260,7 @@ export default class UserTable extends Component {
             <div>
 
                 <div className="tabla_parent">
-                    <h4>USUARIOS</h4>
+                    <h4 className="headerSection">USUARIOS</h4>
                     <hr />
                     <br />
                     <div className="flex-input-add">

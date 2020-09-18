@@ -12,6 +12,7 @@ import SecurityIcon from '@material-ui/icons/Security';
 import SettingsIcon from '@material-ui/icons/Settings';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
 import TimelineIcon from '@material-ui/icons/Timeline';
+import HeadsetMicIcon from '@material-ui/icons/HeadsetMic';
 
 
 export default class SiderbarLeft extends Component {
@@ -93,6 +94,14 @@ export default class SiderbarLeft extends Component {
 
                             </li>
                         }
+
+                        {/* QA */}
+                        <li className="nameMenu"><HeadsetMicIcon className="IconoMenu" /> <br />QA
+                                <span className="showme">
+                                <NavLink to="/monitoreo">Monitoreo</NavLink>
+                                <NavLink to="/calibraciones">Calibraciones</NavLink>
+                            </span>
+                        </li>
                     </ul>
                     <span className="version">V{version}</span>
                 </div>

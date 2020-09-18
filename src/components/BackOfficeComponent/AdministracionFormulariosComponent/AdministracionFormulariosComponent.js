@@ -7,7 +7,6 @@ import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
 import Global from '../../../Global'
 import moment from 'moment';
 import Modal from './Modal'
-import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Redirect } from 'react-router-dom';
@@ -77,12 +76,10 @@ export default class AdministracionFormulariosComponent extends Component {
     }
 
     formularios = () => {
-        console.log('a')
         this.setState({ goToFormularios: true });
     }
 
     modeloFormularios = () => {
-        console.log('b');
         this.setState({ goToModeloFormularios: true });
     }
 
@@ -97,8 +94,6 @@ export default class AdministracionFormulariosComponent extends Component {
         const bearer = `Bearer ${token}`
         axios.get(Global.getAllForms, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-
-            console.log(response.data.Data);
 
             this.setState({
                 allForms: response.data.Data,
@@ -156,31 +151,31 @@ export default class AdministracionFormulariosComponent extends Component {
                 <div className="section-content">
                     <div className="flex-input-add">
                         <h4 className="mr-2">ADMINISTRADOR DE FORMULARIOS</h4>
-
-                        <button
+                        <div className="containerDefaultBotons">
+                        <button className="btnDefault"
                             onClick={(e) => {
                                 e.preventDefault();
                                 this.abrirModal();
                             }}
                         >
-                            <AddIcon className="morph" />
+                            + CAMPO PERSONALIZADO
                         </button>
 
                         <button
-                            className="btn btn-outline-primary m-1"
+                            className="btnDefault"
                             onClick={this.formularios}
                         >
-                            Formularios
+                            FORMULARIOS
                         </button>
 
                         <button
-                            className="btn btn-outline-primary m-1"
+                            className="btnDefault"
                             onClick={this.modeloFormularios}
 
                         >
-                            Modelo de formularios
+                           MODELOS DE FORMULARIO
                         </button>
-
+                        </div>
                     </div>
                     <hr />
                     <br />
@@ -213,7 +208,6 @@ export default class AdministracionFormulariosComponent extends Component {
                                                 }
                                                 {form.values.length > 0 &&
                                                     form.values.map((value, key) => {
-                                                        console.log(value);
                                                         return (
                                                             <div key={key}>
                                                                 {value.value}

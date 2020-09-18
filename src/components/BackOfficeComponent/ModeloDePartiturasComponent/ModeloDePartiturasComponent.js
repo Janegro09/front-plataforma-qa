@@ -9,8 +9,6 @@ import moment from 'moment'
 import Formulario from './Formulario'
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
-
 
 export default class ModeloDePartiturasComponent extends Component {
     constructor(props) {
@@ -128,13 +126,14 @@ export default class ModeloDePartiturasComponent extends Component {
                 <div className="section-content">
 
                     <div className="flex-input-add">
-                    <h4>MODELO DE PARTITURAS</h4>
-                    <button className="addItem morph" onClick={(e) => {
-                        e.preventDefault();
-                        this.crearNuevo();
-                    }}><AddIcon className="svgAddButton"/></button>
+                        <h4>MODELO DE PARTITURAS</h4>
+                        <div className="containerDefaultBotons">
+                            <button className="btnDefault" onClick={(e) => {
+                                e.preventDefault();
+                                this.crearNuevo();
+                            }}>+ NUEVO MODELO</button>
 
-                    
+                        </div>
                     </div>
                     <hr />
                     <br />

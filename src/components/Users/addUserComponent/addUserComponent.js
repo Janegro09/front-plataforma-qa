@@ -145,9 +145,11 @@ export default class addUserComponent extends Component {
                 <div className="logoBackground">
                     <img src={Logo} alt="" title="Logo" className="logoFixed" />
                 </div>
-
+<section className="section-content">
                 <form onSubmit={this.addUser} className="inputsEditUser addUserPadding">
-                    
+                <h4>Crear Usuario</h4>
+                    <hr />
+                    <br />  
                     <input className="form-control" type="text" placeholder="id" name="id" ref={(c) => this.id = c} required />
                     <div className="error">
                         {
@@ -226,6 +228,7 @@ export default class addUserComponent extends Component {
                     {/* <input type="text" placeholder="imagen" ref={(c) => this.imagen = c} /> */}
                     <button  className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Crear Usuario</button>   
                 </form>
+                </section>
             </div>
         )
     }

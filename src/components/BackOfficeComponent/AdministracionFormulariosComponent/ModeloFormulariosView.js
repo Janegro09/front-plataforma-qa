@@ -163,7 +163,7 @@ export default class componentName extends Component {
                             <option>Selecciona...</option>
                             {value.values.map((cf, ind) => {
                                 if (cf.customFieldsSync) {
-                                    childs.push(cf.customFieldsSync[0])
+                                    childs.push({...cf.customFieldsSync[0], parentValue: cf.value})
                                 }
 
                                 return (<option value={cf.value} key={ind}>{cf.value}</option>)
@@ -177,7 +177,7 @@ export default class componentName extends Component {
                         {childs.length > 0 &&
                             childs.map((cf, ind) => {
                                 return (
-                                    <div className="conditionalCF">
+                                    <div className={cf.parentValue === defaultValue ? "conditionalCF active" : "conditionalCF"}>
                                         {
                                             this.getCustomField({
                                                 ...cf,
@@ -247,7 +247,7 @@ export default class componentName extends Component {
                                     />
 
                                     {cf.customFieldsSync &&
-                                        <div className="conditionalCF">
+                                        <div className={cf.value === defaultValue ? "conditionalCF active" : "conditionalCF"}>
                                             {
                                                 this.getCustomField({
                                                     ...cf.customFieldsSync[0],
@@ -284,7 +284,7 @@ export default class componentName extends Component {
                                     />
 
                                     {cf.customFieldsSync &&
-                                        <div className="conditionalCF">
+                                        <div className={cf.value === defaultValue ? "conditionalCF active" : "conditionalCF"}>
                                             {
                                                 this.getCustomField({
                                                     ...cf.customFieldsSync[0],

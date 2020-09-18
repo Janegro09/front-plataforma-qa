@@ -284,7 +284,7 @@ export default class componentName extends Component {
                                     />
 
                                     {cf.customFieldsSync &&
-                                        <div className="conditionalCF">
+                                        <div className={cf.value === defaultValue ? "conditionalCF active" : "conditionalCF"}>
                                             {
                                                 this.getCustomField({
                                                     ...cf.customFieldsSync[0],

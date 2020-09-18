@@ -289,7 +289,7 @@ export default class FormularioView extends Component {
 
 
                                     {cf.customFieldsSync &&
-                                        <div className="conditionalCF">
+                                        <div className={cf.value === defaultValue ? "conditionalCF active" : "conditionalCF"}>
                                             {
                                                 this.getCustomField({
                                                     ...cf.customFieldsSync[0],
@@ -326,7 +326,7 @@ export default class FormularioView extends Component {
                                     <label>{cf.value}</label>
 
                                     {cf.customFieldsSync &&
-                                        <div className="conditionalCF">
+                                        <div className={cf.value === defaultValue ? "conditionalCF active" : "conditionalCF"}>
                                             {
                                                 this.getCustomField({
                                                     ...cf.customFieldsSync[0],

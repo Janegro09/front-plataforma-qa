@@ -69,3 +69,30 @@
 .modelo-field .question {
     border: 1px solid green;
 }
+
+
+small {
+    margin-top: 5px;
+}
+
+
+
+.modal section {
+    padding: 20px;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.modal section article {
+    width: 100%;
+    min-height: unset;
+}
+
+.modal section article label {
+    margin-right: 10px;
+    display: block;
+}
+
+.modal section article input, .modal section article select {
+    width: 50%;
+}

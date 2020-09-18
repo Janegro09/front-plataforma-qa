@@ -28,8 +28,12 @@
 
 }
 
-.active .conditionalCF {
-    display: block;
+.conditionalCF {
+    display: none;
+}
+
+.conditionalCF.active {
+    display: block !important;
 }
 
 .formsOfMonitorings section article p {

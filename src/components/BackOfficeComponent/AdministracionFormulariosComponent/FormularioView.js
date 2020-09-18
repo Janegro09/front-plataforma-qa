@@ -201,7 +201,7 @@ export default class FormularioView extends Component {
                             <option>Selecciona...</option>
                             {value.values.map((cf, ind) => {
                                 if (cf.customFieldsSync) {
-                                    childs.push({...cf.customFieldsSync[0], parentId: cf.value})
+                                    childs.push({...cf.customFieldsSync[0], parentValue: cf.value})
                                 }
 
                                 return (<option value={cf.value} key={ind}>{cf.value}</option>)
@@ -214,8 +214,9 @@ export default class FormularioView extends Component {
                         </select>
                         {childs.length > 0 &&
                             childs.map((cf, ind) => {
+
                                 return (
-                                    <div className="conditionalCF">
+                                    <div className={cf.parentValue === defaultValue ? "conditionalCF active" : "conditionalCF"}>
                                         {
                                             this.getCustomField({
                                                 ...cf,

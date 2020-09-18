@@ -230,7 +230,7 @@ export default class PerfilaminetosComponent extends Component {
             dataReturn.push(tempData)
             return true;
         })
-        
+
         this.setState({
             grupos: dataReturn
         })
@@ -452,6 +452,7 @@ export default class PerfilaminetosComponent extends Component {
 
                 // PARAMETROS REQUERIDOS, SOLO PASSWORD
                 const bodyParameters = dataSend
+                this.setState({ loading: true });
 
                 axios.post(Global.getAllFiles + '/' + id + '/perfilamiento', bodyParameters, config)
                     .then(response => {
@@ -459,13 +460,15 @@ export default class PerfilaminetosComponent extends Component {
                         if (response.data.Success) {
                             swal("Felicidades!", "Perfilamiento modificado!", "success").then(() => {
                                 this.setState({
-                                    redirect: true
+                                    redirect: true,
+                                    loading: false
                                 })
                             })
                         } else {
                             swal("Error!", "Hubo un error al modificar el perfilamiento!", "error").then(() => {
                                 this.setState({
-                                    redirect: true
+                                    redirect: true,
+                                    loading: false
                                 })
                             })
                         }

@@ -17,6 +17,8 @@ export default class componentName extends Component {
         loading: false,
         id: null,
         redirect: null,
+        monitoringDate: false,
+        transactionDate: false,
         monitoreo: false,
         disputarArea: false,
         invalidarArea: false,
@@ -33,7 +35,7 @@ export default class componentName extends Component {
     }
 
     setDefaultData = () => {
-        let { dataToSend, monitoreo, usuarioSeleccionado } = this.state;
+        let { invalidarArea, disputarArea, dataToSend, monitoreo, usuarioSeleccionado } = this.state;
 
         const { responses, userId, improvment, disputado, invalidated, evaluated, status, transactionDate, monitoringDate, comments, devolucion } = monitoreo;
 
@@ -54,7 +56,8 @@ export default class componentName extends Component {
                 rsp.push(td);
             }
         }
-
+        
+        monitoreo.modifiedBy = monitoreo.modifiedBy.sort((a,b) => Date.parse(b.modifiedAt) - Date.parse(a.modifiedAt));
 
         dataToSend = {
             userId,
@@ -71,7 +74,12 @@ export default class componentName extends Component {
             pasosMejora: devolucion?.pasosMejora
         }
 
-        this.setState({ dataToSend, usuarioSeleccionado, responses: rsp });
+        disputarArea    = !!dataToSend.disputado;
+        invalidarArea   = !!dataToSend.invalidated
+
+        console.log(dataToSend);
+
+        this.setState({ dataToSend, usuarioSeleccionado, responses: rsp, disputarArea, invalidarArea, monitoreo });
     }
 
     marcarFila = (user) => {
@@ -188,7 +196,16 @@ export default class componentName extends Component {
 
         dataToSend.responses = responses;
 
-        console.log(dataToSend);
+
+        // Quitamos las fechas si no se modifican sino generan error
+        if(!this.state.monitoringDate) {
+            dataToSend.monitoringDate = "";
+        }
+
+        if(!this.state.transactionDate) {
+            dataToSend.transactionDate = "";
+        }
+
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
@@ -583,14 +600,20 @@ export default class componentName extends Component {
     }
 
     handleChange = (e) => {
-        let { dataToSend } = this.state;
+        let { dataToSend,transactionDate, monitoringDate } = this.state;
         const { id, value } = e.target;
 
+        if(id === 'transactionDate') {
+            transactionDate = true;
+        } else if(id === 'monitoringDate') {
+            monitoringDate = true;
+        }
         if(id) {
+            
             dataToSend[id] = value;
         }
 
-        this.setState({ dataToSend });
+        this.setState({ dataToSend, transactionDate, monitoringDate });
 
     }
 
@@ -708,7 +731,7 @@ export default class componentName extends Component {
 
                                 <span>
                                     <label>Improvment</label>
-                                    <select value={dataToSend.improvment} onChange={this.handleChange} >
+                                    <select value={dataToSend.improvment} id="improvment" onChange={this.handleChange} >
                                         <option value="+">Mejora</option>
                                         <option value="+-">Mantiene</option>
                                         <option value="-">Empeora</option>
@@ -717,7 +740,7 @@ export default class componentName extends Component {
 
                                 <span>
                                     <label>Estado</label>
-                                    <select value={dataToSend.status} onChange={this.handleChange} >
+                                    <select value={dataToSend.status} id="status" onChange={this.handleChange} >
                                         <option>Selecciona...</option>
                                         <option value="run">En proceso</option>
                                         <option value="finished">Finalizado</option>
@@ -751,7 +774,7 @@ export default class componentName extends Component {
                                 <h6>Disputar</h6>
                                 <input data-id="disputar" checked={disputarArea}  onClick={this.activeTextAreas} type="checkbox"/>
                                 {disputarArea &&
-                                    <textarea  id="disputar" onChange={this.handleChange} ></textarea>
+                                    <textarea  id="disputar" onChange={this.handleChange} value={dataToSend.disputado}></textarea>
                                 }
                             </article>
 
@@ -760,7 +783,7 @@ export default class componentName extends Component {
                                 <h6>Invalidar</h6>
                                 <input data-id="invalidated" checked={invalidarArea} onClick={this.activeTextAreas} type="checkbox"/>
                                 {invalidarArea &&
-                                    <textarea id="invalidated" onChange={this.handleChange} ></textarea>
+                                    <textarea id="invalidated" onChange={this.handleChange} value={dataToSend.invalidated}></textarea>
                                 }
                             </article>
 
@@ -770,17 +793,17 @@ export default class componentName extends Component {
 
                                 <span>
                                     <label>Principales comentarios de devolución</label>
-                                    <textarea id="comentariosDevolucion" onChange={this.handleChange}></textarea>
+                                    <textarea id="comentariosDevolucion" onChange={this.handleChange} value={dataToSend.comentariosDevolucion}></textarea>
                                 </span>
 
                                 <span>
                                     <label>Fortalezas del usuario</label>
-                                    <textarea id="fortalezasUsuario" onChange={this.handleChange}></textarea>
+                                    <textarea id="fortalezasUsuario" onChange={this.handleChange} value={dataToSend.fortalezasUsuario}></textarea>
                                 </span>
 
                                 <span>
                                     <label>Pasos de mejora</label>
-                                    <textarea id="pasosMejora" onChange={this.handleChange}></textarea>
+                                    <textarea id="pasosMejora" onChange={this.handleChange}  value={dataToSend.pasosMejora}></textarea>
                                 </span>
                             </article>
 
@@ -806,6 +829,25 @@ export default class componentName extends Component {
                         </div>
 
                         <button type="button" className="btn" onClick={this.modificarFormulario}>Enviar</button>
+
+                        <hr/>
+                        <hr/>
+                        <hr/>
+                        <hr/>
+
+                        <section className="logEdicion">
+                            <h6>Editado por: </h6>
+                            <article>
+                                {monitoreo.modifiedBy &&
+                                    monitoreo.modifiedBy.map(v => {
+                                        return (<span key={v._id}>
+                                            {v.userId} - {v.rol} - {moment(v.modifiedAt).format("DD/MM/YYYY HH:mm")}
+                                        </span>)
+                                    })
+                                
+                                }
+                            </article>
+                        </section>
                     </>
                     }
                 </div>

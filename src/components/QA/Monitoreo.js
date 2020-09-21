@@ -278,7 +278,7 @@ export default class Monitoreo extends Component {
 
                 <div className="section-content">
 
-                    <div className="flex-input-add">
+                    <div className="flex-input-add input-add-spacebetween">
                         <h4>Monitoreo</h4>
 
                         <button

@@ -28,8 +28,7 @@
 }
 
 .boton-cerrar > button {
-
-    background-color: #03a9f4;
+    padding: 10px;
 }
 
 .formulario {

@@ -278,18 +278,13 @@ export default class Monitoreo extends Component {
                 <div className="section-content">
                     <h4>Monitoreo</h4>
 
-                    <button
-                        className="btn btn-primary"
-                        onClick={this.nuevoMonitoreo}
-                    >
-                        +
-                    </button>
+
 
                     <div className="buscadorMon">
                         {/* User id */}
                         <article>
                             <h6>Id de Usuario</h6>
-                            
+                            <div className="flexAlign">
                             <input
                             type="text"
                             placeholder="Buscar usuario"
@@ -297,6 +292,12 @@ export default class Monitoreo extends Component {
                             value={buscadorUsuario}
                             className="form-control"
                              /> 
+                                                 <button
+                        className="btn btn-primary"
+                        onClick={this.nuevoMonitoreo}
+                    >
+                        +
+                    </button></div>
                             {!buscadorUsuario && usuarioSeleccionado &&
                                 <small>
                                     Usuario Seleccionado: <strong>{usuarioSeleccionado.name} {usuarioSeleccionado.lastName} - {usuarioSeleccionado.id}</strong> 

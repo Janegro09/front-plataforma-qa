@@ -406,13 +406,15 @@ h4 {
 .morph {
   border-radius: 3px;
   margin-right: 1px;
-  /* margin-bottom: 3px; */
+
   color: white;
   padding: 2px;
   transition: 0.1s;
   background-color: #03a9f4;
   transition: all 0.15s ease-in-out;
   -webkit-box-shadow: 0 0.125rem 0.125rem rgb(22 170 255 / 33%), 0 0.0625rem 0.125rem rgb(22 170 255 / 50%);
+
+  
 }
 
 .morph2 {
@@ -653,8 +655,8 @@ h4 {
   padding: 13px;
   width: 50px;
   position: absolute;
-  top: 50px;
-  right: 22%;
+  top: 96px;
+  right: 24.3%;
   font-size: 17px;
   transition: all 0.15s ease-in-out;
 } 

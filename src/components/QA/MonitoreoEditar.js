@@ -502,7 +502,6 @@ export default class componentName extends Component {
                         </span>
                     </>
                 }
-response
                 {value.type === 'radio' &&
                     <>
                         {value.values.map((cf, ind) => {

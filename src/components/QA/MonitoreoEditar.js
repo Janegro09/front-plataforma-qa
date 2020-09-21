@@ -169,6 +169,15 @@ export default class componentName extends Component {
 
     }
 
+
+    downloadFile = (e) => {
+
+    }
+
+    deleteFile = (e) => {
+
+    }
+
     changeSelection = (e) => {
         e.preventDefault();
         const { name, value } = e.target;
@@ -461,12 +470,15 @@ export default class componentName extends Component {
         this.setState({ invalidarArea, disputarArea, dataToSend });
     }
 
+
     render() {
         const {buscadorUsuario, usuarioSeleccionado, usuariosConFiltro,invalidarArea, dataToSend, disputarArea, monitoreo, loading, redirect } = this.state;
 
         if(redirect) {
             return <Redirect to={redirect} />
         }
+
+
 
         return (
             <>
@@ -576,7 +588,14 @@ export default class componentName extends Component {
                                 <div className="files">
                                     {monitoreo.files &&
                                         monitoreo.files.map((audio, ind) => {
-                                            return <button  type="button" id={audio.fileId} key={audio.fileId} onClick={this.downloadFile}>{audio.fileId}</button>
+
+                                            return (
+                                                <span key={audio.fileId}>
+                                                    <p>{audio.fileId}</p>
+                                                    <button data-id={audio.fileId} onClick={this.downloadFile}>Descargar</button>
+                                                    <button data-id={audio.fileId} onClick={this.deleteFile}>Eliminar</button>
+                                                </span>
+                                            )
                                         })
                                     }
                                 </div>

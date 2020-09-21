@@ -34,10 +34,23 @@
     flex-flow: row wrap;
 }
 
-.monFiles button {
+.monFiles span {
     padding: 10px 20px;
     border-radius: 5px;
     background: #61dca3;
     color: #000;
     margin: 10px 5px 0 0;
 }
+
+.monFiles span p {
+    margin: 0;
+    display: inline-block;
+}
+
+.monFiles span button {
+    margin-left: 5px;
+    background: #1e2941;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+}   

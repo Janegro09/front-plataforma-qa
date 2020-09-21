@@ -23,7 +23,9 @@ export default class Monitoreo extends Component {
         buscadorUsuario: "",
         buscadorUsuarioCreatedBy: "",
         usuarioSeleccionadoCreatedBy: null,
-        buscador: {},
+        buscador: {
+            program: []
+        },
         usuarioSeleccionado: null
     }
 
@@ -95,12 +97,28 @@ export default class Monitoreo extends Component {
         // Convert to query string
         let query = "";
 
+<<<<<<< HEAD
         for (let b in buscador) {
             let data = `${b}=${buscador[b]}`;
             query = !!query ? `${query}&${data}` : `?${data}`;
+=======
+        for(let b in buscador) {
+            let tempQuery = buscador[b]
+            if(b === 'program') {
+                let temp = "";
+
+                for(let program of buscador[b]) {
+                    temp = temp ? temp += `%%${program.id}` : program.id;
+                }
+
+                tempQuery = temp;
+            }
+            let data = `${b}=${tempQuery}`;
+            console.log(data);
+            query = !!query ? `${query}&${data}` : `?${data}`;            
+>>>>>>> 524a4986dbe1894728ce722f67720a325b7e457d
         }
 
-        console.log(query)
 
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
@@ -183,16 +201,27 @@ export default class Monitoreo extends Component {
     changeBuscador = (e) => {
         // e.preventDefault();
         let { value, id, type } = e.target;
-        let { buscador } = this.state;
+        let { buscador, programs } = this.state;
 
         if (type === 'checkbox') {
             value = buscador[id] === true ? false : true;
         }
 
+<<<<<<< HEAD
         if (id) {
+=======
+        if(id === 'program') {
+            if(value === 'allPrograms') {
+                buscador.program = programs;
+>>>>>>> 524a4986dbe1894728ce722f67720a325b7e457d
 
+            } else if(buscador.program.findIndex(elemento => elemento.id === value) === -1) {
+                let program = programs.find(elem => elem.id === value);
+                buscador.program.push(program);
+            }
+
+        } else if(id) {
             buscador[id] = value;
-
         }
 
         this.setState({ buscador });
@@ -213,11 +242,27 @@ export default class Monitoreo extends Component {
 
         let user = users.find(elem => elem.id === userId);
 
+<<<<<<< HEAD
         if (user) {
             userId = user.id + ' - ' + user.name + ' ' + user.lastName
+=======
+        if(user) {
+            userId =  (user.legajo || user.id) + ' - ' + user.name + ' ' + user.lastName
+>>>>>>> 524a4986dbe1894728ce722f67720a325b7e457d
         }
 
         return userId;
+    }
+
+    eliminarPrograma = (e) => {
+        let { id } = e.target;
+        let { buscador } = this.state;
+        if(buscador.program.length > 1) {
+            buscador.program = buscador.program.filter(elem => elem.id !== id);
+        } else if(buscador.program.length === 1) {
+            buscador.program = [] 
+        }
+        this.setState({ buscador })
     }
 
 
@@ -307,13 +352,26 @@ export default class Monitoreo extends Component {
                         {/* Program */}
                         <article>
                             <h6>Programa</h6>
-                            <select value={buscador.programId} onChange={this.changeBuscador} id="programId">
+                            <select onChange={this.changeBuscador} value="" id="program">
                                 <option>Selecciona...</option>
+                                {console.log(programs)}
+                                <option value='allPrograms'>Seleccionar todos</option>
                                 {programs.map(v => {
                                     return <option key={v.id} value={v.id}>{v.name}</option>
                                 })
                                 }
                             </select>
+                            <div className="programasSeleccionados">
+                            {buscador.program.length > 0 &&
+                                buscador.program.map(p => {
+                                    return (
+                                    <span key={p.id}>{p.name}
+                                        <button id={p.id} onClick={this.eliminarPrograma}>X</button>
+                                    </span>)
+                                })  
+                            }
+
+                            </div>
                         </article>
                         <hr />
 

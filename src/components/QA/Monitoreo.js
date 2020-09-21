@@ -8,11 +8,13 @@ import swal from 'sweetalert';
 import ModalNuevoMonitoreo from './ModalNuevoMonitoreo';
 import './Mon.css';
 import moment from 'moment';
+import { Redirect } from 'react-router-dom';
 
 export default class Monitoreo extends Component {
     state = {
         loading: false,
         monitoreos: [],
+        redirect: false,
         abrirModal: false,
         programs: [],
         users: [],
@@ -124,9 +126,6 @@ export default class Monitoreo extends Component {
                 }
                 console.log("Error: ", e)
             });
-
-
-        console.log(buscador)
     }
 
     buscarUsuario = (e) => {
@@ -198,6 +197,16 @@ export default class Monitoreo extends Component {
         this.setState({ buscador });
     }
 
+    editar = (e) => {
+        const { id } = e.target.dataset;
+    
+        let redirect = '/monitoreo/' + id;
+
+        if(id) {
+            this.setState({ redirect })
+        }
+    }
+
     getUser = (userId) => {
         const { users } = this.state;
 
@@ -212,7 +221,11 @@ export default class Monitoreo extends Component {
 
 
     render() {
-        const { monitoreos, abrirModal, usuarioSeleccionadoCreatedBy, buscadorUsuarioCreatedBy ,buscadorUsuario, programs, buscador, usuarioSeleccionado, usuariosConFiltro } = this.state;
+        const { loading, monitoreos, redirect, abrirModal, usuarioSeleccionadoCreatedBy, buscadorUsuarioCreatedBy ,buscadorUsuario, programs, buscador, usuarioSeleccionado, usuariosConFiltro } = this.state;
+
+        if(redirect) {
+            return <Redirect to={redirect} />
+        }
 
         return (
             <>
@@ -222,6 +235,11 @@ export default class Monitoreo extends Component {
                     <SiderbarLeft />
                     <UserAdminHeader />
                 </div>
+
+                {loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
+
 
                 {abrirModal &&
                     <ModalNuevoMonitoreo />
@@ -435,8 +453,7 @@ export default class Monitoreo extends Component {
                                                 <td>{mon.evaluated.toString()}</td>
                                                 <td>{mon.improvment}</td>
                                                 <td>
-                                                    <button type="button">Ver</button>
-                                                    <button type="button">Editar</button>
+                                                    <button type="button" data-id={mon.id} onClick={this.editar}>Editar</button>
                                                     <button type="button">Eliminar</button>
                                                 </td>
                                                 <td></td>

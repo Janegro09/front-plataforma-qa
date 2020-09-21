@@ -9,6 +9,7 @@ import ModalNuevoMonitoreo from './ModalNuevoMonitoreo';
 import './Mon.css';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
+import HearingIcon from '@material-ui/icons/Hearing';
 
 export default class Monitoreo extends Component {
     state = {
@@ -52,7 +53,7 @@ export default class Monitoreo extends Component {
 
                 let p = response.data.Data || false;
                 let programs;
-                if(p) {
+                if (p) {
                     programs = p.filter(elem => elem.section === 'M');
                 }
 
@@ -94,9 +95,9 @@ export default class Monitoreo extends Component {
         // Convert to query string
         let query = "";
 
-        for(let b in buscador) {
+        for (let b in buscador) {
             let data = `${b}=${buscador[b]}`;
-            query = !!query ? `${query}&${data}` : `?${data}`;            
+            query = !!query ? `${query}&${data}` : `?${data}`;
         }
 
         console.log(query)
@@ -184,11 +185,11 @@ export default class Monitoreo extends Component {
         let { value, id, type } = e.target;
         let { buscador } = this.state;
 
-        if(type === 'checkbox') {
+        if (type === 'checkbox') {
             value = buscador[id] === true ? false : true;
         }
 
-        if(id) {
+        if (id) {
 
             buscador[id] = value;
 
@@ -199,10 +200,10 @@ export default class Monitoreo extends Component {
 
     editar = (e) => {
         const { id } = e.target.dataset;
-    
+
         let redirect = '/monitoreo/' + id;
 
-        if(id) {
+        if (id) {
             this.setState({ redirect })
         }
     }
@@ -212,8 +213,8 @@ export default class Monitoreo extends Component {
 
         let user = users.find(elem => elem.id === userId);
 
-        if(user) {
-            userId =  user.id + ' - ' + user.name + ' ' + user.lastName
+        if (user) {
+            userId = user.id + ' - ' + user.name + ' ' + user.lastName
         }
 
         return userId;
@@ -221,9 +222,9 @@ export default class Monitoreo extends Component {
 
 
     render() {
-        const { loading, monitoreos, redirect, abrirModal, usuarioSeleccionadoCreatedBy, buscadorUsuarioCreatedBy ,buscadorUsuario, programs, buscador, usuarioSeleccionado, usuariosConFiltro } = this.state;
+        const { loading, monitoreos, redirect, abrirModal, usuarioSeleccionadoCreatedBy, buscadorUsuarioCreatedBy, buscadorUsuario, programs, buscador, usuarioSeleccionado, usuariosConFiltro } = this.state;
 
-        if(redirect) {
+        if (redirect) {
             return <Redirect to={redirect} />
         }
 
@@ -246,31 +247,32 @@ export default class Monitoreo extends Component {
                 }
 
                 <div className="section-content">
-                    <h4>Monitoreo</h4>
 
+                    <div className="flex-input-add">
+                        <h4>Monitoreo</h4>
 
-
+                        <button
+                            className="btnDefault addMonitoreo"
+                            onClick={this.nuevoMonitoreo}
+                        >
+                            Agregar monitoreo <HearingIcon />
+                    </button>
+                    </div>
                     <div className="buscadorMon">
                         {/* User id */}
                         <article>
                             <h6>Id de Usuario</h6>
-                            <div className="flexAlign">
+
                             <input
-                            type="text"
-                            placeholder="Buscar usuario"
-                            onChange={this.buscarUsuario}
-                            value={buscadorUsuario}
-                            className="form-control"
-                             /> 
-                                                 <button
-                        className="btn btn-primary"
-                        onClick={this.nuevoMonitoreo}
-                    >
-                        +
-                    </button></div>
+                                type="text"
+                                placeholder="Buscar usuario"
+                                onChange={this.buscarUsuario}
+                                value={buscadorUsuario}
+                                className="form-control"
+                            />
                             {!buscadorUsuario && usuarioSeleccionado &&
                                 <small>
-                                    Usuario Seleccionado: <strong>{usuarioSeleccionado.name} {usuarioSeleccionado.lastName} - {usuarioSeleccionado.id}</strong> 
+                                    Usuario Seleccionado: <strong>{usuarioSeleccionado.name} {usuarioSeleccionado.lastName} - {usuarioSeleccionado.id}</strong>
                                 </small>
                             }
 
@@ -320,11 +322,11 @@ export default class Monitoreo extends Component {
                             <h6>Fecha de transacción</h6>
                             <span>
                                 <label>Desde</label>
-                                <input type="date" id="dateTransactionStart" onChange={this.changeBuscador}/>
+                                <input type="date" id="dateTransactionStart" onChange={this.changeBuscador} />
                             </span>
                             <span>
                                 <label>Hasta</label>
-                                <input type="date" id="dateTransactionEnd" onChange={this.changeBuscador}/>
+                                <input type="date" id="dateTransactionEnd" onChange={this.changeBuscador} />
                             </span>
                         </article>
                         <hr />
@@ -350,7 +352,7 @@ export default class Monitoreo extends Component {
                         {/* Case id */}
                         <article>
                             <h6>Id del caso</h6>
-                            <input type="text" id="caseId" onChange={this.changeBuscador} value={buscador.caseId}/>
+                            <input type="text" id="caseId" onChange={this.changeBuscador} value={buscador.caseId} />
                         </article>
                         <hr />
 
@@ -359,15 +361,15 @@ export default class Monitoreo extends Component {
                             <h6>Creado por</h6>
 
                             <input
-                            type="text"
-                            placeholder="Buscar usuario"
-                            onChange={this.buscarUsuarioCreatedBy}
-                            value={buscadorUsuarioCreatedBy}
-                            className="form-control"
-                             /> 
+                                type="text"
+                                placeholder="Buscar usuario"
+                                onChange={this.buscarUsuarioCreatedBy}
+                                value={buscadorUsuarioCreatedBy}
+                                className="form-control"
+                            />
                             {!buscadorUsuarioCreatedBy && usuarioSeleccionadoCreatedBy &&
                                 <small>
-                                    Usuario Seleccionado: <strong>{usuarioSeleccionadoCreatedBy.name} {usuarioSeleccionadoCreatedBy.lastName} - {usuarioSeleccionadoCreatedBy.id}</strong> 
+                                    Usuario Seleccionado: <strong>{usuarioSeleccionadoCreatedBy.name} {usuarioSeleccionadoCreatedBy.lastName} - {usuarioSeleccionadoCreatedBy.id}</strong>
                                 </small>
                             }
 
@@ -406,7 +408,7 @@ export default class Monitoreo extends Component {
                         <hr />
                         <article>
                             <h6>Disputado</h6>
-                            <input type="checkbox" id="disputado" onChange={this.changeBuscador}  checked={buscador.disputado}/>
+                            <input type="checkbox" id="disputado" onChange={this.changeBuscador} checked={buscador.disputado} />
                         </article>
                         <hr />
                         <article>
@@ -467,7 +469,7 @@ export default class Monitoreo extends Component {
                         {monitoreos.length === 0 &&
                             <div className="alert alert-warning">No existen monitoreos para mostrar</div>
                         }
-                </div>
+                    </div>
                 </div>
             </>
         )

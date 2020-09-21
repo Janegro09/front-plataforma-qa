@@ -250,6 +250,51 @@ export default class Monitoreo extends Component {
         this.setState({ buscador })
     }
 
+    deleteMon = (e) => {
+        const { id } = e.target.dataset;
+
+        swal({
+            title: "Estas seguro?",
+            text: "Estas por eliminar un monitoreo, no podrás recuperarlo",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    const config = {
+                        headers: { Authorization: `Bearer ${token}` }
+                    };
+                    axios.delete(Global.monitoreos + "/" + id, config)
+                        .then(response => {
+                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            if (response.data.Success) {
+                                swal("Felicidades!", "Monitoreo eliminado correctamente", "success").then(() => {
+                                    window.location.reload(window.location.href);
+                                });
+                            }
+
+                        })
+                        .catch(e => {
+                            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                                HELPER_FUNCTIONS.logout()
+                            } else {
+                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                swal("Error al eliminar!", {
+                                    icon: "error",
+                                });
+
+                            }
+                            console.log("Error: ", e)
+                        })
+
+                } else {
+                    swal("No se elimino nada");
+                }
+            });
+    }
+
 
     render() {
         const { loading, monitoreos, redirect, abrirModal, usuarioSeleccionadoCreatedBy, buscadorUsuarioCreatedBy, buscadorUsuario, programs, buscador, usuarioSeleccionado, usuariosConFiltro } = this.state;
@@ -467,6 +512,7 @@ export default class Monitoreo extends Component {
                             <table>
                                 <thead>
                                     <tr>
+                                        <th>Seleccionar</th>
                                         <th>ID del caso</th>
                                         <th>Creado Por</th>
                                         <th>Usuario monitoreado</th>
@@ -486,6 +532,13 @@ export default class Monitoreo extends Component {
                                     return (
                                         <tbody key={mon.id}>
                                             <tr>
+                                                <td>
+                                                    <input
+                                                        data-id={mon.id}  
+                                                        name="export" 
+                                                        type="checkbox"
+                                                    />
+                                                </td>
                                                 <td>{mon.caseId}</td>
                                                 <td>{this.getUser(mon.createdBy)}</td>
                                                 <td>{this.getUser(mon.userId)}</td>
@@ -500,7 +553,7 @@ export default class Monitoreo extends Component {
                                                 <td>{mon.improvment}</td>
                                                 <td>
                                                     <button type="button" data-id={mon.id} onClick={this.editar}>Editar</button>
-                                                    <button type="button">Eliminar</button>
+                                                    <button data-id={mon.id} type="button" onClick={this.deleteMon}>Eliminar</button>
                                                 </td>
                                                 <td></td>
                                             </tr>

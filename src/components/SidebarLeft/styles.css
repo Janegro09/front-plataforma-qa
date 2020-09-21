@@ -897,7 +897,13 @@ tr {
   justify-content: space-between;
 } 
 
+.tablaBuscarUsuarios td:last-child {
+  text-align: left !important; 
+}
 
+.margin-bottom-10 {
+  margin-bottom: 10px;
+}
 /* DARK MODE */
 
 

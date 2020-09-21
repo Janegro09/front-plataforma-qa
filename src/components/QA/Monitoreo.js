@@ -10,6 +10,8 @@ import './Mon.css';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import HearingIcon from '@material-ui/icons/Hearing';
+import Checkbox from '@material-ui/core/Checkbox';
+import { Breadcrumbs } from '@material-ui/core';
 
 export default class Monitoreo extends Component {
     state = {
@@ -97,12 +99,12 @@ export default class Monitoreo extends Component {
         // Convert to query string
         let query = "";
 
-        for(let b in buscador) {
+        for (let b in buscador) {
             let tempQuery = buscador[b]
-            if(b === 'program') {
+            if (b === 'program') {
                 let temp = "";
 
-                for(let program of buscador[b]) {
+                for (let program of buscador[b]) {
                     temp = temp ? temp += `%%${program.id}` : program.id;
                 }
 
@@ -110,7 +112,7 @@ export default class Monitoreo extends Component {
             }
             let data = `${b}=${tempQuery}`;
             console.log(data);
-            query = !!query ? `${query}&${data}` : `?${data}`;            
+            query = !!query ? `${query}&${data}` : `?${data}`;
         }
 
 
@@ -165,13 +167,13 @@ export default class Monitoreo extends Component {
     marcarFila = (user) => {
         return {
             cursor: "pointer",
-            background: user.id === this.state.buscador.userId ? "green" : ""
+            background: user.id === this.state.buscador.userId ? "#ebecf0" : ""
         }
     }
     marcarFilaCreatedBy = (user) => {
         return {
             cursor: "pointer",
-            background: user.id === this.state.buscador.createdBy ? "green" : ""
+            background: user.id === this.state.buscador.createdBy ? "#ebecf0" : ""
         }
     }
 
@@ -201,16 +203,16 @@ export default class Monitoreo extends Component {
             value = buscador[id] === true ? false : true;
         }
 
-        if(id === 'program') {
-            if(value === 'allPrograms') {
+        if (id === 'program') {
+            if (value === 'allPrograms') {
                 buscador.program = programs;
 
-            } else if(buscador.program.findIndex(elemento => elemento.id === value) === -1) {
+            } else if (buscador.program.findIndex(elemento => elemento.id === value) === -1) {
                 let program = programs.find(elem => elem.id === value);
                 buscador.program.push(program);
             }
 
-        } else if(id) {
+        } else if (id) {
             buscador[id] = value;
         }
 
@@ -232,8 +234,8 @@ export default class Monitoreo extends Component {
 
         let user = users.find(elem => elem.id === userId);
 
-        if(user) {
-            userId =  (user.legajo || user.id) + ' - ' + user.name + ' ' + user.lastName
+        if (user) {
+            userId = (user.legajo || user.id) + ' - ' + user.name + ' ' + user.lastName
         }
 
         return userId;
@@ -242,10 +244,10 @@ export default class Monitoreo extends Component {
     eliminarPrograma = (e) => {
         let { id } = e.target;
         let { buscador } = this.state;
-        if(buscador.program.length > 1) {
+        if (buscador.program.length > 1) {
             buscador.program = buscador.program.filter(elem => elem.id !== id);
-        } else if(buscador.program.length === 1) {
-            buscador.program = [] 
+        } else if (buscador.program.length === 1) {
+            buscador.program = []
         }
         this.setState({ buscador })
     }
@@ -322,28 +324,30 @@ export default class Monitoreo extends Component {
                 }
 
                 <div className="section-content">
-
-                    <div className="flex-input-add input-add-spacebetween">
-                        <h4>Monitoreo</h4>
-
+                <div className="flex-input-add input-add-spacebetween">
+                        <h4 className="mr-2">MONITOREO</h4>
+                        <div className="">
                         <button
-                            className="btnDefault addMonitoreo"
+                            className="btnDefault"
                             onClick={this.nuevoMonitoreo}
                         >
                             Agregar monitoreo <HearingIcon />
-                    </button>
+                        </button>
+                            </div>
                     </div>
+                    <hr />
+                    
                     <div className="buscadorMon">
                         {/* User id */}
                         <article>
                             <h6>Id de Usuario</h6>
-
+                            <br />
                             <input
                                 type="text"
                                 placeholder="Buscar usuario"
                                 onChange={this.buscarUsuario}
                                 value={buscadorUsuario}
-                                className="form-control"
+                                className="form-control margin-bottom-10"
                             />
                             {!buscadorUsuario && usuarioSeleccionado &&
                                 <small>
@@ -352,7 +356,7 @@ export default class Monitoreo extends Component {
                             }
 
                             {usuariosConFiltro && buscadorUsuario &&
-                                <table>
+                                <table className="tablaBuscarUsuarios">
                                     <thead>
                                         <tr>
                                             <th>DNI</th>
@@ -377,11 +381,12 @@ export default class Monitoreo extends Component {
 
 
                         </article>
-                        <hr />
+                        <br />
 
                         {/* Program */}
                         <article>
                             <h6>Programa</h6>
+                            <br />
                             <select onChange={this.changeBuscador} value="" id="program">
                                 <option>Selecciona...</option>
                                 {console.log(programs)}
@@ -392,32 +397,33 @@ export default class Monitoreo extends Component {
                                 }
                             </select>
                             <div className="programasSeleccionados">
-                            {buscador.program.length > 0 &&
-                                buscador.program.map(p => {
-                                    return (
-                                    <span key={p.id}>{p.name}
-                                        <button id={p.id} onClick={this.eliminarPrograma}>X</button>
-                                    </span>)
-                                })  
-                            }
+                                {buscador.program.length > 0 &&
+                                    buscador.program.map(p => {
+                                        return (
+                                            <span key={p.id}>{p.name}
+                                                <button id={p.id} onClick={this.eliminarPrograma}>X</button>
+                                            </span>)
+                                    })
+                                }
 
                             </div>
                         </article>
-                        <hr />
+                        <br />
 
                         {/* Fecha de transaccion */}
                         <article>
                             <h6>Fecha de transacción</h6>
+                            <br />
                             <span>
                                 <label>Desde</label>
-                                <input type="date" id="dateTransactionStart" onChange={this.changeBuscador} />
+                                <input className="form-control" type="date" id="dateTransactionStart" onChange={this.changeBuscador} />
                             </span>
                             <span>
                                 <label>Hasta</label>
-                                <input type="date" id="dateTransactionEnd" onChange={this.changeBuscador} />
+                                <input className="form-control" type="date" id="dateTransactionEnd" onChange={this.changeBuscador} />
                             </span>
                         </article>
-                        <hr />
+                        <br />
 
                         {/* Responses */}
                         {/* <article>
@@ -428,6 +434,7 @@ export default class Monitoreo extends Component {
                         {/* Status */}
                         <article>
                             <h6>Estado</h6>
+                            <br />
                             <select onChange={this.changeBuscador} value={buscador.status} id="status">
                                 <option>Selecciona...</option>
                                 <option value="pending">Pendiente</option>
@@ -435,25 +442,26 @@ export default class Monitoreo extends Component {
                                 <option value="finished">Terminado</option>
                             </select>
                         </article>
-                        <hr />
+                        <br />
 
                         {/* Case id */}
                         <article>
                             <h6>Id del caso</h6>
-                            <input type="text" id="caseId" onChange={this.changeBuscador} value={buscador.caseId} />
+                            <br />
+                            <input className="form-control" type="text" id="caseId" onChange={this.changeBuscador} value={buscador.caseId} />
                         </article>
-                        <hr />
+                        <br />
 
                         {/* Created by */}
                         <article>
                             <h6>Creado por</h6>
-
+                            <br />
                             <input
                                 type="text"
                                 placeholder="Buscar usuario"
                                 onChange={this.buscarUsuarioCreatedBy}
                                 value={buscadorUsuarioCreatedBy}
-                                className="form-control"
+                                className="form-control margin-bottom-10"
                             />
                             {!buscadorUsuarioCreatedBy && usuarioSeleccionadoCreatedBy &&
                                 <small>
@@ -462,7 +470,7 @@ export default class Monitoreo extends Component {
                             }
 
                             {usuariosConFiltro && buscadorUsuarioCreatedBy &&
-                                <table>
+                                <table className="tablaBuscarUsuarios">
                                     <thead>
                                         <tr>
                                             <th>DNI</th>
@@ -486,24 +494,29 @@ export default class Monitoreo extends Component {
                             }
 
                         </article>
-                        <hr />
+                        <br />
 
                         {/* Invalidated */}
-                        <article>
+                        <article className="flexAlign input-add-spacebetween">
                             <h6>Invalidado</h6>
-                            <input type="checkbox" id="invalidated" onChange={this.changeBuscador} checked={buscador.invalidated} />
+                            <br />
+                            <Checkbox type="checkbox" id="invalidated" onChange={this.changeBuscador} checked={buscador.invalidated} />
+
                         </article>
-                        <hr />
-                        <article>
+                        <br />
+                        <article className="flexAlign input-add-spacebetween">
                             <h6>Disputado</h6>
-                            <input type="checkbox" id="disputado" onChange={this.changeBuscador} checked={buscador.disputado} />
+                            <br />
+                            <Checkbox type="checkbox" id="disputado" onChange={this.changeBuscador} checked={buscador.disputado} />
                         </article>
-                        <hr />
-                        <article>
+                        <br />
+                        <Breadcrumbs />
+                        <article className="flexAlign input-add-spacebetween">
                             <h6>Evaluado</h6>
-                            <input type="checkbox" id="evaluated" onChange={this.changeBuscador} checked={buscador.evaluated} />
+                            <br />
+                            <Checkbox type="checkbox" id="evaluated" onChange={this.changeBuscador} checked={buscador.evaluated} />
                         </article>
-                        <hr />
+                        <br />
                         <button className="btn" type="button" onClick={this.buscar}>Buscar</button>
                     </div>
 

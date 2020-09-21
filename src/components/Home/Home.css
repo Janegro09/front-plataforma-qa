@@ -68,7 +68,7 @@
     height: 63px;
     width: 100%;
     border-radius: 0px 0px 0px 7px;
-    -webkit-box-shadow: -11px 8px 20px 1px #9596980d;
+    -webkit-box-shadow: -11px 8px 20px 1px #9596981c;
     background-color: #ebecf0;
 }
 
@@ -92,7 +92,7 @@ select {
     padding: 10px;
     margin-bottom: 20px;
     color: #717171;
-    /* background-color: #f9f9f969 !important; */
+    background-color: #f9f9f969 !important;
 }
 
 .uploadNomina {

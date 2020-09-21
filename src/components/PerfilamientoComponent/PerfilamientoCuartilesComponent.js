@@ -49,7 +49,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
     }
 
     seleccionarFila = (fila, orden, obj = {}, exists) => {
-        let { result, used } = this.state;
+        let { result, used, nombreColumnas } = this.state;
         if (exists) {
             used.push(exists);
         }
@@ -65,35 +65,61 @@ export default class PerfilamientoCuartilesComponent extends Component {
             }
         }
 
-        if (obj.VMax && obj.VMin) {
-            if (obj.VMax < fila.VMax && obj.VMax > obj.VMin) {
-                temp.Q3 = {
-                    VMax: obj.VMax
-                };
-            }
+        let defaultValues = nombreColumnas.find(elem => temp.QName === elem.columnName);
 
-            if (obj.VMin > fila.VMin && obj.VMin < obj.VMax && temp.Q3) {
-                temp.Q1.VMax = obj.VMin;
-            }
+        temp.Q1 = obj.VMin ? {...temp.Q1, VMax: obj.VMin} : defaultValues.DefaultValues.Q1
+        temp.Q2 = defaultValues.DefaultValues.Q2
+        temp.Q3 = obj.VMax ? { VMax: obj.VMax } : defaultValues.DefaultValues.Q3
+        temp.Q4 = defaultValues.DefaultValues.Q4
 
-            if (temp.Q3 && temp.Q1.VMax) {
-                temp.Q2 = {
-                    VMax: (temp.Q3.VMax - temp.Q1.VMax) / 2
-                }
-            }
-        } else if (!obj.VMax && !obj.VMin) {
-            used.map(e => {
-                if (temp.QName === e.QName) {
-                    // ACA ENTRA CUANDO SE SELECCIONA LA FILA 
-                    temp.Q1 = e.Q1;
-                    temp.Q2 = e.Q2;
-                    temp.Q3 = e.Q3;
-                    temp.Q4 = e.Q4;
-                    temp.Qorder = e.Qorder;
-                }
-                return true;
-            })
+        if(temp.Q1 !== defaultValues.DefaultValues.Q1 || temp.Q3 !== defaultValues.DefaultValues.Q3) {
+            // Si no son los valores por defect, entonces sacamos los valores para q2
+            let diferencia = (temp.Q3.VMax - temp.Q1.VMax) / 2;
+            temp.Q2.VMax = diferencia;
         }
+        // if (obj.VMax !== undefined || obj.VMin !== undefined) {
+        //     console.log('okaaa')
+        //     if (obj.VMax && obj.VMax < fila.VMax && obj.VMax > obj.VMin) {
+        //         temp.Q3 = {
+        //             VMax: obj.VMax
+        //         };
+        //     } else {
+        //         temp.Q3 = defaultValues.DefaultValues.Q3
+        //     }
+
+        //     if (obj.VMin && obj.VMin > fila.VMin && obj.VMin < obj.VMax) {
+        //         temp.Q1.VMax = obj.VMin;
+        //     } else {
+        //         temp.Q1 = defaultValues.DefaultValues.Q1
+        //     }
+
+        //     if (temp.Q3 && temp.Q1.VMax) {
+        //         temp.Q2 = {
+        //             VMax: (temp.Q3.VMax - temp.Q1.VMax) / 2
+        //         }
+        //     }
+        // } else if (!obj.VMax && !obj.VMin) {
+
+        //     temp.Q1 = defaultValues.DefaultValues.Q1
+        //     temp.Q2 = defaultValues.DefaultValues.Q2
+        //     temp.Q3 = defaultValues.DefaultValues.Q3
+        //     temp.Q4 = defaultValues.DefaultValues.Q4
+
+        //     // used.map(e => {
+        //     //     if (temp.QName === e.QName) {
+        //     //         // ACA ENTRA CUANDO SE SELECCIONA LA FILA 
+
+        //     //         console.log(temp, e);
+
+        //     //         temp.Q1 = e.Q1;
+        //     //         temp.Q2 = e.Q2;
+        //     //         temp.Q3 = e.Q3;
+        //     //         temp.Q4 = e.Q4;
+        //     //         temp.Qorder = e.Qorder;
+        //     //     }
+        //     //     return true;
+        //     // })
+        // }
 
         let indice = -1
         for (let i = 0; i < result.length; i++) {
@@ -486,7 +512,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                             let element = document.getElementById("VMin" + key);
                                                             obj.VMin = parseFloat(element.value)
                                                         }}
-                                                        defaultValue={exists?.Q1 ? exists.Q1.VMax : columna.DefaultValues.Q1.VMax}
+                                                        value={exists ? exists.Q1.VMax : ""}
                                                         disabled={exists !== ''}
                                                     />
                                                 </td>
@@ -503,7 +529,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                                 let element = document.getElementById("VMax" + key);
                                                                 obj.VMax = parseFloat(element.value)
                                                             }}
-                                                            defaultValue={exists !== '' ? exists.Q3.VMax : columna.DefaultValues.Q3.VMax}
+                                                            defaultValue={exists ? exists.Q3.VMax : ''}
                                                             disabled={exists !== ''}
                                                         />
                                                     }
@@ -513,7 +539,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                             id={"VMax" + key}
                                                             type="text"
                                                             placeholder="VMax"
-                                                            defaultValue={columna.DefaultValues.Q3.VMax}
+                                                            defaultValue=""
                                                             onChange={(e) => {
                                                                 e.preventDefault()
                                                                 let element = document.getElementById("VMax" + key);

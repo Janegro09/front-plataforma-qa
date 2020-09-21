@@ -344,7 +344,7 @@ export default class ModalNuevoForm extends Component {
                         {allModels &&
                             <>
                                 <div className="form-group">
-                                    <label htmlFor="name">Programa</label>
+                                    <label htmlFor="name">Modelos de formularios</label>
                                     <select onChange={this.changeModel} >
                                         <option value="">Selecciona...</option>
                                         {allModels.map(model => {

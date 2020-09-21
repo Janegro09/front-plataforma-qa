@@ -406,13 +406,15 @@ h4 {
 .morph {
   border-radius: 3px;
   margin-right: 1px;
-  /* margin-bottom: 3px; */
+
   color: white;
   padding: 2px;
   transition: 0.1s;
   background-color: #03a9f4;
   transition: all 0.15s ease-in-out;
   -webkit-box-shadow: 0 0.125rem 0.125rem rgb(22 170 255 / 33%), 0 0.0625rem 0.125rem rgb(22 170 255 / 50%);
+
+  
 }
 
 .morph2 {
@@ -653,8 +655,8 @@ h4 {
   padding: 13px;
   width: 50px;
   position: absolute;
-  top: 50px;
-  right: 22%;
+  top: 96px;
+  right: 24.3%;
   font-size: 17px;
   transition: all 0.15s ease-in-out;
 } 
@@ -723,10 +725,16 @@ tr {
 
 
 .btnDefault {
-  border: 1px solid transparent;
+  border: 1px solid #9e9e9e33;
   font-size: 10px;
   font-weight: 800;
+  border-radius: 5px;
   padding: 10px;
+  transition: all 0.15s ease-in-out;
+}
+
+.btnDefault:hover {
+  border: 1px solid #9e9e9e99;
 }
 
 .btnDefaultLight {
@@ -738,14 +746,10 @@ tr {
 .containerDefaultBotons {
   display: flex;
   justify-content: space-between;
-  margin: 0 2%;
+  width: 431px;
 }
 
-.btnDefault:hover {
-  border: 1px solid #9e9e9e1f;
-  border-radius: 5px;
-  padding: 10px;
-}
+
 
 .btnDefaultBorder {
   border: 1px solid #b9b9b9;
@@ -885,7 +889,13 @@ tr {
   margin: auto;
 }
 
+.addMonitoreo {
+  margin-left: 25px;
+}
 
+.input-add-spacebetween {
+  justify-content: space-between;
+} 
 
 
 /* DARK MODE */

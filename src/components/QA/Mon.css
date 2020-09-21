@@ -10,3 +10,74 @@
 .resultados {
     margin-top: 20px;
 }
+
+.monitorInfo {
+}
+
+.monitorInfo small {
+    display: block;
+}
+
+.monitorData {
+}
+
+.monitorData article {
+    width: 100%;
+}
+
+.monitorData article span {
+    display: block;
+}
+
+.monFiles .files {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.monFiles span {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: #61dca3;
+    color: #000;
+    margin: 10px 5px 0 0;
+}
+
+.monFiles span p {
+    margin: 0;
+    display: inline-block;
+}
+
+.monFiles span button {
+    margin-left: 5px;
+    background: #1e2941;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+}   
+
+.programasSeleccionados {
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row wrap;
+    padding: 5px;
+}
+
+.programasSeleccionados span {
+    padding: 10px 20px;
+    margin: 10px 5px 0 0;
+    position: relative;
+    border-radius: 5px;
+    background: #61dca3;
+    width: 120px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.programasSeleccionados span button {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    font-size: 10px;
+
+}

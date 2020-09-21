@@ -40,6 +40,7 @@ import ModeloFormularios from './components/BackOfficeComponent/AdministracionFo
 import ViewModelOfForm from './components/BackOfficeComponent/AdministracionFormulariosComponent/ModeloFormulariosView';
 import FormularioView from './components/BackOfficeComponent/AdministracionFormulariosComponent/FormularioView';
 import Monitoreo from './components/QA/Monitoreo';
+import MonitoreoEditar from './components/QA/MonitoreoEditar';
 import Calibraciones from './components/QA/Calibraciones';
 
 require('dotenv').config(); // Utilizamos este metodo para utilizar variables de entorno desde el archivo .env
@@ -90,7 +91,8 @@ function App() {
         <Route exact path="/programas/grupos" component={ProgramsGroups} />
         <Route path="/roles" component={RolesComponent} />
         <Route path="/users" component={UsersComponent} />
-        <Route path="/monitoreo" component={Monitoreo} />
+        <Route exact path="/monitoreo" component={Monitoreo} />
+        <Route exact path="/monitoreo/:id" component={MonitoreoEditar} />
         <Route path="/calibraciones" component={Calibraciones} />
       </Switch>
     </BrowserRouter>

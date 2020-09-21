@@ -149,7 +149,7 @@ export default class AdministracionFormulariosComponent extends Component {
                 }
 
                 <div className="section-content">
-                    <div className="flex-input-add">
+                    <div className="flex-input-add input-add-spacebetween">
                         <h4 className="mr-2">ADMINISTRADOR DE FORMULARIOS</h4>
                         <div className="containerDefaultBotons">
                         <button className="btnDefault"

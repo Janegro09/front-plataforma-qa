@@ -97,11 +97,6 @@ export default class Monitoreo extends Component {
         // Convert to query string
         let query = "";
 
-<<<<<<< HEAD
-        for (let b in buscador) {
-            let data = `${b}=${buscador[b]}`;
-            query = !!query ? `${query}&${data}` : `?${data}`;
-=======
         for(let b in buscador) {
             let tempQuery = buscador[b]
             if(b === 'program') {
@@ -116,7 +111,6 @@ export default class Monitoreo extends Component {
             let data = `${b}=${tempQuery}`;
             console.log(data);
             query = !!query ? `${query}&${data}` : `?${data}`;            
->>>>>>> 524a4986dbe1894728ce722f67720a325b7e457d
         }
 
 
@@ -207,13 +201,9 @@ export default class Monitoreo extends Component {
             value = buscador[id] === true ? false : true;
         }
 
-<<<<<<< HEAD
-        if (id) {
-=======
         if(id === 'program') {
             if(value === 'allPrograms') {
                 buscador.program = programs;
->>>>>>> 524a4986dbe1894728ce722f67720a325b7e457d
 
             } else if(buscador.program.findIndex(elemento => elemento.id === value) === -1) {
                 let program = programs.find(elem => elem.id === value);

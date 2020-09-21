@@ -29,7 +29,7 @@
 
 .boton-cerrar > button {
 
-    background-color: #03a9f4;
+
 }
 
 .formulario {
@@ -94,5 +94,5 @@ small {
 }
 
 .modal section article input, .modal section article select {
-    width: 50%;
+    /* width: 50%; */
 }

@@ -124,10 +124,10 @@ export default class ModeloDePartiturasComponent extends Component {
                 </div>
 
                 <div className="section-content">
-
-                    <div className="flex-input-add">
-                        <h4>MODELO DE PARTITURAS</h4>
-                        <div className="containerDefaultBotons">
+                <div className="flex-input-add input-add-spacebetween">
+                        <h4 className="mr-2">MODELO DE PARTITURAS</h4>
+                        <div className="">
+     
                             <button className="btnDefault" onClick={(e) => {
                                 e.preventDefault();
                                 this.crearNuevo();

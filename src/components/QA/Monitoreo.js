@@ -242,13 +242,8 @@ export default class Monitoreo extends Component {
 
         let user = users.find(elem => elem.id === userId);
 
-<<<<<<< HEAD
-        if (user) {
-            userId = user.id + ' - ' + user.name + ' ' + user.lastName
-=======
         if(user) {
             userId =  (user.legajo || user.id) + ' - ' + user.name + ' ' + user.lastName
->>>>>>> 524a4986dbe1894728ce722f67720a325b7e457d
         }
 
         return userId;

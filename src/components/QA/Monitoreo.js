@@ -22,7 +22,9 @@ export default class Monitoreo extends Component {
         buscadorUsuario: "",
         buscadorUsuarioCreatedBy: "",
         usuarioSeleccionadoCreatedBy: null,
-        buscador: {},
+        buscador: {
+            program: []
+        },
         usuarioSeleccionado: null
     }
 
@@ -95,11 +97,21 @@ export default class Monitoreo extends Component {
         let query = "";
 
         for(let b in buscador) {
-            let data = `${b}=${buscador[b]}`;
+            let tempQuery = buscador[b]
+            if(b === 'program') {
+                let temp = "";
+
+                for(let program of buscador[b]) {
+                    temp = temp ? temp += `%%${program.id}` : program.id;
+                }
+
+                tempQuery = temp;
+            }
+            let data = `${b}=${tempQuery}`;
+            console.log(data);
             query = !!query ? `${query}&${data}` : `?${data}`;            
         }
 
-        console.log(query)
 
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
@@ -182,16 +194,23 @@ export default class Monitoreo extends Component {
     changeBuscador = (e) => {
         // e.preventDefault();
         let { value, id, type } = e.target;
-        let { buscador } = this.state;
+        let { buscador, programs } = this.state;
 
         if(type === 'checkbox') {
             value = buscador[id] === true ? false : true;
         }
 
-        if(id) {
+        if(id === 'program') {
+            if(value === 'allPrograms') {
+                buscador.program = programs;
 
+            } else if(buscador.program.findIndex(elemento => elemento.id === value) === -1) {
+                let program = programs.find(elem => elem.id === value);
+                buscador.program.push(program);
+            }
+
+        } else if(id) {
             buscador[id] = value;
-
         }
 
         this.setState({ buscador });
@@ -213,10 +232,21 @@ export default class Monitoreo extends Component {
         let user = users.find(elem => elem.id === userId);
 
         if(user) {
-            userId =  user.id + ' - ' + user.name + ' ' + user.lastName
+            userId =  (user.legajo || user.id) + ' - ' + user.name + ' ' + user.lastName
         }
 
         return userId;
+    }
+
+    eliminarPrograma = (e) => {
+        let { id } = e.target;
+        let { buscador } = this.state;
+        if(buscador.program.length > 1) {
+            buscador.program = buscador.program.filter(elem => elem.id !== id);
+        } else if(buscador.program.length === 1) {
+            buscador.program = [] 
+        }
+        this.setState({ buscador })
     }
 
 
@@ -304,13 +334,26 @@ export default class Monitoreo extends Component {
                         {/* Program */}
                         <article>
                             <h6>Programa</h6>
-                            <select value={buscador.programId} onChange={this.changeBuscador} id="programId">
+                            <select onChange={this.changeBuscador} value="" id="program">
                                 <option>Selecciona...</option>
+                                {console.log(programs)}
+                                <option value='allPrograms'>Seleccionar todos</option>
                                 {programs.map(v => {
                                     return <option key={v.id} value={v.id}>{v.name}</option>
                                 })
                                 }
                             </select>
+                            <div className="programasSeleccionados">
+                            {buscador.program.length > 0 &&
+                                buscador.program.map(p => {
+                                    return (
+                                    <span key={p.id}>{p.name}
+                                        <button id={p.id} onClick={this.eliminarPrograma}>X</button>
+                                    </span>)
+                                })  
+                            }
+
+                            </div>
                         </article>
                         <hr />
 

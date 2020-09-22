@@ -7,7 +7,7 @@ section.sectionTitles {
     margin: 0
 }
 
-section article {
+.sectionTitles article {
     height: unset;
     min-height: unset;
     width: 300px;

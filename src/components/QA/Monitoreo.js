@@ -22,6 +22,7 @@ export default class Monitoreo extends Component {
         programs: [],
         users: [],
         usuariosConFiltro: [],
+        monitoreosSeleccionados: [],
         buscadorUsuario: "",
         buscadorUsuarioCreatedBy: "",
         usuarioSeleccionadoCreatedBy: null,
@@ -110,9 +111,10 @@ export default class Monitoreo extends Component {
 
                 tempQuery = temp;
             }
-            let data = `${b}=${tempQuery}`;
-            console.log(data);
-            query = !!query ? `${query}&${data}` : `?${data}`;
+            if(tempQuery !== "") {
+                let data = `${b}=${tempQuery}`;
+                query = !!query ? `${query}&${data}` : `?${data}`;
+            }
         }
 
 
@@ -297,9 +299,82 @@ export default class Monitoreo extends Component {
             });
     }
 
+    exportarMonitoreos = (e) => {
+        e.preventDefault();
+        const { monitoreosSeleccionados } = this.state;
+
+        const dataToSend = {
+            monitoringsIds: monitoreosSeleccionados
+        }
+
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
+        this.setState({ loading: true });
+
+        axios.post(Global.monitoreos+'/exports', dataToSend , config ).then(response => {
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            this.setState({
+                loading: false
+            })
+
+            let p = response.data.Data || false;
+
+            if(p.tempId) {
+                let win = window.open(Global.download + '/' + p.tempId, '_blank');
+                win.focus();
+            }
+
+        }).catch((e) => {
+            // Si hay algún error en el request lo deslogueamos
+            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                HELPER_FUNCTIONS.logout()
+            } else {
+                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                this.setState({
+                    loading: false
+                })
+                swal("Error!", `${e.response.data.Message}`, "error");
+            }
+            console.log("Error: ", e)
+        });
+    }
+
+    toggleAddMonitoring = (e) => {
+        const { id } = e.target.dataset;
+        const { checked } = e.target;
+        let { monitoreosSeleccionados } = this.state;
+
+        if(!id) return false;
+
+        if(checked) {
+            //A Agregamos la empresa al array
+
+            if(!monitoreosSeleccionados.includes(id)) {
+                monitoreosSeleccionados.push(id);
+            }
+
+        } else if(monitoreosSeleccionados.includes(id)) {
+            // Eliminamos la empresa del array
+
+            if(monitoreosSeleccionados.length > 1) {
+                monitoreosSeleccionados = monitoreosSeleccionados.slice(monitoreosSeleccionados.indexOf(id), 1);
+            } else {
+                monitoreosSeleccionados = []
+            }
+
+
+
+        }
+        this.setState({ monitoreosSeleccionados });
+
+    }
+
 
     render() {
-        const { loading, monitoreos, redirect, abrirModal, usuarioSeleccionadoCreatedBy, buscadorUsuarioCreatedBy, buscadorUsuario, programs, buscador, usuarioSeleccionado, usuariosConFiltro } = this.state;
+        const { monitoreosSeleccionados, loading, monitoreos, redirect, abrirModal, usuarioSeleccionadoCreatedBy, buscadorUsuarioCreatedBy, buscadorUsuario, programs, buscador, usuarioSeleccionado, usuariosConFiltro } = this.state;
 
         if (redirect) {
             return <Redirect to={redirect} />
@@ -336,7 +411,7 @@ export default class Monitoreo extends Component {
                             </div>
                     </div>
                     <hr />
-                    
+
                     <div className="buscadorMon">
                         {/* User id */}
                         <article>
@@ -520,6 +595,11 @@ export default class Monitoreo extends Component {
                         <button className="btn" type="button" onClick={this.buscar}>Buscar</button>
                     </div>
 
+                    {monitoreosSeleccionados.length > 0 &&
+                        <button className="btn" type="button" onClick={this.exportarMonitoreos}>Exportar</button>
+
+                    }
+
                     <div className="resultados">
                         {monitoreos.length > 0 &&
                             <table>
@@ -547,9 +627,10 @@ export default class Monitoreo extends Component {
                                             <tr>
                                                 <td>
                                                     <input
-                                                        data-id={mon.id}  
-                                                        name="export" 
+                                                        data-id={mon.id}
+                                                        name="export"
                                                         type="checkbox"
+                                                        onClick={this.toggleAddMonitoring}
                                                     />
                                                 </td>
                                                 <td>{mon.caseId}</td>

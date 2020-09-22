@@ -9,13 +9,15 @@ import swal from 'sweetalert';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import ModalNuevaSesiondeCalibracion from './ModalNuevaSesiondeCalibracion';
+import ModalEditarCalibracion from './ModalEditarCalibracion';
 
 export default class Calibraciones extends Component {
     state = {
         loading: false,
         redirect: false,
         abrirModal: false,
-        calibraciones: []
+        calibraciones: [],
+        modalEdicion: false
     }
 
     componentDidMount() {
@@ -41,11 +43,7 @@ export default class Calibraciones extends Component {
                     users,
                     loading: false
                 })
-            })
-
-
-        })
-            .catch((e) => {
+            }).catch((e) => {
                 // Si hay algún error en el request lo deslogueamos
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
@@ -56,18 +54,84 @@ export default class Calibraciones extends Component {
                     })
                     swal("Error!", `${e.response.data.Message}`, "error");
                 }
+                this.setState({
+                    loading: false
+                })
                 console.log("Error: ", e)
             });
 
 
+        }).catch((e) => {
+                // Si hay algún error en el request lo deslogueamos
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    this.setState({
+                        loading: false
+                    })
+                    swal("Error!", `${e.response.data.Message}`, "error");
+                }
+                this.setState({
+                    loading: false
+                })
+                console.log("Error: ", e)
+            });
+    }
 
+    editarCalibracion = (e) => {
+        const { id } = e.target.dataset;
 
+        if(id) {
 
+            this.setState({ modalEdicion: id })
 
+        }
+    }
 
+    deleteCal = (e) => {
+        const { id } = e.target.dataset;
 
+        swal({
+            title: "Estas seguro?",
+            text: "Estas por eliminar una calibracion, no podrás recuperarla",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    const config = {
+                        headers: { Authorization: `Bearer ${token}` }
+                    };
+                    axios.delete(Global.calibration + "/" + id, config)
+                        .then(response => {
+                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            if (response.data.Success) {
+                                swal("Felicidades!", "Calibracion eliminada correctamente", "success").then(() => {
+                                    window.location.reload(window.location.href);
+                                });
+                            }
 
+                        })
+                        .catch(e => {
+                            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                                HELPER_FUNCTIONS.logout()
+                            } else {
+                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                swal("Error al eliminar!", {
+                                    icon: "error",
+                                });
 
+                            }
+                            console.log("Error: ", e)
+                        })
+
+                } else {
+                    swal("No se elimino nada");
+                }
+            });
     }
 
     nuevaCalibracion = (e) => {
@@ -89,9 +153,8 @@ export default class Calibraciones extends Component {
     }
 
     render() {
-        const { calibraciones ,loading, redirect, abrirModal } = this.state;
+        const { modalEdicion, calibraciones ,loading, redirect, abrirModal } = this.state;
 
-        console.log(calibraciones);
         if (redirect) {
             return <Redirect to={redirect} />
         }
@@ -108,6 +171,10 @@ export default class Calibraciones extends Component {
 
                 {abrirModal &&
                     <ModalNuevaSesiondeCalibracion />
+                }
+
+                {modalEdicion &&
+                    <ModalEditarCalibracion id={modalEdicion} />
                 }
 
                 {loading &&
@@ -137,6 +204,9 @@ export default class Calibraciones extends Component {
                                         <th>ID del caso</th>
                                         <th>Calibradores</th>
                                         <th>Experto</th>
+                                        <th>Desde</th>
+                                        <th>Hasta</th>
+                                        <th>Abierto</th>
                                         <th>Fecha de creación</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -150,11 +220,13 @@ export default class Calibraciones extends Component {
                                                 <td>{mon.caseId}</td>
                                                 <td>{mon.calibrators.length}</td>
                                                 <td>{this.getUser(mon.expert)}</td>
+                                                <td>{moment(mon.startDate).format('DD/MM/YYYY')}</td>
+                                                <td>{moment(mon.endDate).format('DD/MM/YYYY')}</td>
+                                                <td>{mon.status_open ? 'Open' : 'Close'}</td>
                                                 <td>{moment(mon.createdAt).format('DD/MM/YYYY  HH:mm')}</td>
                                                 <td>
-                                                    <button data-id={mon.id} type="button" >Ver</button>
-                                                    <button type="button" data-id={mon.id}>Editar</button>
-                                                    <button data-id={mon.id} type="button" >Eliminar</button>
+                                                    <button type="button" data-id={mon.id} onClick={this.editarCalibracion}>Editar</button>
+                                                    <button data-id={mon.id} type="button" onClick={this.deleteCal}>Eliminar</button>
                                                 </td>
                                                 <td></td>
                                             </tr>

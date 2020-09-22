@@ -19,7 +19,8 @@ export default class componentName extends Component {
             loading: false,
             redirect: false,
             calibration: false,
-            id: false
+            id: false,
+            printScreen: true
         }
     }
 
@@ -30,6 +31,9 @@ export default class componentName extends Component {
             id
         })
 
+        document.addEventListener('click', () => {
+            this.setState({ printScreen: false })
+        })
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
@@ -65,7 +69,7 @@ export default class componentName extends Component {
     }
 
     render() {
-        const { redirect, loading, calibration } = this.state;
+        const { printScreen, redirect, loading, calibration } = this.state;
 
         if (redirect) {
             return <Redirect to={redirect} />
@@ -73,17 +77,23 @@ export default class componentName extends Component {
 
         return (
             <>
-                <div className="header">
-                    {/* BOTON DE SALIDA */}
-                    {/* BARRA LATERAL IZQUIERDA */}
-                    <SiderbarLeft />
-                    <UserAdminHeader />
-                </div>
+                {!printScreen &&
+
+                    <div className="header">
+                        {/* BOTON DE SALIDA */}
+                        {/* BARRA LATERAL IZQUIERDA */}
+                        <SiderbarLeft />
+                        <UserAdminHeader />
+                    </div>
+                }
+                {printScreen &&
+                    window.print()
+                }
 
                 {loading &&
                     HELPER_FUNCTIONS.backgroundLoading()
                 }
-                {console.log(calibration)}
+                
                 {calibration &&
                     <div className="section-content">
                             <section className="sectionTitles">
@@ -111,6 +121,43 @@ export default class componentName extends Component {
                                             <h4>{i + 1}. {v.name} {v.lastName}</h4> 
                                             <p>Legajo: {v.legajo}</p>
                                             <p>ID / DNI: {v.id}</p>
+                                        </article>
+                                    )
+                                })
+
+                                }
+                            </section>
+                            <section className="sectionTitles resultados">
+                                <h2>Resultados</h2>
+                                <hr />
+                                {calibration?.calibration.comparacion.map((v, i) => {
+                                    return (
+                                        <article key={v.question} className="question">
+                                            <h4>{i + 1}. {v.questionName}</h4> 
+                                            <span>
+                                                <h6>Resultados</h6>
+                                                <table>
+                                                    <thead>
+                                                        <th>Respuesta</th>
+                                                        <th>Cant. Respuestas</th>
+                                                        <th>Resultado</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        {v.result.map(result => {
+                                                            return (
+                                                                <tr key={result.respuesta}>
+                                                                    <td>{result.respuesta}</td>        
+                                                                    <td>{result.cant}</td>        
+                                                                    <td>{result.porcentaje}</td>        
+                                                                </tr>
+                                                            )
+                                                        })
+
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </span>
+
                                         </article>
                                     )
                                 })

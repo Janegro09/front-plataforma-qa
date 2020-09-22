@@ -117,7 +117,7 @@ export default class TiposDeCalibraciones extends Component {
                     <ModalNuevoTipoCalibracion />
                 }
 
-                <div className="container">
+                <div className="section-content">
                     <h4>Calibraciones</h4>
                     <button
                         className="btn btn-primary"

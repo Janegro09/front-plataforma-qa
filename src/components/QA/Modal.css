@@ -96,3 +96,32 @@ small {
 .modal section article input, .modal section article select {
     /* width: 50%; */
 }
+
+.calibradores {
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row wrap;
+    padding: 5px;
+}
+
+.calibradores span {
+    padding: 10px 20px;
+    margin: 10px 5px 0 0;
+    position: relative;
+    border-radius: 5px;
+    background: #515961;
+    width: 300px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: white;
+}
+
+.calibradores span button {
+    position: absolute;
+    top: 11px;
+    right: 7px;
+    color: white;
+    font-size: 10px;
+
+}

@@ -10,18 +10,20 @@ export default class ModalNuevoMonitoreo extends Component {
     state = {
         loading: false,
         users: null,
-        usuariosConFiltro: null,
+        usuariosFiltradosExperto: null,
+        usuariosFiltradosCalibradores: null,
         encontrado: null,
-        usuarioSeleccionado: null,
-        programs: [],
-        file: null,
+        usuarioSeleccionadoExperto: null,
+        usuarioSeleccionadoCalibradores: [],
+        calibrationTypes: [],
         dataToSend: {
-            userId: "",
-            transactionDate: "",
             caseId: "",
-            programId: ""
+            calibrationType: "",
+            calibrators: [],
+            expert: ""
         },
-        buscadorUsuario: ""
+        buscadorUsuario: "",
+        buscadorUsuarioCalibradores: ""
     }
 
     cerrarModal = () => {
@@ -40,129 +42,137 @@ export default class ModalNuevoMonitoreo extends Component {
         let encontrado = users.filter(user => user.id.trim().includes(buscado) || `${user.name} ${user.lastName}`.trim().includes(buscado)
         )
 
-        this.setState({ usuariosConFiltro: encontrado, buscadorUsuario: buscado });
+        this.setState({ usuariosFiltradosExperto: encontrado, buscadorUsuario: buscado });
 
     }
+    buscarUsuarioColaborador = (e) => {
+        let buscado = e.target.value.trim().toLowerCase();
+        const { users } = this.state;
 
-    uploadFile = (e) => {
-        e.preventDefault();
+        let encontrado = users.filter(user => user.id.trim().includes(buscado) || `${user.name} ${user.lastName}`.trim().includes(buscado)
+        )
 
-        if(e.target.files.length > 0) {
-            this.setState({ 
-                file: e.target.files[0]
-            })
+        this.setState({ usuariosFiltradosCalibradores: encontrado, buscadorUsuarioCalibradores: buscado });
 
-        }
     }
 
     agregarUsuario = (user) => {
-        let { dataToSend, buscadorUsuario, usuarioSeleccionado } = this.state;
+        let { dataToSend, buscadorUsuario, usuarioSeleccionadoExperto } = this.state;
 
         buscadorUsuario = "";
-        usuarioSeleccionado = user;
-        dataToSend.userId = user.id;
-        this.setState({ dataToSend, buscadorUsuario, usuarioSeleccionado });
+        usuarioSeleccionadoExperto = user;
+        dataToSend.expert = user.id;
+        this.setState({ dataToSend, buscadorUsuario, usuarioSeleccionadoExperto });
+    }
+
+    agregarUsuarioColaborador = (user) => {
+        let { buscadorUsuarioCalibradores, usuarioSeleccionadoCalibradores } = this.state;
+
+        buscadorUsuarioCalibradores = "";
+        if(!usuarioSeleccionadoCalibradores.includes(user.id)){
+
+            usuarioSeleccionadoCalibradores.push(user)
+        }
+        this.setState({ buscadorUsuarioCalibradores, usuarioSeleccionadoCalibradores });
     }
 
     marcarFila = (user) => {
         return {
             cursor: "pointer",
-            background: user.id === this.state.dataToSend.userId ? "green" : ""
+            background: user.id === this.state.dataToSend.expert ? "green" : ""
         }
     }
 
     componentDidMount() {
-        // this.setState({
-        //     loading: true
-        // })
+        this.setState({
+            loading: true
+        })
 
-        // const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-        // let token = tokenUser
-        // let bearer = `Bearer ${token}`
-        // axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let token = tokenUser
+        let bearer = `Bearer ${token}`
+        axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
+            let users = response.data.Data;
+            let usuariosFiltradosExperto = response.data.Data;
+            
+            token = response.data.loggedUser.token
+            bearer = `Bearer ${token}`
 
-        //     token = response.data.loggedUser.token;
-        //     bearer = `Bearer ${token}`
-        //     let users = response.data.Data;
-        //     let usuariosConFiltro = response.data.Data;
-
-        //     axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
-        //         sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-
-        //         let p = response.data.Data || false;
-        //         let programs;
-        //         if(p) {
-        //             programs = p.filter(elem => elem.section === 'M');
-        //         }
-
-        //         this.setState({
-        //             programs,
-        //             users,
-        //             usuariosConFiltro,
-        //             loading: false
-        //         })
-        //     })
+            axios.get(Global.calibrationTypes,{ headers: { Authorization: bearer } }).then(response => {
+                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                
+                let calibrationTypes = []
+                if(response.data.Data) {
+                    calibrationTypes = response.data.Data;
+                }
+                this.setState({
+                    calibrationTypes,
+                    users,
+                    usuariosFiltradosExperto,
+                    loading: false
+                })
+            })
 
 
-        // })
-        //     .catch((e) => {
-        //         // Si hay algún error en el request lo deslogueamos
-        //         if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-        //             HELPER_FUNCTIONS.logout()
-        //         } else {
-        //             sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-        //             this.setState({
-        //                 loading: false
-        //             })
-        //             swal("Error!", `${e.response.data.Message}`, "error");
-        //         }
-        //         console.log("Error: ", e)
-        //     });
+        })
+            .catch((e) => {
+                // Si hay algún error en el request lo deslogueamos
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    this.setState({
+                        loading: false
+                    })
+                    swal("Error!", `${e.response.data.Message}`, "error");
+                }
+                console.log("Error: ", e)
+            });
     }
-    changeMonitoringValues = (e) => {
+    changeCalibrationsValues = (e) => {
         e.preventDefault();
         const { value, id } = e.target;
         let { dataToSend } = this.state;
         if(id) {
-
             dataToSend[id] = value;
-
         }
 
         this.setState({ dataToSend });
 
     }
 
-    crearMonitoreo = (e) => {
+    crearCalibracion = (e) => {
         e.preventDefault();
-        let { dataToSend, file } = this.state;
-        this.setState({ loading: true })
-        const formData = new FormData();
-        // Verificamos los datos requeridos
-        for(let d in dataToSend) {
-            if(!dataToSend[d]) {
-                swal('Error', "Falta el dato en: " + d, 'error');
-                return;
+        let { dataToSend, usuarioSeleccionadoCalibradores } = this.state;
+
+        for(let u of usuarioSeleccionadoCalibradores) {
+            if(!dataToSend.calibrators.includes(u.id)) {
+                dataToSend.calibrators.push(u.id);
             }
-            formData.append(d, dataToSend[d]);
         }
 
-        if(file) {
-            formData.append('file', file);
+        // Chequeamos los datos ingresados
+        for(let data in dataToSend) {
+            if(!dataToSend[data]) {
+                return false;
+            }
         }
+
+        this.setState({ loading: true })
 
         let token = JSON.parse(sessionStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
 
-        axios.post(Global.monitoreos + '/new', formData, config)
+        axios.post(Global.calibration + '/new', dataToSend, config)
             .then(response => {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-                this.setState({ loading: true })
+                this.setState({ loading: false })
                 if (response.data.Success) {
-                    swal("Felicidades!", "Se ha creado el monitoreo correctamente", "success");
-                    window.location.reload(window.location.href);
+                    swal("Felicidades!", "Se ha creado la sesion de calibracion correctamente", "success").then(() => {
+                        window.location.reload(window.location.href);
+                    })
                 }
 
             })
@@ -171,18 +181,34 @@ export default class ModalNuevoMonitoreo extends Component {
                     HELPER_FUNCTIONS.logout()
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Atención", "No se ha agregado el monitoreo", "info");
+                    swal("Atención", "No se ha agregado la calibracion", "info");
                 }
                 console.log("Error: ", e)
             })
 
-        console.log(formData)
-
     }
+
+    deleteCalibrator = (e) => {
+        const { id } = e.target.dataset;
+        let { usuarioSeleccionadoCalibradores } = this.state;
+
+        if(id) {
+            if(usuarioSeleccionadoCalibradores.length > 1) {
+                usuarioSeleccionadoCalibradores = usuarioSeleccionadoCalibradores.filter(elem => elem.id !== id);
+            } else {
+                usuarioSeleccionadoCalibradores = [];
+            }
+
+
+        }
+
+        this.setState({ usuarioSeleccionadoCalibradores })
+    }
+
 
     render() {
 
-        const { loading, usuariosConFiltro, dataToSend, usuarioSeleccionado, programs, buscadorUsuario } = this.state;
+        const {calibrationTypes, usuariosFiltradosCalibradores ,usuarioSeleccionadoCalibradores, buscadorUsuarioCalibradores, buscadorUsuario, usuarioSeleccionadoExperto,  loading, usuariosFiltradosExperto, dataToSend, usuarioSeleccionado } = this.state;
 
         return (
             <div className="modal" id="modal-casero">
@@ -199,7 +225,7 @@ export default class ModalNuevoMonitoreo extends Component {
                         }>x</button>
                     </div>
 
-                    <section className="userId">
+                    <section className="expert">
                         <h6>Usuario monitoreado</h6>
                         <br />
                         <input
@@ -209,13 +235,13 @@ export default class ModalNuevoMonitoreo extends Component {
                             value={buscadorUsuario}
                             className="form-control"
                         /> 
-                        {!buscadorUsuario && usuarioSeleccionado &&
+                        {!buscadorUsuario && usuarioSeleccionadoExperto &&
                             <small>
-                                Usuario Seleccionado: <strong>{usuarioSeleccionado.name} {usuarioSeleccionado.lastName} - {usuarioSeleccionado.id}</strong> 
+                                Usuario Seleccionado: <strong>{usuarioSeleccionadoExperto.name} {usuarioSeleccionadoExperto.lastName} - {usuarioSeleccionadoExperto.id}</strong> 
                             </small>
                         }
 
-                        {usuariosConFiltro && buscadorUsuario &&
+                        {usuariosFiltradosExperto && buscadorUsuario &&
                             <table>
                                 <thead>
                                     <tr>
@@ -223,11 +249,60 @@ export default class ModalNuevoMonitoreo extends Component {
                                         <th>Nombre y apellido</th>
                                     </tr>
                                 </thead>
-                                {usuariosConFiltro?.slice(0, 10).map(user => {
+                                {usuariosFiltradosExperto?.slice(0, 10).map(user => {
                                     return (
                                         <tbody key={user.id}
                                             style={this.marcarFila(user)}
                                             onClick={(e) => { e.preventDefault(); this.agregarUsuario(user); }}
+                                        >
+                                            <tr>
+                                                <td>{user.id}</td>
+                                                <td>{user.name} {user.lastName}</td>
+                                            </tr>
+                                        </tbody>
+                                    )
+                                })}
+                            </table>
+                        }
+                    </section>
+
+                    <section className="expert">
+                        <h6>Calibradores</h6>
+                        <br />
+                        <input
+                            type="text"
+                            placeholder="Buscar usuario"
+                            onChange={this.buscarUsuarioColaborador}
+                            value={buscadorUsuarioCalibradores}
+                            className="form-control"
+                        /> 
+                        {!buscadorUsuarioCalibradores && usuarioSeleccionadoCalibradores.length > 0 &&
+                            <div className="calibradores">
+                                {usuarioSeleccionadoCalibradores.map(v => {
+                                    return (
+                                        <span key={v.id}>
+                                            {v.legajo || v.id} - {v.name} {v.lastName}
+                                            <button type="button" onClick={this.deleteCalibrator} data-id={v.id}>X</button>
+                                        </span>
+                                    )
+                                })
+
+                                }
+                            </div>
+                        }
+
+                        {usuariosFiltradosCalibradores && buscadorUsuarioCalibradores &&
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>DNI</th>
+                                        <th>Nombre y apellido</th>
+                                    </tr>
+                                </thead>
+                                {usuariosFiltradosCalibradores?.slice(0, 10).map(user => {
+                                    return (
+                                        <tbody key={user.id}
+                                            onClick={(e) => { e.preventDefault(); this.agregarUsuarioColaborador(user); }}
                                         >
                                             <tr>
                                                 <td>{user.id}</td>
@@ -245,41 +320,30 @@ export default class ModalNuevoMonitoreo extends Component {
                     <section className="transactionData">
                         <h6>Datos de la transacción</h6>
                         <br />
-
-                        {/* Transaction Date */}
-                        <article>
-                            <label htmlFor="transactionDate">Fecha de transacción</label>
-                            <input className="form-control" type="date" id="transactionDate" required onChange={this.changeMonitoringValues} value={dataToSend.transactionDate}/>
-                        </article>
-
                         {/* Case ID */}
                         <article>
                             <label htmlFor="caseId">ID del caso</label>
-                            <input className="form-control" type="text" id="caseId" required onChange={this.changeMonitoringValues} value={dataToSend.caseId}/>
+                            <input className="form-control" type="text" id="caseId" required onChange={this.changeCalibrationsValues} value={dataToSend.caseId}/>
                         </article>
 
                         <article>
-                            <label htmlFor="programId">Programa</label>
-                            <select value={dataToSend.programId} onChange={this.changeMonitoringValues} id="programId">
+                            <label htmlFor="calibrationType">Tipo de calibracion</label>
+                            <select value={dataToSend.calibrationType} onChange={this.changeCalibrationsValues} id="calibrationType">
                                 <option>Selecciona...</option>
-                                {programs.map(v => {
-                                    return <option key={v.id} value={v.id}>{v.name}</option>
-                                })
+                                {calibrationTypes &&
+                                    calibrationTypes.map(v => {
+                                    return <option key={v._id} value={v.name}>{v.name}</option>
+                                    })
                                 }
+                                
                             </select>
                         </article>
-
-                        <article>
-                            <label htmlFor="file">Archivo</label>
-                            <input type="file" id="file" onChange={this.uploadFile}/>
-                        </article>
-
                     </section>
 
                     <hr />
 
                     <section>
-                        <button type="button" className="btn" onClick={this.crearMonitoreo}>Enviar</button>
+                        <button type="button" className="btn" onClick={this.crearCalibracion}>Enviar</button>
                     </section>
                     
 

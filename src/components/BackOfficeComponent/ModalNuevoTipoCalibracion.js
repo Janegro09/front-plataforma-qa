@@ -20,9 +20,6 @@ export default class ModalNuevoTipoCalibracion extends Component {
     handleSubmit = () => {
         let { name, description } = this.state;
 
-        console.log(name);
-        console.log(description);
-
         let token = JSON.parse(sessionStorage.getItem('token'));
         const config = {
             headers: { Authorization: `Bearer ${token}` }

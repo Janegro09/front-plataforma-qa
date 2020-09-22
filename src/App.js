@@ -43,6 +43,7 @@ import Monitoreo from './components/QA/Monitoreo';
 import MonitoreoEditar from './components/QA/MonitoreoEditar';
 import Calibraciones from './components/QA/Calibraciones';
 import TiposDeCalibraciones from './components/BackOfficeComponent/TiposDeCalibraciones';
+import CalibracionesView from './components/QA/CalibracionesView';
 
 require('dotenv').config(); // Utilizamos este metodo para utilizar variables de entorno desde el archivo .env
 
@@ -95,7 +96,8 @@ function App() {
         <Route path="/users" component={UsersComponent} />
         <Route exact path="/monitoreo" component={Monitoreo} />
         <Route exact path="/monitoreo/:id" component={MonitoreoEditar} />
-        <Route path="/calibraciones" component={Calibraciones} />
+        <Route exact path="/calibraciones" component={Calibraciones} />
+        <Route exact path="/calibraciones/:id" component={CalibracionesView} />
       </Switch>
     </BrowserRouter>
   );

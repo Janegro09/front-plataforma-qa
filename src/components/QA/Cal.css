@@ -1,0 +1,16 @@
+section.sectionTitles {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.sectionTitles p{
+    margin: 0
+}
+
+section article {
+    height: unset;
+    min-height: unset;
+    width: 300px;
+    text-align: center;
+    padding: 20px;
+}

@@ -8,6 +8,7 @@ import swal from 'sweetalert';
 import './Mon.css';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
+import '../BackOfficeComponent/AdministracionFormulariosComponent/formularios.css';
 
 
 export default class componentName extends Component {
@@ -16,10 +17,13 @@ export default class componentName extends Component {
         loading: false,
         id: null,
         redirect: null,
+        monitoringDate: false,
+        transactionDate: false,
         monitoreo: false,
         disputarArea: false,
         invalidarArea: false,
         buscadorUsuario: false,
+        responses: [],
         usuarioSeleccionado: false,
         usuariosConFiltro: [],
         users: [],
@@ -31,13 +35,29 @@ export default class componentName extends Component {
     }
 
     setDefaultData = () => {
-        let { dataToSend, monitoreo, usuarioSeleccionado } = this.state;
+        let { invalidarArea, disputarArea, dataToSend, monitoreo, usuarioSeleccionado } = this.state;
 
-        const { userId, improvment, disputado, invalidated, evaluated, status, transactionDate, monitoringDate, comments, devolucion } = monitoreo;
+        const { responses, userId, improvment, disputado, invalidated, evaluated, status, transactionDate, monitoringDate, comments, devolucion } = monitoreo;
 
         usuarioSeleccionado = {
             ...monitoreo.userInfo
         }
+
+        let rsp = [];
+
+        for(let r of responses) {
+            for(let qst of r.customFields) {
+                let td = {
+                    section: r.id,
+                    question: qst.questionId,
+                    response: qst.response
+                }
+
+                rsp.push(td);
+            }
+        }
+        
+        monitoreo.modifiedBy = monitoreo.modifiedBy.sort((a,b) => Date.parse(b.modifiedAt) - Date.parse(a.modifiedAt));
 
         dataToSend = {
             userId,
@@ -54,7 +74,12 @@ export default class componentName extends Component {
             pasosMejora: devolucion?.pasosMejora
         }
 
-        this.setState({ dataToSend, usuarioSeleccionado });
+        disputarArea    = !!dataToSend.disputado;
+        invalidarArea   = !!dataToSend.invalidated
+
+        console.log(dataToSend);
+
+        this.setState({ dataToSend, usuarioSeleccionado, responses: rsp, disputarArea, invalidarArea, monitoreo });
     }
 
     marcarFila = (user) => {
@@ -112,7 +137,6 @@ export default class componentName extends Component {
     }
 
     buscarUsuarios = () => {
-        console.log("buscamos usuarios");
         let { users } = this.state;
 
         if(users.length === 0) {
@@ -165,24 +189,160 @@ export default class componentName extends Component {
         this.setState({ usuariosConFiltro: encontrado, buscadorUsuario: buscado });
     }
 
-    uploadFile = () => {
+    modificarFormulario = (e) => {
+        e.preventDefault();
 
+        let { dataToSend, responses, id } = this.state;
+
+        dataToSend.responses = responses;
+
+
+        // Quitamos las fechas si no se modifican sino generan error
+        if(!this.state.monitoringDate) {
+            dataToSend.monitoringDate = "";
+        }
+
+        if(!this.state.transactionDate) {
+            dataToSend.transactionDate = "";
+        }
+
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
+        axios.put(Global.monitoreos + '/' + id, dataToSend, config)
+            .then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                
+                this.setState({ loading: false })
+                swal('Excelente', 'Archivo modificado correctamente', 'success').then(() => {
+                    
+                    this.componentDidMount();
+
+                })
+
+
+            })
+            .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Atención", "No se ha agregado el grupo", "info");
+                }
+                console.log("Error: ", e)
+            })
+
+
+
+    }
+
+    uploadFile = (e) => {
+        const { files } = e.target;
+        const { id } = this.state;
+        this.setState({ loading: true });
+        
+        let file = files.length > 0 ? files[0] : false;
+
+        if(!file) return false;
+
+        let formData = new FormData();
+
+        formData.append('file', file);
+
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
+        axios.put(Global.monitoreos + '/' + id + '/file', formData, config)
+            .then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                
+                this.setState({ loading: false })
+                swal('Excelente', 'Archivo subido correctamente', 'success').then(() => {
+                    
+                    this.componentDidMount();
+
+                })
+
+
+            })
+            .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Atención", "No se ha agregado el grupo", "info");
+                }
+                console.log("Error: ", e)
+            })
     }
 
 
     downloadFile = (e) => {
+        e.preventDefault();
 
+        const { id } = e.target.dataset
+        let win = window.open(Global.download + '/' + id + '?urltemp=false', '_blank');
+        win.focus();
     }
 
     deleteFile = (e) => {
+        e.preventDefault();
+        const { id } = this.state;
+        const fileId = e.target.dataset.id || false;
 
+        if(!fileId) return false;
+
+
+        swal({
+            title: "Estas seguro?",
+            text: "Estas por eliminar un archivo, no podrás recuperarlo",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    this.setState({ loading: true });
+
+                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    const config = {
+                        headers: { Authorization: `Bearer ${token}` }
+                    };
+                    axios.delete(Global.monitoreos + '/' + id + '/' + fileId, config)
+                    .then(response => {
+                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                        this.setState({ loading: false })
+                        swal('Excelente', 'Archivo eliminado correctamente', 'success').then(() => {
+                            
+                            this.componentDidMount();
+        
+                        })
+        
+                    })
+                    .catch(e => {
+                        if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                            HELPER_FUNCTIONS.logout()
+                        } else {
+                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                            swal("Atención", "No se ha agregado el grupo", "info");
+                        }
+                    });
+
+                } else {
+                    swal("No se elimino nada");
+                }
+            });
     }
 
     changeSelection = (e) => {
         e.preventDefault();
-        const { name, value } = e.target;
+        const { value } = e.target;
         let { responses } = this.state;
-        const { question, section, parent } = e.target.dataset;
+        const { question, section, parent, id } = e.target.dataset;
 
         const changeValue = ({ id, value, parent }, object) => {
             // Buscar en object el padre y le agregamos un child
@@ -199,46 +359,46 @@ export default class componentName extends Component {
             }
         }
 
-        if (!value && value !== '') return true;
-        if(responses) {
-            let respIndex = responses.findIndex(elem => elem.section === section && elem.question === question);
-            let q = false;
-            if (respIndex !== -1) {
-                q = responses[respIndex];
-            }
-    
-            if (!q) {
-                // Creamos la respuesta
-                q = {
-                    section,
-                    question,
-                    response: {}
-                }
-            }
-    
-            if (!parent) {
-                // Entonces significa que estamos respondiendo una pregunta padre
-                q.response = {
-                    data: value,
-                    id: name
-                }
-            } else if (respIndex !== -1) {
-                // Entonces estamos contestando una pregunta hija
-    
-                let c = changeValue({ id: name, value, parent }, q.response);
-    
-    
-            } else return false;
-    
-    
-            if (respIndex !== -1) {
-                responses[respIndex] = q;
-            } else {
-                responses.push(q);
-            }
-            this.setState({ responses });
 
+        if (!value && value !== '') return true;
+        let respIndex = responses.findIndex(elem => elem.section === section && elem.question === question);
+        let q = false;
+        if (respIndex !== -1) {
+            q = responses[respIndex];
         }
+
+
+        if (!q) {
+            // Creamos la respuesta
+            q = {
+                section,
+                question,
+                response: {}
+            }
+        }
+
+        if (!parent) {
+            // Entonces significa que estamos respondiendo una pregunta padre
+            q.response = {
+                data: value,
+                id
+            }
+        } else if (respIndex !== -1) {
+            // Entonces estamos contestando una pregunta hija
+
+            let c = changeValue({ id, value, parent }, q.response);
+
+
+        } else return false;
+
+
+        if (respIndex !== -1) {
+            responses[respIndex] = q;
+        } else {
+            responses.push(q);
+        }
+
+        this.setState({ responses });
 
     }
 
@@ -275,7 +435,6 @@ export default class componentName extends Component {
         return (
             <article key={index}>
                 <p>{value.question || value.name}</p>
-
                 {value.type === 'select' &&
 
                     <>
@@ -284,7 +443,8 @@ export default class componentName extends Component {
                             data-parent={value.parentId}
                             data-section={sectionId}
                             value={defaultValue}
-                            name={value.id}
+                            data-id={value.id}
+                            name={sectionId+value.questionId+value.id}
                             onChange={this.changeSelection}
                         >
                             <option>Selecciona...</option>
@@ -305,7 +465,7 @@ export default class componentName extends Component {
                             childs.map((cf, ind) => {
 
                                 return (
-                                    <div className={cf.parentValue === defaultValue ? "conditionalCF active" : "conditionalCF"}>
+                                    <div key={ind} className={cf.parentValue === defaultValue ? "conditionalCF active" : "conditionalCF"}>
                                         {
                                             this.getCustomField({
                                                 ...cf,
@@ -330,7 +490,8 @@ export default class componentName extends Component {
                                 data-question={value.questionId}
                                 data-parent={value.parentId}
                                 onBlur={this.changeSelection}
-                                name={value.id}
+                                data-id={value.id}
+                                name={sectionId+value.questionId+value.id}
                                 defaultValue={defaultValue}
                             />
                             <label>{value.name}</label>
@@ -347,7 +508,8 @@ export default class componentName extends Component {
                                 data-question={value.questionId}
                                 data-parent={value.parentId}
                                 onBlur={this.changeSelection}
-                                name={value.id}
+                                data-id={value.id}
+                                name={sectionId+value.questionId+value.id}
                                 defaultValue={defaultValue}
                             >
 
@@ -357,18 +519,18 @@ export default class componentName extends Component {
                         </span>
                     </>
                 }
-
                 {value.type === 'radio' &&
                     <>
                         {value.values.map((cf, ind) => {
                             return (
-                                <span className="active">
+                                <span className="active" key={sectionId+value.questionId+value.id}>
 
                                     <input
                                         type="radio"
                                         checked={cf.value === defaultValue}
                                         value={cf.value}
-                                        name={value.id}
+                                        name={sectionId+value.questionId+value.id}
+                                        data-id={value.id}
                                         data-section={sectionId}
                                         data-question={value.questionId}
                                         data-parent={value.parentId}
@@ -400,13 +562,14 @@ export default class componentName extends Component {
                     <>
                         {value.values.map((cf, ind) => {
                             return (
-                                <span className="active">
+                                <span className="active" key={sectionId+value.questionId+value.id}>
 
                                     <input
                                         type="checkbox"
                                         checked={cf.value === defaultValue}
                                         value={cf.value}
-                                        name={value.id}
+                                        name={sectionId+value.questionId+value.id}
+                                        data-id={value.id}
                                         data-section={sectionId}
                                         data-question={value.questionId}
                                         data-parent={value.parentId}
@@ -437,14 +600,20 @@ export default class componentName extends Component {
     }
 
     handleChange = (e) => {
-        let { dataToSend } = this.state;
+        let { dataToSend,transactionDate, monitoringDate } = this.state;
         const { id, value } = e.target;
 
+        if(id === 'transactionDate') {
+            transactionDate = true;
+        } else if(id === 'monitoringDate') {
+            monitoringDate = true;
+        }
         if(id) {
+            
             dataToSend[id] = value;
         }
 
-        this.setState({ dataToSend });
+        this.setState({ dataToSend, transactionDate, monitoringDate });
 
     }
 
@@ -562,7 +731,7 @@ export default class componentName extends Component {
 
                                 <span>
                                     <label>Improvment</label>
-                                    <select value={dataToSend.improvment} onChange={this.handleChange} >
+                                    <select value={dataToSend.improvment} id="improvment" onChange={this.handleChange} >
                                         <option value="+">Mejora</option>
                                         <option value="+-">Mantiene</option>
                                         <option value="-">Empeora</option>
@@ -571,7 +740,7 @@ export default class componentName extends Component {
 
                                 <span>
                                     <label>Estado</label>
-                                    <select value={dataToSend.status} onChange={this.handleChange} >
+                                    <select value={dataToSend.status} id="status" onChange={this.handleChange} >
                                         <option>Selecciona...</option>
                                         <option value="run">En proceso</option>
                                         <option value="finished">Finalizado</option>
@@ -593,7 +762,7 @@ export default class componentName extends Component {
                                                 <span key={audio.fileId}>
                                                     <p>{audio.fileId}</p>
                                                     <button data-id={audio.fileId} onClick={this.downloadFile}>Descargar</button>
-                                                    <button data-id={audio.fileId} onClick={this.deleteFile}>Eliminar</button>
+                                                    <button data-id={audio._id} onClick={this.deleteFile}>Eliminar</button>
                                                 </span>
                                             )
                                         })
@@ -605,7 +774,7 @@ export default class componentName extends Component {
                                 <h6>Disputar</h6>
                                 <input data-id="disputar" checked={disputarArea}  onClick={this.activeTextAreas} type="checkbox"/>
                                 {disputarArea &&
-                                    <textarea  id="disputar" onChange={this.handleChange} ></textarea>
+                                    <textarea  id="disputar" onChange={this.handleChange} value={dataToSend.disputado}></textarea>
                                 }
                             </article>
 
@@ -614,7 +783,7 @@ export default class componentName extends Component {
                                 <h6>Invalidar</h6>
                                 <input data-id="invalidated" checked={invalidarArea} onClick={this.activeTextAreas} type="checkbox"/>
                                 {invalidarArea &&
-                                    <textarea id="invalidated" onChange={this.handleChange} ></textarea>
+                                    <textarea id="invalidated" onChange={this.handleChange} value={dataToSend.invalidated}></textarea>
                                 }
                             </article>
 
@@ -624,26 +793,27 @@ export default class componentName extends Component {
 
                                 <span>
                                     <label>Principales comentarios de devolución</label>
-                                    <textarea id="comentariosDevolucion" onChange={this.handleChange}></textarea>
+                                    <textarea id="comentariosDevolucion" onChange={this.handleChange} value={dataToSend.comentariosDevolucion}></textarea>
                                 </span>
 
                                 <span>
                                     <label>Fortalezas del usuario</label>
-                                    <textarea id="fortalezasUsuario" onChange={this.handleChange}></textarea>
+                                    <textarea id="fortalezasUsuario" onChange={this.handleChange} value={dataToSend.fortalezasUsuario}></textarea>
                                 </span>
 
                                 <span>
                                     <label>Pasos de mejora</label>
-                                    <textarea id="pasosMejora" onChange={this.handleChange}></textarea>
+                                    <textarea id="pasosMejora" onChange={this.handleChange}  value={dataToSend.pasosMejora}></textarea>
                                 </span>
                             </article>
 
                         </section>
 
+                        <div className="formsOfMonitorings">
                         {monitoreo.responses &&
                             monitoreo.responses.map((v, i) => {
                                 return (
-                                    <article key={i}>
+                                    <section key={i}>
                                         <h6>{v.name}</h6>
                                         {v.customFields &&
                                             v.customFields.map((val, index) => {
@@ -651,12 +821,33 @@ export default class componentName extends Component {
                                                 return this.getCustomField(val, v.id);
                                             })
                                         }
-                                    </article>
+                                    </section>
                                 )
                             })
                         }
 
-                        <button type="button" className="btn">Enviar</button>
+                        </div>
+
+                        <button type="button" className="btn" onClick={this.modificarFormulario}>Enviar</button>
+
+                        <hr/>
+                        <hr/>
+                        <hr/>
+                        <hr/>
+
+                        <section className="logEdicion">
+                            <h6>Editado por: </h6>
+                            <article>
+                                {monitoreo.modifiedBy &&
+                                    monitoreo.modifiedBy.map(v => {
+                                        return (<span key={v._id}>
+                                            {v.userId} - {v.rol} - {moment(v.modifiedAt).format("DD/MM/YYYY HH:mm")}
+                                        </span>)
+                                    })
+                                
+                                }
+                            </article>
+                        </section>
                     </>
                     }
                 </div>

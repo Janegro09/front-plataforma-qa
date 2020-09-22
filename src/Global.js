@@ -32,6 +32,8 @@ let Global = {
     newFormModel: `${BASE}/forms/models`,
     getForms: `${BASE}/forms`,
     monitoreos: `${BASE}/qa/monitoring`,
+    calibrationTypes: `${BASE}/qa/calibration/types`,
+    calibration: `${BASE}/qa/calibration`
 }
 
 export default Global;

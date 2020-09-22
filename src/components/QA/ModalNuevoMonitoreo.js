@@ -200,7 +200,8 @@ export default class ModalNuevoMonitoreo extends Component {
                     </div>
 
                     <section className="userId">
-                        <h5>Usuario monitoreado</h5>
+                        <h6>Usuario monitoreado</h6>
+                        <br />
                         <input
                             type="text"
                             placeholder="Buscar usuario"
@@ -242,18 +243,19 @@ export default class ModalNuevoMonitoreo extends Component {
                     <hr />
 
                     <section className="transactionData">
-                        <h5>Datos de la transacción</h5>
+                        <h6>Datos de la transacción</h6>
+                        <br />
 
                         {/* Transaction Date */}
                         <article>
                             <label htmlFor="transactionDate">Fecha de transacción</label>
-                            <input type="date" id="transactionDate" required onChange={this.changeMonitoringValues} value={dataToSend.transactionDate}/>
+                            <input className="form-control" type="date" id="transactionDate" required onChange={this.changeMonitoringValues} value={dataToSend.transactionDate}/>
                         </article>
 
                         {/* Case ID */}
                         <article>
                             <label htmlFor="caseId">ID del caso</label>
-                            <input type="text" id="caseId" required onChange={this.changeMonitoringValues} value={dataToSend.caseId}/>
+                            <input className="form-control" type="text" id="caseId" required onChange={this.changeMonitoringValues} value={dataToSend.caseId}/>
                         </article>
 
                         <article>

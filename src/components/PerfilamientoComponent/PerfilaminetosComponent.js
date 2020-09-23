@@ -298,6 +298,7 @@ export default class PerfilaminetosComponent extends Component {
             }
             let cuartilesWithUsers = [];
 
+            if(!oldGroup.cuartiles || oldGroup.cuartiles.length === 0) continue;
             for (let crt of oldGroup.cuartiles) {
                 let tempData = {
                     name: crt.name,
@@ -372,6 +373,7 @@ export default class PerfilaminetosComponent extends Component {
             const { target } = e;
 
             this.drag_el.style.display = "none";
+
             this.over = target;
             if (target.parentNode.className === 'grupos') {
                 target.parentNode.insertBefore(placeholder, target);
@@ -390,13 +392,16 @@ export default class PerfilaminetosComponent extends Component {
 
                 const from = Number(this.drag_el.id);
                 let to = Number(this.over.id);
-                if (from < to) to--;
 
                 let toIndex = grupos.findIndex(elem => elem.id === to);
                 let fromIndex = grupos.findIndex(elem => elem.id === from);
 
-                grupos.splice(toIndex, 0, grupos.splice(fromIndex, 1)[0]);
-                grupos = grupos.filter(e => e !== undefined);
+                if(toIndex !== -1) {
+                    let MoveGroup = grupos.splice(fromIndex,1)[0];
+    
+                    grupos.splice(toIndex, 0, MoveGroup);
+                    grupos = grupos.filter(e => e !== undefined);
+                }
 
                 this.setState({
                     grupos
@@ -451,47 +456,45 @@ export default class PerfilaminetosComponent extends Component {
         // debugger;
 
 
-        swal(`¿Esta seguro que desea modificar el perfilamiento?: `)
-            .then(() => {
-                let token = JSON.parse(sessionStorage.getItem('token'))
-                const config = {
-                    headers: { Authorization: `Bearer ${token}` }
-                };
+
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
 
                 // PARAMETROS REQUERIDOS, SOLO PASSWORD
-                const bodyParameters = dataSend
-                this.setState({ loading: true });
+        const bodyParameters = dataSend
+        this.setState({ loading: true });
 
-                axios.post(Global.getAllFiles + '/' + id + '/perfilamiento', bodyParameters, config)
-                    .then(response => {
-                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-                        if (response.data.Success) {
-                            swal("Felicidades!", "Perfilamiento modificado!", "success").then(() => {
-                                this.setState({
-                                    redirect: true,
-                                    loading: false
-                                })
-                            })
-                        } else {
-                            swal("Error!", "Hubo un error al modificar el perfilamiento!", "error").then(() => {
-                                this.setState({
-                                    redirect: true,
-                                    loading: false
-                                })
-                            })
-                        }
+        axios.post(Global.getAllFiles + '/' + id + '/perfilamiento', bodyParameters, config)
+            .then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                if (response.data.Success) {
+                    swal("Felicidades!", "Perfilamiento modificado!", "success").then(() => {
+                        this.setState({
+                            redirect: true,
+                            loading: false
+                        })
+                    })
+                } else {
+                    swal("Error!", "Hubo un error al modificar el perfilamiento!", "error").then(() => {
+                        this.setState({
+                            redirect: true,
+                            loading: false
+                        })
+                    })
+                }
 
-                    })
-                    .catch(e => {
-                        if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                            HELPER_FUNCTIONS.logout()
-                        } else {
-                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                            swal("Atención", "No has cambiado nada", "info");
-                        }
-                        console.log("Error: ", e)
-                    })
-            });
+            })
+            .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Atención", "No has cambiado nada", "info");
+                }
+                console.log("Error: ", e)
+            })
     }
 
     guardarModelo = async () => {

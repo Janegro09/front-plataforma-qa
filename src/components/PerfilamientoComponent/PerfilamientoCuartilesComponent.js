@@ -455,7 +455,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                 <td>
                                                     <input className="form-control"
                                                         data-id={columna.columnName}
-                                                        name="VMin"
+                                                        name="VMax"
                                                         type="text"
                                                         placeholder="VMax"
                                                         onChange={this.changeValues}

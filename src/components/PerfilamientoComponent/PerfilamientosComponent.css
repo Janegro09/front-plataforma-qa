@@ -17,6 +17,7 @@
 
 .grupos {}
 
+
 .grupoPerfilamiento {
     padding: 10px;
     background-color: #ffffff3d;
@@ -148,12 +149,15 @@
 }
 
 .placeholder {
-    background: rgb(255, 240, 120);
+    background: #03a9f4;
+    height: 180px;
 }
+
 
 .placeholder::before {
     content: "Drop here";
-    color: rgb(225, 210, 90);
+    font-size: 20px;
+    color: #fff;
 }
 
 .cuartiles-boton {

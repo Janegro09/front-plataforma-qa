@@ -8,11 +8,10 @@ import './PerfilamientosComponent.css'
 import { Redirect } from 'react-router-dom';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 const placeholder = document.createElement("div");
 placeholder.className = "placeholder";
-placeholder.className = "grupoPerfilamiento";
+placeholder.className += " grupoPerfilamiento";
 
 export default class PerfilaminetosComponent extends Component {
     constructor(props) {
@@ -121,19 +120,23 @@ export default class PerfilaminetosComponent extends Component {
 
     }
 
-    eliminarGrupo = (id) => {
+    eliminarGrupo = (e) => {
+        const { id } = e.target.dataset;
+
         // Eliminamos el grupo del array
         let { grupos, assignedUsers } = this.state;
         let returnData = []
+        if(!id) return false;
+
+
         for (let i = 0; i < grupos.length; i++) {
             const g = grupos[i];
-            if (g.id !== id) {
+            if (g.id.toString() !== id) {
                 returnData.push(grupos[i])
             } else {
-                grupos[i].users.map(g => {
-                    assignedUsers.splice(assignedUsers.indexOf(g), 1)
-                    return true;
-                })
+                for(let ug of grupos[i].users) {
+                    assignedUsers.splice(assignedUsers.indexOf(ug), 1)
+                }
             }
         }
 
@@ -198,20 +201,17 @@ export default class PerfilaminetosComponent extends Component {
 
     }
 
-    changeSelect = (id) => {
-        const { grupos } = this.state
-        let dataReturn = []
-        grupos.map(v => {
-            let tempData = v;
-            if (v.id === id) {
-                tempData.cluster = this.select.value
-            }
-            dataReturn.push(tempData)
-            return true;
-        })
-        this.setState({
-            grupos: dataReturn
-        })
+    changeSelect = (e) => {
+        e.preventDefault();
+        const { value, dataset } = e.target;
+        const { id } = dataset;
+        let { grupos } = this.state;
+
+        let index = grupos.findIndex(elem => elem.id.toString() === id);
+        if(index !== -1 && value !== undefined) {
+            grupos[index].cluster = value;
+        }
+        this.setState({ grupos })
     }
 
 
@@ -236,18 +236,19 @@ export default class PerfilaminetosComponent extends Component {
         })
     }
 
-    updateAssign = (id) => {
+    updateAssign = (e) => {
+
         let { grupos } = this.state
-        for (let i = 0; i < grupos.length; i++) {
-            const v = grupos[i];
-            if (v.id === id) {
-                v.applyAllUsers = this.assignAllUsers.checked
-            }
+        const { checked, dataset } = e.target;
+        const { id } = dataset;
+
+        let index = grupos.findIndex(elem => elem.id.toString() === id);
+
+        if(index !== -1) {
+            grupos[index].applyAllUsers = checked;
         }
 
-        this.setState({
-            grupos
-        })
+        this.setState({ grupos });
 
         this.reasignUsers();
     }
@@ -284,6 +285,9 @@ export default class PerfilaminetosComponent extends Component {
 
         for (let r = 0; r < grupos.length; r++) {
             const oldGroup = grupos[r];
+
+            if(!oldGroup) continue;
+
             let tempGroup = {
                 id: oldGroup.id,
                 name: oldGroup.name,
@@ -294,6 +298,7 @@ export default class PerfilaminetosComponent extends Component {
             }
             let cuartilesWithUsers = [];
 
+            if(!oldGroup.cuartiles || oldGroup.cuartiles.length === 0) continue;
             for (let crt of oldGroup.cuartiles) {
                 let tempData = {
                     name: crt.name,
@@ -348,7 +353,6 @@ export default class PerfilaminetosComponent extends Component {
 
         }
 
-        console.log(newAssign)
         this.setState({
             grupos: newAssign.grupos,
             assignedUsers: newAssign.assignedUsers
@@ -369,6 +373,7 @@ export default class PerfilaminetosComponent extends Component {
             const { target } = e;
 
             this.drag_el.style.display = "none";
+
             this.over = target;
             if (target.parentNode.className === 'grupos') {
                 target.parentNode.insertBefore(placeholder, target);
@@ -387,8 +392,16 @@ export default class PerfilaminetosComponent extends Component {
 
                 const from = Number(this.drag_el.id);
                 let to = Number(this.over.id);
-                if (from < to) to--;
-                grupos.splice(to, 0, grupos.splice(from, 1)[0]);
+
+                let toIndex = grupos.findIndex(elem => elem.id === to);
+                let fromIndex = grupos.findIndex(elem => elem.id === from);
+
+                if(toIndex !== -1) {
+                    let MoveGroup = grupos.splice(fromIndex,1)[0];
+    
+                    grupos.splice(toIndex, 0, MoveGroup);
+                    grupos = grupos.filter(e => e !== undefined);
+                }
 
                 this.setState({
                     grupos
@@ -443,47 +456,45 @@ export default class PerfilaminetosComponent extends Component {
         // debugger;
 
 
-        swal(`¿Esta seguro que desea modificar el perfilamiento?: `)
-            .then(() => {
-                let token = JSON.parse(sessionStorage.getItem('token'))
-                const config = {
-                    headers: { Authorization: `Bearer ${token}` }
-                };
+
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
 
                 // PARAMETROS REQUERIDOS, SOLO PASSWORD
-                const bodyParameters = dataSend
-                this.setState({ loading: true });
+        const bodyParameters = dataSend
+        this.setState({ loading: true });
 
-                axios.post(Global.getAllFiles + '/' + id + '/perfilamiento', bodyParameters, config)
-                    .then(response => {
-                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
-                        if (response.data.Success) {
-                            swal("Felicidades!", "Perfilamiento modificado!", "success").then(() => {
-                                this.setState({
-                                    redirect: true,
-                                    loading: false
-                                })
-                            })
-                        } else {
-                            swal("Error!", "Hubo un error al modificar el perfilamiento!", "error").then(() => {
-                                this.setState({
-                                    redirect: true,
-                                    loading: false
-                                })
-                            })
-                        }
+        axios.post(Global.getAllFiles + '/' + id + '/perfilamiento', bodyParameters, config)
+            .then(response => {
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                if (response.data.Success) {
+                    swal("Felicidades!", "Perfilamiento modificado!", "success").then(() => {
+                        this.setState({
+                            redirect: true,
+                            loading: false
+                        })
+                    })
+                } else {
+                    swal("Error!", "Hubo un error al modificar el perfilamiento!", "error").then(() => {
+                        this.setState({
+                            redirect: true,
+                            loading: false
+                        })
+                    })
+                }
 
-                    })
-                    .catch(e => {
-                        if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                            HELPER_FUNCTIONS.logout()
-                        } else {
-                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                            swal("Atención", "No has cambiado nada", "info");
-                        }
-                        console.log("Error: ", e)
-                    })
-            });
+            })
+            .catch(e => {
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Atención", "No has cambiado nada", "info");
+                }
+                console.log("Error: ", e)
+            })
     }
 
     guardarModelo = async () => {
@@ -763,17 +774,18 @@ export default class PerfilaminetosComponent extends Component {
                                             <div className="acciones">
                                                 <input className="form-control" type="text" defaultValue={v.name} onChange={(e) => this.changeName(v, e)} id={v.id} />
                                                 <label>Aplicar al 100% de los usuarios.
-                                                    <input type="checkbox" id="aplicarall" onChange={() => {
-                                                        this.updateAssign(v.id)
-                                                    }} ref={e => this.assignAllUsers = e} checked={v.applyAllUsers} />
+                                                    <input 
+                                                        type="checkbox" 
+                                                        onChange={this.updateAssign} 
+                                                        data-id={v.id}
+                                                        checked={v.applyAllUsers} 
+                                                    />
                                                 </label>
 
                                                 <select
-                                                    ref={e => this.select = e}
-                                                    onChange={(e) => {
-                                                        e.preventDefault();
-                                                        this.changeSelect(v.id)
-                                                    }}
+                                                    name="cluster"
+                                                    data-id={v.id}
+                                                    onChange={this.changeSelect}
                                                     value={v.cluster}
                                                 >
                                                     <option value="">Selecciona...</option>
@@ -783,10 +795,12 @@ export default class PerfilaminetosComponent extends Component {
                                                     <option value="Sustentable">Sustentable</option>
                                                     <option value="Desarrollo">Desarrollo</option>
                                                 </select>
-                                                <button onClick={(e) => {
-                                                    e.preventDefault();
-                                                    this.eliminarGrupo(v.id)
-                                                }}> <DeleteIcon /></button>
+                                                <button 
+                                                    onClick={this.eliminarGrupo}
+                                                    data-id={v.id}>
+                                                            {/* <DeleteIcon/> */}
+                                                            Eliminar 
+                                                    </button>
                                             </div>
                                             <div className="cuartilesAsignados" onDrop={(e) => this.onDrop(e, v.name)} onDragOver={(e) => e.preventDefault()}>
                                                 {v.cuartiles &&

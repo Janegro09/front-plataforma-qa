@@ -512,7 +512,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                             let element = document.getElementById("VMin" + key);
                                                             obj.VMin = parseFloat(element.value)
                                                         }}
-                                                        value={exists ? exists.Q1.VMax : ""}
+                                                        defaultValue={exists ? exists.Q1.VMax : ""}
                                                         disabled={exists !== ''}
                                                     />
                                                 </td>

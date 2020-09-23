@@ -16,7 +16,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
         this.state = {
             nombreColumnas: null,
             result: [],
-            dataFiltered: null,
+            dataFiltered: [],
             redirect: false,
             id: null,
             redirectPerfilamientos: false,
@@ -48,103 +48,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
     }
 
-    seleccionarFila = (fila, orden, obj = {}, exists) => {
-        let { result, used, nombreColumnas } = this.state;
-        if (exists) {
-            used.push(exists);
-        }
-
-        let temp = {
-            "QName": fila.columnName,
-            "Qorder": orden,
-            "Q1": {
-                "VMin": fila.VMin
-            },
-            "Q4": {
-                "VMax": fila.VMax
-            }
-        }
-
-        let defaultValues = nombreColumnas.find(elem => temp.QName === elem.columnName);
-
-        temp.Q1 = obj.VMin ? {...temp.Q1, VMax: obj.VMin} : defaultValues.DefaultValues.Q1
-        temp.Q2 = defaultValues.DefaultValues.Q2
-        temp.Q3 = obj.VMax ? { VMax: obj.VMax } : defaultValues.DefaultValues.Q3
-        temp.Q4 = defaultValues.DefaultValues.Q4
-
-        if(temp.Q1 !== defaultValues.DefaultValues.Q1 || temp.Q3 !== defaultValues.DefaultValues.Q3) {
-            // Si no son los valores por defect, entonces sacamos los valores para q2
-            let diferencia = (temp.Q3.VMax - temp.Q1.VMax) / 2;
-            temp.Q2.VMax = diferencia;
-        }
-        // if (obj.VMax !== undefined || obj.VMin !== undefined) {
-        //     console.log('okaaa')
-        //     if (obj.VMax && obj.VMax < fila.VMax && obj.VMax > obj.VMin) {
-        //         temp.Q3 = {
-        //             VMax: obj.VMax
-        //         };
-        //     } else {
-        //         temp.Q3 = defaultValues.DefaultValues.Q3
-        //     }
-
-        //     if (obj.VMin && obj.VMin > fila.VMin && obj.VMin < obj.VMax) {
-        //         temp.Q1.VMax = obj.VMin;
-        //     } else {
-        //         temp.Q1 = defaultValues.DefaultValues.Q1
-        //     }
-
-        //     if (temp.Q3 && temp.Q1.VMax) {
-        //         temp.Q2 = {
-        //             VMax: (temp.Q3.VMax - temp.Q1.VMax) / 2
-        //         }
-        //     }
-        // } else if (!obj.VMax && !obj.VMin) {
-
-        //     temp.Q1 = defaultValues.DefaultValues.Q1
-        //     temp.Q2 = defaultValues.DefaultValues.Q2
-        //     temp.Q3 = defaultValues.DefaultValues.Q3
-        //     temp.Q4 = defaultValues.DefaultValues.Q4
-
-        //     // used.map(e => {
-        //     //     if (temp.QName === e.QName) {
-        //     //         // ACA ENTRA CUANDO SE SELECCIONA LA FILA 
-
-        //     //         console.log(temp, e);
-
-        //     //         temp.Q1 = e.Q1;
-        //     //         temp.Q2 = e.Q2;
-        //     //         temp.Q3 = e.Q3;
-        //     //         temp.Q4 = e.Q4;
-        //     //         temp.Qorder = e.Qorder;
-        //     //     }
-        //     //     return true;
-        //     // })
-        // }
-
-        let indice = -1
-        for (let i = 0; i < result.length; i++) {
-            if (result[i].QName === fila.columnName) {
-                indice = i;
-                break;
-            }
-        }
-
-        if (indice === -1) {
-            this.setState({
-                result: [...result, temp],
-                used
-            })
-        }
-        else {
-            result.splice(indice, 1);
-            this.setState({
-                result,
-                used
-            })
-        }
-
-    }
-
     handleInputChange = (event) => {
         const target = event.target;
         this.setState({
@@ -161,6 +64,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 this.componentDidMount();
             })
         } else {
+            result = result.filter(elem => elem.selected === true);
             result = JSON.stringify(result);
             let token = JSON.parse(sessionStorage.getItem('token'))
             const config = {
@@ -232,7 +136,17 @@ export default class PerfilamientoCuartilesComponent extends Component {
         if (idModelSelected.trim()) {
             modelSelected = modelsOfCuartiles.find(element => element._id === idModelSelected);
             if (modelSelected) {
-                result = JSON.parse(modelSelected.values);
+                let model = JSON.parse(modelSelected.values);
+                for(let r = 0; r < result.length; r++){
+                    let f = model.find(elem => elem.QName === result[r].QName);
+                    if(f) {
+                        result[r] = f;
+                        result[r].selected = true;
+
+                    } else {
+                        result[r].selected = false;
+                    }
+                }
                 this.setState({
                     result,
                     modelSelected,
@@ -240,8 +154,13 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 })
             }
         } else {
+
+            for(let r = 0; r < result.length; r++){
+                result[r].selected = false;
+            }
+
             this.setState({
-                result: [],
+                result,
                 modelSelected: {},
                 nameModelSelected: ''
             })
@@ -259,7 +178,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
         };
 
         // PARAMETROS REQUERIDOS, SOLO PASSWORD
-        const bodyParameters = result;
+        const bodyParameters = result.filter(e => e.selected === true);
 
         axios.post(Global.reasignProgram + '/' + id + '/cuartiles', bodyParameters, config)
             .then(response => {
@@ -290,17 +209,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
         })
     }
 
-    calcularOrdenColumna = (columna, result) => {
-        let name = columna.columnName;
-        let order = result.filter(data => data.QName === name)
-
-        if (order.length > 0) {
-            return order[0].Qorder;
-        } else {
-            return 'DESC';
-        }
-    }
-
     componentDidMount() {
         const { cuartilSeleccionado } = this.props.location;
         if (cuartilSeleccionado === undefined) {
@@ -317,48 +225,62 @@ export default class PerfilamientoCuartilesComponent extends Component {
         const bearer = `Bearer ${token}`
 
         axios.get(Global.reasignProgram + '/' + id + '/columns', { headers: { Authorization: bearer } }).then(response => {
-            const { Data } = response.data;
-
-            this.setState({ nombreColumnas: Data, dataFiltered: Data });
+            const { Data: nombreColumnas  } = response.data; 
 
             let token2 = response.data.loggedUser.token
             axios.get(Global.reasignProgram + '/' + id + '/cuartiles', { headers: { Authorization: `Bearer ${token2}` } }).then(response => {
                 let token3 = response.data.loggedUser.token
-                let final = [];
-                let result = response.data.Data.cuartiles
-                for (let index = 0; index < result.length; index++) {
-                    let element = result[index];
+                let result = [];
+
+                let { cuartiles } = response.data.Data;
+                for(let c of nombreColumnas) {
                     let temp = {
-                        "QName": element.name,
-                        "Qorder": element.order,
-                        "Q1": {
-                            "VMin": element.Q1.VMin,
-                            "VMax": element.Q1.VMax
-                        },
-                        "Q2": {
-                            "VMax": element.Q2.VMax
-                        },
-                        "Q3": {
-                            "VMax": element.Q3.VMax
-                        },
-                        "Q4": {
-                            "VMax": element.Q4.VMax
-                        }
+                        QName: c.columnName,
+                        Qorder: "DESC",
+                        selected: false,
+                        Q1: c.DefaultValues.Q1,
+                        Q2: c.DefaultValues.Q2,
+                        Q3: c.DefaultValues.Q3,
+                        Q4: c.DefaultValues.Q4
                     }
-                    final.push(temp)
+                    let find = cuartiles.find(elem => elem.name === temp.QName);
+                    if(find) {
+                        temp.Qorder     = find.order;
+                        temp.Q1         = find.Q1
+                        temp.Q2         = find.Q2
+                        temp.Q3         = find.Q3
+                        temp.Q4         = find.Q4
+                        temp.selected   = true;
+                    }
+                    
+                    result.push(temp);
                 }
+
+
+
+
                 axios.get(Global.newModel, { headers: { Authorization: `Bearer ${token3}` } }).then(response => {
                     sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                     this.setState({
-                        result: final,
+                        nombreColumnas,
+                        dataFiltered: nombreColumnas,
+                        result,
                         loading: false,
                         modelsOfCuartiles: response.data.Data || [],
                     })
-                })
+                }).catch((e) => {
+                    // Si hay algún error en el request lo deslogueamos
+                    if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                        HELPER_FUNCTIONS.logout()
+                    } else {
+                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        swal("Error!", "Hubo un problema", "error");
+                    }
+                    console.log("Error: ", e)
+                });
 
-            })
-        })
-            .catch((e) => {
+
+            }).catch((e) => {
                 // Si hay algún error en el request lo deslogueamos
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
@@ -368,6 +290,51 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 }
                 console.log("Error: ", e)
             });
+        }).catch((e) => {
+                // Si hay algún error en el request lo deslogueamos
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    swal("Error!", "Hubo un problema", "error");
+                }
+                console.log("Error: ", e)
+            });
+    }
+
+    selectRow = (e) => {
+        e.preventDefault();
+        const { id } = e.target;
+        let { result } = this.state;
+
+        let index = result.findIndex(elem => elem.QName === id);
+        if(index !== -1) {
+            result[index].selected = !result[index].selected;
+            this.setState({ result })
+        } else return false;
+
+    }
+
+    changeValues = e => {
+        const  { dataset, value, name } = e.target;
+        const { id } = dataset;
+        let { result } = this.state;
+
+        let index = result.findIndex(elem => elem.QName === id);
+        if(value !== undefined && index !== -1) {
+            switch(name) {
+                case "VMin": 
+                    result[index].Q1.VMax = value
+                break;
+                case "VMax": 
+                    result[index].Q3.VMax = value;
+                break;
+                default:
+                    result[index][name] = value
+            }
+            this.setState({ result });
+        } else return false;
+
     }
 
 
@@ -454,127 +421,58 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {dataFiltered.map((columna, key) => {
-                                    let orden = this.calcularOrdenColumna(columna, result);
-                                    let obj = {
-
-                                    }
-
-                                    if (columna.VMax !== 0) {
-                                        let exists = '';
-                                        result.map(v => {
-                                            if (v.QName === columna.columnName) {
-                                                orden = v.Qorder
-                                                exists = v
-                                            }
-                                            return true;
-                                        })
-
+                                {dataFiltered.map(columna => {
+                                        let def = result.find(e => e.QName === columna.columnName);
                                         return (
                                             <tr key={columna.columnName}>
                                                 <td>{columna.columnName}</td>
                                                 <td>{`[${columna.VMin} - ${columna.VMax}]`}</td>
                                                 <td>
                                                     <select
-                                                    className="selectOrden"
-                                                        id={key}
-                                                        onChange={
-                                                            (e) => {
-                                                                e.preventDefault();
-                                                                let element = document.getElementById(key);
-                                                                orden = element.value;
-                                                            }
-                                                        }
-                                                        disabled={exists !== ''}
-                                                        defaultValue={orden}
-                                                    >
-                                                        {orden === 'ASC' &&
-                                                            <>
-                                                                <option value="ASC">ASC</option>
-                                                                <option value="DESC">DESC</option>
-                                                            </>
-                                                        }
-                                                        {orden === 'DESC' &&
-                                                            <>
-                                                                <option value="DESC">DESC</option>
-                                                                <option value="ASC">ASC</option>
-                                                            </>
-                                                        }
+                                                        className="selectOrden"
+                                                        data-id={columna.columnName}
+                                                        onChange={this.changeValues}
+                                                        name="Qorder"
+                                                        disabled={def.selected}
+                                                        value={def.Qorder}
+                                                        >
+                                                        <option value="DESC">DESC</option>
+                                                        <option value="ASC">ASC</option>
                                                     </select>
                                                 </td>
                                                 <td>
                                                     <input className="form-control"
-                                                        id={"VMin" + key}
+                                                        data-id={columna.columnName}
+                                                        name="VMin"
                                                         type="text"
                                                         placeholder="VMin"
-                                                        onChange={(e) => {
-                                                            e.preventDefault()
-                                                            let element = document.getElementById("VMin" + key);
-                                                            obj.VMin = parseFloat(element.value)
-                                                        }}
-                                                        defaultValue={exists ? exists.Q1.VMax : ""}
-                                                        disabled={exists !== ''}
+                                                        onChange={this.changeValues}
+                                                        value={def.Q1.VMax}
+                                                        disabled={def.selected}
                                                     />
                                                 </td>
 
                                                 <td>
-                                                    {exists.Q3 &&
-
-                                                        <input className="form-control"
-                                                            id={"VMax" + key}
-                                                            type="text"
-                                                            placeholder="VMax"
-                                                            onChange={(e) => {
-                                                                e.preventDefault()
-                                                                let element = document.getElementById("VMax" + key);
-                                                                obj.VMax = parseFloat(element.value)
-                                                            }}
-                                                            defaultValue={exists ? exists.Q3.VMax : ''}
-                                                            disabled={exists !== ''}
-                                                        />
-                                                    }
-                                                    {exists.Q3 === undefined &&
-
-                                                        <input className="form-control"
-                                                            id={"VMax" + key}
-                                                            type="text"
-                                                            placeholder="VMax"
-                                                            defaultValue=""
-                                                            onChange={(e) => {
-                                                                e.preventDefault()
-                                                                let element = document.getElementById("VMax" + key);
-                                                                obj.VMax = parseFloat(element.value)
-                                                            }}
-                                                            disabled={exists !== ''}
-                                                        />
-                                                    }
+                                                    <input className="form-control"
+                                                        data-id={columna.columnName}
+                                                        name="VMin"
+                                                        type="text"
+                                                        placeholder="VMax"
+                                                        onChange={this.changeValues}
+                                                        value={def.Q3.VMax}
+                                                        disabled={def.selected}
+                                                    />
                                                 </td>
 
                                                 <td>
-                                                    
                                                     <Checkbox
-                                                    
-                                                        checked={exists !== ''}
-                                                        onChange={() => {
-                                                            if (document.getElementById(key).disabled) {
-                                                                document.getElementById("VMin" + key).disabled = false;
-                                                                document.getElementById("VMax" + key).disabled = false;
-                                                                document.getElementById(key).disabled = false;
-                                                            } else {
-                                                                document.getElementById("VMin" + key).disabled = true;
-                                                                document.getElementById("VMax" + key).disabled = true;
-                                                                document.getElementById(key).disabled = true;
-                                                            }
-   
-                                                            this.seleccionarFila(columna, orden, obj, exists);
-                                                        }}
+                                                        checked={def.selected}
+                                                        id={columna.columnName}
+                                                        onChange={this.selectRow}
                                                     />
                                                 </td>
                                             </tr>
                                         )
-                                    } else {
-                                        return true;
-                                    }
                                 })}
                             </tbody>
                         </table>

@@ -212,7 +212,7 @@ export default class Perfilamiento extends Component {
         if (cuartiles) {
             return <Redirect
                 to={{
-                    pathname: '/perfilamiento/cuartiles',
+                    pathname: `/perfilamiento/cuartiles`,
                     cuartilSeleccionado: cuartilSeleccionado.id,
                     nameCuartilSelected: cuartilSeleccionado.name
                 }}

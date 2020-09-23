@@ -8,11 +8,10 @@ import './PerfilamientosComponent.css'
 import { Redirect } from 'react-router-dom';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 const placeholder = document.createElement("div");
 placeholder.className = "placeholder";
-placeholder.className = "grupoPerfilamiento";
+placeholder.className += " grupoPerfilamiento";
 
 export default class PerfilaminetosComponent extends Component {
     constructor(props) {
@@ -121,19 +120,23 @@ export default class PerfilaminetosComponent extends Component {
 
     }
 
-    eliminarGrupo = (id) => {
+    eliminarGrupo = (e) => {
+        const { id } = e.target.dataset;
+
         // Eliminamos el grupo del array
         let { grupos, assignedUsers } = this.state;
         let returnData = []
+        if(!id) return false;
+
+
         for (let i = 0; i < grupos.length; i++) {
             const g = grupos[i];
-            if (g.id !== id) {
+            if (g.id.toString() !== id) {
                 returnData.push(grupos[i])
             } else {
-                grupos[i].users.map(g => {
-                    assignedUsers.splice(assignedUsers.indexOf(g), 1)
-                    return true;
-                })
+                for(let ug of grupos[i].users) {
+                    assignedUsers.splice(assignedUsers.indexOf(ug), 1)
+                }
             }
         }
 
@@ -198,20 +201,17 @@ export default class PerfilaminetosComponent extends Component {
 
     }
 
-    changeSelect = (id) => {
-        const { grupos } = this.state
-        let dataReturn = []
-        grupos.map(v => {
-            let tempData = v;
-            if (v.id === id) {
-                tempData.cluster = this.select.value
-            }
-            dataReturn.push(tempData)
-            return true;
-        })
-        this.setState({
-            grupos: dataReturn
-        })
+    changeSelect = (e) => {
+        e.preventDefault();
+        const { value, dataset } = e.target;
+        const { id } = dataset;
+        let { grupos } = this.state;
+
+        let index = grupos.findIndex(elem => elem.id.toString() === id);
+        if(index !== -1 && value !== undefined) {
+            grupos[index].cluster = value;
+        }
+        this.setState({ grupos })
     }
 
 
@@ -236,18 +236,19 @@ export default class PerfilaminetosComponent extends Component {
         })
     }
 
-    updateAssign = (id) => {
+    updateAssign = (e) => {
+
         let { grupos } = this.state
-        for (let i = 0; i < grupos.length; i++) {
-            const v = grupos[i];
-            if (v.id === id) {
-                v.applyAllUsers = this.assignAllUsers.checked
-            }
+        const { checked, dataset } = e.target;
+        const { id } = dataset;
+
+        let index = grupos.findIndex(elem => elem.id.toString() === id);
+
+        if(index !== -1) {
+            grupos[index].applyAllUsers = checked;
         }
 
-        this.setState({
-            grupos
-        })
+        this.setState({ grupos });
 
         this.reasignUsers();
     }
@@ -284,6 +285,9 @@ export default class PerfilaminetosComponent extends Component {
 
         for (let r = 0; r < grupos.length; r++) {
             const oldGroup = grupos[r];
+
+            if(!oldGroup) continue;
+
             let tempGroup = {
                 id: oldGroup.id,
                 name: oldGroup.name,
@@ -348,7 +352,6 @@ export default class PerfilaminetosComponent extends Component {
 
         }
 
-        console.log(newAssign)
         this.setState({
             grupos: newAssign.grupos,
             assignedUsers: newAssign.assignedUsers
@@ -388,7 +391,12 @@ export default class PerfilaminetosComponent extends Component {
                 const from = Number(this.drag_el.id);
                 let to = Number(this.over.id);
                 if (from < to) to--;
-                grupos.splice(to, 0, grupos.splice(from, 1)[0]);
+
+                let toIndex = grupos.findIndex(elem => elem.id === to);
+                let fromIndex = grupos.findIndex(elem => elem.id === from);
+
+                grupos.splice(toIndex, 0, grupos.splice(fromIndex, 1)[0]);
+                grupos = grupos.filter(e => e !== undefined);
 
                 this.setState({
                     grupos
@@ -763,17 +771,18 @@ export default class PerfilaminetosComponent extends Component {
                                             <div className="acciones">
                                                 <input className="form-control" type="text" defaultValue={v.name} onChange={(e) => this.changeName(v, e)} id={v.id} />
                                                 <label>Aplicar al 100% de los usuarios.
-                                                    <input type="checkbox" id="aplicarall" onChange={() => {
-                                                        this.updateAssign(v.id)
-                                                    }} ref={e => this.assignAllUsers = e} checked={v.applyAllUsers} />
+                                                    <input 
+                                                        type="checkbox" 
+                                                        onChange={this.updateAssign} 
+                                                        data-id={v.id}
+                                                        checked={v.applyAllUsers} 
+                                                    />
                                                 </label>
 
                                                 <select
-                                                    ref={e => this.select = e}
-                                                    onChange={(e) => {
-                                                        e.preventDefault();
-                                                        this.changeSelect(v.id)
-                                                    }}
+                                                    name="cluster"
+                                                    data-id={v.id}
+                                                    onChange={this.changeSelect}
                                                     value={v.cluster}
                                                 >
                                                     <option value="">Selecciona...</option>
@@ -783,10 +792,12 @@ export default class PerfilaminetosComponent extends Component {
                                                     <option value="Sustentable">Sustentable</option>
                                                     <option value="Desarrollo">Desarrollo</option>
                                                 </select>
-                                                <button onClick={(e) => {
-                                                    e.preventDefault();
-                                                    this.eliminarGrupo(v.id)
-                                                }}> <DeleteIcon /></button>
+                                                <button 
+                                                    onClick={this.eliminarGrupo}
+                                                    data-id={v.id}>
+                                                            {/* <DeleteIcon/> */}
+                                                            Eliminar 
+                                                    </button>
                                             </div>
                                             <div className="cuartilesAsignados" onDrop={(e) => this.onDrop(e, v.name)} onDragOver={(e) => e.preventDefault()}>
                                                 {v.cuartiles &&

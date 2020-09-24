@@ -323,10 +323,15 @@ export default class ModalNuevoForm extends Component {
 
     render() {
 
-        let { cantSecciones, allForms, dataToSend, allPrograms, allModels } = this.state;
+        let { cantSecciones, allForms, dataToSend, allPrograms, allModels, loading } = this.state;
 
         return (
             <div className="modal modal-formularios" id="modal-casero2" >
+
+                {loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
+
                 <div className="hijo">
                     <div className="btnCloseModalDos">
                         <button onClick={

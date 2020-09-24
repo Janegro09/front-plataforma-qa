@@ -16,11 +16,15 @@ export default class UsersComponent extends Component {
         this.state = {
             value: 'user',
             redirect: false,
-            userData: null
+            userData: null,
+            loading: false
         }
     }
 
     componentDidMount() {
+
+        this.setState({ loading: true })
+
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
@@ -28,7 +32,8 @@ export default class UsersComponent extends Component {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
             this.setState({
-                userData: response.data.loggedUser
+                userData: response.data.loggedUser,
+                loading: false
             })
 
         })
@@ -48,6 +53,9 @@ export default class UsersComponent extends Component {
     }
 
     render() {
+
+        const { loading } = this.state;
+
         if (this.state.redirect) {
             return <Redirect to={'/'} />
         }
@@ -63,6 +71,10 @@ export default class UsersComponent extends Component {
 
         return (
             <div>
+
+                {loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
                 <div>
                     <SidebarLeft />
                 </div>

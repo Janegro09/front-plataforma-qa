@@ -206,18 +206,13 @@ export default class ModalModeloFormulariosComponent extends Component {
             // ACÁ VAN A QUEDAR LAS DE M
             let allForms = response.data.Data.filter(form => form.section === 'M');
 
-            this.setState({
-                allForms,
-                loading: false
-            })
-
             let { id } = this.props;
             axios.get(Global.newFormModel + '/' + id, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
                 let dataToSend = response.data.Data[0] || false;
                 if(dataToSend) {
-                    this.setState({ dataToSend })
+                    this.setState({ dataToSend, allForms, loading: false })
                     this.partsTocantSecciones();
                 }
             })
@@ -269,9 +264,13 @@ export default class ModalModeloFormulariosComponent extends Component {
 
     render() {
 
-        let { cantSecciones, allForms, dataToSend } = this.state;
+        let { cantSecciones, allForms, dataToSend, loading } = this.state;
         return (
             <div className="modal modal-formularios" id="modal-casero2">
+
+                {loading &&
+                    HELPER_FUNCTIONS.backgroundLoading()
+                }
                 <div className="hijo">
                     <div className="boton-cerrar">
                         <button onClick={

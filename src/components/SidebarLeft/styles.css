@@ -208,6 +208,10 @@ div.content {
   font-size: 10px;
 }
 
+.showme > a:hover {
+  color: #03a9f4;
+}
+
 a:hover {
   color: white;
   text-decoration: none;

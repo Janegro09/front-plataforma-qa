@@ -83,6 +83,22 @@ export default class AdministracionFormulariosComponent extends Component {
         this.setState({ goToModeloFormularios: true });
     }
 
+    buscarForm = (e) => {
+        let { allFormsFiltrado, allForms } = this.state;
+        let buscado = e.target.value.toLowerCase();
+
+        if (buscado) {
+            allFormsFiltrado = allFormsFiltrado.filter(form => form.name.toLowerCase().includes(buscado))
+
+            this.setState({ allFormsFiltrado });
+        } else {
+
+            this.setState({ allFormsFiltrado: allForms })
+
+        }
+
+    }
+
     componentDidMount() {
         // Hacer rekest
         this.setState({
@@ -97,6 +113,7 @@ export default class AdministracionFormulariosComponent extends Component {
 
             this.setState({
                 allForms: response.data.Data,
+                allFormsFiltrado: response.data.Data,
                 loading: false
             })
 
@@ -118,7 +135,7 @@ export default class AdministracionFormulariosComponent extends Component {
     }
 
     render() {
-        let { allForms, openModal, id, loading, goToFormularios, goToModeloFormularios } = this.state;
+        let { allFormsFiltrado, openModal, id, loading, goToFormularios, goToModeloFormularios } = this.state;
 
         if (goToFormularios) {
             return <Redirect
@@ -152,34 +169,41 @@ export default class AdministracionFormulariosComponent extends Component {
                     <div className="flex-input-add input-add-spacebetween">
                         <h4 className="mr-2">ADMINISTRADOR DE FORMULARIOS</h4>
                         <div className="containerDefaultBotons">
-                        <button className="btnDefault"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                this.abrirModal();
-                            }}
-                        >
-                            + CAMPO PERSONALIZADO
+                            <button className="btnDefault"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    this.abrirModal();
+                                }}
+                            >
+                                + CAMPO PERSONALIZADO
                         </button>
 
-                        <button
-                            className="btnDefault"
-                            onClick={this.formularios}
-                        >
-                            FORMULARIOS
+                            <button
+                                className="btnDefault"
+                                onClick={this.formularios}
+                            >
+                                FORMULARIOS
                         </button>
 
-                        <button
-                            className="btnDefault"
-                            onClick={this.modeloFormularios}
+                            <button
+                                className="btnDefault"
+                                onClick={this.modeloFormularios}
 
-                        >
-                           MODELOS DE FORMULARIO
+                            >
+                                MODELOS DE FORMULARIO
                         </button>
                         </div>
                     </div>
                     <hr />
                     <br />
-                    {allForms &&
+
+                    <input
+                        type="text"
+                        placeholder="Buscar"
+                        onChange={this.buscarForm}
+                    />
+
+                    {allFormsFiltrado &&
                         <table>
                             <thead>
                                 <tr>
@@ -195,7 +219,7 @@ export default class AdministracionFormulariosComponent extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {allForms.map((form, key) => {
+                                {allFormsFiltrado.map((form, key) => {
                                     return (
                                         <tr key={key}>
                                             <td>{form.name}</td>

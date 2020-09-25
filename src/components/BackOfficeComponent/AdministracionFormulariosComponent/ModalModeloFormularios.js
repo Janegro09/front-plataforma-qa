@@ -164,15 +164,15 @@ export default class ModalModeloFormulariosComponent extends Component {
         let { cantSecciones } = this.state;
         let temp = [];
 
-        for(let s of cantSecciones) {
+        for (let s of cantSecciones) {
             let td = {
                 ...s
             }
-            
-            if(s.id === section) {
+
+            if (s.id === section) {
                 td.customFields = [];
-                for(let cf of s.customFields) {
-                    if(cf.id === field) continue;
+                for (let cf of s.customFields) {
+                    if (cf.id === field) continue;
 
                     td.customFields.push(cf);
                 }
@@ -209,14 +209,18 @@ export default class ModalModeloFormulariosComponent extends Component {
             // ACÁ VAN A QUEDAR LAS DE M
             let allForms = response.data.Data.filter(form => form.section === 'M');
 
-            this.setState({
-                allForms,
-                loading: false
-            })
+            // this.setState({
+            //     allForms,
+            //     loading: false
+            // })
 
             axios.get(Global.newFormModel, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                this.setState({ models: response.data.Data })
+                this.setState({
+                    models: response.data.Data, 
+                    allForms,
+                    loading: false
+                })
             })
 
         })

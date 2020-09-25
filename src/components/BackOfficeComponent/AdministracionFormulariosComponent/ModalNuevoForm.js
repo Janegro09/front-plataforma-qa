@@ -266,27 +266,15 @@ export default class ModalNuevoForm extends Component {
             // ACÁ VAN A QUEDAR LAS DE M
             let allForms = response.data.Data.filter(form => form.section === 'M');
 
-            this.setState({
-                allForms,
-                loading: false
-            })
-
             axios.get(Global.newFormModel, { headers: { Authorization: bearer } }).then(response => {
-                this.setState({ models: response.data.Data });
+                const models = response.data.Data;
+
                 token = response.data.loggedUser.token;
                 bearer = `Bearer ${token}`;
 
-                this.setState({
-                    allForms
-                })
-
-                // newFormModel
                 axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
-                    let allProgramsM = response.data.Data.filter(program => program.section === 'M');
 
-                    this.setState({
-                        allPrograms: allProgramsM
-                    });
+                    const allProgramsM = response.data.Data.filter(program => program.section === 'M');
 
                     token = response.data.loggedUser.token;
                     bearer = `Bearer ${token}`;
@@ -294,7 +282,10 @@ export default class ModalNuevoForm extends Component {
                     axios.get(Global.newFormModel, { headers: { Authorization: bearer } }).then(response => {
                         sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                         this.setState({
+                            allForms,
                             allModels: response.data.Data,
+                            allPrograms: allProgramsM,
+                            models,
                             loading: false
                         })
 

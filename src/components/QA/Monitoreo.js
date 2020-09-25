@@ -464,7 +464,6 @@ export default class Monitoreo extends Component {
                             <br />
                             <select onChange={this.changeBuscador} value="" id="program">
                                 <option>Selecciona...</option>
-                                {console.log(programs)}
                                 <option value='allPrograms'>Seleccionar todos</option>
                                 {programs.map(v => {
                                     return <option key={v.id} value={v.id}>{v.name}</option>

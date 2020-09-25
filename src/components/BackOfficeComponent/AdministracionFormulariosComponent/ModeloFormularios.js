@@ -56,7 +56,8 @@ export default class ModeloFormularios extends Component {
 
             this.setState({
                 loading: false,
-                models: response.data.Data
+                models: response.data.Data,
+                modelsFiltrado: response.data.Data
             })
 
         })
@@ -135,8 +136,20 @@ export default class ModeloFormularios extends Component {
         console.log("Editamos", id)
     }
 
+    buscarModeloFormularios = (e) => {
+        let { models, modelsFiltrado } = this.state;
+        let buscado = e.target.value.toLowerCase();
+
+        if (buscado) {
+            modelsFiltrado = modelsFiltrado.filter(model => model.name.toLowerCase().includes(buscado));
+            this.setState({ modelsFiltrado });
+        } else {
+            this.setState({ modelsFiltrado: models });
+        }
+    }
+
     render() {
-        let { loading, models, modalModeloFormulario, ModalEditarModeloFormularios, idToEdit, redirect } = this.state;
+        let { loading, modelsFiltrado, modalModeloFormulario, ModalEditarModeloFormularios, idToEdit, redirect } = this.state;
 
         if (redirect) {
             return <Redirect to={redirect} />
@@ -178,7 +191,15 @@ export default class ModeloFormularios extends Component {
                         +
                     </button>
 
-                    {models &&
+
+
+                    <input
+                        type="text"
+                        placeholder="Buscar"
+                        onChange={this.buscarModeloFormularios}
+                    />
+
+                    {modelsFiltrado &&
                         <table>
                             <thead>
                                 <tr>
@@ -193,7 +214,7 @@ export default class ModeloFormularios extends Component {
                             </thead>
                             <tbody>
                                 {
-                                    models.map(model => {
+                                    modelsFiltrado.map(model => {
                                         return (
                                             <tr key={model.id}>
                                                 <td>{model.name}</td>

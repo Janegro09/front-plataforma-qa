@@ -12,7 +12,7 @@ import ModalNuevoForm from './ModalNuevoForm';
 import ModalEditarModelo from './ModalEditarForm';
 import { Redirect } from 'react-router-dom';
 
-export default class ModeloFormularios extends Component {
+export default class Formularios extends Component {
 
     state = {
         allForms: null,
@@ -46,8 +46,6 @@ export default class ModeloFormularios extends Component {
             })
         }
 
-        console.log(cantSecciones)
-
         this.setState({ cantSecciones });
     }
 
@@ -69,9 +67,7 @@ export default class ModeloFormularios extends Component {
         // LO BUSCO Y LO PISO EN EL ARRAY
         let temp = []
         cantSecciones.map(seccion => {
-            console.log(seccion);
             if (seccion.id === edited[0].id) {
-                console.log('agrega: ', edited[0].customFields)
                 edited[0].customFields.push({
                     question: "", customField: "", id: HELPER_FUNCTIONS.generateCustomId(10)
                 })
@@ -225,7 +221,6 @@ export default class ModeloFormularios extends Component {
                 cantSecciones[sectionSearched].customFields[findField][name] = value;
             }
 
-            console.log(cantSecciones[sectionSearched].customFields[findField][name], name);
             // cantSecciones[sectionSearched][name] = value;
         } else if (sectionSearched !== -1 && name === 'nameQuestion') {
             cantSecciones[sectionSearched].name = value;
@@ -234,11 +229,22 @@ export default class ModeloFormularios extends Component {
 
         this.setState({ cantSecciones })
 
-        console.log(cantSecciones);
     }
 
     abrirModalEditarModeloFormularios = (id) => {
         this.setState({ ModalEditarModeloFormularios: true, idToEdit: id });
+    }
+
+    buscarFormulario = (e) => {
+        let { modelsFiltrado, models } = this.state;
+        let buscado = e.target.value.toLowerCase();
+
+        if (buscado) {
+            modelsFiltrado = modelsFiltrado.filter( model => model.name.toLowerCase().includes( buscado ) );
+            this.setState({ modelsFiltrado }) ;
+        } else {
+            this.setState({ modelsFiltrado: models });
+        }
     }
 
     componentDidMount() {
@@ -265,7 +271,7 @@ export default class ModeloFormularios extends Component {
 
             axios.get(Global.getForms, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                this.setState({ models: response.data.Data })
+                this.setState({ models: response.data.Data, modelsFiltrado: response.data.Data })
             })
 
         })
@@ -286,7 +292,7 @@ export default class ModeloFormularios extends Component {
 
 
     render() {
-        let { loading, models, modalModeloFormulario, ModalEditarModeloFormularios, idToEdit, redirect } = this.state;
+        let { loading, modelsFiltrado, modalModeloFormulario, ModalEditarModeloFormularios, idToEdit, redirect } = this.state;
 
         if (redirect) {
             return <Redirect to={redirect} />
@@ -328,7 +334,13 @@ export default class ModeloFormularios extends Component {
                         +
                     </button>
 
-                    {models &&
+                    <input 
+                        type="text"
+                        placeholder="Buscar"
+                        onChange={ this.buscarFormulario }
+                    />
+
+                    {modelsFiltrado &&
                         <table>
                             <thead>
                                 <tr>
@@ -342,8 +354,7 @@ export default class ModeloFormularios extends Component {
                             </thead>
                             <tbody>
                                 {
-                                    models.map(model => {
-                                        console.log('model: ', model);
+                                    modelsFiltrado.map(model => {
                                         return (
                                             <tr key={model.id}>
                                                 <td>{model.name}</td>

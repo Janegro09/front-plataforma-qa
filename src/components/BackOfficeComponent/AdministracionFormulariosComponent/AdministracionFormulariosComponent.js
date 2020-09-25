@@ -201,6 +201,7 @@ export default class AdministracionFormulariosComponent extends Component {
                         type="text"
                         placeholder="Buscar"
                         onChange={this.buscarForm}
+                        className="form-control"
                     />
 
                     {allFormsFiltrado &&

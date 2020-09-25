@@ -318,7 +318,7 @@ export default class Formularios extends Component {
                 </div>
 
 
-                <div className="container">
+                <div className="section-content">
 
                     <h4 className="margin-top-70">Formularios</h4>
 
@@ -338,6 +338,7 @@ export default class Formularios extends Component {
                         type="text"
                         placeholder="Buscar"
                         onChange={ this.buscarFormulario }
+                        className="form-control"
                     />
 
                     {modelsFiltrado &&

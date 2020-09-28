@@ -93,7 +93,12 @@ export default class Modal extends Component {
             }
 
             let objTemp = {
-                value: value.value
+                value: value.value,
+                
+            }
+
+            if(value.parametrizableValue !== undefined) {
+                objTemp.parametrizableValue = value.parametrizableValue;
             }
 
             if (value.customFieldsSync !== undefined) {
@@ -139,6 +144,8 @@ export default class Modal extends Component {
             "subsection": valueSelectPerfilamiento,
             "calibrable": esCalibrable
         }
+
+        console.log(bodyParameters)
 
         // Hacer rekes
         this.setState({
@@ -301,36 +308,40 @@ export default class Modal extends Component {
         const { value } = e.target;
         let { valueArray } = this.state;
 
-
+        console.log(value);
         if (value) {
             valueArray = [];
             let values = value.split(',');
             for (let v of values) {
                 if (v) {
-                    let td = {}
+                    let td = {
+                        value: v
+                    }
+                    
                     if (v.indexOf('#') !== -1) {
                         v = v.replace("#",'');
                         td = {
                             value: v,
                             customFieldsSync: null
                         }
-                    } else if (v.indexOf('(') !== -1) {
+                    } 
+                    
+                    if (v.indexOf('(') !== -1 && v.indexOf(')') !== -1 && v.indexOf('(') < v.indexOf(')')) {
                         let numero = v.match(/\d+/)[0];
-
                         this.validarParametrizacion(numero);
-
                         td = {
                             value: this.quitarParentesis(v),
-                            parametrizacionValue: numero
+                            parametrizableValue: parseInt(numero)
                         }
-                    } else {
-                        td.value = v;
+
                     }
                     valueArray.push(td);
                 }
             }
 
         }
+
+        console.log(valueArray)
 
         this.setState({ valueArray })
 
@@ -346,6 +357,10 @@ export default class Modal extends Component {
                 v = `#`;
             }
             v += a.value
+
+            if(a.parametrizableValue !== false) {
+                v += ` (${a.parametrizableValue})`;
+            } 
 
             Str = Str ? Str + `, ${v}` : v;
         }
@@ -412,8 +427,8 @@ export default class Modal extends Component {
                             <>
 
                                 <div className="flexContent">
-                                    <input type="checkbox" name="esCalibrable" checked={this.state.esCalibrable} onChange={this.handleChangeCalibrable} id="checkbox" />
-                                    <label htmlFor="checkbox" className="label">* ¿Es calibrable? </label>
+                                    <input type="checkbox" name="esCalibrable" id="escalibrable" checked={this.state.esCalibrable} onChange={this.handleChangeCalibrable} />
+                                    <label htmlFor="escalibrable" className="label" >* ¿Es calibrable? </label>
                                 </div>
                                 {valueArray.map((v, i) => {
                                     if (v.customFieldsSync !== undefined) {

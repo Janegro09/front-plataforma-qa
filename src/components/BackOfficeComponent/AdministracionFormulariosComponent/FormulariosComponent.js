@@ -376,10 +376,19 @@ export default class Formularios extends Component {
                                                             e.preventDefault();
                                                             this.abrirModalEditarModeloFormularios(model.id)
                                                         }
-                                                    }><EditIcon style={{ fontSize: 15 }} /></button>
-                                                    <button type="button" data-id={model.id} onClick={this.ver}><VisibilityRoundedIcon style={{ fontSize: 15 }} /></button>
+                                                    }>
+                                                        {/* <EditIcon style={{ fontSize: 15 }} /> */}
+                                                        Editar
+                                                    </button>
+                                                    <button type="button" data-id={model.id} onClick={this.ver}>
+                                                        {/* <VisibilityRoundedIcon style={{ fontSize: 15 }} /> */}
+                                                        Ver
+                                                        </button>
 
-                                                    <button type="button" data-id={model.id} onClick={this.eliminar}><DeleteIcon style={{ fontSize: 15 }} /></button>
+                                                    <button type="button" data-id={model.id} onClick={this.eliminar}>
+                                                        {/* <DeleteIcon style={{ fontSize: 15 }} /> */}
+                                                        Eliminar
+                                                        </button>
 
                                                 </td>
                                             </tr>

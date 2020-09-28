@@ -386,7 +386,7 @@ export default class componentName extends Component {
         } else if (respIndex !== -1) {
             // Entonces estamos contestando una pregunta hija
 
-            let c = changeValue({ id, value, parent }, q.response);
+            changeValue({ id, value, parent }, q.response);
 
 
         } else return false;
@@ -470,7 +470,7 @@ export default class componentName extends Component {
                                             this.getCustomField({
                                                 ...cf,
                                                 questionId: value.questionId,
-                                                parentId: cf.parentId
+                                                parentId: value.id
                                             }, sectionId)
                                         }
                                     </div>)
@@ -523,7 +523,7 @@ export default class componentName extends Component {
                     <>
                         {value.values.map((cf, ind) => {
                             return (
-                                <span className="active" key={sectionId+value.questionId+value.id}>
+                                <span className="active" key={ind}>
 
                                     <input
                                         type="radio"

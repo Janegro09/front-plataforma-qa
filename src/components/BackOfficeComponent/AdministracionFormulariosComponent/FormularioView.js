@@ -19,7 +19,6 @@ export default class FormularioView extends Component {
     }
 
     changeSelection = (e) => {
-        e.preventDefault();
         const { name, value } = e.target;
         let { responses } = this.state;
         const { question, section, parent } = e.target.dataset;
@@ -34,13 +33,11 @@ export default class FormularioView extends Component {
                 return object;
             } else if (object.child) {
                 return changeValue({ id, value, parent }, object.child);
-            } else {
-                return false;
-            }
+            } else return false;
+            
         }
 
         if (!value && value !== '') return true;
-        console.log(question, section, parent);
 
         let respIndex = responses.findIndex(elem => elem.section === section && elem.question === question);
         let q = false;
@@ -66,12 +63,8 @@ export default class FormularioView extends Component {
         } else if (respIndex !== -1) {
             // Entonces estamos contestando una pregunta hija
 
-            let c = changeValue({ id: name, value, parent }, q.response);
-
-
-            console.log('ccccc', c);
+            changeValue({ id: name, value, parent }, q.response);
         } else return false;
-
 
         if (respIndex !== -1) {
             responses[respIndex] = q;
@@ -80,37 +73,7 @@ export default class FormularioView extends Component {
         }
         this.setState({ responses });
 
-
-        // question
-        // let child = false;
-        // let childsOfParentNode = parentNode.childNodes;
-        // for(let c of childsOfParentNode) {
-        //     const { classList, localName } = c;
-        //     if(localName === 'div' && classList.contains('conditionalCF')){
-        //         child = c;
-        //     }
-        // }
-
-        // let rsp = responses.find(elem => elem.section === section && elem.question === question);
-
-        // // Si cfid y question estan definidos entonces estamos hablando de la primera pregunta, si solo esta definido el cfid entonces estamos hblando de algun child
-        // if(question && cfid) {
-        //     // Entonces estamos hablando del response padre
-        //     console.log('pregunta padre');
-        //     if(!rsp) {
-        //         rsp = {
-        //             section,
-        //             question,
-        //             response: {
-        //                 data: value
-        //             }
-        //         }
-        //     } else {
-        //         rsp.response = { data: value }
-        //     }
-        // }
-
-        // console.log(question, section, cfid, value);
+        console.log(responses);
     }
 
     componentDidMount = () => {
@@ -182,6 +145,7 @@ export default class FormularioView extends Component {
         let index = (Date.now() * Math.random()).toString();
 
         let defaultValue = this.getDefaultValue(value.id, value.questionId, sectionId);
+        // console.log(defaultValue);
         let childs = []
         return (
             <article key={index}>
@@ -221,7 +185,7 @@ export default class FormularioView extends Component {
                                             this.getCustomField({
                                                 ...cf,
                                                 questionId: value.questionId,
-                                                parentId: cf.parentId
+                                                parentId: value.id
                                             }, sectionId)
                                         }
                                     </div>)

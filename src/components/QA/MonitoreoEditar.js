@@ -77,8 +77,6 @@ export default class componentName extends Component {
         disputarArea    = !!dataToSend.disputado;
         invalidarArea   = !!dataToSend.invalidated
 
-        console.log(dataToSend);
-
         this.setState({ dataToSend, usuarioSeleccionado, responses: rsp, disputarArea, invalidarArea, monitoreo });
     }
 
@@ -430,8 +428,6 @@ export default class componentName extends Component {
 
         let defaultValue = this.getDefaultValue(value.id, value.questionId, sectionId);
         let childs = []
-
-        console.log("Line 433: ",value.type, defaultValue)
 
         return (
             <article key={index}>
@@ -821,7 +817,6 @@ export default class componentName extends Component {
                             monitoreo.responses.map((v, i) => {
                                 return (
                                     <section key={i}>
-                                        {console.log(v.customFields)}
                                         <h6>{v.name}</h6>
                                         {v.customFields &&
                                             v.customFields.map((val, index) => {

@@ -9,6 +9,10 @@ import './Modal.css';
 import moment from 'moment';
 import ModalModeloFormulariosComponent from './ModalModeloFormularios';
 import ModalEditarModelo from './ModalEditarModelo';
+import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
+import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { Redirect } from 'react-router-dom';
 
 export default class ModeloFormularios extends Component {
@@ -177,29 +181,32 @@ export default class ModeloFormularios extends Component {
 
                 <div className="section-content">
 
-                    <h4 className="margin-top-70">Modelo de formularios</h4>
+                    <h4>Modelo de formularios</h4>
+                    <hr />
+                    <br />
+                    <div className="flex-input-add">
 
-                    <button
-                        className="btn btn-primary"
-                        onClick={
-                            (e) => {
-                                e.preventDefault();
-                                this.abrirModalModeloFormularios()
+                        <input
+                            type="text"
+                            placeholder="Buscar"
+                            onChange={this.buscarModeloFormularios}
+                            className="form-control"
+                        />
+                        <button
+                            className="addItem morph"
+                            onClick={
+                                (e) => {
+                                    e.preventDefault();
+                                    this.abrirModalModeloFormularios()
+                                }
                             }
-                        }
-                    >
-                        +
+                        >
+                            <AddIcon className="svgAddButton" style={{ fontSize: 33 }} />
                     </button>
 
 
 
-                    <input
-                        type="text"
-                        placeholder="Buscar"
-                        onChange={this.buscarModeloFormularios}
-                        className="form-control"
-                    />
-
+                    </div>
                     {modelsFiltrado &&
                         <table>
                             <thead>
@@ -210,7 +217,7 @@ export default class ModeloFormularios extends Component {
                                     <th>Partes</th>
                                     <th>Sección</th>
                                     <th>Subsección</th>
-                                    <th>Acciones</th>
+                                    <th className="tableIconsFormularios">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -224,17 +231,20 @@ export default class ModeloFormularios extends Component {
                                                 <td>{model.parts}</td>
                                                 <td>{model.section}</td>
                                                 <td>{model.subsection}</td>
-                                                <td>
-                                                    <button type="button" data-id={model.id} onClick={this.ver}>Ver</button>
-
-                                                    <button type="button" data-id={model.id} onClick={this.eliminar}>Eliminar</button>
+                                                <td className="tableIconstableIconsFormularios">
 
                                                     <button type="button" data-id={model.id} onClick={
                                                         (e) => {
                                                             e.preventDefault();
                                                             this.abrirModalEditarModeloFormularios(model.id)
                                                         }
-                                                    }>Editar</button>
+                                                    }><EditIcon style={{ fontSize: 15 }} /></button>
+
+                                                    <button type="button" data-id={model.id} onClick={this.ver}><VisibilityRoundedIcon style={{ fontSize: 15 }} /></button>
+
+
+
+                                                    <button type="button" data-id={model.id} onClick={this.eliminar}><DeleteIcon style={{ fontSize: 15 }} /></button>
                                                 </td>
                                             </tr>
                                         )

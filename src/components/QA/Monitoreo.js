@@ -406,7 +406,8 @@ export default class Monitoreo extends Component {
                             className="btnDefault"
                             onClick={this.nuevoMonitoreo}
                         >
-                            Agregar monitoreo <HearingIcon />
+                            Agregar monitoreo 
+                            {/* <HearingIcon /> */}
                         </button>
                             </div>
                     </div>

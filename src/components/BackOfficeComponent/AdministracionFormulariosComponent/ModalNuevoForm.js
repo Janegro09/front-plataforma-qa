@@ -412,7 +412,7 @@ export default class ModalNuevoForm extends Component {
                                                     onChange={this.handleChangeQuestion}
                                                 />
                                                 <button
-                                                    className="btnDefault"
+                                                    
                                                     onClick={(e) => { e.preventDefault(); this.eliminar(seccion); }}
                                                 >
                                                     <DeleteIcon />
@@ -473,7 +473,7 @@ export default class ModalNuevoForm extends Component {
                             })
                         }
 
-                        <button type="submit" className="btn btn-primary btnEnviarCond morph margin-top-10">Enviar</button>
+                        <button type="submit" className="buttonSiguiente">Enviar</button>
                     </form>
                 </div>
             </div>

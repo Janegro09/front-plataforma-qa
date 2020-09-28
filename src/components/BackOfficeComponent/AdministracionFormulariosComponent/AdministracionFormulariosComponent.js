@@ -175,7 +175,7 @@ export default class AdministracionFormulariosComponent extends Component {
                                     this.abrirModal();
                                 }}
                             >
-                                + CAMPO PERSONALIZADO
+                                CAMPO PERSONALIZADO
                         </button>
 
                             <button
@@ -201,7 +201,7 @@ export default class AdministracionFormulariosComponent extends Component {
                         type="text"
                         placeholder="Buscar"
                         onChange={this.buscarForm}
-                        className="form-control"
+                        className="form-control margin-bottom-20"
                     />
 
                     {allFormsFiltrado &&

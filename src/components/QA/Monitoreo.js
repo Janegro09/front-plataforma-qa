@@ -646,7 +646,11 @@ export default class Monitoreo extends Component {
                                                 <td>{mon.evaluated.toString()}</td>
                                                 <td>{mon.improvment}</td>
                                                 <td>
-                                                    <button type="button" data-id={mon.id} onClick={this.editar}>Editar</button>
+                                                    <button type="button" data-id={mon.id} onClick={this.editar}>
+
+                                                        {mon.modifiedBy.length === 0 ? 'Responder' : 'Editar'}
+
+                                                    </button>
                                                     <button data-id={mon.id} type="button" onClick={this.deleteMon}>Eliminar</button>
                                                 </td>
                                                 <td></td>

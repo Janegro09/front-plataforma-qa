@@ -831,7 +831,11 @@ export default class componentName extends Component {
 
                         </div>
 
-                        <button type="button" className="btn" onClick={this.modificarFormulario}>Enviar</button>
+                        <button type="button" className="btn" onClick={this.modificarFormulario}>
+                            
+                            {monitoreo.modifiedBy.length === 0 ? "Responder" : 'Editar'}
+
+                        </button>
 
                         <hr/>
                         <hr/>
@@ -839,17 +843,28 @@ export default class componentName extends Component {
                         <hr/>
 
                         <section className="logEdicion">
-                            <h6>Editado por: </h6>
-                            <article>
-                                {monitoreo.modifiedBy &&
-                                    monitoreo.modifiedBy.map(v => {
-                                        return (<span key={v._id}>
-                                            {v.userId} - {v.rol} - {moment(v.modifiedAt).format("DD/MM/YYYY HH:mm")}
-                                        </span>)
-                                    })
-                                
+                            {monitoreo.modifiedBy &&   
+                                <>
+                                {monitoreo.modifiedBy.length > 0 &&
+                                    <>
+                                        <h6>Editado por: </h6>
+                                        <article>
+                                            {monitoreo.modifiedBy.map(v => {
+                                                return (<span key={v._id}>
+                                                    {v.userId} - {v.rol} - {moment(v.modifiedAt).format("DD/MM/YYYY HH:mm")}
+                                                </span>)
+                                            })}
+                                        </article>
+                                    </>
                                 }
-                            </article>
+                                </>
+
+                            }
+
+                            {monitoreo.modifiedBy.length === 0 &&
+                                <div className="alert alert-success">Nunca fué editado, una vez que se guarde ya no habrá posibilidad de eliminar los registros de edición.</div>
+
+                            }
                         </section>
                     </>
                     }

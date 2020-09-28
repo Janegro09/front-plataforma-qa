@@ -77,8 +77,6 @@ export default class componentName extends Component {
         disputarArea    = !!dataToSend.disputado;
         invalidarArea   = !!dataToSend.invalidated
 
-        console.log(dataToSend);
-
         this.setState({ dataToSend, usuarioSeleccionado, responses: rsp, disputarArea, invalidarArea, monitoreo });
     }
 
@@ -386,7 +384,7 @@ export default class componentName extends Component {
         } else if (respIndex !== -1) {
             // Entonces estamos contestando una pregunta hija
 
-            let c = changeValue({ id, value, parent }, q.response);
+            changeValue({ id, value, parent }, q.response);
 
 
         } else return false;
@@ -431,7 +429,6 @@ export default class componentName extends Component {
         let defaultValue = this.getDefaultValue(value.id, value.questionId, sectionId);
         let childs = []
 
-
         return (
             <article key={index}>
                 <p>{value.question || value.name}</p>
@@ -470,7 +467,7 @@ export default class componentName extends Component {
                                             this.getCustomField({
                                                 ...cf,
                                                 questionId: value.questionId,
-                                                parentId: cf.parentId
+                                                parentId: value.id
                                             }, sectionId)
                                         }
                                     </div>)
@@ -493,8 +490,9 @@ export default class componentName extends Component {
                                 data-id={value.id}
                                 name={sectionId+value.questionId+value.id}
                                 defaultValue={defaultValue}
+                                id={sectionId+value.questionId+value.id}
                             />
-                            <label>{value.name}</label>
+                            <label htmlFor={sectionId+value.questionId+value.id}>{value.name}</label>
 
                         </span>
                     </>
@@ -509,12 +507,14 @@ export default class componentName extends Component {
                                 data-parent={value.parentId}
                                 onBlur={this.changeSelection}
                                 data-id={value.id}
+                                id={sectionId+value.questionId+value.id}
                                 name={sectionId+value.questionId+value.id}
                                 defaultValue={defaultValue}
+
                             >
 
                             </textarea>
-                            <label>{value.name}</label>
+                            <label htmlFor={sectionId+value.questionId+value.id}>{value.name}</label>
 
                         </span>
                     </>
@@ -522,21 +522,23 @@ export default class componentName extends Component {
                 {value.type === 'radio' &&
                     <>
                         {value.values.map((cf, ind) => {
-                            return (
-                                <span className="active" key={sectionId+value.questionId+value.id}>
 
+                            return (
+                                
+                                <span className="active" key={ind}>
+                                    <label>
                                     <input
                                         type="radio"
                                         checked={cf.value === defaultValue}
                                         value={cf.value}
-                                        name={sectionId+value.questionId+value.id}
+                                        name={sectionId+value.questionId+value.id+index}
                                         data-id={value.id}
                                         data-section={sectionId}
                                         data-question={value.questionId}
                                         data-parent={value.parentId}
                                         onChange={this.changeSelection}
                                     />
-                                    <label>{cf.value}</label>
+                                    {cf.value}</label>
 
 
                                     {cf.customFieldsSync &&
@@ -568,14 +570,15 @@ export default class componentName extends Component {
                                         type="checkbox"
                                         checked={cf.value === defaultValue}
                                         value={cf.value}
-                                        name={sectionId+value.questionId+value.id}
+                                        name={sectionId+value.questionId+value.id+index}
                                         data-id={value.id}
                                         data-section={sectionId}
                                         data-question={value.questionId}
                                         data-parent={value.parentId}
                                         onChange={this.changeSelection}
+                                        id={sectionId+value.questionId+value.id+ind}
                                     />
-                                    <label>{cf.value}</label>
+                                    <label htmlFor={sectionId+value.questionId+value.id+ind}>{cf.value}</label>
 
                                     {cf.customFieldsSync &&
                                         <div className={cf.value === defaultValue ? "conditionalCF active" : "conditionalCF"}>

@@ -7,6 +7,8 @@ import Global from '../../Global';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import swal from 'sweetalert';
 import moment from 'moment';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { Redirect } from 'react-router-dom';
 import ModalNuevaSesiondeCalibracion from './ModalNuevaSesiondeCalibracion';
 import ModalEditarCalibracion from './ModalEditarCalibracion';
@@ -208,7 +210,7 @@ export default class Calibraciones extends Component {
                                         <th>Hasta</th>
                                         <th>Abierto</th>
                                         <th>Fecha de creación</th>
-                                        <th>Acciones</th>
+                                        <th className="tableIconsFormularios">Acciones</th>
                                     </tr>
                                 </thead>
                                 {calibraciones?.map(mon => {
@@ -224,9 +226,9 @@ export default class Calibraciones extends Component {
                                                 <td>{moment(mon.endDate).format('DD/MM/YYYY')}</td>
                                                 <td>{mon.status_open ? 'Open' : 'Close'}</td>
                                                 <td>{moment(mon.createdAt).format('DD/MM/YYYY  HH:mm')}</td>
-                                                <td>
-                                                    <button type="button" data-id={mon.id} onClick={this.editarCalibracion}>Editar</button>
-                                                    <button data-id={mon.id} type="button" onClick={this.deleteCal}>Eliminar</button>
+                                                <td className="tableIconstableIconsFormularios">
+                                                    <button type="button" data-id={mon.id} onClick={this.editarCalibracion}><EditIcon style={{ fontSize: 15 }} /></button>
+                                                    <button data-id={mon.id} type="button" onClick={this.deleteCal}><DeleteIcon style={{ fontSize: 15 }} /></button>
                                                 </td>
                                                 <td></td>
                                             </tr>

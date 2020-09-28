@@ -651,6 +651,11 @@ h4 {
   justify-content: space-between;
 } 
  
+.tableIconstableIconsFormularios {
+  display: flex;
+  justify-content: space-between;
+} 
+
 .btnClose {
   background-color: white;
   color: black;
@@ -729,16 +734,21 @@ tr {
 
 
 .btnDefault {
-  border: 1px solid #9e9e9e33;
-  font-size: 10px;
-  font-weight: 800;
-  border-radius: 5px;
-  padding: 10px;
+  bottom: 21px;
+  height: 38px;
+  border-radius: 3px;
+  width: 185px;
+  padding: 7px;
+  font-size: 11px;
+  color: #313131;
+  border: 1px solid #495057;
   transition: all 0.15s ease-in-out;
 }
 
 .btnDefault:hover {
-  border: 1px solid #9e9e9e99;
+  background-color: #495057;
+  border: 1px solid #495057;
+  color: white;
 }
 
 .btnDefaultLight {
@@ -750,7 +760,7 @@ tr {
 .containerDefaultBotons {
   display: flex;
   justify-content: space-between;
-  width: 431px;
+  width: 600px;
 }
 
 
@@ -787,6 +797,7 @@ tr {
 .btnEnviarCond {
   margin-bottom: 10px;
   float: right;
+  padding: 10px;
 }
 
 .flexAlign {
@@ -907,6 +918,11 @@ tr {
 
 .margin-bottom-10 {
   margin-bottom: 10px;
+}
+
+
+.margin-bottom-20 {
+  margin-bottom: 20px;
 }
 /* DARK MODE */
 

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import SiderbarLeft from '../SidebarLeft/SiderbarLeft';
 import UserAdminHeader from '../Users/userAdminHeader/userAdminHeader';
 import ModalNuevoTipoCalibracion from './ModalNuevoTipoCalibracion';
-
+import DeleteIcon from '@material-ui/icons/Delete';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import Global from '../../Global';
 import swal from 'sweetalert';
@@ -119,27 +119,28 @@ export default class TiposDeCalibraciones extends Component {
 
                 <div className="section-content">
                     <h4>Calibraciones</h4>
+                    <div className="containerDefaultBotons">
                     <button
-                        className="btn btn-primary"
+                        className="btnDefault margin-top-10 margin-bottom-20"
                         onClick={(e) => {
                             e.preventDefault();
                             this.abrirModalNuevoTipoCalibracion();
                         }}
                     >
-                        +
+                        Agregar calibración
                     </button>
-
+                    </div>
                     <section>
                         {response && response.length > 0 ?
                             <>
-                                <h4>Tipos de calibraciones</h4>
+                                <h4 className="margin-bottom-20">Tipos de calibraciones</h4>
                                 <table>
                                     <thead>
                                         <tr>
                                             <th>Nombre</th>
                                             <th>Descripción</th>
                                             <th>Fecha de creación</th>
-                                            <th>Acciones</th>
+                                            <th className="tableIconsFormularios">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -148,8 +149,8 @@ export default class TiposDeCalibraciones extends Component {
                                                 <td>{item.name}</td>
                                                 <td>{item.description}</td>
                                                 <td>{moment(item.createdAt).format("DD/MM/YYYY")}</td>
-                                                <td>
-                                                    <button
+                                                <td >
+                                                    <button 
                                                         onClick={
                                                             (e) => {
                                                                 e.preventDefault();
@@ -157,7 +158,7 @@ export default class TiposDeCalibraciones extends Component {
                                                             }
                                                         }
                                                     >
-                                                        Eliminar
+                                                        <DeleteIcon style={{ fontSize: 15 }} />
                                                     </button>
                                                 </td>
                                             </tr>

@@ -809,7 +809,6 @@ body {
 
 label {
   position: absolute;
-  top: -18px;
   color: #999;
   font-size: 12px;
   font-weight: 300;
@@ -832,7 +831,7 @@ label {
 
 .float-label {
   left: 0;
-  top: 7px;
+  top: -18px;
   font-size: 16px;
   pointer-events: none;
 }
@@ -840,7 +839,7 @@ label {
 /* active state */
 
 .form-control:focus~.float-label, .form-control:valid~.float-label {
-  top: -18px;
+
   font-size: 12px;
 }
 

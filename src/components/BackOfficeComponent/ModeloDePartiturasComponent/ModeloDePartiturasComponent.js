@@ -131,7 +131,7 @@ export default class ModeloDePartiturasComponent extends Component {
                             <button className="btnDefault" onClick={(e) => {
                                 e.preventDefault();
                                 this.crearNuevo();
-                            }}>+ NUEVO MODELO</button>
+                            }}>NUEVO MODELO</button>
 
                         </div>
                     </div>

@@ -331,7 +331,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                                                             onChange={this.handleChangeQuestion}
                                                         />
                                                         <button
-                                                            className="btnDefault"
+                                                            
                                                             onClick={(e) => { e.preventDefault(); this.eliminar(seccion); }}
                                                         >
                                                             <DeleteIcon />

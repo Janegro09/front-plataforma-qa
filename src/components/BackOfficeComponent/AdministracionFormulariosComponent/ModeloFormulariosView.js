@@ -22,7 +22,7 @@ export default class componentName extends Component {
         e.preventDefault();
         const { name, value } = e.target;
         let { responses } = this.state;
-        const { question, section, parent } = e.target.dataset;
+        const { question, section, parent, id } = e.target.dataset;
 
         const changeValue = ({ id, value, parent }, object) => {
             // Buscar en object el padre y le agregamos un child
@@ -60,11 +60,11 @@ export default class componentName extends Component {
             // Entonces significa que estamos respondiendo una pregunta padre
             q.response = {
                 data: value,
-                id: name
+                id
             }
         } else if (respIndex !== -1) {
             // Entonces estamos contestando una pregunta hija
-            let c = changeValue({ id: name, value, parent }, q.response);
+            changeValue({ id, value, parent }, q.response);
 
         } else return false;
 
@@ -158,6 +158,7 @@ export default class componentName extends Component {
                             data-section={sectionId}
                             value={defaultValue}
                             name={value.id}
+                            data-id={value.id}
                             onChange={this.changeSelection}
                         >
                             <option>Selecciona...</option>
@@ -200,6 +201,7 @@ export default class componentName extends Component {
                                 type="text"
                                 placeholder={value.name}
                                 data-section={sectionId}
+                                data-id={value.id}
                                 data-question={value.questionId}
                                 data-parent={value.parentId}
                                 onBlur={this.changeSelection}
@@ -220,6 +222,7 @@ export default class componentName extends Component {
                                 data-parent={value.parentId}
                                 onBlur={this.changeSelection}
                                 name={value.id}
+                                data-id={value.id}
                                 defaultValue={defaultValue}
                             >
 
@@ -233,18 +236,20 @@ export default class componentName extends Component {
                         {value.values.map(cf => {
                             return (
                                 <span key={cf.value}>
-                                    <label>{cf.value}</label>
+                                    <label>
 
                                     <input
                                         type="radio"
                                         checked={cf.value === defaultValue}
                                         value={cf.value}
-                                        name={value.id}
+                                        name={sectionId+value.questionId+value.id+index}
                                         data-section={sectionId}
+                                        data-id={value.id}
                                         data-question={value.questionId}
                                         data-parent={value.parentId}
                                         onChange={this.changeSelection}
                                     />
+                                    {cf.value}</label>
 
                                     {cf.customFieldsSync &&
                                         <div className={cf.value === defaultValue ? "conditionalCF active" : "conditionalCF"}>
@@ -270,18 +275,19 @@ export default class componentName extends Component {
                         {value.values.map(cf => {
                             return (
                                 <span key={cf.value}>
-                                    <label>{cf.value}</label>
-
+                                    <label>
                                     <input
                                         type="checkbox"
                                         checked={cf.value === defaultValue}
                                         value={cf.value}
-                                        name={value.id}
+                                        name={sectionId+value.questionId+value.id+index}
                                         data-section={sectionId}
+                                        data-id={value.id}
                                         data-question={value.questionId}
                                         data-parent={value.parentId}
                                         onChange={this.changeSelection}
                                     />
+                                    {cf.value}</label>
 
                                     {cf.customFieldsSync &&
                                         <div className={cf.value === defaultValue ? "conditionalCF active" : "conditionalCF"}>

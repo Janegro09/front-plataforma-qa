@@ -21,7 +21,7 @@ export default class FormularioView extends Component {
     changeSelection = (e) => {
         const { name, value } = e.target;
         let { responses } = this.state;
-        const { question, section, parent } = e.target.dataset;
+        const { question, section, parent, id } = e.target.dataset;
 
         const changeValue = ({ id, value, parent }, object) => {
             // Buscar en object el padre y le agregamos un child
@@ -58,12 +58,12 @@ export default class FormularioView extends Component {
             // Entonces significa que estamos respondiendo una pregunta padre
             q.response = {
                 data: value,
-                id: name
+                id
             }
         } else if (respIndex !== -1) {
             // Entonces estamos contestando una pregunta hija
 
-            changeValue({ id: name, value, parent }, q.response);
+            changeValue({ id, value, parent }, q.response);
         } else return false;
 
         if (respIndex !== -1) {
@@ -72,8 +72,6 @@ export default class FormularioView extends Component {
             responses.push(q);
         }
         this.setState({ responses });
-
-        console.log(responses);
     }
 
     componentDidMount = () => {
@@ -97,8 +95,6 @@ export default class FormularioView extends Component {
             if (response.data.Data.length === 0) {
                 this.setState({ redirect: '/administracion-formularios/formularios' })
             } else {
-
-                console.log(response.data.Data[0]);
                 this.setState({
                     loading: false,
                     data: response.data.Data[0]
@@ -145,7 +141,7 @@ export default class FormularioView extends Component {
         let index = (Date.now() * Math.random()).toString();
 
         let defaultValue = this.getDefaultValue(value.id, value.questionId, sectionId);
-        // console.log(defaultValue);
+        
         let childs = []
         return (
             <article key={index}>
@@ -158,6 +154,7 @@ export default class FormularioView extends Component {
                             data-question={value.questionId}
                             data-parent={value.parentId}
                             data-section={sectionId}
+                            data-id={value.id}
                             value={defaultValue}
                             name={value.id}
                             onChange={this.changeSelection}
@@ -205,6 +202,7 @@ export default class FormularioView extends Component {
                                 data-question={value.questionId}
                                 data-parent={value.parentId}
                                 onBlur={this.changeSelection}
+                                data-id={value.id}
                                 name={value.id}
                                 defaultValue={defaultValue}
                             />
@@ -220,6 +218,7 @@ export default class FormularioView extends Component {
                             <textarea
                                 data-section={sectionId}
                                 data-question={value.questionId}
+                                data-id={value.id}
                                 data-parent={value.parentId}
                                 onBlur={this.changeSelection}
                                 name={value.id}
@@ -238,18 +237,19 @@ export default class FormularioView extends Component {
                         {value.values.map((cf, ind) => {
                             return (
                                 <span className="active">
-
+                                    <label>
                                     <input
                                         type="radio"
                                         checked={cf.value === defaultValue}
                                         value={cf.value}
-                                        name={value.id}
+                                        data-id={value.id}
+                                        name={sectionId+value.questionId+value.id+index}
                                         data-section={sectionId}
                                         data-question={value.questionId}
                                         data-parent={value.parentId}
                                         onChange={this.changeSelection}
                                     />
-                                    <label>{cf.value}</label>
+                                    {cf.value}</label>
 
 
                                     {cf.customFieldsSync &&
@@ -276,18 +276,19 @@ export default class FormularioView extends Component {
                         {value.values.map((cf, ind) => {
                             return (
                                 <span className="active">
-
+                                    <label>
                                     <input
                                         type="checkbox"
                                         checked={cf.value === defaultValue}
                                         value={cf.value}
-                                        name={value.id}
+                                        data-id={value.id}
+                                        name={sectionId+value.questionId+value.id+index}
                                         data-section={sectionId}
                                         data-question={value.questionId}
                                         data-parent={value.parentId}
                                         onChange={this.changeSelection}
                                     />
-                                    <label>{cf.value}</label>
+                                    {cf.value}</label>
 
                                     {cf.customFieldsSync &&
                                         <div className={cf.value === defaultValue ? "conditionalCF active" : "conditionalCF"}>

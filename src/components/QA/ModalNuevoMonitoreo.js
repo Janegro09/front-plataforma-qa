@@ -4,6 +4,7 @@ import swal from 'sweetalert';
 import Global from '../../Global';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import './Modal.css'
+import { Redirect } from 'react-router-dom';
 
 export default class ModalNuevoMonitoreo extends Component {
 
@@ -11,6 +12,7 @@ export default class ModalNuevoMonitoreo extends Component {
         loading: false,
         users: null,
         usuariosConFiltro: null,
+        redirect: false,
         encontrado: null,
         usuarioSeleccionado: null,
         programs: [],
@@ -162,8 +164,19 @@ export default class ModalNuevoMonitoreo extends Component {
                 sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 this.setState({ loading: true })
                 if (response.data.Success) {
-                    swal("Felicidades!", "Se ha creado el monitoreo correctamente", "success");
-                    window.location.reload(window.location.href);
+                    
+                    if(response.data.Data._id) {
+                        this.setState({ redirect: `/monitoreo/${response.data.Data._id}` })
+                    } else {
+                        swal("Error!", "Error al redirigir al monitoreo creado", "error").then(() => {
+                            window.location.reload(window.location.href);
+                        })
+
+                    } 
+                } else {
+                    swal("Error", response.data.Message, 'error').then(() => {
+                        window.location.reload(window.location.href);
+                    })
                 }
 
             })
@@ -183,8 +196,11 @@ export default class ModalNuevoMonitoreo extends Component {
 
     render() {
 
-        const { loading, usuariosConFiltro, dataToSend, usuarioSeleccionado, programs, buscadorUsuario } = this.state;
+        const { redirect, loading, usuariosConFiltro, dataToSend, usuarioSeleccionado, programs, buscadorUsuario } = this.state;
 
+        if(redirect) {
+            return <Redirect to={redirect}/>
+        }
         return (
             <div className="modal" id="modal-casero">
                 {loading &&
@@ -280,7 +296,7 @@ export default class ModalNuevoMonitoreo extends Component {
                     <hr />
 
                     <section>
-                        <button type="button" className="btn" onClick={this.crearMonitoreo}>Enviar</button>
+                        <button type="button" className="btn" onClick={this.crearMonitoreo}>Crear</button>
                     </section>
                     
 

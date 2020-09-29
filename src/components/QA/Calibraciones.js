@@ -172,7 +172,7 @@ export default class Calibraciones extends Component {
 
     verMasCalibraciones = () => {
         let { totalAMostrar } = this.state;
-        totalAMostrar += 1;
+        totalAMostrar += 5;
 
         this.setState({ totalAMostrar })
     }

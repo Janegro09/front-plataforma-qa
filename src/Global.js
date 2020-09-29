@@ -1,4 +1,4 @@
-const BASE = "https://api_plataformaqa.solucionesdigitalesteco.com.ar/api/v1"
+const BASE = "https://testingapi_plataformaqa.solucionesdigitalesteco.com.ar/api/v1"
 
 
 let Global = {

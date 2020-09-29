@@ -39,7 +39,7 @@ export default class Monitoreo extends Component {
             program: []
         },
         usuarioSeleccionado: null,
-        toggleBuscador: false
+        toggleBuscador: true
     }
 
     nuevoMonitoreo = (e) => {

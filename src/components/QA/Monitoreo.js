@@ -133,7 +133,6 @@ export default class Monitoreo extends Component {
         const bearer = `Bearer ${token}`
         axios.get(Global.monitoreos + query, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            console.log(response.data.Data);
             this.setState({
                 monitoreos: response.data.Data,
                 loading: false,

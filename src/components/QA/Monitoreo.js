@@ -13,6 +13,15 @@ import HearingIcon from '@material-ui/icons/Hearing';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Breadcrumbs } from '@material-ui/core';
 
+import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
+import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
+import CheckIcon from '@material-ui/icons/Check';
+import TimerIcon from '@material-ui/icons/Timer';
+import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import GetAppIcon from '@material-ui/icons/GetApp';
+
 export default class Monitoreo extends Component {
     state = {
         loading: false,
@@ -671,12 +680,16 @@ export default class Monitoreo extends Component {
                                                 <td>{moment(mon.transactionDate).format('DD/MM/YYYY  HH:mm')}</td>
                                                 <td>{mon.modifiedBy.length}</td>
                                                 <td>{mon.program}</td>
-                                                <td>{mon.status}</td>
-                                                <td>{mon.disputado.toString()}</td>
-                                                <td>{mon.invalidated.toString()}</td>
-                                                <td>{mon.evaluated.toString()}</td>
-                                                <td>{mon.improvment}</td>
+                                                <td>{(mon.status === 'pending' ? <TimerIcon className="timerIcon" /> : (mon.status === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon className="PlayArrowRoundedIcon" />))}</td>
+                                                <td className="tablaVariables tableIcons"><div className={ mon.disputado ? "estadoActivo" : "estadoInactivo"}></div></td>
+                                                <td className="tablaVariables tableIcons"><div className={ mon.invalidated ? "estadoActivo" : "estadoInactivo"}></div></td>
+                                                <td className="tablaVariables tableIcons"><div className={ mon.evaluated ? "estadoActivo" : "estadoInactivo"}></div></td>
                                                 <td>
+                                                {(mon.improvment === "+" ?
+                                                    <ExpandLessIcon className="arrowUp" /> : (mon.improvment === "+-" ?
+                                                        <ImportExportRoundedIcon /> : <ExpandMoreIcon className="arrowDown" />))}
+                                                </td>
+                                                <td className="buttonsMons">
                                                     <button type="button" data-id={mon.id} onClick={this.editar}>
 
                                                         {mon.modifiedBy.length === 0 ? 'Responder' : 'Editar'}

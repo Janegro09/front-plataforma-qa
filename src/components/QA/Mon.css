@@ -106,3 +106,18 @@
 .botonera-exportar button {
     margin-right: 10px;
 }
+
+.buttonsMons {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.buttonsMons button {
+    display: block;
+    width: 100%;
+    margin: 5px 0;
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: #03a9f4;
+    color: #fff;
+}

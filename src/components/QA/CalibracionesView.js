@@ -20,7 +20,8 @@ export default class componentName extends Component {
             redirect: false,
             calibration: false,
             id: false,
-            printScreen: true
+            printScreen: false,
+            viewHeaders: false
         }
     }
 
@@ -32,7 +33,7 @@ export default class componentName extends Component {
         })
 
         document.addEventListener('click', () => {
-            this.setState({ printScreen: false })
+            this.setState({ viewHeaders: true })
         })
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser
@@ -46,8 +47,12 @@ export default class componentName extends Component {
 
                 this.setState({
                     loading: false,
-                    calibration: response.data.Data[0]
+                    calibration: response.data.Data[0],
                 })
+
+                setTimeout(() =>{
+                    this.setState({ printScreen: true })
+                }, 500)
 
             } else {
                 this.setState({ redirect: '/calibraciones' })
@@ -69,7 +74,7 @@ export default class componentName extends Component {
     }
 
     render() {
-        const { printScreen, redirect, loading, calibration } = this.state;
+        const { viewHeaders, printScreen, redirect, loading, calibration } = this.state;
 
         if (redirect) {
             return <Redirect to={redirect} />
@@ -77,7 +82,7 @@ export default class componentName extends Component {
 
         return (
             <>
-                {!printScreen &&
+                {viewHeaders &&
 
                     <div className="header">
                         {/* BOTON DE SALIDA */}
@@ -87,6 +92,7 @@ export default class componentName extends Component {
                     </div>
                 }
                 {printScreen &&
+                    // console.log('imprimimos')
                     window.print()
                 }
 

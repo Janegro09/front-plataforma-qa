@@ -69,7 +69,7 @@ export default class ModalNuevoMonitoreo extends Component {
         let { buscadorUsuarioCalibradores, usuarioSeleccionadoCalibradores } = this.state;
 
         buscadorUsuarioCalibradores = "";
-        if(!usuarioSeleccionadoCalibradores.includes(user.id)){
+        if (!usuarioSeleccionadoCalibradores.includes(user.id)) {
 
             usuarioSeleccionadoCalibradores.push(user)
         }
@@ -94,15 +94,15 @@ export default class ModalNuevoMonitoreo extends Component {
         axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
             let users = response.data.Data;
             let usuariosFiltradosExperto = response.data.Data;
-            
+
             token = response.data.loggedUser.token
             bearer = `Bearer ${token}`
 
-            axios.get(Global.calibrationTypes,{ headers: { Authorization: bearer } }).then(response => {
+            axios.get(Global.calibrationTypes, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                
+
                 let calibrationTypes = []
-                if(response.data.Data) {
+                if (response.data.Data) {
                     calibrationTypes = response.data.Data;
                 }
                 this.setState({
@@ -133,7 +133,7 @@ export default class ModalNuevoMonitoreo extends Component {
         e.preventDefault();
         const { value, id } = e.target;
         let { dataToSend } = this.state;
-        if(id) {
+        if (id) {
             dataToSend[id] = value;
         }
 
@@ -145,15 +145,15 @@ export default class ModalNuevoMonitoreo extends Component {
         e.preventDefault();
         let { dataToSend, usuarioSeleccionadoCalibradores } = this.state;
 
-        for(let u of usuarioSeleccionadoCalibradores) {
-            if(!dataToSend.calibrators.includes(u.id)) {
+        for (let u of usuarioSeleccionadoCalibradores) {
+            if (!dataToSend.calibrators.includes(u.id)) {
                 dataToSend.calibrators.push(u.id);
             }
         }
 
         // Chequeamos los datos ingresados
-        for(let data in dataToSend) {
-            if(!dataToSend[data]) {
+        for (let data in dataToSend) {
+            if (!dataToSend[data]) {
                 return false;
             }
         }
@@ -192,8 +192,8 @@ export default class ModalNuevoMonitoreo extends Component {
         const { id } = e.target.dataset;
         let { usuarioSeleccionadoCalibradores } = this.state;
 
-        if(id) {
-            if(usuarioSeleccionadoCalibradores.length > 1) {
+        if (id) {
+            if (usuarioSeleccionadoCalibradores.length > 1) {
                 usuarioSeleccionadoCalibradores = usuarioSeleccionadoCalibradores.filter(elem => elem.id !== id);
             } else {
                 usuarioSeleccionadoCalibradores = [];
@@ -208,7 +208,7 @@ export default class ModalNuevoMonitoreo extends Component {
 
     render() {
 
-        const {calibrationTypes, usuariosFiltradosCalibradores ,usuarioSeleccionadoCalibradores, buscadorUsuarioCalibradores, buscadorUsuario, usuarioSeleccionadoExperto,  loading, usuariosFiltradosExperto, dataToSend, usuarioSeleccionado } = this.state;
+        const { calibrationTypes, usuariosFiltradosCalibradores, usuarioSeleccionadoCalibradores, buscadorUsuarioCalibradores, buscadorUsuario, usuarioSeleccionadoExperto, loading, usuariosFiltradosExperto, dataToSend } = this.state;
 
         return (
             <div className="modal" id="modal-casero">
@@ -234,10 +234,10 @@ export default class ModalNuevoMonitoreo extends Component {
                             onChange={this.buscarUsuario}
                             value={buscadorUsuario}
                             className="form-control"
-                        /> 
+                        />
                         {!buscadorUsuario && usuarioSeleccionadoExperto &&
                             <small>
-                                Usuario Seleccionado: <strong>{usuarioSeleccionadoExperto.name} {usuarioSeleccionadoExperto.lastName} - {usuarioSeleccionadoExperto.id}</strong> 
+                                Usuario Seleccionado: <strong>{usuarioSeleccionadoExperto.name} {usuarioSeleccionadoExperto.lastName} - {usuarioSeleccionadoExperto.id}</strong>
                             </small>
                         }
 
@@ -275,7 +275,7 @@ export default class ModalNuevoMonitoreo extends Component {
                             onChange={this.buscarUsuarioColaborador}
                             value={buscadorUsuarioCalibradores}
                             className="form-control"
-                        /> 
+                        />
                         {!buscadorUsuarioCalibradores && usuarioSeleccionadoCalibradores.length > 0 &&
                             <div className="calibradores">
                                 {usuarioSeleccionadoCalibradores.map(v => {
@@ -323,7 +323,7 @@ export default class ModalNuevoMonitoreo extends Component {
                         {/* Case ID */}
                         <article>
                             <label htmlFor="caseId">ID del caso</label>
-                            <input className="form-control" type="text" id="caseId" required onChange={this.changeCalibrationsValues} value={dataToSend.caseId}/>
+                            <input className="form-control" type="text" id="caseId" required onChange={this.changeCalibrationsValues} value={dataToSend.caseId} />
                         </article>
 
                         <article>
@@ -332,10 +332,10 @@ export default class ModalNuevoMonitoreo extends Component {
                                 <option>Selecciona...</option>
                                 {calibrationTypes &&
                                     calibrationTypes.map(v => {
-                                    return <option key={v._id} value={v.name}>{v.name}</option>
+                                        return <option key={v._id} value={v.name}>{v.name}</option>
                                     })
                                 }
-                                
+
                             </select>
                         </article>
                     </section>
@@ -345,7 +345,7 @@ export default class ModalNuevoMonitoreo extends Component {
                     <section>
                         <button type="button" className="btn" onClick={this.crearCalibracion}>Enviar</button>
                     </section>
-                    
+
 
                 </div>
             </div>

@@ -31,7 +31,7 @@ export default class ModalNuevoMonitoreo extends Component {
     }
 
     setDefaultData = () => {
-        let { calibration, usuarioSeleccionadoExperto, usuarioSeleccionadoCalibradores, dataToSend  } = this.state;
+        let { calibration, usuarioSeleccionadoExperto, usuarioSeleccionadoCalibradores, dataToSend } = this.state;
 
         dataToSend = {
             calibrationType: calibration.calibrationType,
@@ -44,10 +44,10 @@ export default class ModalNuevoMonitoreo extends Component {
         usuarioSeleccionadoExperto = calibration.expert;
         usuarioSeleccionadoCalibradores = dataToSend.calibrators;
 
-        if(calibration.startDate) {
+        if (calibration.startDate) {
             dataToSend.startDate = calibration.startDate
         }
-        if(calibration.endDate) {
+        if (calibration.endDate) {
             dataToSend.endDate = calibration.endDate
         }
 
@@ -98,7 +98,7 @@ export default class ModalNuevoMonitoreo extends Component {
         let { buscadorUsuarioCalibradores, usuarioSeleccionadoCalibradores } = this.state;
 
         buscadorUsuarioCalibradores = "";
-        if(!usuarioSeleccionadoCalibradores.includes(user.id)){
+        if (!usuarioSeleccionadoCalibradores.includes(user.id)) {
 
             usuarioSeleccionadoCalibradores.push(user)
         }
@@ -127,24 +127,24 @@ export default class ModalNuevoMonitoreo extends Component {
         axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
             let users = response.data.Data;
             let usuariosFiltradosExperto = response.data.Data;
-            
+
             token = response.data.loggedUser.token
             bearer = `Bearer ${token}`
 
-            axios.get(Global.calibrationTypes,{ headers: { Authorization: bearer } }).then(response => {
+            axios.get(Global.calibrationTypes, { headers: { Authorization: bearer } }).then(response => {
                 let calibrationTypes = []
-                if(response.data.Data) {
+                if (response.data.Data) {
                     calibrationTypes = response.data.Data;
                 }
 
                 token = response.data.loggedUser.token
                 bearer = `Bearer ${token}`
 
-                axios.get(Global.calibration + '/' + id,{ headers: { Authorization: bearer } }).then(response => {
+                axios.get(Global.calibration + '/' + id, { headers: { Authorization: bearer } }).then(response => {
                     sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
-                    if(response.data.Data) {
-    
+                    if (response.data.Data) {
+
                         this.setState({
                             calibrationTypes,
                             users,
@@ -206,7 +206,7 @@ export default class ModalNuevoMonitoreo extends Component {
         e.preventDefault();
         const { value, id } = e.target;
         let { dataToSend } = this.state;
-        if(id) {
+        if (id) {
             dataToSend[id] = value;
         }
 
@@ -218,8 +218,8 @@ export default class ModalNuevoMonitoreo extends Component {
         e.preventDefault();
         let { dataToSend, usuarioSeleccionadoCalibradores, id } = this.state;
         dataToSend.calibrators = [];
-        for(let u of usuarioSeleccionadoCalibradores) {
-            if(!dataToSend.calibrators.includes(u.id)) {
+        for (let u of usuarioSeleccionadoCalibradores) {
+            if (!dataToSend.calibrators.includes(u.id)) {
                 dataToSend.calibrators.push(u.id);
             }
         }
@@ -258,7 +258,7 @@ export default class ModalNuevoMonitoreo extends Component {
     verInforme = () => {
         const { id } = this.state;
 
-        if(id) {
+        if (id) {
             this.setState({ redirect: '/calibraciones/' + id });
         }
 
@@ -268,8 +268,8 @@ export default class ModalNuevoMonitoreo extends Component {
         const { id } = e.target.dataset;
         let { usuarioSeleccionadoCalibradores } = this.state;
 
-        if(id) {
-            if(usuarioSeleccionadoCalibradores.length > 1) {
+        if (id) {
+            if (usuarioSeleccionadoCalibradores.length > 1) {
                 usuarioSeleccionadoCalibradores = usuarioSeleccionadoCalibradores.filter(elem => elem.id !== id);
             } else {
                 usuarioSeleccionadoCalibradores = [];
@@ -284,10 +284,22 @@ export default class ModalNuevoMonitoreo extends Component {
 
     render() {
 
-        const {redirect, calibration, calibrationTypes, usuariosFiltradosCalibradores ,usuarioSeleccionadoCalibradores, buscadorUsuarioCalibradores, buscadorUsuario, usuarioSeleccionadoExperto,  loading, usuariosFiltradosExperto, dataToSend, usuarioSeleccionado } = this.state;
+        const {
+            redirect,
+            calibration,
+            calibrationTypes,
+            usuariosFiltradosCalibradores,
+            usuarioSeleccionadoCalibradores,
+            buscadorUsuarioCalibradores,
+            buscadorUsuario,
+            usuarioSeleccionadoExperto,
+            loading,
+            usuariosFiltradosExperto,
+            dataToSend
+        } = this.state;
 
-        if(redirect) {
-            return <Redirect to={redirect}/>
+        if (redirect) {
+            return <Redirect to={redirect} />
         }
 
         return (
@@ -306,7 +318,7 @@ export default class ModalNuevoMonitoreo extends Component {
                     </div>
 
                     <section>
-                        {calibration.calibration?.error && 
+                        {calibration.calibration?.error &&
                             <div className="alert alert-warning">{calibration.calibration?.error}</div>
                         }
                         {!calibration.calibration?.error &&
@@ -323,10 +335,10 @@ export default class ModalNuevoMonitoreo extends Component {
                             onChange={this.buscarUsuario}
                             value={buscadorUsuario}
                             className="form-control"
-                        /> 
+                        />
                         {!buscadorUsuario && usuarioSeleccionadoExperto &&
                             <small>
-                                Usuario Seleccionado: <strong>{usuarioSeleccionadoExperto.name} {usuarioSeleccionadoExperto.lastName} - {usuarioSeleccionadoExperto.id}</strong> 
+                                Usuario Seleccionado: <strong>{usuarioSeleccionadoExperto.name} {usuarioSeleccionadoExperto.lastName} - {usuarioSeleccionadoExperto.id}</strong>
                             </small>
                         }
 
@@ -364,7 +376,7 @@ export default class ModalNuevoMonitoreo extends Component {
                             onChange={this.buscarUsuarioColaborador}
                             value={buscadorUsuarioCalibradores}
                             className="form-control"
-                        /> 
+                        />
                         {!buscadorUsuarioCalibradores && usuarioSeleccionadoCalibradores.length > 0 &&
                             <div className="calibradores">
                                 {usuarioSeleccionadoCalibradores.map(v => {
@@ -412,7 +424,7 @@ export default class ModalNuevoMonitoreo extends Component {
                         {/* Case ID */}
                         <article>
                             <label htmlFor="caseId">ID del caso</label>
-                            <input className="form-control" type="text" id="caseId" required onChange={this.changeCalibrationsValues} value={dataToSend.caseId}/>
+                            <input className="form-control" type="text" id="caseId" required onChange={this.changeCalibrationsValues} value={dataToSend.caseId} />
                         </article>
 
                         <article>
@@ -421,10 +433,10 @@ export default class ModalNuevoMonitoreo extends Component {
                                 <option>Selecciona...</option>
                                 {calibrationTypes &&
                                     calibrationTypes.map(v => {
-                                    return <option key={v._id} value={v.name}>{v.name}</option>
+                                        return <option key={v._id} value={v.name}>{v.name}</option>
                                     })
                                 }
-                                
+
                             </select>
                         </article>
                         <article>
@@ -432,7 +444,7 @@ export default class ModalNuevoMonitoreo extends Component {
                             <select value={dataToSend.status_open} onChange={this.changeCalibrationsValues} id="status_open">
                                 <option option="true">Abierto</option>
                                 <option option="false">Cerrado</option>
-                                
+
                             </select>
                         </article>
                         <article>
@@ -450,8 +462,6 @@ export default class ModalNuevoMonitoreo extends Component {
                     <section>
                         <button type="button" className="btn" onClick={this.crearCalibracion}>Enviar</button>
                     </section>
-                    
-
                 </div>
             </div>
         )

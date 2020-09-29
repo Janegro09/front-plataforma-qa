@@ -267,14 +267,9 @@ export default class Formularios extends Component {
             // ACÁ VAN A QUEDAR LAS DE M
             let allForms = response.data.Data.filter(form => form.section === 'M');
 
-            this.setState({
-                allForms,
-                loading: false
-            })
-
             axios.get(Global.getForms, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                this.setState({ models: response.data.Data, modelsFiltrado: response.data.Data })
+                this.setState({ allForms ,models: response.data.Data, modelsFiltrado: response.data.Data, loading: false })
             })
 
         })

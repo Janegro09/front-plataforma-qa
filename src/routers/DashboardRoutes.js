@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 // Imports
 import Login from '../components/Login/Login'
@@ -50,8 +50,15 @@ import CalibracionesView from '../components/QA/CalibracionesView';
 
 export default class DashboardRoutes extends Component {
   render() {
+
+    let token = JSON.parse(sessionStorage.getItem('token'));
+    
     return (
       <BrowserRouter>
+        {
+          token === null &&
+          <Redirect to="/" />
+        }
         <Switch>
           <Route exact path="/" component={Login} />
           <Route path="/addUser" component={addUserComponent} />

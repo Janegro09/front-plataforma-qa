@@ -9,18 +9,16 @@ import ModalNuevoMonitoreo from './ModalNuevoMonitoreo';
 import './Mon.css';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
-import HearingIcon from '@material-ui/icons/Hearing';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Breadcrumbs } from '@material-ui/core';
 
 import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
-import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import TimerIcon from '@material-ui/icons/Timer';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import GetAppIcon from '@material-ui/icons/GetApp';
+
 
 export default class Monitoreo extends Component {
     state = {
@@ -121,7 +119,7 @@ export default class Monitoreo extends Component {
 
                 tempQuery = temp;
             }
-            if(tempQuery !== "") {
+            if (tempQuery !== "") {
                 let data = `${b}=${tempQuery}`;
                 query = !!query ? `${query}&${data}` : `?${data}`;
             }
@@ -324,7 +322,7 @@ export default class Monitoreo extends Component {
 
         this.setState({ loading: true });
 
-        axios.post(Global.monitoreos+'/exports', dataToSend , config ).then(response => {
+        axios.post(Global.monitoreos + '/exports', dataToSend, config).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 loading: false
@@ -332,7 +330,7 @@ export default class Monitoreo extends Component {
 
             let p = response.data.Data || false;
 
-            if(p.tempId) {
+            if (p.tempId) {
                 let win = window.open(Global.download + '/' + p.tempId, '_blank');
                 win.focus();
             }
@@ -356,8 +354,8 @@ export default class Monitoreo extends Component {
         let { monitoreosSeleccionados, monitoreos } = this.state;
 
         monitoreosSeleccionados = [];
-        for(let m of monitoreos) {
-            if(monitoreosSeleccionados.includes(m.id)) continue;
+        for (let m of monitoreos) {
+            if (monitoreosSeleccionados.includes(m.id)) continue;
 
             monitoreosSeleccionados.push(m.id);
         }
@@ -379,19 +377,19 @@ export default class Monitoreo extends Component {
         const { checked } = e.target;
         let { monitoreosSeleccionados } = this.state;
 
-        if(!id) return false;
+        if (!id) return false;
 
-        if(checked) {
+        if (checked) {
             //A Agregamos la empresa al array
 
-            if(!monitoreosSeleccionados.includes(id)) {
+            if (!monitoreosSeleccionados.includes(id)) {
                 monitoreosSeleccionados.push(id);
             }
 
-        } else if(monitoreosSeleccionados.includes(id)) {
+        } else if (monitoreosSeleccionados.includes(id)) {
             // Eliminamos la empresa del array
 
-            if(monitoreosSeleccionados.length > 1) {
+            if (monitoreosSeleccionados.length > 1) {
                 monitoreosSeleccionados = monitoreosSeleccionados.slice(monitoreosSeleccionados.indexOf(id), 1);
             } else {
                 monitoreosSeleccionados = []
@@ -412,7 +410,7 @@ export default class Monitoreo extends Component {
 
 
     render() {
-        const { toggleBuscador ,monitoreosSeleccionados, loading, monitoreos, redirect, abrirModal, usuarioSeleccionadoCreatedBy, buscadorUsuarioCreatedBy, buscadorUsuario, programs, buscador, usuarioSeleccionado, usuariosConFiltro } = this.state;
+        const { toggleBuscador, monitoreosSeleccionados, loading, monitoreos, redirect, abrirModal, usuarioSeleccionadoCreatedBy, buscadorUsuarioCreatedBy, buscadorUsuario, programs, buscador, usuarioSeleccionado, usuariosConFiltro } = this.state;
 
         if (redirect) {
             return <Redirect to={redirect} />
@@ -437,17 +435,17 @@ export default class Monitoreo extends Component {
                 }
 
                 <div className="section-content">
-                <div className="flex-input-add input-add-spacebetween">
+                    <div className="flex-input-add input-add-spacebetween">
                         <h4 className="mr-2">MONITOREO</h4>
                         <div className="">
-                        <button
-                            className="btnDefault"
-                            onClick={this.nuevoMonitoreo}
-                        >
-                            Agregar monitoreo 
+                            <button
+                                className="btnDefault"
+                                onClick={this.nuevoMonitoreo}
+                            >
+                                Agregar monitoreo
                             {/* <HearingIcon /> */}
-                        </button>
-                            </div>
+                            </button>
+                        </div>
                     </div>
                     <hr />
                     <button className="btn" onClick={this.toggleBuscadorStatus}>{toggleBuscador ? 'Cerrar' : 'Abrir'} buscador</button>
@@ -692,13 +690,13 @@ export default class Monitoreo extends Component {
                                                 <td>{mon.modifiedBy.length}</td>
                                                 <td>{mon.program}</td>
                                                 <td>{(mon.status === 'pending' ? <TimerIcon className="timerIcon" /> : (mon.status === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon className="PlayArrowRoundedIcon" />))}</td>
-                                                <td className="tablaVariables tableIcons"><div className={ mon.disputado ? "estadoActivo" : "estadoInactivo"}></div></td>
-                                                <td className="tablaVariables tableIcons"><div className={ mon.invalidated ? "estadoActivo" : "estadoInactivo"}></div></td>
-                                                <td className="tablaVariables tableIcons"><div className={ mon.evaluated ? "estadoActivo" : "estadoInactivo"}></div></td>
+                                                <td className="tablaVariables tableIcons"><div className={mon.disputado ? "estadoActivo" : "estadoInactivo"}></div></td>
+                                                <td className="tablaVariables tableIcons"><div className={mon.invalidated ? "estadoActivo" : "estadoInactivo"}></div></td>
+                                                <td className="tablaVariables tableIcons"><div className={mon.evaluated ? "estadoActivo" : "estadoInactivo"}></div></td>
                                                 <td>
-                                                {(mon.improvment === "+" ?
-                                                    <ExpandLessIcon className="arrowUp" /> : (mon.improvment === "+-" ?
-                                                        <ImportExportRoundedIcon /> : <ExpandMoreIcon className="arrowDown" />))}
+                                                    {(mon.improvment === "+" ?
+                                                        <ExpandLessIcon className="arrowUp" /> : (mon.improvment === "+-" ?
+                                                            <ImportExportRoundedIcon /> : <ExpandMoreIcon className="arrowDown" />))}
                                                 </td>
                                                 <td className="buttonsMons">
                                                     <button type="button" data-id={mon.id} onClick={this.editar}>

@@ -7,8 +7,6 @@ import Global from '../../Global';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import swal from 'sweetalert';
 import moment from 'moment';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { Redirect } from 'react-router-dom';
 import ModalNuevaSesiondeCalibracion from './ModalNuevaSesiondeCalibracion';
 import ModalEditarCalibracion from './ModalEditarCalibracion';

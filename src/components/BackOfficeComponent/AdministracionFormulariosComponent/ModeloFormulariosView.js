@@ -20,7 +20,7 @@ export default class componentName extends Component {
 
     changeSelection = (e) => {
         e.preventDefault();
-        const { name, value } = e.target;
+        const { value } = e.target;
         let { responses } = this.state;
         const { question, section, parent, id } = e.target.dataset;
 

@@ -7,7 +7,6 @@ import swal from 'sweetalert'
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers'
 import './ExportarBasesDeDatosComponent.css'
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
-import GetAppIcon from '@material-ui/icons/GetApp'
 
 export default class AdministracionFormulariosComponent extends Component {
 

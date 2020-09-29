@@ -19,7 +19,7 @@ export default class FormularioView extends Component {
     }
 
     changeSelection = (e) => {
-        const { name, value } = e.target;
+        const { value } = e.target;
         let { responses } = this.state;
         const { question, section, parent, id } = e.target.dataset;
 

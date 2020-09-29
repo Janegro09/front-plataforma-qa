@@ -96,7 +96,20 @@ export default class Login extends Component {
                     </div>
                     <form onSubmit={this.login}>
                         <div id="form-login-username" className="form-group">
-                            <input id="username" onChange={this.onChange} className="form-control loginForm" name="username" type="text" size="18" alt="login" value={this.state.username} required />
+
+                            <input
+                                id="username"
+                                onChange={this.onChange}
+                                className="form-control loginForm"
+                                name="username"
+                                type="text"
+                                size="18"
+                                alt="login"
+                                value={this.state.username}
+                                required
+                                autoComplete="off"
+                            />
+
                             <div className="error">
                                 {
                                     this.validator.message('title', this.state.username, 'required')
@@ -109,7 +122,18 @@ export default class Login extends Component {
                         </div>
 
                         <div id="form-login-password" className="form-group">
-                            <input id="passwd" onChange={this.onChange} className="form-control loginForm" name="password" type="password" size="18" alt="password" value={this.state.password} required />
+                            <input
+                                id="passwd"
+                                onChange={this.onChange}
+                                className="form-control loginForm"
+                                name="password"
+                                type="password"
+                                size="18"
+                                alt="password"
+                                value={this.state.password}
+                                required
+                                autoComplete="off"
+                            />
 
                             <div className="error">
                                 {
@@ -121,7 +145,7 @@ export default class Login extends Component {
                             <span className="form-bar"></span>
                             <label htmlFor="password" className="float-label">contraseña</label>
                         </div>
-{/* 
+                        {/* 
                         <ReCAPTCHA
 
                             ref={e => (this.captcha = e)}
@@ -134,7 +158,7 @@ export default class Login extends Component {
                         /> */}
                         <div>
                             {/* Para deshabilitar el botón con el captcha agregarle disabled={!this.state["g-recaptcha-response"]} */}
-                            <button  className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Entrar</button>
+                            <button className="btn btn-block btn-info ripple-effect" type="submit" name="Submit" alt="sign in">Entrar</button>
                         </div>
                     </form>
                     {this.state.errorMessage !== '' &&

@@ -202,8 +202,8 @@ export default class Calibraciones extends Component {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Tipo de Calibracion</th>
                                         <th>ID del caso</th>
+                                        <th>Tipo de Calibracion</th>
                                         <th>Calibradores</th>
                                         <th>Experto</th>
                                         <th>Desde</th>
@@ -218,17 +218,23 @@ export default class Calibraciones extends Component {
                                     return (
                                         <tbody key={mon.id}>
                                             <tr>
-                                                <td>{mon.calibrationType}</td>
                                                 <td>{mon.caseId}</td>
+                                                <td>{mon.calibrationType}</td>
                                                 <td>{mon.calibrators.length}</td>
                                                 <td>{this.getUser(mon.expert)}</td>
                                                 <td>{moment(mon.startDate).format('DD/MM/YYYY')}</td>
                                                 <td>{moment(mon.endDate).format('DD/MM/YYYY')}</td>
-                                                <td>{mon.status_open ? 'Open' : 'Close'}</td>
+                                                <td className="tablaVariables tableIcons"><div className={ mon.status_open ? "estadoActivo" : "estadoInactivo"}></div></td>
                                                 <td>{moment(mon.createdAt).format('DD/MM/YYYY  HH:mm')}</td>
                                                 <td className="tableIconstableIconsFormularios">
-                                                    <button type="button" data-id={mon.id} onClick={this.editarCalibracion}><EditIcon style={{ fontSize: 15 }} /></button>
-                                                    <button data-id={mon.id} type="button" onClick={this.deleteCal}><DeleteIcon style={{ fontSize: 15 }} /></button>
+                                                    <button type="button" data-id={mon.id} onClick={this.editarCalibracion}>
+                                                        {/* <EditIcon style={{ fontSize: 15 }} /> */}
+                                                        Editar
+                                                    </button>
+                                                    <button data-id={mon.id} type="button" onClick={this.deleteCal}>
+                                                        {/* <DeleteIcon style={{ fontSize: 15 }} /> */}
+                                                        Eliminar
+                                                    </button>
                                                 </td>
                                                 <td></td>
                                             </tr>

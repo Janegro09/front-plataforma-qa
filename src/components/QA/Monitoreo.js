@@ -342,6 +342,28 @@ export default class Monitoreo extends Component {
         });
     }
 
+    seleccionarTodos = () => {
+        let { monitoreosSeleccionados, monitoreos } = this.state;
+
+        monitoreosSeleccionados = [];
+        for(let m of monitoreos) {
+            if(monitoreosSeleccionados.includes(m.id)) continue;
+
+            monitoreosSeleccionados.push(m.id);
+        }
+
+        this.setState({ monitoreosSeleccionados });
+
+    }
+
+    des_seleccionar_todos = () => {
+        let { monitoreosSeleccionados } = this.state;
+
+        monitoreosSeleccionados = [];
+
+        this.setState({ monitoreosSeleccionados });
+    }
+
     toggleAddMonitoring = (e) => {
         const { id } = e.target.dataset;
         const { checked } = e.target;
@@ -595,11 +617,18 @@ export default class Monitoreo extends Component {
                         <button className="btn" type="button" onClick={this.buscar}>Buscar</button>
                     </div>
 
-                    {monitoreosSeleccionados.length > 0 &&
-                        <button className="btn" type="button" onClick={this.exportarMonitoreos}>Exportar</button>
+                    <div className="botonera-exportar">
+                        {monitoreosSeleccionados.length > 0 &&
+                            <>
+                                <button className="btn" type="button" onClick={this.exportarMonitoreos}>Exportar</button>
+                                <button className="btn" type="button" onClick={this.des_seleccionar_todos}>Des-seleccionar todos</button>
+                            </>
+                        }
+                        {monitoreos.length > 0 &&
+                            <button className="btn" type="button" onClick={this.seleccionarTodos}>Seleccionar todos</button>
+                        }
 
-                    }
-
+                    </div>
                     <div className="resultados">
                         {monitoreos.length > 0 &&
                             <table>
@@ -622,6 +651,7 @@ export default class Monitoreo extends Component {
                                     </tr>
                                 </thead>
                                 {monitoreos?.map(mon => {
+
                                     return (
                                         <tbody key={mon.id}>
                                             <tr>
@@ -630,6 +660,7 @@ export default class Monitoreo extends Component {
                                                         data-id={mon.id}
                                                         name="export"
                                                         type="checkbox"
+                                                        checked={monitoreosSeleccionados.includes(mon.id)}
                                                         onClick={this.toggleAddMonitoring}
                                                     />
                                                 </td>

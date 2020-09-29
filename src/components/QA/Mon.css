@@ -98,3 +98,11 @@
     border-radius: 5px;
     background: #61dca3;
 }
+
+.botonera-exportar {
+    margin: 10px 0;
+}
+
+.botonera-exportar button {
+    margin-right: 10px;
+}

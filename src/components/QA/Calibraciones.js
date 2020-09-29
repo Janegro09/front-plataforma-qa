@@ -202,8 +202,8 @@ export default class Calibraciones extends Component {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Tipo de Calibracion</th>
                                         <th>ID del caso</th>
+                                        <th>Tipo de Calibracion</th>
                                         <th>Calibradores</th>
                                         <th>Experto</th>
                                         <th>Desde</th>
@@ -218,8 +218,8 @@ export default class Calibraciones extends Component {
                                     return (
                                         <tbody key={mon.id}>
                                             <tr>
-                                                <td>{mon.calibrationType}</td>
                                                 <td>{mon.caseId}</td>
+                                                <td>{mon.calibrationType}</td>
                                                 <td>{mon.calibrators.length}</td>
                                                 <td>{this.getUser(mon.expert)}</td>
                                                 <td>{moment(mon.startDate).format('DD/MM/YYYY')}</td>

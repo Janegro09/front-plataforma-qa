@@ -38,7 +38,8 @@ export default class Monitoreo extends Component {
         buscador: {
             program: []
         },
-        usuarioSeleccionado: null
+        usuarioSeleccionado: null,
+        toggleBuscador: false
     }
 
     nuevoMonitoreo = (e) => {
@@ -135,7 +136,8 @@ export default class Monitoreo extends Component {
             console.log(response.data.Data);
             this.setState({
                 monitoreos: response.data.Data,
-                loading: false
+                loading: false,
+                toggleBuscador: false
             })
 
         })
@@ -403,9 +405,15 @@ export default class Monitoreo extends Component {
 
     }
 
+    toggleBuscadorStatus = () => {
+        let { toggleBuscador } = this.state;
+
+        this.setState({ toggleBuscador: !toggleBuscador });
+    }
+
 
     render() {
-        const { monitoreosSeleccionados, loading, monitoreos, redirect, abrirModal, usuarioSeleccionadoCreatedBy, buscadorUsuarioCreatedBy, buscadorUsuario, programs, buscador, usuarioSeleccionado, usuariosConFiltro } = this.state;
+        const { toggleBuscador ,monitoreosSeleccionados, loading, monitoreos, redirect, abrirModal, usuarioSeleccionadoCreatedBy, buscadorUsuarioCreatedBy, buscadorUsuario, programs, buscador, usuarioSeleccionado, usuariosConFiltro } = this.state;
 
         if (redirect) {
             return <Redirect to={redirect} />
@@ -443,188 +451,192 @@ export default class Monitoreo extends Component {
                             </div>
                     </div>
                     <hr />
+                    <button className="btn" onClick={this.toggleBuscadorStatus}>{toggleBuscador ? 'Cerrar' : 'Abrir'} buscador</button>
 
-                    <div className="buscadorMon">
-                        {/* User id */}
-                        <article>
-                            <h6>Id de Usuario</h6>
-                            <br />
-                            <input
-                                type="text"
-                                placeholder="Buscar usuario"
-                                onChange={this.buscarUsuario}
-                                value={buscadorUsuario}
-                                className="form-control margin-bottom-10"
-                            />
-                            {!buscadorUsuario && usuarioSeleccionado &&
-                                <small>
-                                    Usuario Seleccionado: <strong>{usuarioSeleccionado.name} {usuarioSeleccionado.lastName} - {usuarioSeleccionado.id}</strong>
-                                </small>
-                            }
-
-                            {usuariosConFiltro && buscadorUsuario &&
-                                <table className="tablaBuscarUsuarios">
-                                    <thead>
-                                        <tr>
-                                            <th>DNI</th>
-                                            <th>Nombre y apellido</th>
-                                        </tr>
-                                    </thead>
-                                    {usuariosConFiltro?.slice(0, 10).map(user => {
-                                        return (
-                                            <tbody key={user.id}
-                                                style={this.marcarFila(user)}
-                                                onClick={(e) => { e.preventDefault(); this.agregarUsuario(user); }}
-                                            >
-                                                <tr>
-                                                    <td>{user.id}</td>
-                                                    <td>{user.name} {user.lastName}</td>
-                                                </tr>
-                                            </tbody>
-                                        )
-                                    })}
-                                </table>
-                            }
-
-
-                        </article>
-                        <br />
-
-                        {/* Program */}
-                        <article>
-                            <h6>Programa</h6>
-                            <br />
-                            <select onChange={this.changeBuscador} value="" id="program">
-                                <option>Selecciona...</option>
-                                <option value='allPrograms'>Seleccionar todos</option>
-                                {programs.map(v => {
-                                    return <option key={v.id} value={v.id}>{v.name}</option>
-                                })
+                    {toggleBuscador &&
+                        <div className="buscadorMon">
+                            {/* User id */}
+                            <article>
+                                <h6>Id de Usuario</h6>
+                                <br />
+                                <input
+                                    type="text"
+                                    placeholder="Buscar usuario"
+                                    onChange={this.buscarUsuario}
+                                    value={buscadorUsuario}
+                                    className="form-control margin-bottom-10"
+                                />
+                                {!buscadorUsuario && usuarioSeleccionado &&
+                                    <small>
+                                        Usuario Seleccionado: <strong>{usuarioSeleccionado.name} {usuarioSeleccionado.lastName} - {usuarioSeleccionado.id}</strong>
+                                    </small>
                                 }
-                            </select>
-                            <div className="programasSeleccionados">
-                                {buscador.program.length > 0 &&
-                                    buscador.program.map(p => {
-                                        return (
-                                            <span key={p.id}>{p.name}
-                                                <button id={p.id} onClick={this.eliminarPrograma}>X</button>
-                                            </span>)
+
+                                {usuariosConFiltro && buscadorUsuario &&
+                                    <table className="tablaBuscarUsuarios">
+                                        <thead>
+                                            <tr>
+                                                <th>DNI</th>
+                                                <th>Nombre y apellido</th>
+                                            </tr>
+                                        </thead>
+                                        {usuariosConFiltro?.slice(0, 10).map(user => {
+                                            return (
+                                                <tbody key={user.id}
+                                                    style={this.marcarFila(user)}
+                                                    onClick={(e) => { e.preventDefault(); this.agregarUsuario(user); }}
+                                                >
+                                                    <tr>
+                                                        <td>{user.id}</td>
+                                                        <td>{user.name} {user.lastName}</td>
+                                                    </tr>
+                                                </tbody>
+                                            )
+                                        })}
+                                    </table>
+                                }
+
+
+                            </article>
+                            <br />
+
+                            {/* Program */}
+                            <article>
+                                <h6>Programa</h6>
+                                <br />
+                                <select onChange={this.changeBuscador} value="" id="program">
+                                    <option>Selecciona...</option>
+                                    <option value='allPrograms'>Seleccionar todos</option>
+                                    {programs.map(v => {
+                                        return <option key={v.id} value={v.id}>{v.name}</option>
                                     })
+                                    }
+                                </select>
+                                <div className="programasSeleccionados">
+                                    {buscador.program.length > 0 &&
+                                        buscador.program.map(p => {
+                                            return (
+                                                <span key={p.id}>{p.name}
+                                                    <button id={p.id} onClick={this.eliminarPrograma}>X</button>
+                                                </span>)
+                                        })
+                                    }
+
+                                </div>
+                            </article>
+                            <br />
+
+                            {/* Fecha de transaccion */}
+                            <article>
+                                <h6>Fecha de transacción</h6>
+                                <br />
+                                <span>
+                                    <label>Desde</label>
+                                    <input className="form-control" type="date" id="dateTransactionStart" onChange={this.changeBuscador} />
+                                </span>
+                                <span>
+                                    <label>Hasta</label>
+                                    <input className="form-control" type="date" id="dateTransactionEnd" onChange={this.changeBuscador} />
+                                </span>
+                            </article>
+                            <br />
+
+                            {/* Responses */}
+                            {/* <article>
+                                <h6>Respuestas</h6>
+                            </article>
+                            <hr /> */}
+
+                            {/* Status */}
+                            <article>
+                                <h6>Estado</h6>
+                                <br />
+                                <select onChange={this.changeBuscador} value={buscador.status} id="status">
+                                    <option>Selecciona...</option>
+                                    <option value="pending">Pendiente</option>
+                                    <option value="run">En proceso</option>
+                                    <option value="finished">Terminado</option>
+                                </select>
+                            </article>
+                            <br />
+
+                            {/* Case id */}
+                            <article>
+                                <h6>Id del caso</h6>
+                                <br />
+                                <input className="form-control" type="text" id="caseId" onChange={this.changeBuscador} value={buscador.caseId} />
+                            </article>
+                            <br />
+
+                            {/* Created by */}
+                            <article>
+                                <h6>Creado por</h6>
+                                <br />
+                                <input
+                                    type="text"
+                                    placeholder="Buscar usuario"
+                                    onChange={this.buscarUsuarioCreatedBy}
+                                    value={buscadorUsuarioCreatedBy}
+                                    className="form-control margin-bottom-10"
+                                />
+                                {!buscadorUsuarioCreatedBy && usuarioSeleccionadoCreatedBy &&
+                                    <small>
+                                        Usuario Seleccionado: <strong>{usuarioSeleccionadoCreatedBy.name} {usuarioSeleccionadoCreatedBy.lastName} - {usuarioSeleccionadoCreatedBy.id}</strong>
+                                    </small>
                                 }
 
-                            </div>
-                        </article>
-                        <br />
+                                {usuariosConFiltro && buscadorUsuarioCreatedBy &&
+                                    <table className="tablaBuscarUsuarios">
+                                        <thead>
+                                            <tr>
+                                                <th>DNI</th>
+                                                <th>Nombre y apellido</th>
+                                            </tr>
+                                        </thead>
+                                        {usuariosConFiltro?.slice(0, 10).map(user => {
+                                            return (
+                                                <tbody key={user.id}
+                                                    style={this.marcarFilaCreatedBy(user)}
+                                                    onClick={(e) => { e.preventDefault(); this.agregarUsuarioCreatedBy(user); }}
+                                                >
+                                                    <tr>
+                                                        <td>{user.id}</td>
+                                                        <td>{user.name} {user.lastName}</td>
+                                                    </tr>
+                                                </tbody>
+                                            )
+                                        })}
+                                    </table>
+                                }
 
-                        {/* Fecha de transaccion */}
-                        <article>
-                            <h6>Fecha de transacción</h6>
+                            </article>
                             <br />
-                            <span>
-                                <label>Desde</label>
-                                <input className="form-control" type="date" id="dateTransactionStart" onChange={this.changeBuscador} />
-                            </span>
-                            <span>
-                                <label>Hasta</label>
-                                <input className="form-control" type="date" id="dateTransactionEnd" onChange={this.changeBuscador} />
-                            </span>
-                        </article>
-                        <br />
 
-                        {/* Responses */}
-                        {/* <article>
-                            <h6>Respuestas</h6>
-                        </article>
-                        <hr /> */}
+                            {/* Invalidated */}
+                            <article className="flexAlign input-add-spacebetween">
+                                <h6>Invalidado</h6>
+                                <br />
+                                <Checkbox type="checkbox" id="invalidated" onChange={this.changeBuscador} checked={buscador.invalidated} />
 
-                        {/* Status */}
-                        <article>
-                            <h6>Estado</h6>
+                            </article>
                             <br />
-                            <select onChange={this.changeBuscador} value={buscador.status} id="status">
-                                <option>Selecciona...</option>
-                                <option value="pending">Pendiente</option>
-                                <option value="run">En proceso</option>
-                                <option value="finished">Terminado</option>
-                            </select>
-                        </article>
-                        <br />
-
-                        {/* Case id */}
-                        <article>
-                            <h6>Id del caso</h6>
+                            <article className="flexAlign input-add-spacebetween">
+                                <h6>Disputado</h6>
+                                <br />
+                                <Checkbox type="checkbox" id="disputado" onChange={this.changeBuscador} checked={buscador.disputado} />
+                            </article>
                             <br />
-                            <input className="form-control" type="text" id="caseId" onChange={this.changeBuscador} value={buscador.caseId} />
-                        </article>
-                        <br />
-
-                        {/* Created by */}
-                        <article>
-                            <h6>Creado por</h6>
+                            <Breadcrumbs />
+                            <article className="flexAlign input-add-spacebetween">
+                                <h6>Evaluado</h6>
+                                <br />
+                                <Checkbox type="checkbox" id="evaluated" onChange={this.changeBuscador} checked={buscador.evaluated} />
+                            </article>
                             <br />
-                            <input
-                                type="text"
-                                placeholder="Buscar usuario"
-                                onChange={this.buscarUsuarioCreatedBy}
-                                value={buscadorUsuarioCreatedBy}
-                                className="form-control margin-bottom-10"
-                            />
-                            {!buscadorUsuarioCreatedBy && usuarioSeleccionadoCreatedBy &&
-                                <small>
-                                    Usuario Seleccionado: <strong>{usuarioSeleccionadoCreatedBy.name} {usuarioSeleccionadoCreatedBy.lastName} - {usuarioSeleccionadoCreatedBy.id}</strong>
-                                </small>
-                            }
+                            <button className="btn" type="button" onClick={this.buscar}>Buscar</button>
+                        </div>
 
-                            {usuariosConFiltro && buscadorUsuarioCreatedBy &&
-                                <table className="tablaBuscarUsuarios">
-                                    <thead>
-                                        <tr>
-                                            <th>DNI</th>
-                                            <th>Nombre y apellido</th>
-                                        </tr>
-                                    </thead>
-                                    {usuariosConFiltro?.slice(0, 10).map(user => {
-                                        return (
-                                            <tbody key={user.id}
-                                                style={this.marcarFilaCreatedBy(user)}
-                                                onClick={(e) => { e.preventDefault(); this.agregarUsuarioCreatedBy(user); }}
-                                            >
-                                                <tr>
-                                                    <td>{user.id}</td>
-                                                    <td>{user.name} {user.lastName}</td>
-                                                </tr>
-                                            </tbody>
-                                        )
-                                    })}
-                                </table>
-                            }
-
-                        </article>
-                        <br />
-
-                        {/* Invalidated */}
-                        <article className="flexAlign input-add-spacebetween">
-                            <h6>Invalidado</h6>
-                            <br />
-                            <Checkbox type="checkbox" id="invalidated" onChange={this.changeBuscador} checked={buscador.invalidated} />
-
-                        </article>
-                        <br />
-                        <article className="flexAlign input-add-spacebetween">
-                            <h6>Disputado</h6>
-                            <br />
-                            <Checkbox type="checkbox" id="disputado" onChange={this.changeBuscador} checked={buscador.disputado} />
-                        </article>
-                        <br />
-                        <Breadcrumbs />
-                        <article className="flexAlign input-add-spacebetween">
-                            <h6>Evaluado</h6>
-                            <br />
-                            <Checkbox type="checkbox" id="evaluated" onChange={this.changeBuscador} checked={buscador.evaluated} />
-                        </article>
-                        <br />
-                        <button className="btn" type="button" onClick={this.buscar}>Buscar</button>
-                    </div>
+                    }
 
                     <div className="botonera-exportar">
                         {monitoreosSeleccionados.length > 0 &&

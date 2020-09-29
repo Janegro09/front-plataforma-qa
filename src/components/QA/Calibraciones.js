@@ -19,7 +19,9 @@ export default class Calibraciones extends Component {
         redirect: false,
         abrirModal: false,
         calibraciones: [],
-        modalEdicion: false
+        calibracionesFiltrada: [],
+        modalEdicion: false,
+        totalAMostrar: 25
     }
 
     componentDidMount() {
@@ -43,7 +45,8 @@ export default class Calibraciones extends Component {
                 this.setState({
                     calibraciones,
                     users,
-                    loading: false
+                    loading: false,
+                    calibracionesFiltrada: calibraciones
                 })
             }).catch((e) => {
                 // Si hay algún error en el request lo deslogueamos
@@ -64,27 +67,27 @@ export default class Calibraciones extends Component {
 
 
         }).catch((e) => {
-                // Si hay algún error en el request lo deslogueamos
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    this.setState({
-                        loading: false
-                    })
-                    swal("Error!", `${e.response.data.Message}`, "error");
-                }
+            // Si hay algún error en el request lo deslogueamos
+            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                HELPER_FUNCTIONS.logout()
+            } else {
+                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
                     loading: false
                 })
-                console.log("Error: ", e)
-            });
+                swal("Error!", `${e.response.data.Message}`, "error");
+            }
+            this.setState({
+                loading: false
+            })
+            console.log("Error: ", e)
+        });
     }
 
     editarCalibracion = (e) => {
         const { id } = e.target.dataset;
 
-        if(id) {
+        if (id) {
 
             this.setState({ modalEdicion: id })
 
@@ -154,8 +157,28 @@ export default class Calibraciones extends Component {
         return userId;
     }
 
+    filtrarCalibracion = (e) => {
+        let { calibracionesFiltrada, calibraciones } = this.state;
+        let buscado = e.target.value.toLowerCase();
+
+        if (buscado) {
+            calibracionesFiltrada = calibraciones.filter(calibracion => calibracion.caseId.toLowerCase().includes(buscado))
+            this.setState({ calibracionesFiltrada });
+        } else {
+            this.setState({ calibracionesFiltrada: calibraciones });
+        }
+
+    }
+
+    verMasCalibraciones = () => {
+        let { totalAMostrar } = this.state;
+        totalAMostrar += 1;
+
+        this.setState({ totalAMostrar })
+    }
+
     render() {
-        const { modalEdicion, calibraciones ,loading, redirect, abrirModal } = this.state;
+        const { modalEdicion, calibracionesFiltrada, calibraciones, loading, redirect, abrirModal, totalAMostrar } = this.state;
 
         if (redirect) {
             return <Redirect to={redirect} />
@@ -196,9 +219,14 @@ export default class Calibraciones extends Component {
                         </div>
                     </div>
 
-
+                    <input
+                        type="text"
+                        placeholder="Buscar por ID del caso"
+                        className="form-control"
+                        onChange={this.filtrarCalibracion}
+                    />
                     <div className="resultados">
-                        {calibraciones.length > 0 &&
+                        {calibracionesFiltrada.length > 0 &&
                             <table>
                                 <thead>
                                     <tr>
@@ -213,8 +241,7 @@ export default class Calibraciones extends Component {
                                         <th className="tableIconsFormularios">Acciones</th>
                                     </tr>
                                 </thead>
-                                {calibraciones?.map(mon => {
-                                    
+                                {calibracionesFiltrada?.slice(0, totalAMostrar).map(mon => {
                                     return (
                                         <tbody key={mon.id}>
                                             <tr>
@@ -224,7 +251,7 @@ export default class Calibraciones extends Component {
                                                 <td>{this.getUser(mon.expert)}</td>
                                                 <td>{moment(mon.startDate).format('DD/MM/YYYY')}</td>
                                                 <td>{moment(mon.endDate).format('DD/MM/YYYY')}</td>
-                                                <td className="tablaVariables tableIcons"><div className={ mon.status_open ? "estadoActivo" : "estadoInactivo"}></div></td>
+                                                <td className="tablaVariables tableIcons"><div className={mon.status_open ? "estadoActivo" : "estadoInactivo"}></div></td>
                                                 <td>{moment(mon.createdAt).format('DD/MM/YYYY  HH:mm')}</td>
                                                 <td className="tableIconstableIconsFormularios">
                                                     <button type="button" data-id={mon.id} onClick={this.editarCalibracion}>
@@ -242,6 +269,18 @@ export default class Calibraciones extends Component {
                                     )
                                 })}
                             </table>
+                        }
+
+                        {calibracionesFiltrada.length >= 25 &&
+                            <button
+                                className="btn btn-primary"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    this.verMasCalibraciones();
+                                }}
+                            >
+                                Ver más calibraciones
+                            </button>
                         }
                         {calibraciones.length === 0 &&
                             <div className="alert alert-warning">No existen calibraciones para mostrar</div>

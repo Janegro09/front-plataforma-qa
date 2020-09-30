@@ -245,18 +245,18 @@ export default class editUserComponent extends Component {
                             <option value={user.turno ? user.turno === 'TM' ? 'TT' : 'TM' : 'TT'}>{user.turno ? user.turno === 'TT' ? 'TM' : 'TT' : "TT"}</option>
                         </select>
                         {/* <input type="text" placeholder="imagen" ref={(c) => this.imagen = c} defaultValue={user.imagen ? user.imagen : ''} /> */}
+                        {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
+                            <button className="btn btn-block btn-info guardar-cambios" alt="sign in"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    this.modifyUser()
+                                }}
+                            >Guardar</button>
+                        }
                     </form>
                 }
 
                
-                    {HELPER_FUNCTIONS.checkPermission("POST|users/:id") &&
-                        <button className="btn btn-primary guardar-cambios" alt="sign in"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                this.modifyUser()
-                            }}
-                        >Guardar</button>
-                    }
                     
              
                     </section>

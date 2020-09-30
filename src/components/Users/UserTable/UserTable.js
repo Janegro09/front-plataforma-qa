@@ -260,6 +260,7 @@ export default class UserTable extends Component {
             <div>
 
                 <div className="tabla_parent">
+<div>
                     <h4 className="headerSection">USUARIOS</h4>
                     <hr />
                     <br />
@@ -288,7 +289,7 @@ export default class UserTable extends Component {
                             <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1>
                         }
                     </div>
-
+</div>
                     {this.state.allUsers === null &&
                         <React.Fragment>
                             {HELPER_FUNCTIONS.backgroundLoading()}

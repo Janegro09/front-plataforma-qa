@@ -185,12 +185,14 @@ export default class ModalNuevoMonitoreo extends Component {
                     HELPER_FUNCTIONS.logout()
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Atención", "No se ha agregado el monitoreo", "info");
+                    swal("Atención", e.response.Message || "No se ha agregado el monitoreo", "info").then(() => {
+                        window.location.reload(window.location.href);
+
+                    })
                 }
                 console.log("Error: ", e)
             })
 
-        console.log(formData)
 
     }
 

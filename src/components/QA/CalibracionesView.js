@@ -33,7 +33,7 @@ export default class componentName extends Component {
         })
 
         document.addEventListener('click', () => {
-            this.setState({ viewHeaders: true })
+            this.setState({ viewHeaders: true, printScreen: false })
         })
         const tokenUser = JSON.parse(sessionStorage.getItem("token"))
         let token = tokenUser

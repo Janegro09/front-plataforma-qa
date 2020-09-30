@@ -266,11 +266,7 @@ export default class Formularios extends Component {
 
             axios.get(Global.getForms, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-<<<<<<< HEAD
                 this.setState({ allForms, loading: false, models: response.data.Data, modelsFiltrado: response.data.Data })
-=======
-                this.setState({ allForms ,models: response.data.Data, modelsFiltrado: response.data.Data, loading: false })
->>>>>>> development
             })
 
         })

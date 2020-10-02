@@ -664,7 +664,7 @@ export default class Monitoreo extends Component {
                                         <th>Disputado</th>
                                         <th>Invalidado</th>
                                         <th>Evaluado</th>
-                                        <th>Improvment</th>
+                                        <th>Calificación</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>

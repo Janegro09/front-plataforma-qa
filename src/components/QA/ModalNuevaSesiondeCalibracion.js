@@ -226,7 +226,7 @@ export default class ModalNuevoMonitoreo extends Component {
                     </div>
 
                     <section className="expert">
-                        <h6>Usuario monitoreado</h6>
+                        <h6>Experto</h6>
                         <br />
                         <input
                             type="text"

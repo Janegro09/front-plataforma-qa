@@ -733,11 +733,11 @@ export default class componentName extends Component {
 
 
                                 <span>
-                                    <label>Improvment</label>
+                                    <label>Clasificación</label>
                                     <select value={dataToSend.improvment} id="improvment" onChange={this.handleChange} >
-                                        <option value="+">Mejora</option>
-                                        <option value="+-">Mantiene</option>
-                                        <option value="-">Empeora</option>
+                                        <option value="+">Buena</option>
+                                        <option value="+-">Regular</option>
+                                        <option value="-">Mala</option>
                                     </select>
                                 </span>
 
@@ -777,7 +777,7 @@ export default class componentName extends Component {
                                 <h6>Disputar</h6>
                                 <input data-id="disputar" checked={disputarArea}  onClick={this.activeTextAreas} type="checkbox"/>
                                 {disputarArea &&
-                                    <textarea  id="disputar" onChange={this.handleChange} value={dataToSend.disputado}></textarea>
+                                    <textarea  id="disputado" onChange={this.handleChange} value={dataToSend.disputado}></textarea>
                                 }
                             </article>
 

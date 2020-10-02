@@ -56,10 +56,10 @@ export default class SelectEditarGrupos extends Component {
     }
 
     buscar = () => {
-        let data = document.getElementById('input-value').value.toUpperCase().trim();
+        let data = document.getElementById('input-value').value.toUpperCase();
 
         this.setState({
-            usuariosReturn: this.state.allUsers.filter(element => element.group.trim().includes(data))
+            usuariosReturn: this.state.allUsers.filter(element => element.group.includes(data))
         })
     }
 

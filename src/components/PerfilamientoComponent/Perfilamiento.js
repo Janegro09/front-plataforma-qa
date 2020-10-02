@@ -64,7 +64,7 @@ export default class Perfilamiento extends Component {
     buscar = () => {
         const { data } = this.state
         let searched = this.searched.value.toLowerCase()
-        const result = data.filter(word => word.name.toLowerCase().includes(searched));
+        const result = data?.filter(word => word.name.toLowerCase().includes(searched));
 
         this.setState({
             dataFiltered: result

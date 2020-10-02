@@ -65,20 +65,20 @@ export default class ModalNuevoMonitoreo extends Component {
     }
 
     buscarUsuario = (e) => {
-        let buscado = e.target.value.trim().toLowerCase();
+        let buscado = e.target.value.toLowerCase();
         const { users } = this.state;
 
-        let encontrado = users.filter(user => user.id.trim().includes(buscado) || `${user.name} ${user.lastName}`.trim().includes(buscado)
+        let encontrado = users.filter(user => user.id.includes(buscado) || `${user.name} ${user.lastName}`.includes(buscado)
         )
 
         this.setState({ usuariosFiltradosExperto: encontrado, buscadorUsuario: buscado });
 
     }
     buscarUsuarioColaborador = (e) => {
-        let buscado = e.target.value.trim().toLowerCase();
+        let buscado = e.target.value.toLowerCase();
         const { users } = this.state;
 
-        let encontrado = users.filter(user => user.id.trim().includes(buscado) || `${user.name} ${user.lastName}`.trim().includes(buscado)
+        let encontrado = users.filter(user => user.id.includes(buscado) || `${user.name} ${user.lastName}`.includes(buscado)
         )
 
         this.setState({ usuariosFiltradosCalibradores: encontrado, buscadorUsuarioCalibradores: buscado });

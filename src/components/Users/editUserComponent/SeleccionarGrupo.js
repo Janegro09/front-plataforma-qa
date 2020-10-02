@@ -22,7 +22,7 @@ export default class SeleccionarGrupo extends Component {
     }
 
     buscar = (event) => {
-        const valueInput = event.target.value.toUpperCase().trim();
+        const valueInput = event.target.value.toUpperCase();
         this.setState({ valueInput });
     }
 
@@ -231,7 +231,7 @@ export default class SeleccionarGrupo extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {groupSelect.filter(result => valueInput ? result.label.trim().includes(valueInput) : true).slice(0, groupsToShow).map(group => {
+                            {groupSelect.filter(result => valueInput ? result.label.includes(valueInput) : true).slice(0, groupsToShow).map(group => {
                                 return (
                                     <tr
                                         key={group.value}

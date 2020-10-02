@@ -70,7 +70,7 @@ export default class UserTable extends Component {
                         returnData.push(user)
                     } else if (nameLastName.indexOf(searched) >= 0) {
                         returnData.push(user)
-                    } else if (user.legajo.indexOf(searched) >= 0) {
+                    } else if (user.legajo.toUpperCase().indexOf(searched) >= 0) {
                         returnData.push(user)
                     } else {
                         // Generamos parametros de busqueda 

@@ -154,20 +154,20 @@ export default class Monitoreo extends Component {
     }
 
     buscarUsuario = (e) => {
-        let buscado = e.target.value.trim().toLowerCase();
+        let buscado = e.target.value.toLowerCase();
         const { users } = this.state;
 
-        let encontrado = users.filter(user => user.id.trim().includes(buscado) || `${user.name} ${user.lastName}`.trim().includes(buscado)
+        let encontrado = users.filter(user => user.id.includes(buscado) || `${user.name} ${user.lastName}`.includes(buscado)
         )
 
         this.setState({ usuariosConFiltro: encontrado, buscadorUsuario: buscado });
 
     }
     buscarUsuarioCreatedBy = (e) => {
-        let buscado = e.target.value.trim().toLowerCase();
+        let buscado = e.target.value.toLowerCase();
         const { users } = this.state;
 
-        let encontrado = users.filter(user => user.id.trim().includes(buscado) || `${user.name} ${user.lastName}`.trim().includes(buscado)
+        let encontrado = users.filter(user => user.id.includes(buscado) || `${user.name} ${user.lastName}`.includes(buscado)
         )
 
         this.setState({ usuariosConFiltro: encontrado, buscadorUsuarioCreatedBy: buscado });
@@ -664,7 +664,7 @@ export default class Monitoreo extends Component {
                                         <th>Disputado</th>
                                         <th>Invalidado</th>
                                         <th>Evaluado</th>
-                                        <th>Improvment</th>
+                                        <th>Calificación</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>

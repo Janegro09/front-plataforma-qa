@@ -40,7 +40,7 @@ export default class ModalNuevoMonitoreo extends Component {
 
         const { users } = this.state;
 
-        let encontrado = users.filter(user => user.id.trim().includes(buscado) || `${user.name} ${user.lastName}`.trim().includes(buscado)
+        let encontrado = users.filter(user => user.id.includes(buscado) || `${user.name} ${user.lastName}`.includes(buscado)
         )
 
         this.setState({ usuariosConFiltro: encontrado, buscadorUsuario: buscado });

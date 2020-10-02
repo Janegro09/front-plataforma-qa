@@ -178,10 +178,10 @@ export default class componentName extends Component {
     }
 
     cambiarUsuario = (e) => {
-        let buscado = e.target.value.trim().toLowerCase();
+        let buscado = e.target.value.toLowerCase();
         const { users } = this.state;
 
-        let encontrado = users.filter(user => user.id.trim().includes(buscado) || `${user.name} ${user.lastName}`.trim().includes(buscado)
+        let encontrado = users.filter(user => user.id.includes(buscado) || `${user.name} ${user.lastName}`.includes(buscado)
         )
 
         this.setState({ usuariosConFiltro: encontrado, buscadorUsuario: buscado });
@@ -733,11 +733,11 @@ export default class componentName extends Component {
 
 
                                 <span>
-                                    <label>Improvment</label>
+                                    <label>Clasificación</label>
                                     <select value={dataToSend.improvment} id="improvment" onChange={this.handleChange} >
-                                        <option value="+">Mejora</option>
-                                        <option value="+-">Mantiene</option>
-                                        <option value="-">Empeora</option>
+                                        <option value="+">Buena</option>
+                                        <option value="+-">Regular</option>
+                                        <option value="-">Mala</option>
                                     </select>
                                 </span>
 
@@ -777,7 +777,7 @@ export default class componentName extends Component {
                                 <h6>Disputar</h6>
                                 <input data-id="disputar" checked={disputarArea}  onClick={this.activeTextAreas} type="checkbox"/>
                                 {disputarArea &&
-                                    <textarea  id="disputar" onChange={this.handleChange} value={dataToSend.disputado}></textarea>
+                                    <textarea  id="disputado" onChange={this.handleChange} value={dataToSend.disputado}></textarea>
                                 }
                             </article>
 

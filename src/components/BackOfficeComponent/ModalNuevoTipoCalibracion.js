@@ -74,31 +74,39 @@ export default class ModalNuevoTipoCalibracion extends Component {
                             }
                         }>x</button>
                     </div>
-
-                    <form>
-                        <input
-                            type="text"
-                            placeholder="Nombre"
-                            name="name"
-                            onChange={this.myChangeHandler}
-                        />
-
-                        <input
-                            type="text"
-                            placeholder="Descripción"
-                            name="description"
-                            onChange={this.myChangeHandler}
-                        />
-                    </form>
-
-                    <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            this.handleSubmit();
-                        }}
-                    >
-                        Enviar
+                    <div className="contenedorModal">
+                        <h4>Agregar calibracion</h4>
+                        <br />
+                        <hr />
+                        <br />
+                        <form>
+                            <input
+                                className="form-control"
+                                type="text"
+                                placeholder="Nombre"
+                                name="name"
+                                onChange={this.myChangeHandler}
+                            />
+                            <br />
+                            <input
+                                className="form-control"
+                                type="text"
+                                placeholder="Descripción"
+                                name="description"
+                                onChange={this.myChangeHandler}
+                            />
+                        </form>
+                        <br />
+                        <button
+                        className="defaultBtnModal"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                this.handleSubmit();
+                            }}
+                        >
+                            Enviar
                     </button>
+                    </div>
                 </div>
             </div>
         )

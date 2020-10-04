@@ -11,6 +11,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Redirect } from 'react-router-dom';
 
+
 export default class AdministracionFormulariosComponent extends Component {
     constructor(props) {
         super(props);

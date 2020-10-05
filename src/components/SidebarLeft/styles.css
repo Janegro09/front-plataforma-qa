@@ -671,7 +671,7 @@ h4 {
 } 
 
 .btnClose:hover {
-  background-color: #03a9f4;
+  background-color: #2e3338;
   color: white;
 }
 
@@ -924,6 +924,27 @@ tr {
 .margin-bottom-20 {
   margin-bottom: 20px;
 }
+
+.contenedorModal {
+  padding: 20px;
+}
+
+.defaultBtnModal {
+  border: 1px solid;
+  padding: 7px;
+  border-radius: 5px;
+  width: 79px;
+  float: right;
+  transition: all 0.15s ease-in-out;
+}
+
+.defaultBtnModal:hover {
+  color: #f8f9fa;
+  background-color: #495057;
+}
+
+
+
 /* DARK MODE */
 
 

@@ -383,9 +383,13 @@ export default class Modal extends Component {
                             }
                         }>x</button>
                     </div>
+                      
 
                     <form onSubmit={this.handleSubmit} className="formulario">
-
+                    <h4>Agregar campo personalizado</h4>
+                            <br />
+                            <hr />
+                            <br />
                         <label htmlFor="nombre" className="label">Nombre: *</label>
                         <input className="form-control" type="text" id="nombre" value={this.state.value} onChange={this.handleChange} required />
 
@@ -473,6 +477,7 @@ export default class Modal extends Component {
 
                         <input className="inputGuardar" type="submit" value="Guardar" />
                     </form>
+                 
                 </div>
             </div>
         )

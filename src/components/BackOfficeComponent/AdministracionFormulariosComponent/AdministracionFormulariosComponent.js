@@ -121,7 +121,7 @@ export default class AdministracionFormulariosComponent extends Component {
         })
             .catch((e) => {
                 // Si hay algún error en el request lo deslogueamos
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                if (!e.response?.data.Success && e.response?.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))

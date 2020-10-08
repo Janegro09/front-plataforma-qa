@@ -136,6 +136,7 @@ export default class componentName extends Component {
                             <section className="sectionTitles resultados">
                                 <h2>Resultados</h2>
                                 <hr />
+                                {console.log(calibration)}
                                 {calibration?.calibration.comparacion.map((v, i) => {
                                     return (
                                         <article key={v.question} className="question">
@@ -146,14 +147,25 @@ export default class componentName extends Component {
                                                     <thead>
                                                         <th>Respuesta</th>
                                                         <th>Cant. Respuestas</th>
+                                                        <th>Usuarios que respondieron</th>
                                                         <th>Resultado</th>
                                                     </thead>
                                                     <tbody>
                                                         {v.result.map(result => {
                                                             return (
-                                                                <tr key={result.respuesta}>
+                                                                <tr key={result.respuesta} className={result.users.includes(calibration.expert.id) ? 'expertQuestion' : 'NotExpertQuestion'}>
                                                                     <td>{result.respuesta}</td>        
                                                                     <td>{result.cant}</td>        
+                                                                    <td>{result.users &&
+                                                                            <>
+                                                                            {result.users.map((v,i) => {
+                                                                                return <p key={i + v}>{v} </p>
+                                                                            })
+
+                                                                            }
+                                                                            </>
+                                                                        }
+                                                                    </td>        
                                                                     <td>{result.porcentaje}</td>        
                                                                 </tr>
                                                             )

@@ -29,3 +29,12 @@ section.sectionTitles {
     font-weight: bold;
     text-align: left;
 }
+
+.expertQuestion {
+    background-color: #9de89d;
+}
+
+.NotExpertQuestion {
+    background-color: #faa;
+
+}

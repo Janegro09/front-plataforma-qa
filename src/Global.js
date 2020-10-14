@@ -33,7 +33,8 @@ let Global = {
     getForms: `${BASE}/forms`,
     monitoreos: `${BASE}/qa/monitoring`,
     calibrationTypes: `${BASE}/qa/calibration/types`,
-    calibration: `${BASE}/qa/calibration`
+    calibration: `${BASE}/qa/calibration`,
+    reporteria: `${BASE}/reporting`
 }
 
 export default Global;

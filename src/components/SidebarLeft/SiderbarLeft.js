@@ -13,6 +13,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import HeadsetMicIcon from '@material-ui/icons/HeadsetMic';
+import AssessmentIcon from '@material-ui/icons/Assessment';
 
 
 export default class SiderbarLeft extends Component {
@@ -104,6 +105,11 @@ export default class SiderbarLeft extends Component {
                                 <NavLink to="/calibraciones">Calibraciones</NavLink>
                             </span>
                         </li>
+
+                        {/* REPORTERIA */}
+                        {HELPER_FUNCTIONS.checkPermissionGroup("users") &&
+                            <li className="nameMenu"><NavLink to="/reporteria" activeClassName="active"><AssessmentIcon className="IconoMenu" /></NavLink>Reporteria</li>
+                        }
                     </ul>
                     <span className="version">V{version}</span>
                 </div>

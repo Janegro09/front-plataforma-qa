@@ -1,0 +1,13 @@
+form#reporteria {
+    width: 50%;
+    margin: 0 auto;
+    padding: 10px 20px;
+}
+
+form#reporteria .programasSeleccionados {
+    margin: 0;
+}
+
+form#reporteria select {
+    margin-bottom: 0;
+}

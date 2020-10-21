@@ -240,7 +240,7 @@ export default class Formularios extends Component {
         let buscado = e.target.value.toLowerCase();
 
         if (buscado) {
-            modelsFiltrado = modelsFiltrado.filter(model => model.name.toLowerCase().includes(buscado));
+            modelsFiltrado = modelsFiltrado.filter(model => model.program[0].name.toLowerCase().includes(buscado));
             this.setState({ modelsFiltrado });
         } else {
             this.setState({ modelsFiltrado: models });
@@ -344,11 +344,10 @@ export default class Formularios extends Component {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Nombre</th>
+                                    <th>Programa</th>
                                     <th>Creado</th>
                                     <th>Descripción</th>
                                     <th>Partes</th>
-                                    <th>Programa</th>
                                     <th className="tableIconsFormularios">Acciones</th>
                                 </tr>
                             </thead>
@@ -357,11 +356,10 @@ export default class Formularios extends Component {
                                     modelsFiltrado.map(model => {
                                         return (
                                             <tr key={model.id}>
-                                                <td>{model.name}</td>
+                                                <td>{model.program[0].name}</td>
                                                 <td>{moment(model.createdAt).format("DD/MM/YYYY")}</td>
                                                 <td>{model.description}</td>
                                                 <td>{model.parts}</td>
-                                                <td>{model.program[0].name}</td>
                                                 <td className="tableIconstableIconsFormularios">
                                                     <button type="button" data-id={model.id} onClick={
                                                         (e) => {

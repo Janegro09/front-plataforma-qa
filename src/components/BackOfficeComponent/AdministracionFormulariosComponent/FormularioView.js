@@ -334,7 +334,7 @@ export default class FormularioView extends Component {
                         <>
                             <div className="margin-top-70">
                                 <small>{data.id}</small>
-                                <h4>Formulario: {data.name}</h4>
+                                <h4>Programa: {data.program[0].name}</h4>
                                 <h6>{data.description}</h6>
                             </div>
 

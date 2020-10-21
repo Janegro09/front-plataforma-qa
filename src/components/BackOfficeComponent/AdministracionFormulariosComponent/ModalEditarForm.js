@@ -285,7 +285,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                             <h4>Editar formulario: {dataToSend.id}</h4>
 
                             <form onSubmit={this.sendForm}>
-                                <div className="form-group">
+                                {/* <div className="form-group">
                                     <label htmlFor="name">Nombre</label>
                                     <input
                                         type="text"
@@ -296,7 +296,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                                         defaultValue={dataToSend.name}
                                     // value={dataToSend.name}
                                     />
-                                </div>
+                                </div> */}
                                 <div className="form-group">
                                     <label htmlFor="description">Descripción</label>
                                     <input

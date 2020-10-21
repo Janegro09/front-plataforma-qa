@@ -177,6 +177,53 @@ export default class componentName extends Component {
 
     }
 
+    eliminarMonitoreo = (e) => {
+        e.preventDefault();
+        
+
+        swal({
+            title: "Estas seguro?",
+            text: "Estas por eliminar un monitoreo, no podrás recuperarlo",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    const config = {
+                        headers: { Authorization: `Bearer ${token}` }
+                    };
+                    axios.delete(Global.monitoreos + "/" + this.state.id + '/neverUsed', config)
+                        .then(response => {
+                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            if (response.data.Success) {
+                                swal("Felicidades!", "Monitoreo eliminado correctamente", "success").then(() => {
+                                    this.setState({ redirect: '/monitoreo' })
+                                });
+                            }
+
+                        })
+                        .catch(e => {
+                            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                                HELPER_FUNCTIONS.logout()
+                            } else {
+                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                swal("Error al eliminar!", {
+                                    icon: "error",
+                                });
+
+                            }
+                            console.log("Error: ", e)
+                        })
+
+                } else {
+                    swal("No se elimino nada");
+                }
+            });
+
+    }
+
     cambiarUsuario = (e) => {
         let buscado = e.target.value.toLowerCase();
         const { users } = this.state;
@@ -644,7 +691,7 @@ export default class componentName extends Component {
 
 
     render() {
-        const {buscadorUsuario, usuarioSeleccionado, usuariosConFiltro,invalidarArea, dataToSend, disputarArea, monitoreo, loading, redirect } = this.state;
+        const {buscadorUsuario, usuarioSeleccionado, usuariosConFiltro, dataToSend, disputarArea, monitoreo, loading, redirect } = this.state;
 
         if(redirect) {
             return <Redirect to={redirect} />
@@ -735,6 +782,7 @@ export default class componentName extends Component {
                                 <span>
                                     <label>Clasificación</label>
                                     <select value={dataToSend.improvment} id="improvment" onChange={this.handleChange} >
+                                        <option value="++">Muy Buena</option>
                                         <option value="+">Buena</option>
                                         <option value="+-">Regular</option>
                                         <option value="-">Mala</option>
@@ -773,42 +821,47 @@ export default class componentName extends Component {
                                 </div>
                             </article>
 
-                            <article>
-                                <h6>Disputar</h6>
-                                <input data-id="disputar" checked={disputarArea}  onClick={this.activeTextAreas} type="checkbox"/>
-                                {disputarArea &&
-                                    <textarea  id="disputado" onChange={this.handleChange} value={dataToSend.disputado}></textarea>
-                                }
-                            </article>
+                            {monitoreo.modifiedBy.length > 0 && 
+                                <>
+                                <article>
+                                    <h6>Observacion del monitoreo</h6>
+                                    <input data-id="disputar" checked={disputarArea}  onClick={this.activeTextAreas} type="checkbox"/>
+                                    {disputarArea &&
+                                        <textarea  id="disputado" onChange={this.handleChange} value={dataToSend.disputado}></textarea>
+                                    }
+                                </article>
+                                {/* Comentamos invalidar por pedido de Gabriel Pellicer el 20/10/2020 */}
+                                {/* <article>
+                                    <h6>Invalidar</h6>
+                                    <input data-id="invalidated" checked={invalidarArea} onClick={this.activeTextAreas} type="checkbox"/>
+                                    {invalidarArea &&
+                                        <textarea id="invalidated" onChange={this.handleChange} value={dataToSend.invalidated}></textarea>
+                                    }
+                                </article> */}
 
 
-                            <article>
-                                <h6>Invalidar</h6>
-                                <input data-id="invalidated" checked={invalidarArea} onClick={this.activeTextAreas} type="checkbox"/>
-                                {invalidarArea &&
-                                    <textarea id="invalidated" onChange={this.handleChange} value={dataToSend.invalidated}></textarea>
-                                }
-                            </article>
+                                <article>
+                                    <h6>Devolución</h6>
+
+                                    <span>
+                                        <label>Principales comentarios de devolución</label>
+                                        <textarea id="comentariosDevolucion" onChange={this.handleChange} value={dataToSend.comentariosDevolucion}></textarea>
+                                    </span>
+
+                                    <span>
+                                        <label>Fortalezas del usuario</label>
+                                        <textarea id="fortalezasUsuario" onChange={this.handleChange} value={dataToSend.fortalezasUsuario}></textarea>
+                                    </span>
+
+                                    <span>
+                                        <label>Pasos de mejora</label>
+                                        <textarea id="pasosMejora" onChange={this.handleChange}  value={dataToSend.pasosMejora}></textarea>
+                                    </span>
+                                </article>
+                                </>
+                            }
 
 
-                            <article>
-                                <h6>Devolución</h6>
-
-                                <span>
-                                    <label>Principales comentarios de devolución</label>
-                                    <textarea id="comentariosDevolucion" onChange={this.handleChange} value={dataToSend.comentariosDevolucion}></textarea>
-                                </span>
-
-                                <span>
-                                    <label>Fortalezas del usuario</label>
-                                    <textarea id="fortalezasUsuario" onChange={this.handleChange} value={dataToSend.fortalezasUsuario}></textarea>
-                                </span>
-
-                                <span>
-                                    <label>Pasos de mejora</label>
-                                    <textarea id="pasosMejora" onChange={this.handleChange}  value={dataToSend.pasosMejora}></textarea>
-                                </span>
-                            </article>
 
                         </section>
 
@@ -830,6 +883,10 @@ export default class componentName extends Component {
                         }
 
                         </div>
+
+                        {monitoreo.modifiedBy.length === 0 &&
+                            <button type="button" className="btn" onClick={this.eliminarMonitoreo}>Eliminar</button>     
+                        }
 
                         <button type="button" className="btn" onClick={this.modificarFormulario}>
                             

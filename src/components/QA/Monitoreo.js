@@ -217,6 +217,8 @@ export default class Monitoreo extends Component {
             if (value === 'allPrograms') {
                 buscador.program = programs;
 
+            } else if(value === 'clearPrograms'){
+                buscador.program = [];
             } else if (buscador.program.findIndex(elemento => elemento.id === value) === -1) {
                 let program = programs.find(elem => elem.id === value);
                 buscador.program.push(program);
@@ -374,30 +376,23 @@ export default class Monitoreo extends Component {
 
     toggleAddMonitoring = (e) => {
         const { id } = e.target.dataset;
-        const { checked } = e.target;
         let { monitoreosSeleccionados } = this.state;
 
         if (!id) return false;
 
-        if (checked) {
+        if (!monitoreosSeleccionados.includes(id)) {
             //A Agregamos la empresa al array
+            monitoreosSeleccionados.push(id);
 
-            if (!monitoreosSeleccionados.includes(id)) {
-                monitoreosSeleccionados.push(id);
-            }
-
-        } else if (monitoreosSeleccionados.includes(id)) {
+        } else {
             // Eliminamos la empresa del array
-
             if (monitoreosSeleccionados.length > 1) {
-                monitoreosSeleccionados = monitoreosSeleccionados.slice(monitoreosSeleccionados.indexOf(id), 1);
-            } else {
+                monitoreosSeleccionados = monitoreosSeleccionados.filter(elem => elem !== id);
+            } else if(monitoreosSeleccionados.length === 1) {
                 monitoreosSeleccionados = []
             }
-
-
-
         }
+
         this.setState({ monitoreosSeleccionados });
 
     }
@@ -504,6 +499,7 @@ export default class Monitoreo extends Component {
                                 <select onChange={this.changeBuscador} value="" id="program">
                                     <option>Selecciona...</option>
                                     <option value='allPrograms'>Seleccionar todos</option>
+                                    <option value='clearPrograms'>Des-seleccionar todos</option>
                                     {programs.map(v => {
                                         return <option key={v.id} value={v.id}>{v.name}</option>
                                     })
@@ -607,15 +603,15 @@ export default class Monitoreo extends Component {
                                 }
 
                             </article>
-                            <br />
 
                             {/* Invalidated */}
-                            <article className="flexAlign input-add-spacebetween">
+                            {/* Comentamos INVALIDADO por solicitud de Gabriel el 20/10/2020 */}
+                            {/* <article className="flexAlign input-add-spacebetween">
                                 <h6>Invalidado</h6>
                                 <br />
                                 <Checkbox type="checkbox" id="invalidated" onChange={this.changeBuscador} checked={buscador.invalidated} />
 
-                            </article>
+                            </article> */}
                             <br />
                             <article className="flexAlign input-add-spacebetween">
                                 <h6>Disputado</h6>
@@ -662,7 +658,7 @@ export default class Monitoreo extends Component {
                                         <th>Programa</th>
                                         <th>Estado</th>
                                         <th>Disputado</th>
-                                        <th>Invalidado</th>
+                                        {/* <th>Invalidado</th> */}
                                         <th>Evaluado</th>
                                         <th>Calificación</th>
                                         <th>Acciones</th>
@@ -691,10 +687,10 @@ export default class Monitoreo extends Component {
                                                 <td>{mon.program}</td>
                                                 <td>{(mon.status === 'pending' ? <TimerIcon className="timerIcon" /> : (mon.status === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon className="PlayArrowRoundedIcon" />))}</td>
                                                 <td className="tablaVariables tableIcons"><div className={mon.disputado ? "estadoActivo" : "estadoInactivo"}></div></td>
-                                                <td className="tablaVariables tableIcons"><div className={mon.invalidated ? "estadoActivo" : "estadoInactivo"}></div></td>
+                                                {/* <td className="tablaVariables tableIcons"><div className={mon.invalidated ? "estadoActivo" : "estadoInactivo"}></div></td> */}
                                                 <td className="tablaVariables tableIcons"><div className={mon.evaluated ? "estadoActivo" : "estadoInactivo"}></div></td>
                                                 <td>
-                                                    {(mon.improvment === "+" ?
+                                                    {(mon.improvment === "+" || mon.improvment === '++' ? 
                                                         <ExpandLessIcon className="arrowUp" /> : (mon.improvment === "+-" ?
                                                             <ImportExportRoundedIcon /> : <ExpandMoreIcon className="arrowDown" />))}
                                                 </td>

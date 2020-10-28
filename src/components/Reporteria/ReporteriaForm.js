@@ -202,7 +202,7 @@ export default class ReporteriaForm extends Component {
                         </select>
                     </div> */}
 
-                    <article>
+                    <div>
                         <br />
                         <input
                             type="text"
@@ -239,7 +239,7 @@ export default class ReporteriaForm extends Component {
                         }
 
 
-                    </article>
+                    </div>
 
                     {!buscadorPartitura && dataToSend.partitureId &&
                         <>

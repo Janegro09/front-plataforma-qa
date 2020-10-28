@@ -732,7 +732,7 @@ export default class Monitoreo extends Component {
                                 <Checkbox type="checkbox" id="evaluated" onChange={this.changeBuscador} checked={buscador.evaluated} />
                             </article>
                             <br />
-                            <button className="btn" type="button" onClick={this.buscar}>Buscar</button>
+                            <button className="btnSecundario" type="button" onClick={this.buscar}>Buscar</button>
                         </div>
 
                     }

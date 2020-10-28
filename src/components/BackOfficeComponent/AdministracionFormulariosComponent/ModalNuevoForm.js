@@ -341,6 +341,7 @@ export default class ModalNuevoForm extends Component {
                             <>
                                 <div className="form-group">
                                     <label htmlFor="name">Modelos de formularios</label>
+                                    <br />
                                     <select onChange={this.changeModel} >
                                         <option value="">Selecciona...</option>
                                         {allModels.map(model => {
@@ -365,6 +366,7 @@ export default class ModalNuevoForm extends Component {
                         </div> */}
                         <div className="form-group">
                             <label htmlFor="description">Descripción</label>
+                            <br />
                             <input
                                 type="text"
                                 className="form-control"
@@ -379,6 +381,7 @@ export default class ModalNuevoForm extends Component {
                             <>
                                 <div className="form-group">
                                     <label htmlFor="name">Programa</label>
+                                    <br />
                                     <select onChange={this.handleChange} value={dataToSend.programId} id='programId' >
                                         <option value="">Selecciona...</option>
                                         {allPrograms.map(program => {

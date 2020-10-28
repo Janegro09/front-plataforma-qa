@@ -201,7 +201,7 @@ export default class PartiturasUsuarioComponent extends Component {
                     <div className="section-content">
 
                         <button
-                            className="btn pasoAnterior"
+                            className="btnSecundario pasoAnterior"
                             
                             onClick={() => { this.volverAtras() }}
                         >

@@ -11,7 +11,8 @@ import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Breadcrumbs } from '@material-ui/core';
-
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import TimerIcon from '@material-ui/icons/Timer';
@@ -518,7 +519,8 @@ export default class Monitoreo extends Component {
                         </div>
                     </div>
                     <hr />
-                    <button className="btn" onClick={this.toggleBuscadorStatus}>{toggleBuscador ? 'Cerrar' : 'Abrir'} buscador</button>
+                    <br />
+                    <button className="btn btnTres" onClick={this.toggleBuscadorStatus}>{toggleBuscador ? 'Cerrar' : 'Abrir'} buscador</button>
 
                     {toggleBuscador &&
                         <div className="buscadorMon">
@@ -738,12 +740,12 @@ export default class Monitoreo extends Component {
                     <div className="botonera-exportar">
                         {monitoreosSeleccionados.length > 0 &&
                             <>
-                                <button className="btn" type="button" onClick={this.exportarMonitoreos}>Exportar</button>
-                                <button className="btn" type="button" onClick={this.des_seleccionar_todos}>Des-seleccionar todos</button>
+                                <button className="btnSecundario" type="button" onClick={this.exportarMonitoreos}>Exportar</button>
+                                <button className="btnSecundario" type="button" onClick={this.des_seleccionar_todos}>Des-seleccionar todos</button>
                             </>
                         }
                         {monitoreos.length > 0 &&
-                            <button className="btn" type="button" onClick={this.seleccionarTodos}>Seleccionar todos</button>
+                            <button className="btnSecundario" type="button" onClick={this.seleccionarTodos}>Seleccionar todos</button>
                         }
 
                     </div>

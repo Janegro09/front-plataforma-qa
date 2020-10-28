@@ -475,7 +475,7 @@ export default class Modal extends Component {
                             </select>
                         }
 
-                        <input className="inputGuardar" type="submit" value="Guardar" />
+                        <input className="btnSecundario" type="submit" value="Guardar" />
                     </form>
                  
                 </div>

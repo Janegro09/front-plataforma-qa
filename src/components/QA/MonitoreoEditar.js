@@ -84,7 +84,7 @@ export default class componentName extends Component {
     marcarFila = (user) => {
         return {
             cursor: "pointer",
-            background: user.id === this.state.dataToSend.userId ? "green" : ""
+            background: user.id === this.state.dataToSend.userId ? "ebecf0" : ""
         }
     }
 
@@ -765,7 +765,7 @@ export default class componentName extends Component {
                             <small>Programa: <strong>{monitoreo.program}</strong></small>
                             <small>Fecha de transacción: <strong>{data}</strong></small>
                         </div>
-
+                        <br />
                         <section className="monitorData">
                             <article>
                                 <h6>Detalles del monitoreo</h6>
@@ -805,7 +805,7 @@ export default class componentName extends Component {
                                     }
 
                                 </span>
-
+                                    <br />
                                 <span>
                                     <label>Fecha de evaluación</label>
                                     <input type="date" value={dataToSend.monitoringDate} id="monitoringDate" onChange={this.handleChange} />
@@ -815,12 +815,12 @@ export default class componentName extends Component {
                                     <label>Fecha de transacción</label>
                                     <input type="date" value={dataToSend.transactionDate} id="transactionDate" onChange={this.handleChange} />
                                 </span>
-
+                                <br />
                                 <span>
                                     <label>Comentarios</label>
                                     <textarea value={dataToSend.comments} id="comments" onChange={this.handleChange} ></textarea>
                                 </span>
-
+                                <br />
 
                                 <span>
                                     <label>Clasificación</label>
@@ -932,21 +932,18 @@ export default class componentName extends Component {
                         }
 
                         </div>
-
+                        <div className="floatRight">
                         {monitoreo.modifiedBy.length === 0 &&
-                            <button type="button" className="btn" onClick={this.eliminarMonitoreo}>Eliminar</button>     
+                            <button type="button" className="btnSecundario" onClick={this.eliminarMonitoreo}>Eliminar</button>     
                         }
 
-                        <button type="button" className="btn" onClick={this.modificarFormulario}>
+                        <button type="button" className="btnSecundario" onClick={this.modificarFormulario}>
                             
                             {monitoreo.modifiedBy.length === 0 ? "Responder" : 'Editar'}
 
                         </button>
+                        </div>
 
-                        <hr/>
-                        <hr/>
-                        <hr/>
-                        <hr/>
 
                         <section className="logEdicion">
                             {monitoreo.modifiedBy &&   

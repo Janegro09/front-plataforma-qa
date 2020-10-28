@@ -1,9 +1,8 @@
 .formsOfMonitorings section {
     padding: 20px;
     margin-bottom: 20px;
-    -webkit-box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.56);
-    -moz-box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.56);
-    box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.56);
+    border-radius: 5px;
+    box-shadow: 0 0 6px 1px #9596981c;
 }
 
 .formsOfMonitorings section h6 {
@@ -24,7 +23,8 @@
     box-sizing: border-box;
     padding: 10px 20px;
     margin: 10px 0;
-    background: #f0f0f0;
+    box-shadow: none;
+    background-color: #ebecf0;
 
 }
 

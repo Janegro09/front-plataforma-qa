@@ -37,7 +37,7 @@ export default class componentName extends Component {
     setDefaultData = () => {
         let { invalidarArea, disputarArea, dataToSend, monitoreo, usuarioSeleccionado } = this.state;
 
-        const { responses, userId, improvment, disputado, invalidated, evaluated, status, transactionDate, monitoringDate, comments, devolucion } = monitoreo;
+        const { disputar_response, responses, userId, improvment, disputado, invalidated, evaluated, status, transactionDate, monitoringDate, comments, devolucion } = monitoreo;
 
         usuarioSeleccionado = {
             ...monitoreo.userInfo
@@ -61,6 +61,7 @@ export default class componentName extends Component {
 
         dataToSend = {
             userId,
+            disputar_response,
             improvment,
             disputado,
             invalidated,
@@ -83,7 +84,7 @@ export default class componentName extends Component {
     marcarFila = (user) => {
         return {
             cursor: "pointer",
-            background: user.id === this.state.dataToSend.userId ? "green" : ""
+            background: user.id === this.state.dataToSend.userId ? "ebecf0" : ""
         }
     }
 
@@ -174,6 +175,53 @@ export default class componentName extends Component {
         }
 
 
+
+    }
+
+    eliminarMonitoreo = (e) => {
+        e.preventDefault();
+        
+
+        swal({
+            title: "Estas seguro?",
+            text: "Estas por eliminar un monitoreo, no podrás recuperarlo",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    const config = {
+                        headers: { Authorization: `Bearer ${token}` }
+                    };
+                    axios.delete(Global.monitoreos + "/" + this.state.id + '/neverUsed', config)
+                        .then(response => {
+                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            if (response.data.Success) {
+                                swal("Felicidades!", "Monitoreo eliminado correctamente", "success").then(() => {
+                                    this.setState({ redirect: '/monitoreo' })
+                                });
+                            }
+
+                        })
+                        .catch(e => {
+                            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                                HELPER_FUNCTIONS.logout()
+                            } else {
+                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                swal("Error al eliminar!", {
+                                    icon: "error",
+                                });
+
+                            }
+                            console.log("Error: ", e)
+                        })
+
+                } else {
+                    swal("No se elimino nada");
+                }
+            });
 
     }
 
@@ -340,18 +388,38 @@ export default class componentName extends Component {
         e.preventDefault();
         const { value } = e.target;
         let { responses } = this.state;
-        const { question, section, parent, id } = e.target.dataset;
+        const { question, section, parent, id, multiselect } = e.target.dataset;
+        const divisor = "~~";
 
-        const changeValue = ({ id, value, parent }, object) => {
+        const changeValue = ({ id, value, parent, multiselect }, object) => {
             // Buscar en object el padre y le agregamos un child
             if (object.id === parent) {
-                object.child = {
-                    id,
-                    data: value
+                if(multiselect && object.child) {
+                    object.child.id = id;
+                    if(object.child.data) {
+                        let v = object.child.data.split(divisor);
+                        if(v.includes(value)) {
+                            // Si existe lo eliminamos
+                            object.child.data = "";
+                            for(let temp of v) {
+                                if(temp === value) continue;
+                                object.child.data = object.child.data ? object.child.data + divisor + temp : temp;
+                            }
+                        } else {
+                            // Lo agregamos
+                            object.child.data = object.child.data + divisor + value;
+                        }
+                    }
+                } else {
+                    object.child = {
+                        id,
+                        data: value
+                    }
                 }
+                console.log(object)
                 return object;
             } else if (object.child) {
-                return changeValue({ id, value, parent }, object.child);
+                return changeValue({ id, value, parent, multiselect }, object.child);
             } else {
                 return false;
             }
@@ -377,16 +445,30 @@ export default class componentName extends Component {
 
         if (!parent) {
             // Entonces significa que estamos respondiendo una pregunta padre
-            q.response = {
-                data: value,
-                id
+            if(multiselect && q.response) {
+                q.response.id = id;
+                let v =  q.response.data.split(divisor);
+                if(v.includes(value)) {
+                    // Si existe lo eliminamos
+                    q.response.data = "";
+                    for(let temp of v) {
+                        if(temp === value) continue;
+                         q.response.data =  q.response.data ?  q.response.data + divisor + temp : temp;
+                    }
+                } else {
+                    // Lo agregamos
+                    q.response.data = q.response.data + divisor + value;
+                }
+            } else {
+                q.response = {
+                    data: value,
+                    id
+                }
+                console.log(q.response)
             }
         } else if (respIndex !== -1) {
             // Entonces estamos contestando una pregunta hija
-
-            changeValue({ id, value, parent }, q.response);
-
-
+            changeValue({ id, value, parent, multiselect }, q.response);
         } else return false;
 
 
@@ -427,7 +509,9 @@ export default class componentName extends Component {
         let index = (Date.now() * Math.random()).toString();
 
         let defaultValue = this.getDefaultValue(value.id, value.questionId, sectionId);
-        let childs = []
+        let childs = [];
+
+        // console.log(this.getDefaultValue(value.id, value.questionId, sectionId););
 
         return (
             <article key={index}>
@@ -563,12 +647,15 @@ export default class componentName extends Component {
                 {value.type === 'checkbox' &&
                     <>
                         {value.values.map((cf, ind) => {
+
+                            let chequedValues = defaultValue.split('~~');
+
                             return (
                                 <span className="active" key={sectionId+value.questionId+value.id}>
 
                                     <input
                                         type="checkbox"
-                                        checked={cf.value === defaultValue}
+                                        checked={chequedValues.includes(cf.value)}
                                         value={cf.value}
                                         name={sectionId+value.questionId+value.id+index}
                                         data-id={value.id}
@@ -576,6 +663,7 @@ export default class componentName extends Component {
                                         data-question={value.questionId}
                                         data-parent={value.parentId}
                                         onChange={this.changeSelection}
+                                        data-multiselect={true}
                                         id={sectionId+value.questionId+value.id+ind}
                                     />
                                     <label htmlFor={sectionId+value.questionId+value.id+ind}>{cf.value}</label>
@@ -644,13 +732,15 @@ export default class componentName extends Component {
 
 
     render() {
-        const {buscadorUsuario, usuarioSeleccionado, usuariosConFiltro,invalidarArea, dataToSend, disputarArea, monitoreo, loading, redirect } = this.state;
+        const {buscadorUsuario, usuarioSeleccionado, usuariosConFiltro, dataToSend, disputarArea, monitoreo, loading, redirect } = this.state;
 
         if(redirect) {
             return <Redirect to={redirect} />
         }
 
+        let d = new Date(monitoreo.transactionDate)
 
+        let data = `${d.getUTCDate()}/${d.getUTCMonth()}/${d.getUTCFullYear()}`;
 
         return (
             <>
@@ -673,9 +763,9 @@ export default class componentName extends Component {
                             <h4>Monitoreo {monitoreo.caseId} realizado a: {monitoreo.userInfo.name} {monitoreo.userInfo.lastName} ({monitoreo.userInfo.email})</h4>
                             <small>Creado por: {monitoreo.createdBy}</small>
                             <small>Programa: <strong>{monitoreo.program}</strong></small>
-                            <small>Fecha de transacción: <strong>{moment(monitoreo.transactionDate).format('MMMM Do YYYY')}</strong></small>
+                            <small>Fecha de transacción: <strong>{data}</strong></small>
                         </div>
-
+                        <br />
                         <section className="monitorData">
                             <article>
                                 <h6>Detalles del monitoreo</h6>
@@ -715,7 +805,7 @@ export default class componentName extends Component {
                                     }
 
                                 </span>
-
+                                    <br />
                                 <span>
                                     <label>Fecha de evaluación</label>
                                     <input type="date" value={dataToSend.monitoringDate} id="monitoringDate" onChange={this.handleChange} />
@@ -725,16 +815,17 @@ export default class componentName extends Component {
                                     <label>Fecha de transacción</label>
                                     <input type="date" value={dataToSend.transactionDate} id="transactionDate" onChange={this.handleChange} />
                                 </span>
-
+                                <br />
                                 <span>
                                     <label>Comentarios</label>
                                     <textarea value={dataToSend.comments} id="comments" onChange={this.handleChange} ></textarea>
                                 </span>
-
+                                <br />
 
                                 <span>
                                     <label>Clasificación</label>
                                     <select value={dataToSend.improvment} id="improvment" onChange={this.handleChange} >
+                                        <option value="++">Muy Buena</option>
                                         <option value="+">Buena</option>
                                         <option value="+-">Regular</option>
                                         <option value="-">Mala</option>
@@ -773,42 +864,53 @@ export default class componentName extends Component {
                                 </div>
                             </article>
 
-                            <article>
-                                <h6>Disputar</h6>
-                                <input data-id="disputar" checked={disputarArea}  onClick={this.activeTextAreas} type="checkbox"/>
-                                {disputarArea &&
-                                    <textarea  id="disputado" onChange={this.handleChange} value={dataToSend.disputado}></textarea>
-                                }
-                            </article>
+                            {monitoreo.modifiedBy.length > 0 && 
+                                <>
+                                <article>
+                                    <h6>Observacion del monitoreo</h6>
+                                    <input data-id="disputar" checked={disputarArea}  onClick={this.activeTextAreas} type="checkbox"/>
+                                    {disputarArea && 
+                                        <>
+                                        <textarea  id="disputado" onChange={this.handleChange} value={dataToSend.disputado}></textarea>
+                                        <br />
+                                        <h6>Respuesta a observación del monitoreo</h6>
+                                        <textarea  id="disputar_response" onChange={this.handleChange} value={dataToSend.disputar_response}></textarea>
+                                        </>
+                                    }
+
+                                </article>
+                                {/* Comentamos invalidar por pedido de Gabriel Pellicer el 20/10/2020 */}
+                                {/* <article>
+                                    <h6>Invalidar</h6>
+                                    <input data-id="invalidated" checked={invalidarArea} onClick={this.activeTextAreas} type="checkbox"/>
+                                    {invalidarArea &&
+                                        <textarea id="invalidated" onChange={this.handleChange} value={dataToSend.invalidated}></textarea>
+                                    }
+                                </article> */}
 
 
-                            <article>
-                                <h6>Invalidar</h6>
-                                <input data-id="invalidated" checked={invalidarArea} onClick={this.activeTextAreas} type="checkbox"/>
-                                {invalidarArea &&
-                                    <textarea id="invalidated" onChange={this.handleChange} value={dataToSend.invalidated}></textarea>
-                                }
-                            </article>
+                                <article>
+                                    <h6>Devolución</h6>
+
+                                    <span>
+                                        <label>Principales comentarios de devolución</label>
+                                        <textarea id="comentariosDevolucion" onChange={this.handleChange} value={dataToSend.comentariosDevolucion}></textarea>
+                                    </span>
+
+                                    <span>
+                                        <label>Fortalezas del usuario</label>
+                                        <textarea id="fortalezasUsuario" onChange={this.handleChange} value={dataToSend.fortalezasUsuario}></textarea>
+                                    </span>
+
+                                    <span>
+                                        <label>Pasos de mejora</label>
+                                        <textarea id="pasosMejora" onChange={this.handleChange}  value={dataToSend.pasosMejora}></textarea>
+                                    </span>
+                                </article>
+                                </>
+                            }
 
 
-                            <article>
-                                <h6>Devolución</h6>
-
-                                <span>
-                                    <label>Principales comentarios de devolución</label>
-                                    <textarea id="comentariosDevolucion" onChange={this.handleChange} value={dataToSend.comentariosDevolucion}></textarea>
-                                </span>
-
-                                <span>
-                                    <label>Fortalezas del usuario</label>
-                                    <textarea id="fortalezasUsuario" onChange={this.handleChange} value={dataToSend.fortalezasUsuario}></textarea>
-                                </span>
-
-                                <span>
-                                    <label>Pasos de mejora</label>
-                                    <textarea id="pasosMejora" onChange={this.handleChange}  value={dataToSend.pasosMejora}></textarea>
-                                </span>
-                            </article>
 
                         </section>
 
@@ -830,17 +932,18 @@ export default class componentName extends Component {
                         }
 
                         </div>
+                        <div className="floatRight">
+                        {monitoreo.modifiedBy.length === 0 &&
+                            <button type="button" className="btnSecundario" onClick={this.eliminarMonitoreo}>Eliminar</button>     
+                        }
 
-                        <button type="button" className="btn" onClick={this.modificarFormulario}>
+                        <button type="button" className="btnSecundario" onClick={this.modificarFormulario}>
                             
                             {monitoreo.modifiedBy.length === 0 ? "Responder" : 'Editar'}
 
                         </button>
+                        </div>
 
-                        <hr/>
-                        <hr/>
-                        <hr/>
-                        <hr/>
 
                         <section className="logEdicion">
                             {monitoreo.modifiedBy &&   

@@ -8,6 +8,9 @@ import swal from 'sweetalert';
 import './Modal.css';
 import moment from 'moment';
 import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
+import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ModalNuevoForm from './ModalNuevoForm';
 import ModalEditarModelo from './ModalEditarForm';
 import { Redirect } from 'react-router-dom';
@@ -240,7 +243,7 @@ export default class Formularios extends Component {
         let buscado = e.target.value.toLowerCase();
 
         if (buscado) {
-            modelsFiltrado = modelsFiltrado.filter(model => model.name.toLowerCase().includes(buscado));
+            modelsFiltrado = modelsFiltrado.filter(model => model.program[0].name.toLowerCase().includes(buscado));
             this.setState({ modelsFiltrado });
         } else {
             this.setState({ modelsFiltrado: models });
@@ -315,7 +318,7 @@ export default class Formularios extends Component {
 
                 <div className="section-content">
 
-                    <h4>Formularios</h4>
+                    <h4>FORMULARIOS</h4>
                     <hr />
                     <br />
                     <div className="flex-input-add">
@@ -344,11 +347,10 @@ export default class Formularios extends Component {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Nombre</th>
+                                    <th>Programa</th>
                                     <th>Creado</th>
                                     <th>Descripción</th>
                                     <th>Partes</th>
-                                    <th>Programa</th>
                                     <th className="tableIconsFormularios">Acciones</th>
                                 </tr>
                             </thead>
@@ -357,11 +359,10 @@ export default class Formularios extends Component {
                                     modelsFiltrado.map(model => {
                                         return (
                                             <tr key={model.id}>
-                                                <td>{model.name}</td>
+                                                <td>{model.program[0].name}</td>
                                                 <td>{moment(model.createdAt).format("DD/MM/YYYY")}</td>
                                                 <td>{model.description}</td>
                                                 <td>{model.parts}</td>
-                                                <td>{model.program[0].name}</td>
                                                 <td className="tableIconstableIconsFormularios">
                                                     <button type="button" data-id={model.id} onClick={
                                                         (e) => {
@@ -370,16 +371,16 @@ export default class Formularios extends Component {
                                                         }
                                                     }>
                                                         {/* <EditIcon style={{ fontSize: 15 }} /> */}
-                                                        Editar
+                                                        <EditIcon style={{ fontSize: 15 }} />
                                                     </button>
                                                     <button type="button" data-id={model.id} onClick={this.ver}>
                                                         {/* <VisibilityRoundedIcon style={{ fontSize: 15 }} /> */}
-                                                        Ver
+                                                        <VisibilityRoundedIcon style={{ fontSize: 15 }} /> 
                                                         </button>
 
                                                     <button type="button" data-id={model.id} onClick={this.eliminar}>
                                                         {/* <DeleteIcon style={{ fontSize: 15 }} /> */}
-                                                        Eliminar
+                                                        <DeleteIcon style={{ fontSize: 15 }} />
                                                         </button>
 
                                                 </td>

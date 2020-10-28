@@ -10,6 +10,9 @@ import moment from 'moment';
 import ModalModeloFormulariosComponent from './ModalModeloFormularios';
 import ModalEditarModelo from './ModalEditarModelo';
 import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
+import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { Redirect } from 'react-router-dom';
 
 export default class ModeloFormularios extends Component {
@@ -178,7 +181,7 @@ export default class ModeloFormularios extends Component {
 
                 <div className="section-content">
 
-                    <h4>Modelo de formularios</h4>
+                    <h4>MODELO DE FORMULARIOS</h4>
                     <hr />
                     <br />
                     <div className="flex-input-add">
@@ -237,12 +240,12 @@ export default class ModeloFormularios extends Component {
                                                         }
                                                     }>
                                                         {/* <EditIcon style={{ fontSize: 15 }} /> */}
-                                                        Editar
+                                                        <EditIcon style={{ fontSize: 15 }}/>
                                                     </button>
 
                                                     <button type="button" data-id={model.id} onClick={this.ver}>
                                                         {/* <VisibilityRoundedIcon style={{ fontSize: 15 }} /> */}
-                                                        Ver
+                                                        <VisibilityRoundedIcon style={{ fontSize: 15 }}/>
                                                         </button>
 
 
@@ -250,7 +253,7 @@ export default class ModeloFormularios extends Component {
                                                     <button type="button" data-id={model.id} onClick={this.eliminar}>
                                                         
                                                         {/* <DeleteIcon style={{ fontSize: 15 }} /> */}
-                                                        Eliminar
+                                                        <DeleteIcon style={{ fontSize: 15 }}/>
                                                         
                                                         </button>
                                                 </td>

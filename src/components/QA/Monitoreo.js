@@ -11,7 +11,8 @@ import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Breadcrumbs } from '@material-ui/core';
-
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import TimerIcon from '@material-ui/icons/Timer';
@@ -27,6 +28,8 @@ export default class Monitoreo extends Component {
         redirect: false,
         abrirModal: false,
         programs: [],
+        programsGroups: [],
+        empresasSeleccionadas: [],
         users: [],
         usuariosConFiltro: [],
         monitoreosSeleccionados: [],
@@ -63,18 +66,21 @@ export default class Monitoreo extends Component {
             let usuariosConFiltro = users;
             axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                // let p = response.data.Data || false;
+                // let programs;
+                // if (p) {
+                //     programs = p.filter(elem => elem.section === 'M');
+                // }
 
-                let p = response.data.Data || false;
-                let programs;
-                if (p) {
-                    programs = p.filter(elem => elem.section === 'M');
-                }
-
-                this.setState({
-                    programs,
-                    usuariosConFiltro,
-                    users,
-                    loading: false
+                axios.get(Global.frontUtilities).then(response => {
+                    
+                    const programsGroups = response.data.Data?.programsGroups || [];
+                    this.setState({
+                        programsGroups,
+                        usuariosConFiltro,
+                        users,
+                        loading: false
+                    })
                 })
             })
 
@@ -204,6 +210,23 @@ export default class Monitoreo extends Component {
         this.setState({ buscador, buscadorUsuarioCreatedBy, usuarioSeleccionadoCreatedBy });
     }
 
+    addEmpresas = (e) => {
+        let { value, id, type } = e.target;
+        let { empresasSeleccionadas, programsGroups } = this.state;
+
+        if (value === 'allEmpresas') {
+            empresasSeleccionadas = programsGroups;
+
+        } else if(value === 'clearEmpresas'){
+            empresasSeleccionadas = [];
+        } else if (empresasSeleccionadas.findIndex(elemento => elemento.id === value) === -1) {
+            let empresa = programsGroups.find(elem => elem.id === value);
+            empresasSeleccionadas.push(empresa);
+        }
+
+        this.get_programs(empresasSeleccionadas);
+    }
+
     changeBuscador = (e) => {
         // e.preventDefault();
         let { value, id, type } = e.target;
@@ -217,6 +240,8 @@ export default class Monitoreo extends Component {
             if (value === 'allPrograms') {
                 buscador.program = programs;
 
+            } else if(value === 'clearPrograms'){
+                buscador.program = [];
             } else if (buscador.program.findIndex(elemento => elemento.id === value) === -1) {
                 let program = programs.find(elem => elem.id === value);
                 buscador.program.push(program);
@@ -249,6 +274,18 @@ export default class Monitoreo extends Component {
         }
 
         return userId;
+    }
+
+    eliminarEmpresa = (e) => {
+        let { id } = e.target;
+        let { empresasSeleccionadas } = this.state;
+        if (empresasSeleccionadas.length > 1) {
+            empresasSeleccionadas = empresasSeleccionadas.filter(elem => elem.id !== id);
+        } else if (empresasSeleccionadas.length === 1) {
+            empresasSeleccionadas = []
+        }
+
+        this.get_programs(empresasSeleccionadas);
     }
 
     eliminarPrograma = (e) => {
@@ -374,30 +411,23 @@ export default class Monitoreo extends Component {
 
     toggleAddMonitoring = (e) => {
         const { id } = e.target.dataset;
-        const { checked } = e.target;
         let { monitoreosSeleccionados } = this.state;
 
         if (!id) return false;
 
-        if (checked) {
+        if (!monitoreosSeleccionados.includes(id)) {
             //A Agregamos la empresa al array
+            monitoreosSeleccionados.push(id);
 
-            if (!monitoreosSeleccionados.includes(id)) {
-                monitoreosSeleccionados.push(id);
-            }
-
-        } else if (monitoreosSeleccionados.includes(id)) {
+        } else {
             // Eliminamos la empresa del array
-
             if (monitoreosSeleccionados.length > 1) {
-                monitoreosSeleccionados = monitoreosSeleccionados.slice(monitoreosSeleccionados.indexOf(id), 1);
-            } else {
+                monitoreosSeleccionados = monitoreosSeleccionados.filter(elem => elem !== id);
+            } else if(monitoreosSeleccionados.length === 1) {
                 monitoreosSeleccionados = []
             }
-
-
-
         }
+
         this.setState({ monitoreosSeleccionados });
 
     }
@@ -408,9 +438,50 @@ export default class Monitoreo extends Component {
         this.setState({ toggleBuscador: !toggleBuscador });
     }
 
+    get_programs = (empresas) => {
+        let { buscador } = this.state;
+        buscador.program = [];
+        let dataToSend = [];
+        for(let { name } of empresas) {
+            dataToSend.push(name)
+        }
+
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
+        this.setState({ loading: true, empresasSeleccionadas: empresas });
+
+        axios.post(Global.monitoreos + '/filters', dataToSend, config).then(response => {
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            let programs = response.data.Data.programs || false;
+
+            this.setState({
+                buscador,
+                empresasSeleccionadas: empresas,
+                programs,
+                loading: false
+            })
+
+        }).catch((e) => {
+            // Si hay algún error en el request lo deslogueamos
+            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                HELPER_FUNCTIONS.logout()
+            } else {
+                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                this.setState({
+                    loading: false
+                })
+                swal("Error!", `${e.response.data.Message}`, "error");
+            }
+            console.log("Error: ", e)
+        });
+    }
+
 
     render() {
-        const { toggleBuscador, monitoreosSeleccionados, loading, monitoreos, redirect, abrirModal, usuarioSeleccionadoCreatedBy, buscadorUsuarioCreatedBy, buscadorUsuario, programs, buscador, usuarioSeleccionado, usuariosConFiltro } = this.state;
+        const { programsGroups, empresasSeleccionadas ,toggleBuscador, monitoreosSeleccionados, loading, monitoreos, redirect, abrirModal, usuarioSeleccionadoCreatedBy, buscadorUsuarioCreatedBy, buscadorUsuario, programs, buscador, usuarioSeleccionado, usuariosConFiltro } = this.state;
 
         if (redirect) {
             return <Redirect to={redirect} />
@@ -448,7 +519,8 @@ export default class Monitoreo extends Component {
                         </div>
                     </div>
                     <hr />
-                    <button className="btn" onClick={this.toggleBuscadorStatus}>{toggleBuscador ? 'Cerrar' : 'Abrir'} buscador</button>
+                    <br />
+                    <button className="btn btnTres" onClick={this.toggleBuscadorStatus}>{toggleBuscador ? 'Cerrar' : 'Abrir'} buscador</button>
 
                     {toggleBuscador &&
                         <div className="buscadorMon">
@@ -497,31 +569,61 @@ export default class Monitoreo extends Component {
                             </article>
                             <br />
 
-                            {/* Program */}
                             <article>
-                                <h6>Programa</h6>
+                                <h6>Empresa</h6>
                                 <br />
-                                <select onChange={this.changeBuscador} value="" id="program">
+                                <select onChange={this.addEmpresas} value="" id="empresas"> 
                                     <option>Selecciona...</option>
-                                    <option value='allPrograms'>Seleccionar todos</option>
-                                    {programs.map(v => {
+                                    <option value='allEmpresas'>Seleccionar todos</option>
+                                    <option value='clearEmpresas'>Des-seleccionar todos</option>
+                                    {programsGroups.map(v => {
                                         return <option key={v.id} value={v.id}>{v.name}</option>
                                     })
                                     }
                                 </select>
                                 <div className="programasSeleccionados">
-                                    {buscador.program.length > 0 &&
-                                        buscador.program.map(p => {
+                                    {empresasSeleccionadas.length > 0 &&
+                                        empresasSeleccionadas.map(p => {
                                             return (
                                                 <span key={p.id}>{p.name}
-                                                    <button id={p.id} onClick={this.eliminarPrograma}>X</button>
+                                                    <button id={p.id} onClick={this.eliminarEmpresa}>X</button>
                                                 </span>)
                                         })
                                     }
 
                                 </div>
                             </article>
-                            <br />
+                            <br/>
+                            {/* Program */}
+                            {programs.length > 0 && 
+                                <>
+                                <article>
+                                    <h6>Programa</h6>
+                                    <br />
+                                    <select onChange={this.changeBuscador} value="" id="program">
+                                        <option>Selecciona...</option>
+                                        <option value='allPrograms'>Seleccionar todos</option>
+                                        <option value='clearPrograms'>Des-seleccionar todos</option>
+                                        {programs.map(v => {
+                                            return <option key={v.id} value={v.id}>{v.name}</option>
+                                        })
+                                        }
+                                    </select>
+                                    <div className="programasSeleccionados">
+                                        {buscador.program.length > 0 &&
+                                            buscador.program.map(p => {
+                                                return (
+                                                    <span key={p.id}>{p.name}
+                                                        <button id={p.id} onClick={this.eliminarPrograma}>X</button>
+                                                    </span>)
+                                            })
+                                        }
+
+                                    </div>
+                                </article>
+                                <br />
+                                </>
+                            }
 
                             {/* Fecha de transaccion */}
                             <article>
@@ -607,15 +709,15 @@ export default class Monitoreo extends Component {
                                 }
 
                             </article>
-                            <br />
 
                             {/* Invalidated */}
-                            <article className="flexAlign input-add-spacebetween">
+                            {/* Comentamos INVALIDADO por solicitud de Gabriel el 20/10/2020 */}
+                            {/* <article className="flexAlign input-add-spacebetween">
                                 <h6>Invalidado</h6>
                                 <br />
                                 <Checkbox type="checkbox" id="invalidated" onChange={this.changeBuscador} checked={buscador.invalidated} />
 
-                            </article>
+                            </article> */}
                             <br />
                             <article className="flexAlign input-add-spacebetween">
                                 <h6>Disputado</h6>
@@ -638,12 +740,12 @@ export default class Monitoreo extends Component {
                     <div className="botonera-exportar">
                         {monitoreosSeleccionados.length > 0 &&
                             <>
-                                <button className="btn" type="button" onClick={this.exportarMonitoreos}>Exportar</button>
-                                <button className="btn" type="button" onClick={this.des_seleccionar_todos}>Des-seleccionar todos</button>
+                                <button className="btnSecundario" type="button" onClick={this.exportarMonitoreos}>Exportar</button>
+                                <button className="btnSecundario" type="button" onClick={this.des_seleccionar_todos}>Des-seleccionar todos</button>
                             </>
                         }
                         {monitoreos.length > 0 &&
-                            <button className="btn" type="button" onClick={this.seleccionarTodos}>Seleccionar todos</button>
+                            <button className="btnSecundario" type="button" onClick={this.seleccionarTodos}>Seleccionar todos</button>
                         }
 
                     </div>
@@ -662,7 +764,7 @@ export default class Monitoreo extends Component {
                                         <th>Programa</th>
                                         <th>Estado</th>
                                         <th>Disputado</th>
-                                        <th>Invalidado</th>
+                                        {/* <th>Invalidado</th> */}
                                         <th>Evaluado</th>
                                         <th>Calificación</th>
                                         <th>Acciones</th>
@@ -691,10 +793,10 @@ export default class Monitoreo extends Component {
                                                 <td>{mon.program}</td>
                                                 <td>{(mon.status === 'pending' ? <TimerIcon className="timerIcon" /> : (mon.status === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon className="PlayArrowRoundedIcon" />))}</td>
                                                 <td className="tablaVariables tableIcons"><div className={mon.disputado ? "estadoActivo" : "estadoInactivo"}></div></td>
-                                                <td className="tablaVariables tableIcons"><div className={mon.invalidated ? "estadoActivo" : "estadoInactivo"}></div></td>
+                                                {/* <td className="tablaVariables tableIcons"><div className={mon.invalidated ? "estadoActivo" : "estadoInactivo"}></div></td> */}
                                                 <td className="tablaVariables tableIcons"><div className={mon.evaluated ? "estadoActivo" : "estadoInactivo"}></div></td>
                                                 <td>
-                                                    {(mon.improvment === "+" ?
+                                                    {(mon.improvment === "+" || mon.improvment === '++' ? 
                                                         <ExpandLessIcon className="arrowUp" /> : (mon.improvment === "+-" ?
                                                             <ImportExportRoundedIcon /> : <ExpandMoreIcon className="arrowDown" />))}
                                                 </td>

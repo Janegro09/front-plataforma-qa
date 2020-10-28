@@ -246,6 +246,7 @@ export default class ReporteriaForm extends Component {
                         {/* Clusters */}
                         <div className="form-group">
                             <label htmlFor="clusters">Clusters: *</label>
+                            <br />
                             <select value="" className="form-control" id="clusters" onChange={this.handleChange}>
                                 <option>Selecciona ...</option>
                                 {clusters &&
@@ -271,6 +272,7 @@ export default class ReporteriaForm extends Component {
                         {/* Instances */}
                         <div className="form-group">
                             <label htmlFor="instances">Instances: *</label>
+                            <br />
                             <select value="" className="form-control" id="instances" onChange={this.handleChange}>
                                 <option value="">Selecciona ...</option>
                                 {instances &&
@@ -296,7 +298,7 @@ export default class ReporteriaForm extends Component {
 
                         <hr/>
 
-                        <button type="submit" className="btn btn-info">Descargar</button>
+                        <button type="submit" className="btnSecundario floatRight">Descargar</button>
                         </>
                     }
 

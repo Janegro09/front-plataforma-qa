@@ -94,10 +94,10 @@ export default class Modal extends Component {
 
             let objTemp = {
                 value: value.value,
-                
+
             }
 
-            if(value.parametrizableValue !== undefined) {
+            if (value.parametrizableValue !== undefined) {
                 objTemp.parametrizableValue = value.parametrizableValue;
             }
 
@@ -317,15 +317,15 @@ export default class Modal extends Component {
                     let td = {
                         value: v
                     }
-                    
+
                     if (v.indexOf('#') !== -1) {
-                        v = v.replace("#",'');
+                        v = v.replace("#", '');
                         td = {
                             value: v,
                             customFieldsSync: null
                         }
-                    } 
-                    
+                    }
+
                     if (v.indexOf('(') !== -1 && v.indexOf(')') !== -1 && v.indexOf('(') < v.indexOf(')')) {
                         let numero = v.match(/\d+/)[0];
                         this.validarParametrizacion(numero);
@@ -358,9 +358,9 @@ export default class Modal extends Component {
             }
             v += a.value
 
-            if(a.parametrizableValue !== false) {
+            if (a.parametrizableValue !== false) {
                 v += ` (${a.parametrizableValue})`;
-            } 
+            }
 
             Str = Str ? Str + `, ${v}` : v;
         }
@@ -383,13 +383,13 @@ export default class Modal extends Component {
                             }
                         }>x</button>
                     </div>
-                      
+
 
                     <form onSubmit={this.handleSubmit} className="formulario">
-                    <h4>Agregar campo personalizado</h4>
-                            <br />
-                            <hr />
-                            <br />
+                        <h4>Agregar campo personalizado</h4>
+                        <br />
+                        <hr />
+                        <br />
                         <label htmlFor="nombre" className="label">Nombre: *</label>
                         <input className="form-control" type="text" id="nombre" value={this.state.value} onChange={this.handleChange} required />
 
@@ -419,9 +419,10 @@ export default class Modal extends Component {
                             <input type="checkbox" name="esRequerido" checked={this.state.esRequerido} onChange={this.handleChangeRequired} id="checkbox" />
                             <label htmlFor="checkbox" className="label">* ¿Es requerido? </label>
                         </div>
+                        <br />
                         <label htmlFor="descr" className="label">Descripcion: </label>
                         <input className="form-control" type="text" id="descr" placeholder="Descricpión" value={this.state.descripcion || ''} onChange={this.handleChangeDescripcion} />
-
+                        <br />
                         <select value={this.state.valueSelectMP} onChange={this.handleChangeSelectMP}>
                             <option value="P">Perfilamiento</option>
                             <option value="M">Monitoreo</option>
@@ -477,7 +478,7 @@ export default class Modal extends Component {
 
                         <input className="btnSecundario" type="submit" value="Guardar" />
                     </form>
-                 
+
                 </div>
             </div>
         )

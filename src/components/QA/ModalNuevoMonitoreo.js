@@ -16,6 +16,8 @@ export default class ModalNuevoMonitoreo extends Component {
         encontrado: null,
         usuarioSeleccionado: null,
         programs: [],
+        empresaSeleccionada: false,
+        empresas: [],
         file: null,
         dataToSend: {
             userId: "",
@@ -40,8 +42,7 @@ export default class ModalNuevoMonitoreo extends Component {
 
         const { users } = this.state;
 
-        let encontrado = users.filter(user => user.id.includes(buscado) || `${user.name} ${user.lastName}`.includes(buscado)
-        )
+        let encontrado = users.filter(user => user.id.includes(buscado) || `${user.name} ${user.lastName}`.includes(buscado) || user.legajo.includes(buscado));
 
         this.setState({ usuariosConFiltro: encontrado, buscadorUsuario: buscado });
 
@@ -83,23 +84,14 @@ export default class ModalNuevoMonitoreo extends Component {
         let token = tokenUser
         let bearer = `Bearer ${token}`
         axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
-
-            token = response.data.loggedUser.token;
-            bearer = `Bearer ${token}`
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             let users = response.data.Data;
             let usuariosConFiltro = response.data.Data;
 
-            axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-
-                let p = response.data.Data || false;
-                let programs;
-                if(p) {
-                    programs = p.filter(elem => elem.section === 'M');
-                }
-
+            axios.get(Global.frontUtilities).then(response => {
+                const empresas = response.data.Data?.programsGroups || false;
                 this.setState({
-                    programs,
+                    empresas,
                     users,
                     usuariosConFiltro,
                     loading: false
@@ -192,13 +184,48 @@ export default class ModalNuevoMonitoreo extends Component {
                 }
                 console.log("Error: ", e)
             })
+    }
 
+    seleccionar_empresa = (e) => {
+        let { value } = e.target;
 
+        if(!value) return;
+
+        let token = JSON.parse(sessionStorage.getItem('token'))
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
+        this.setState({ loading: true });
+
+        axios.post(Global.monitoreos + '/filters', [value], config).then(response => {
+            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            let programs = response.data.Data.programs || false;
+
+            this.setState({
+                empresaSeleccionada: value,
+                programs,
+                loading: false
+            })
+
+        }).catch((e) => {
+            // Si hay algún error en el request lo deslogueamos
+            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                HELPER_FUNCTIONS.logout()
+            } else {
+                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                this.setState({
+                    loading: false
+                })
+                swal("Error!", `${e.response.data.Message}`, "error");
+            }
+            console.log("Error: ", e)
+        });
     }
 
     render() {
 
-        const { redirect, loading, usuariosConFiltro, dataToSend, usuarioSeleccionado, programs, buscadorUsuario } = this.state;
+        const { empresaSeleccionada, empresas,redirect, loading, usuariosConFiltro, dataToSend, usuarioSeleccionado, programs, buscadorUsuario } = this.state;
 
         if(redirect) {
             return <Redirect to={redirect}/>
@@ -230,7 +257,7 @@ export default class ModalNuevoMonitoreo extends Component {
                         /> 
                         {!buscadorUsuario && usuarioSeleccionado &&
                             <small>
-                                Usuario Seleccionado: <strong>{usuarioSeleccionado.name} {usuarioSeleccionado.lastName} - {usuarioSeleccionado.id}</strong> 
+                                Usuario Seleccionado: <strong>{usuarioSeleccionado.name} {usuarioSeleccionado.lastName} - {usuarioSeleccionado.id} - {usuarioSeleccionado.legajo}</strong> 
                             </small>
                         }
 
@@ -239,6 +266,7 @@ export default class ModalNuevoMonitoreo extends Component {
                                 <thead>
                                     <tr>
                                         <th>DNI</th>
+                                        <th>Legajo</th>
                                         <th>Nombre y apellido</th>
                                     </tr>
                                 </thead>
@@ -250,6 +278,7 @@ export default class ModalNuevoMonitoreo extends Component {
                                         >
                                             <tr>
                                                 <td>{user.id}</td>
+                                                <td>{user.legajo}</td>
                                                 <td>{user.name} {user.lastName}</td>
                                             </tr>
                                         </tbody>
@@ -259,6 +288,7 @@ export default class ModalNuevoMonitoreo extends Component {
                         }
                     </section>
 
+                    
                     <hr />
 
                     <section className="transactionData">
@@ -278,15 +308,28 @@ export default class ModalNuevoMonitoreo extends Component {
                         </article>
 
                         <article>
-                            <label htmlFor="programId">Programa</label>
-                            <select value={dataToSend.programId} onChange={this.changeMonitoringValues} id="programId">
+                            <label>Empresa</label>
+                            <select value={empresaSeleccionada} onChange={this.seleccionar_empresa}>
                                 <option>Selecciona...</option>
-                                {programs.map(v => {
-                                    return <option key={v.id} value={v.id}>{v.name}</option>
+                                {empresas.map(v => {
+                                    return <option key={v._id} value={v._id}>{v.name}</option>
                                 })
                                 }
-                            </select>
+                            </select>    
                         </article>
+
+                        {programs.length > 0 &&
+                            <article>
+                                <label htmlFor="programId">Programa</label>
+                                <select value={dataToSend.programId} onChange={this.changeMonitoringValues} id="programId">
+                                    <option>Selecciona...</option>
+                                    {programs.map(v => {
+                                        return <option key={v.id} value={v.id}>{v.name}</option>
+                                    })
+                                    }
+                                </select>
+                            </article>
+                        }
 
                         <article>
                             <label htmlFor="file">Archivo</label>

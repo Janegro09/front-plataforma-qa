@@ -681,3 +681,8 @@ svg {
   font-size: 1.3em;
 }
 
+#my-scrollbar {
+  width: 500px;
+  height: 500px;
+  overflow: auto;
+}

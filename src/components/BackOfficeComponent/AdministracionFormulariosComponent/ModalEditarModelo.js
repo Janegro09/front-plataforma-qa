@@ -289,6 +289,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                             <form onSubmit={this.sendForm}>
                                 <div className="form-group">
                                     <label htmlFor="name">Nombre</label>
+                                    <br />
                                     <input
                                         type="text"
                                         className="form-control"
@@ -301,6 +302,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="description">Descripción</label>
+                                    <br />
                                     <input
                                         type="text"
                                         className="form-control"
@@ -394,7 +396,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                                     })
                                 }
 
-                                <button type="submit" className="btn btn-primary btnEnviarCond morph margin-top-10">Enviar</button>
+                                <button type="submit" className="btnSecundario btnEnviarCond  margin-top-10">Enviar</button>
                             </form>
                         </>
                     }

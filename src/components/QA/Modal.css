@@ -13,7 +13,7 @@
 
 .hijo {
     width: 70%;
-    height: 580px !important;
+    /* height: 580px !important; */
     background-color: white;
     color: black;
     min-width: 330px;

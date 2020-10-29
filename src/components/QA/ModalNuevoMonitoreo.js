@@ -201,7 +201,7 @@ export default class ModalNuevoMonitoreo extends Component {
         axios.post(Global.monitoreos + '/filters', [value], config).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             let programs = response.data.Data.programs || false;
-
+            
             this.setState({
                 empresaSeleccionada: value,
                 programs,
@@ -324,6 +324,7 @@ export default class ModalNuevoMonitoreo extends Component {
                                 <select value={dataToSend.programId} onChange={this.changeMonitoringValues} id="programId">
                                     <option>Selecciona...</option>
                                     {programs.map(v => {
+                                        console.log(v.id, v);
                                         return <option key={v.id} value={v.id}>{v.name}</option>
                                     })
                                     }

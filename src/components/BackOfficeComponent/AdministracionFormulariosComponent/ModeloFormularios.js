@@ -240,12 +240,14 @@ export default class ModeloFormularios extends Component {
                                                         }
                                                     }>
                                                         {/* <EditIcon style={{ fontSize: 15 }} /> */}
-                                                        <EditIcon style={{ fontSize: 15 }}/>
+                                                        {/* <EditIcon style={{ fontSize: 15 }}/> */}
+                                                        Editar
                                                     </button>
 
                                                     <button type="button" data-id={model.id} onClick={this.ver}>
                                                         {/* <VisibilityRoundedIcon style={{ fontSize: 15 }} /> */}
-                                                        <VisibilityRoundedIcon style={{ fontSize: 15 }}/>
+                                                        {/* <VisibilityRoundedIcon style={{ fontSize: 15 }}/> */}
+                                                        Ver
                                                         </button>
 
 
@@ -253,7 +255,8 @@ export default class ModeloFormularios extends Component {
                                                     <button type="button" data-id={model.id} onClick={this.eliminar}>
                                                         
                                                         {/* <DeleteIcon style={{ fontSize: 15 }} /> */}
-                                                        <DeleteIcon style={{ fontSize: 15 }}/>
+                                                        {/* <DeleteIcon style={{ fontSize: 15 }}/> */}
+                                                        Delete
                                                         
                                                         </button>
                                                 </td>

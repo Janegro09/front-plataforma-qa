@@ -6,8 +6,9 @@
 .buscadorMon article {
     padding: 15px;
     box-shadow: none;
-    border-right: 1px solid #dedddd;
+    border: 1px solid #e4e4e4;
     width: 33%;
+    margin: 15px;
 }
 
 

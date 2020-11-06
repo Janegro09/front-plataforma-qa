@@ -11,9 +11,11 @@
     background-color: rgba(0,0,0,0.5);
 }
 
+
 .hijo2 {
     /* height: 90vh !important; */
     width: 90vw;
+    height: 90vh;
     background-color: white;
     color: black;
     position: relative;

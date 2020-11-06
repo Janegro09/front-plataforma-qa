@@ -110,7 +110,6 @@ export default class FileSelection extends Component {
     }
     render() {
         let { data, dataFiltered, arrayToSend } = this.state;
-        console.log(arrayToSend.length >= 1)
         return (
             <>
                 {data &&
@@ -132,6 +131,7 @@ export default class FileSelection extends Component {
                                             <td>
                                                 {!arrayToSend.includes(file.id) &&
                                                     <button
+                                                        disabled={arrayToSend.length > 0}
                                                         onClick={(e) => {
                                                             e.preventDefault();
                                                             this.agregar(file.id);
@@ -148,7 +148,7 @@ export default class FileSelection extends Component {
                                                             this.eliminar(file.id);
                                                         }}
                                                     >
-                                                        Eliminar
+                                                        Quitar
                                                     </button>
                                                 }
                                             </td>

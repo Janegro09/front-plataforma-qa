@@ -649,24 +649,11 @@ export default class Monitoreo extends Component {
                             <hr /> */}
 
                             {/* Status */}
-                            <article>
-                                <h6>Estado</h6>
-                                <br />
-                                <select onChange={this.changeBuscador} value={buscador.status} id="status">
-                                    <option>Selecciona...</option>
-                                    <option value="pending">Pendiente</option>
-                                    <option value="run">En proceso</option>
-                                    <option value="finished">Terminado</option>
-                                </select>
-                            </article>
+                    
                             <br />
 
                             {/* Case id */}
-                            <article>
-                                <h6>Id del caso</h6>
-                                <br />
-                                <input className="form-control" type="text" id="caseId" onChange={this.changeBuscador} value={buscador.caseId} />
-                            </article>
+ 
                             <br />
 
                             {/* Created by */}
@@ -721,13 +708,29 @@ export default class Monitoreo extends Component {
 
                             </article> */}
                             <br />
-                            <article className="flexAlign input-add-spacebetween">
+                            <article className="input-add-spacebetween">
+                            <h6>Id del caso</h6>
+                                <br />
+                                <input className="form-control" type="text" id="caseId" onChange={this.changeBuscador} value={buscador.caseId} />
+                         <br />
+                                <h6>Estado</h6>
+                                <br />
+                                <select onChange={this.changeBuscador} value={buscador.status} id="status">
+                                    <option>Selecciona...</option>
+                                    <option value="pending">Pendiente</option>
+                                    <option value="run">En proceso</option>
+                                    <option value="finished">Terminado</option>
+                                </select>   
+                                <span className="flexAlignCenter"> 
                                 <h6>Disputado</h6>
-                                <br />
+                                
                                 <Checkbox type="checkbox" id="disputado" onChange={this.changeBuscador} checked={buscador.disputado} />
+                                </span>
+                                <span className="flexAlignCenter">
                                 <h6>Evaluado</h6>
-                                <br />
+                                
                                 <Checkbox type="checkbox" id="evaluated" onChange={this.changeBuscador} checked={buscador.evaluated} />
+                                </span>
                             </article>
                             <br />
                             <Breadcrumbs />

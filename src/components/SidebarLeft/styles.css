@@ -807,6 +807,11 @@ tr {
   align-items: baseline;
 }
 
+.flexAlignCenter {
+  display: flex;
+  align-items: center;
+}
+
 .pregButton {
 
 }
@@ -970,6 +975,9 @@ tr {
   float: right;
 }
 
+select:focus {
+  outline-color: #d4d4d4;
+}
 
 /* DARK MODE */
 

@@ -11,8 +11,8 @@ import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Breadcrumbs } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
+// import EditIcon from '@material-ui/icons/Edit';
+// import DeleteIcon from '@material-ui/icons/Delete';
 import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import TimerIcon from '@material-ui/icons/Timer';
@@ -211,7 +211,7 @@ export default class Monitoreo extends Component {
     }
 
     addEmpresas = (e) => {
-        let { value, id, type } = e.target;
+        let { value } = e.target;
         let { empresasSeleccionadas, programsGroups } = this.state;
 
         if (value === 'allEmpresas') {
@@ -763,9 +763,9 @@ export default class Monitoreo extends Component {
                                         <th>Modificado por</th>
                                         <th>Programa</th>
                                         <th>Estado</th>
-                                        <th>Disputado</th>
+                                        <th>Observaciones</th>
                                         {/* <th>Invalidado</th> */}
-                                        <th>Evaluado</th>
+                                        <th>Devolución</th>
                                         <th>Calificación</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -792,9 +792,9 @@ export default class Monitoreo extends Component {
                                                 <td>{mon.modifiedBy.length}</td>
                                                 <td>{mon.program}</td>
                                                 <td>{(mon.status === 'pending' ? <TimerIcon className="timerIcon" /> : (mon.status === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon className="PlayArrowRoundedIcon" />))}</td>
-                                                <td className="tablaVariables tableIcons"><div className={mon.disputado ? "estadoActivo" : "estadoInactivo"}></div></td>
+                                                <td className="tablaVariables tableIcons">{mon.disputado ? 'SI' : 'NO'}</td>
                                                 {/* <td className="tablaVariables tableIcons"><div className={mon.invalidated ? "estadoActivo" : "estadoInactivo"}></div></td> */}
-                                                <td className="tablaVariables tableIcons"><div className={mon.evaluated ? "estadoActivo" : "estadoInactivo"}></div></td>
+                                                <td className="tablaVariables tableIcons">{mon.evaluated ? 'SI' : 'NO'}</td>
                                                 <td>
                                                     {(mon.improvment === "+" || mon.improvment === '++' ? 
                                                         <ExpandLessIcon className="arrowUp" /> : (mon.improvment === "+-" ?

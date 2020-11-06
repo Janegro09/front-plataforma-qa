@@ -19,7 +19,7 @@ import TimerIcon from '@material-ui/icons/Timer';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
+import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 
 export default class Monitoreo extends Component {
     state = {
@@ -522,8 +522,9 @@ export default class Monitoreo extends Component {
                     <br />
                     <button className="btn btnTres" onClick={this.toggleBuscadorStatus}>{toggleBuscador ? 'Cerrar' : 'Abrir'} buscador</button>
 
-                    {toggleBuscador &&
+                    {toggleBuscador && <>
                         <div className="buscadorMon">
+                            
                             {/* User id */}
                             <article>
                                 <h6>Id de Usuario</h6>
@@ -595,12 +596,12 @@ export default class Monitoreo extends Component {
                             </article>
                             <br/>
                             {/* Program */}
-                            {programs.length > 0 && 
-                                <>
+                             
+                           
                                 <article>
                                     <h6>Programa</h6>
                                     <br />
-                                    <select onChange={this.changeBuscador} value="" id="program">
+                                    <select onChange={this.changeBuscador} value="" id="program" disabled={!programs.length}>
                                         <option>Selecciona...</option>
                                         <option value='allPrograms'>Seleccionar todos</option>
                                         <option value='clearPrograms'>Des-seleccionar todos</option>
@@ -622,9 +623,10 @@ export default class Monitoreo extends Component {
                                     </div>
                                 </article>
                                 <br />
-                                </>
-                            }
-
+                                
+                           
+                            </div>
+                            <div className="buscadorMon">
                             {/* Fecha de transaccion */}
                             <article>
                                 <h6>Fecha de transacción</h6>
@@ -723,19 +725,18 @@ export default class Monitoreo extends Component {
                                 <h6>Disputado</h6>
                                 <br />
                                 <Checkbox type="checkbox" id="disputado" onChange={this.changeBuscador} checked={buscador.disputado} />
-                            </article>
-                            <br />
-                            <Breadcrumbs />
-                            <article className="flexAlign input-add-spacebetween">
                                 <h6>Evaluado</h6>
                                 <br />
                                 <Checkbox type="checkbox" id="evaluated" onChange={this.changeBuscador} checked={buscador.evaluated} />
                             </article>
                             <br />
-                            <button className="btnSecundario" type="button" onClick={this.buscar}>Buscar</button>
+                            <Breadcrumbs />
+                            <br />
                         </div>
-
-                    }
+                            
+                            <button className="btnSecundario" type="button" onClick={this.buscar}>Buscar</button>
+                            </>
+                    } 
 
                     <div className="botonera-exportar">
                         {monitoreosSeleccionados.length > 0 &&
@@ -792,13 +793,13 @@ export default class Monitoreo extends Component {
                                                 <td>{mon.modifiedBy.length}</td>
                                                 <td>{mon.program}</td>
                                                 <td>{(mon.status === 'pending' ? <TimerIcon className="timerIcon" /> : (mon.status === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon className="PlayArrowRoundedIcon" />))}</td>
-                                                <td className="tablaVariables tableIcons">{mon.disputado ? 'SI' : 'NO'}</td>
+                                                <td className="tablaVariables tableIcons"><div className={mon.disputado ? "estadoActivo" : "estadoInactivo"}></div></td>
                                                 {/* <td className="tablaVariables tableIcons"><div className={mon.invalidated ? "estadoActivo" : "estadoInactivo"}></div></td> */}
-                                                <td className="tablaVariables tableIcons">{mon.evaluated ? 'SI' : 'NO'}</td>
+                                                <td className="tablaVariables tableIcons"><div className={mon.evaluated ? "estadoActivo" : "estadoInactivo"}></div></td>
                                                 <td>
                                                     {(mon.improvment === "+" || mon.improvment === '++' ? 
                                                         <ExpandLessIcon className="arrowUp" /> : (mon.improvment === "+-" ?
-                                                            <ImportExportRoundedIcon /> : <ExpandMoreIcon className="arrowDown" />))}
+                                                            <UnfoldMoreIcon /> : <ExpandMoreIcon className="arrowDown" />))}
                                                 </td>
                                                 <td className="buttonsMons">
                                                     <button type="button" data-id={mon.id} onClick={this.editar}>

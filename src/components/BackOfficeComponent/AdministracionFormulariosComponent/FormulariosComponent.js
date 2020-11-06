@@ -8,9 +8,9 @@ import swal from 'sweetalert';
 import './Modal.css';
 import moment from 'moment';
 import AddIcon from '@material-ui/icons/Add';
-// import EditIcon from '@material-ui/icons/Edit';
-// import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
-// import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ModalNuevoForm from './ModalNuevoForm';
 import ModalEditarModelo from './ModalEditarForm';
 import { Redirect } from 'react-router-dom';
@@ -40,15 +40,14 @@ export default class Formularios extends Component {
                 id: HELPER_FUNCTIONS.generateCustomId(10),
                 name: `Modelo de formulario ${1}`,
                 customFields: [{ question: "", customField: "", id: HELPER_FUNCTIONS.generateCustomId(10) }]
-            })
+            });
         } else {
             cantSecciones.push({
                 id: HELPER_FUNCTIONS.generateCustomId(10),
                 name: `Modelo de formulario ${cantSecciones.length + 1}`,
                 customFields: [{ question: "", customField: "", id: HELPER_FUNCTIONS.generateCustomId(10) }]
-            })
+            });
         }
-
         this.setState({ cantSecciones });
     }
 
@@ -68,12 +67,12 @@ export default class Formularios extends Component {
         let edited = cantSecciones.filter(seccion => seccion.id === idSeccion);
 
         // LO BUSCO Y LO PISO EN EL ARRAY
-        let temp = []
+        let temp = [];
         cantSecciones.map(seccion => {
             if (seccion.id === edited[0].id) {
                 edited[0].customFields.push({
                     question: "", customField: "", id: HELPER_FUNCTIONS.generateCustomId(10)
-                })
+                });
                 temp.push(edited[0]);
             } else {
                 temp.push(seccion);
@@ -82,7 +81,6 @@ export default class Formularios extends Component {
         })
 
         this.setState({ cantSecciones: temp });
-
     }
 
     deleteQuestion = (q, section) => {
@@ -94,14 +92,9 @@ export default class Formularios extends Component {
                 if (cantSecciones[i].customFields[j].id !== q.id) {
                     temp.push(cantSecciones[i].customFields[j]);
                 }
-
             }
-
             cantSecciones[i].customFields = temp;
-
         }
-
-
         this.setState({ cantSecciones });
     }
 
@@ -111,22 +104,21 @@ export default class Formularios extends Component {
 
         dataToSend.parts = cantSecciones;
 
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(sessionStorage.getItem('token'));
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
 
         axios.post(Global.getForms, dataToSend, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
                 if (response.data.Success) {
                     swal("Felicidades!", "Se ha creado el modelo correctamente", "success");
                 }
-
             })
             .catch(e => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
+                    HELPER_FUNCTIONS.logout();
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Atención", "No se ha agregado el grupo", "info");
@@ -142,7 +134,6 @@ export default class Formularios extends Component {
         if (value !== '') {
             dataToSend[id] = value;
         }
-
         this.setState({ dataToSend });
     }
 
@@ -150,18 +141,12 @@ export default class Formularios extends Component {
         this.setState({ modalModeloFormulario: true });
     }
 
-    ver = (e) => {
-        const { id } = e.target.dataset;
-
+    ver = (id) => {
         let redirect = `/administracion-formularios/formularios/${id}`;
-
-        this.setState({ redirect })
-
+        this.setState({ redirect });
     }
 
-    eliminar = (e) => {
-        const { id } = e.target.dataset;
-
+    eliminar = (id) => {
         swal({
             title: "Estas seguro?",
             text: "Estas por eliminar un formulario, no podrás recuperarlo",
@@ -171,7 +156,7 @@ export default class Formularios extends Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    let token = JSON.parse(sessionStorage.getItem('token'));
                     const config = {
                         headers: { Authorization: `Bearer ${token}` }
                     };
@@ -187,7 +172,7 @@ export default class Formularios extends Component {
                         })
                         .catch(e => {
                             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                                HELPER_FUNCTIONS.logout()
+                                HELPER_FUNCTIONS.logout();
                             } else {
                                 sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                 swal("Error al eliminar!", {
@@ -210,11 +195,11 @@ export default class Formularios extends Component {
         const idField = parentNode.id;
         const idFather = parentNode.dataset.parent;
         let sectionSearched = -1;
+
         if (idField && name === 'nameQuestion') {
             sectionSearched = cantSecciones.findIndex(element => element.id === idField);
         } else if (name !== 'nameQuestion') {
             sectionSearched = cantSecciones.findIndex(element => element.id === idFather);
-
         }
 
         if (idFather && sectionSearched !== -1) {
@@ -229,9 +214,7 @@ export default class Formularios extends Component {
             cantSecciones[sectionSearched].name = value;
             // Estamos modificando los parametros de una seccion
         }
-
         this.setState({ cantSecciones })
-
     }
 
     abrirModalEditarModeloFormularios = (id) => {
@@ -251,27 +234,27 @@ export default class Formularios extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-            loading: true
-        })
+        this.setState({ loading: true });
 
         let tokenUser = JSON.parse(sessionStorage.getItem("token"));
         let token = tokenUser;
         let bearer = `Bearer ${token}`;
 
         axios.get(Global.getAllForms, { headers: { Authorization: bearer } }).then(response => {
-
             token = response.data.loggedUser.token;
             bearer = `Bearer ${token}`;
 
             // ACÁ VAN A QUEDAR LAS DE M
             let allForms = response.data.Data.filter(form => form.section === 'M');
-
             axios.get(Global.getForms, { headers: { Authorization: bearer } }).then(response => {
                 sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                this.setState({ allForms, loading: false, models: response.data.Data, modelsFiltrado: response.data.Data })
-            })
-
+                this.setState({ 
+                    allForms,
+                    models: response.data.Data, 
+                    modelsFiltrado: response.data.Data, 
+                    loading: false 
+                });
+            });
         })
             .catch((e) => {
                 // Si hay algún error en el request lo deslogueamos
@@ -309,15 +292,12 @@ export default class Formularios extends Component {
                     HELPER_FUNCTIONS.backgroundLoading()
                 }
 
-
                 <div className="header">
                     <SiderbarLeft />
                     <UserAdminHeader />
                 </div>
 
-
                 <div className="section-content">
-
                     <h4>FORMULARIOS</h4>
                     <hr />
                     <br />
@@ -328,7 +308,6 @@ export default class Formularios extends Component {
                             onChange={this.buscarFormulario}
                             className="form-control"
                         />
-
                         <button
                             className="addItem morph"
                             onClick={
@@ -341,7 +320,6 @@ export default class Formularios extends Component {
                             <AddIcon className="svgAddButton" style={{ fontSize: 33 }} />
                         </button>
                     </div>
-
 
                     {modelsFiltrado &&
                         <table>
@@ -364,34 +342,36 @@ export default class Formularios extends Component {
                                                 <td>{model.description}</td>
                                                 <td>{model.parts}</td>
                                                 <td className="tableIconstableIconsFormularios">
-                                                    <button type="button" data-id={model.id} onClick={
-                                                        (e) => {
-                                                            e.preventDefault();
-                                                            this.abrirModalEditarModeloFormularios(model.id)
-                                                        }
-                                                    }>
-                                                        {/* <EditIcon style={{ fontSize: 15 }} /> */}
-                                                        {/* <EditIcon style={{ fontSize: 15 }} /> */}
-                                                        Editar
+                                                    <button 
+                                                        type="button" 
+                                                        data-id={model.id} 
+                                                        onClick={
+                                                            (e) => {
+                                                                e.preventDefault();
+                                                                this.abrirModalEditarModeloFormularios(model.id)
+                                                            }}
+                                                        >
+                                                        <EditIcon style={{ fontSize: 15 }} />
                                                     </button>
-                                                    <button type="button" data-id={model.id} onClick={this.ver}>
-                                                        {/* <VisibilityRoundedIcon style={{ fontSize: 15 }} /> */}
-                                                        {/* <VisibilityRoundedIcon style={{ fontSize: 15 }} />  */}
-                                                        Ver
-                                                        </button>
+                                                    
+                                                    <button 
+                                                        type="button" 
+                                                        onClick={ () => {this.ver(model.id)}}
+                                                        >
+                                                        <VisibilityRoundedIcon style={{ fontSize: 15 }} />
+                                                    </button>
 
-                                                    <button type="button" data-id={model.id} onClick={this.eliminar}>
-                                                        {/* <DeleteIcon style={{ fontSize: 15 }} /> */}
-                                                        {/* <DeleteIcon style={{ fontSize: 15 }} /> */}
-                                                        Eliminar
-                                                        </button>
-
+                                                    <button 
+                                                        type="button" 
+                                                        onClick={ () => {this.eliminar(model.id)}}
+                                                        >
+                                                        <DeleteIcon style={{ fontSize: 15 }} />
+                                                    </button>
                                                 </td>
                                             </tr>
                                         )
                                     })
                                 }
-
                             </tbody>
                         </table>
                     }

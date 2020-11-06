@@ -597,19 +597,37 @@ svg {
 }
 
 .estadoActivo {
-  height: 8px;
-  width: 8px;
-  border-radius: 50px;
+  padding: 3px;
+  width: 70px;
+  border-radius: 5px;
   background-color: #0080009e!important; 
-  margin: auto;
 }
 
+.estadoActivo::after {
+  display: block;
+  color: white;
+  font-size: 9px;
+  content: "ACTIVO";
+  font-weight: 700;
+  text-align: center;
+}
+
+
+
 .estadoInactivo {
-  height: 8px;
-  width: 8px;
-  border-radius: 50px;
+  padding: 3px;
+  width: 70px;
+  border-radius: 5px;
   background-color: #ff000078!important;
-  margin: auto;
+}
+
+.estadoInactivo::after {
+  display: block;
+  color: white;
+  font-size: 9px;
+  content: "INACTIVO";
+  font-weight: 700;
+  text-align: center;
 }
 
 .css-2b097c-container {

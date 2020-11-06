@@ -8,9 +8,9 @@ import swal from 'sweetalert';
 import './Modal.css';
 import moment from 'moment';
 import AddIcon from '@material-ui/icons/Add';
-// import EditIcon from '@material-ui/icons/Edit';
-// import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
-// import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ModalNuevoForm from './ModalNuevoForm';
 import ModalEditarModelo from './ModalEditarForm';
 import { Redirect } from 'react-router-dom';
@@ -150,8 +150,8 @@ export default class Formularios extends Component {
         this.setState({ modalModeloFormulario: true });
     }
 
-    ver = (e) => {
-        const { id } = e.target.dataset;
+    ver = (id) => {
+       
 
         let redirect = `/administracion-formularios/formularios/${id}`;
 
@@ -159,8 +159,8 @@ export default class Formularios extends Component {
 
     }
 
-    eliminar = (e) => {
-        const { id } = e.target.dataset;
+    eliminar = (id) => {
+     
 
         swal({
             title: "Estas seguro?",
@@ -370,20 +370,20 @@ export default class Formularios extends Component {
                                                             this.abrirModalEditarModeloFormularios(model.id)
                                                         }
                                                     }>
+                                                        <EditIcon style={{ fontSize: 15 }} />
                                                         {/* <EditIcon style={{ fontSize: 15 }} /> */}
-                                                        {/* <EditIcon style={{ fontSize: 15 }} /> */}
-                                                        Editar
+                                                      
                                                     </button>
-                                                    <button type="button" data-id={model.id} onClick={this.ver}>
-                                                        {/* <VisibilityRoundedIcon style={{ fontSize: 15 }} /> */}
+                                                    <button type="button" onClick={ () => {this.ver(model.id)}}>
+                                                        <VisibilityRoundedIcon style={{ fontSize: 15 }} />
                                                         {/* <VisibilityRoundedIcon style={{ fontSize: 15 }} />  */}
-                                                        Ver
+                                                        
                                                         </button>
 
-                                                    <button type="button" data-id={model.id} onClick={this.eliminar}>
+                                                    <button type="button" onClick={ () => {this.eliminar(model.id)}}>
+                                                        <DeleteIcon style={{ fontSize: 15 }} />
                                                         {/* <DeleteIcon style={{ fontSize: 15 }} /> */}
-                                                        {/* <DeleteIcon style={{ fontSize: 15 }} /> */}
-                                                        Eliminar
+                                                      
                                                         </button>
 
                                                 </td>

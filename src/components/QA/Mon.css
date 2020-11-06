@@ -1,10 +1,15 @@
 .buscadorMon {
+    display: flex;
     margin-top: 20px;
 }
 
 .buscadorMon article {
     padding: 15px;
+    box-shadow: none;
+    border-right: 1px solid #dedddd;
+    width: 33%;
 }
+
 
 .resultados {
     margin-top: 20px;
@@ -59,6 +64,8 @@
     display: flex;
     flex-flow: row wrap;
     padding: 5px;
+    overflow: auto;
+    max-height: 200px;
 }
 
 .programasSeleccionados span {
@@ -67,7 +74,6 @@
     position: relative;
     border-radius: 5px;
     background: #515961;
-    width: 120px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -117,7 +123,14 @@
     width: 100%;
     margin: 5px 0;
     border-radius: 5px;
-    padding: 5px 10px;
-    background-color: #03a9f4;
-    color: #fff;
+    padding: 5px 9px;
+    /* background-color: #03a9f4; */
+    border: 1px solid #797979;
+    color: #797979;
+}
+
+
+.buttonsMons button:hover {
+    background-color: grey;
+    color: white;
 }

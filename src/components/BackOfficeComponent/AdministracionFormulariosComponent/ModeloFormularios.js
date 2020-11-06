@@ -10,9 +10,9 @@ import moment from 'moment';
 import ModalModeloFormulariosComponent from './ModalModeloFormularios';
 import ModalEditarModelo from './ModalEditarModelo';
 import AddIcon from '@material-ui/icons/Add';
-import EditIcon from '@material-ui/icons/Edit';
-import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
-import DeleteIcon from '@material-ui/icons/Delete';
+// import EditIcon from '@material-ui/icons/Edit';
+// import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
+// import DeleteIcon from '@material-ui/icons/Delete';
 import { Redirect } from 'react-router-dom';
 
 export default class ModeloFormularios extends Component {

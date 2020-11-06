@@ -871,7 +871,7 @@ export default class componentName extends Component {
                                     <input data-id="disputar" checked={disputarArea}  onClick={this.activeTextAreas} type="checkbox"/>
                                     {disputarArea && 
                                         <>
-                                        <textarea  id="disputado" onChange={this.handleChange} value={dataToSend.disputado}></textarea>
+                                        <textarea  id="disputar" onChange={this.handleChange} value={dataToSend.disputar}></textarea>
                                         <br />
                                         <h6>Respuesta a observación del monitoreo</h6>
                                         <textarea  id="disputar_response" onChange={this.handleChange} value={dataToSend.disputar_response}></textarea>
@@ -897,7 +897,8 @@ export default class componentName extends Component {
                                         <textarea id="comentariosDevolucion" onChange={this.handleChange} value={dataToSend.comentariosDevolucion}></textarea>
                                     </span>
 
-                                    <span>
+                                    {/* Comentamos los dos campos siguientes a pedido de Gabriel Pellicer, La logica ya se encuentra hecha. */}
+                                    {/* <span>
                                         <label>Fortalezas del usuario</label>
                                         <textarea id="fortalezasUsuario" onChange={this.handleChange} value={dataToSend.fortalezasUsuario}></textarea>
                                     </span>
@@ -905,7 +906,7 @@ export default class componentName extends Component {
                                     <span>
                                         <label>Pasos de mejora</label>
                                         <textarea id="pasosMejora" onChange={this.handleChange}  value={dataToSend.pasosMejora}></textarea>
-                                    </span>
+                                    </span> */}
                                 </article>
                                 </>
                             }

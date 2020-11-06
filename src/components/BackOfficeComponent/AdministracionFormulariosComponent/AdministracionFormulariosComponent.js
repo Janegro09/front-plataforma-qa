@@ -11,7 +11,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Redirect } from 'react-router-dom';
 
-
 export default class AdministracionFormulariosComponent extends Component {
     constructor(props) {
         super(props);
@@ -42,13 +41,15 @@ export default class AdministracionFormulariosComponent extends Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    let token = JSON.parse(sessionStorage.getItem('token'));
+
                     const config = {
                         headers: { Authorization: `Bearer ${token}` }
                     };
+
                     axios.delete(Global.getAllForms + "/" + id, config)
                         .then(response => {
-                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
                             if (response.data.Success) {
                                 swal("Felicidades!", "Campo personalizado eliminado correctamente", "success").then(() => {
                                     window.location.reload(window.location.href);
@@ -64,16 +65,13 @@ export default class AdministracionFormulariosComponent extends Component {
                                 swal("Error al eliminar!", {
                                     icon: "error",
                                 });
-
                             }
                             console.log("Error: ", e)
                         })
-
                 } else {
                     swal("No se elimino nada");
                 }
             });
-
     }
 
     formularios = () => {
@@ -90,54 +88,42 @@ export default class AdministracionFormulariosComponent extends Component {
 
         if (buscado) {
             allFormsFiltrado = allFormsFiltrado.filter(form => form.name.toLowerCase().includes(buscado))
-
             this.setState({ allFormsFiltrado });
         } else {
-
             this.setState({ allFormsFiltrado: allForms })
-
         }
-
     }
 
     componentDidMount() {
-        // Hacer rekest
-        this.setState({
-            loading: true
-        })
+        this.setState({ loading: true });
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-        const token = tokenUser
-        const bearer = `Bearer ${token}`
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"));
+        const token = tokenUser;
+        const bearer = `Bearer ${token}`;
+
         axios.get(Global.getAllForms, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-
             this.setState({
                 allForms: response.data.Data,
                 allFormsFiltrado: response.data.Data,
                 loading: false
-            })
-
+            });
         })
             .catch((e) => {
                 // Si hay algún error en el request lo deslogueamos
                 if (!e.response?.data.Success && e.response?.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
+                    HELPER_FUNCTIONS.logout();
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    this.setState({
-                        loading: false
-                    })
+                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token));
+                    this.setState({ loading: false });
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
             });
-
     }
 
     render() {
         let { allFormsFiltrado, openModal, id, loading, goToFormularios, goToModeloFormularios } = this.state;
-
         if (goToFormularios) {
             return <Redirect
                 to="/administracion-formularios/formularios"
@@ -152,16 +138,17 @@ export default class AdministracionFormulariosComponent extends Component {
 
         return (
             <div>
-
                 {loading &&
                     HELPER_FUNCTIONS.backgroundLoading()
                 }
+
                 <div className="header">
                     {/* BOTON DE SALIDA */}
                     {/* BARRA LATERAL IZQUIERDA */}
                     <SiderbarLeft />
                     <UserAdminHeader />
                 </div>
+
                 {openModal &&
                     <Modal idEditar={id} />
                 }
@@ -170,41 +157,39 @@ export default class AdministracionFormulariosComponent extends Component {
                     <div className="flex-input-add input-add-spacebetween">
                         <h4 className="mr-2">ADMINISTRADOR DE FORMULARIOS</h4>
                         <div className="containerDefaultBotons">
-                            <button className="btnDefault"
+                            <button 
+                                className="btnDefault"
                                 onClick={(e) => {
-                                    e.preventDefault();
-                                    this.abrirModal();
-                                }}
+                                        e.preventDefault();
+                                        this.abrirModal();
+                                    }}
                             >
                                 CAMPO PERSONALIZADO
-                        </button>
+                            </button>
 
                             <button
                                 className="btnDefault"
                                 onClick={this.formularios}
                             >
                                 FORMULARIOS
-                        </button>
+                            </button>
 
                             <button
                                 className="btnDefault"
                                 onClick={this.modeloFormularios}
-
                             >
                                 MODELOS DE FORMULARIO
-                        </button>
+                            </button>
                         </div>
                     </div>
                     <hr />
                     <br />
-
                     <input
                         type="text"
                         placeholder="Buscar"
                         onChange={this.buscarForm}
                         className="form-control margin-bottom-20"
                     />
-
                     {allFormsFiltrado &&
                         <table>
                             <thead>

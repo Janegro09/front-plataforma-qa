@@ -34,11 +34,9 @@ export default class FormularioView extends Component {
             } else if (object.child) {
                 return changeValue({ id, value, parent }, object.child);
             } else return false;
-            
         }
 
         if (!value && value !== '') return true;
-
         let respIndex = responses.findIndex(elem => elem.section === section && elem.question === question);
         let q = false;
         if (respIndex !== -1) {
@@ -62,7 +60,6 @@ export default class FormularioView extends Component {
             }
         } else if (respIndex !== -1) {
             // Entonces estamos contestando una pregunta hija
-
             changeValue({ id, value, parent }, q.response);
         } else return false;
 
@@ -76,17 +73,11 @@ export default class FormularioView extends Component {
 
     componentDidMount = () => {
         const { id } = this.props.match.params;
-
         // Hacemos el request para ver el formmulario
-
-        this.setState({
-            loading: true
-        })
-
+        this.setState({ loading: true });
         let tokenUser = JSON.parse(sessionStorage.getItem("token"));
         let token = tokenUser;
         let bearer = `Bearer ${token}`;
-
 
         axios.get(Global.getForms + '/' + id, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
@@ -98,9 +89,8 @@ export default class FormularioView extends Component {
                 this.setState({
                     loading: false,
                     data: response.data.Data[0]
-                })
+                });
             }
-
         })
             .catch((e) => {
                 // Si hay algún error en el request lo deslogueamos
@@ -129,26 +119,20 @@ export default class FormularioView extends Component {
             } else if (values.child) {
                 valrtn = getById(id, values.child);
             }
-
             return valrtn;
         }
-
         return getById(id, q?.response)
     }
 
-
     getCustomField = (value, sectionId) => {
         let index = (Date.now() * Math.random()).toString();
-
         let defaultValue = this.getDefaultValue(value.id, value.questionId, sectionId);
-        
-        let childs = []
+        let childs = [];
+
         return (
             <article key={index}>
                 <p>{value.question || value.name}</p>
-
                 {value.type === 'select' &&
-
                     <>
                         <select
                             data-question={value.questionId}
@@ -164,18 +148,12 @@ export default class FormularioView extends Component {
                                 if (cf.customFieldsSync) {
                                     childs.push({...cf.customFieldsSync[0], parentValue: cf.value})
                                 }
-
                                 return (<option value={cf.value} key={ind}>{cf.value}</option>)
-
-
                             })
-
-
                             }
                         </select>
                         {childs.length > 0 &&
                             childs.map((cf, ind) => {
-
                                 return (
                                     <div className={cf.parentValue === defaultValue ? "conditionalCF active" : "conditionalCF"}>
                                         {
@@ -187,7 +165,6 @@ export default class FormularioView extends Component {
                                         }
                                     </div>)
                             })
-
                         }
                     </>
                 }
@@ -207,7 +184,6 @@ export default class FormularioView extends Component {
                                 defaultValue={defaultValue}
                             />
                             <label>{value.name}</label>
-
                         </span>
                     </>
                 }
@@ -224,10 +200,8 @@ export default class FormularioView extends Component {
                                 name={value.id}
                                 defaultValue={defaultValue}
                             >
-
                             </textarea>
                             <label>{value.name}</label>
-
                         </span>
                     </>
                 }
@@ -250,8 +224,6 @@ export default class FormularioView extends Component {
                                         onChange={this.changeSelection}
                                     />
                                     {cf.value}</label>
-
-
                                     {cf.customFieldsSync &&
                                         <div className={cf.value === defaultValue ? "conditionalCF active" : "conditionalCF"}>
                                             {
@@ -289,7 +261,6 @@ export default class FormularioView extends Component {
                                         onChange={this.changeSelection}
                                     />
                                     {cf.value}</label>
-
                                     {cf.customFieldsSync &&
                                         <div className={cf.value === defaultValue ? "conditionalCF active" : "conditionalCF"}>
                                             {
@@ -304,7 +275,6 @@ export default class FormularioView extends Component {
                                 </ span>
                             )
                         })
-
                         }
                     </>
                 }
@@ -329,7 +299,6 @@ export default class FormularioView extends Component {
                 </div>
 
                 <div className="container">
-
                     {data &&
                         <>
                             <div className="margin-top-70">

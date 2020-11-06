@@ -41,17 +41,15 @@ export default class CustomFields extends Component {
                 // Analizamos si existen valores para ese campo
                 print.push(tempData);
             }
-
         }
 
-        this.setState({
-            print
-        })
+        this.setState({ print });
     }
 
     changeValues = (e, input, inputRadio = '') => {
-        let { type, value } = e.target
-        let { print } = this.state
+        let { type, value } = e.target;
+        let { print } = this.state;
+
         if (type === 'checkbox') {
             value = e.target.checked;
         }
@@ -59,10 +57,9 @@ export default class CustomFields extends Component {
         for (let p of print) {
             if (p.id === input.id) {
                 if (type === 'radio') {
-                    p.defaultValue = `${inputRadio}|${value}`
+                    p.defaultValue = `${inputRadio}|${value}`;
                 } else if (type === 'checkbox') {
                     let newValue = `${inputRadio}|${value}`;
-
                     if (p.defaultValue) {
                         // Dividimos la data a ver si ya existe, sino la agregamos, y si existe cambiamos el valor a false
                         let vals = p.defaultValue.split('@');
@@ -85,16 +82,13 @@ export default class CustomFields extends Component {
                                 dv.value = dv.value === 'true' ? 'false' : 'true';
                                 existe = true;
                             }
-
                             let n = `${dv.section}|${dv.value}`;
-
                             p.defaultValue = p.defaultValue ? p.defaultValue += `@${n}` : n;
                         }
 
                         if (!existe) {
                             p.defaultValue = p.defaultValue ? p.defaultValue += `@${inputRadio}|${value}` : `${inputRadio}|${value}`;
                         }
-
                     } else {
                         p.defaultValue = newValue;
                     }
@@ -104,28 +98,20 @@ export default class CustomFields extends Component {
             }
         }
 
-        this.setState({
-            print
-        })
-
+        this.setState({ print });
         this.props.data(JSON.stringify(print));
-
     }
 
     render() {
-
         const { print } = this.state;
         const { disabled } = this.props;
-
         return (
             <>
                 {print &&
                     print.map(value => {
-                        console.log(value)
                         return (
                             <>
                                 <label className="main">{value.name}</label>
-
                                 <div className="contenedor-checkbox">
                                     {value.type === 'text' &&
                                         <input disabled={disabled} type="text" required={value.required} className="form-control" name={value.sectionName} value={value.defaultValue} onChange={(e) => {
@@ -144,12 +130,11 @@ export default class CustomFields extends Component {
                                             }
                                         </select>
                                     }
-
                                 </div>
+
                                 {value.type === 'radio' &&
                                     <>
                                         {value.values &&
-
                                             <div className="contenedor-inputs">
                                                 {value.values.map(v => {
                                                     let section = value.defaultValue.split('|');
@@ -160,20 +145,18 @@ export default class CustomFields extends Component {
                                                     } else {
                                                         defVal = false;
                                                     }
-
-
                                                     return (
                                                         <div className="labelsInputs">
                                                             <input disabled={disabled} type="radio" name={value.sectionName} checked={defVal} onChange={(e) => this.changeValues(e, value, v.value)} />
                                                             <label className="forInputs">{v.value}</label>
                                                         </div>
                                                     )
-
                                                 })}
                                             </div>
                                         }
                                     </>
                                 }
+
                                 {value.type === 'checkbox' &&
                                     <>
                                         {value.values &&
@@ -188,7 +171,6 @@ export default class CustomFields extends Component {
                                                         defVal = true;
                                                     }
                                                 }
-
                                                 return (
                                                     <div className="labelsInputs" key={value}>
                                                         <Checkbox disabled={disabled} id={v.value} name={value.sectionName} checked={defVal} onChange={(e) => { this.changeValues(e, value, v.value); }} />
@@ -196,7 +178,6 @@ export default class CustomFields extends Component {
                                                     </div>
                                                 )
                                             })
-
                                         }
                                     </>
                                 }

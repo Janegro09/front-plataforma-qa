@@ -34,7 +34,6 @@ export default class Modal extends Component {
                 v.customFieldsSync = value;
             }
         }
-
         this.setState({ valueArray })
     }
 
@@ -54,10 +53,6 @@ export default class Modal extends Component {
     handleChangeDescripcion = (event) => {
         this.setState({ descripcion: event.target.value });
     }
-
-    // handleChangeArray = (event) => {
-    //     this.setState({ valueArray: event.target.value });
-    // }
 
     handleChangeSelect = (event) => {
         this.setState({ valueSelect: event.target.value });
@@ -84,17 +79,14 @@ export default class Modal extends Component {
     }
 
     separateIds = (valueArray) => {
-
         let temp = [];
         valueArray.map(value => {
-
             if (value.value.includes("#")) {
                 value.value = value.value.slice(1, value.value.length);
             }
 
             let objTemp = {
                 value: value.value,
-
             }
 
             if (value.parametrizableValue !== undefined) {
@@ -108,7 +100,6 @@ export default class Modal extends Component {
             temp.push(objTemp);
             return true;
         })
-
         return temp;
     }
 
@@ -116,7 +107,6 @@ export default class Modal extends Component {
         event.preventDefault();
         let error = false;
         let { id, esRequerido, value, valueArray, esCalibrable, valueSelect, valueSelectMP, valueSelectPerfilamiento, formato, descripcion } = this.state;
-
         // Validaciones
         if (!value) {
             error = true;
@@ -145,16 +135,11 @@ export default class Modal extends Component {
             "calibrable": esCalibrable
         }
 
-        console.log(bodyParameters)
-
         // Hacer rekes
-        this.setState({
-            loading: true
-        })
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-        const token = tokenUser
-        const bearer = `Bearer ${token}`
-
+        this.setState({ loading: true });
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"));
+        const token = tokenUser;
+        const bearer = `Bearer ${token}`;
         if (!id) {
             axios.post(Global.getAllForms + "/new", bodyParameters, { headers: { Authorization: bearer } })
                 .then(response => {
@@ -164,7 +149,6 @@ export default class Modal extends Component {
                             window.location.reload(window.location.href);
                         });
                     }
-
                 })
                 .catch(e => {
                     if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
@@ -187,7 +171,6 @@ export default class Modal extends Component {
                             window.location.reload(window.location.href);
                         });
                     }
-
                 })
                 .catch(e => {
                     if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
@@ -207,31 +190,23 @@ export default class Modal extends Component {
     componentDidMount() {
         let { idEditar } = this.props;
 
+        this.setState({ loading: true });
 
-        this.setState({
-            loading: true
-        })
-
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-        const token = tokenUser
-        const bearer = `Bearer ${token}`
+        const tokenUser = JSON.parse(sessionStorage.getItem("token"));
+        const token = tokenUser;
+        const bearer = `Bearer ${token}`;
         axios.get(Global.getAllForms, { headers: { Authorization: bearer } }).then(response => {
             sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-
             if (idEditar) {
-                this.setState({
-                    loading: true
-                })
+                this.setState({ loading: true })
 
-                const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-                const token = tokenUser
-                const bearer = `Bearer ${token}`
+                const tokenUser = JSON.parse(sessionStorage.getItem("token"));
+                const token = tokenUser;
+                const bearer = `Bearer ${token}`;
                 axios.get(Global.getAllForms + '/' + idEditar, { headers: { Authorization: bearer } }).then(response => {
                     sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-
                     let respuesta = response.data.Data[0];
                     let valueArray = respuesta.values;
-
                     this.setState({
                         id: idEditar,
                         loading: false,
@@ -244,10 +219,7 @@ export default class Modal extends Component {
                         descripcion: respuesta.description,
                         valueSelectMP: respuesta.section,
                         valueSelectPerfilamiento: respuesta.subsection
-                    })
-
-
-
+                    });
                 })
                     .catch((e) => {
                         // Si hay algún error en el request lo deslogueamos
@@ -264,12 +236,10 @@ export default class Modal extends Component {
                     });
             }
 
-
             this.setState({
                 allForms: response.data.Data,
                 loading: false
-            })
-
+            });
         })
             .catch((e) => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
@@ -283,7 +253,6 @@ export default class Modal extends Component {
                 }
                 console.log("Error: ", e)
             });
-
     }
 
     quitarParentesis = (string) => {
@@ -293,7 +262,6 @@ export default class Modal extends Component {
                 stringSinParentesis += string[i];
             }
         }
-
         return stringSinParentesis;
     }
 
@@ -307,8 +275,6 @@ export default class Modal extends Component {
     viewValues = (e) => {
         const { value } = e.target;
         let { valueArray } = this.state;
-
-        console.log(value);
         if (value) {
             valueArray = [];
             let values = value.split(',');
@@ -317,7 +283,6 @@ export default class Modal extends Component {
                     let td = {
                         value: v
                     }
-
                     if (v.indexOf('#') !== -1) {
                         v = v.replace("#", '');
                         td = {
@@ -325,7 +290,6 @@ export default class Modal extends Component {
                             customFieldsSync: null
                         }
                     }
-
                     if (v.indexOf('(') !== -1 && v.indexOf(')') !== -1 && v.indexOf('(') < v.indexOf(')')) {
                         let numero = v.match(/\d+/)[0];
                         this.validarParametrizacion(numero);
@@ -338,13 +302,9 @@ export default class Modal extends Component {
                     valueArray.push(td);
                 }
             }
-
         }
 
-        console.log(valueArray)
-
         this.setState({ valueArray })
-
     }
 
     convertArrayValues = (ArrayValues) => {
@@ -370,7 +330,6 @@ export default class Modal extends Component {
 
     render() {
         let { valueSelect, valueSelectMP, allForms, valueArray } = this.state;
-
 
         return (
             <div className="modal" id="modal-casero">

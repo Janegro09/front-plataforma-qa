@@ -607,7 +607,7 @@ svg {
   display: block;
   color: white;
   font-size: 9px;
-  content: "ACTIVO";
+  content: "SI";
   font-weight: 700;
   text-align: center;
 }
@@ -625,7 +625,7 @@ svg {
   display: block;
   color: white;
   font-size: 9px;
-  content: "INACTIVO";
+  content: "NO";
   font-weight: 700;
   text-align: center;
 }

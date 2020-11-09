@@ -696,7 +696,7 @@ export default class StepName extends Component {
 
                                         }
 
-                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' && this.state.role !== 'GERENTE' &&
+                                        {/* {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' && this.state.role !== 'GERENTE' &&
                                             <article>
                                                 <h6 className="titulo-seccion">Administrador</h6>
                                                 <hr />
@@ -732,7 +732,7 @@ export default class StepName extends Component {
                                                     />
                                                 }
                                             </article>
-                                        }
+                                        } */}
 
                                     </section>
                                 </div>

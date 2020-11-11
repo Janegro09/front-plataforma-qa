@@ -41,7 +41,7 @@ export default class AdministracionFormulariosComponent extends Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    let token = JSON.parse(sessionStorage.getItem('token'));
+                    let token = JSON.parse(localStorage.getItem('token'));
 
                     const config = {
                         headers: { Authorization: `Bearer ${token}` }
@@ -49,7 +49,7 @@ export default class AdministracionFormulariosComponent extends Component {
 
                     axios.delete(Global.getAllForms + "/" + id, config)
                         .then(response => {
-                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
+                            localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
                             if (response.data.Success) {
                                 swal("Felicidades!", "Campo personalizado eliminado correctamente", "success").then(() => {
                                     window.location.reload(window.location.href);
@@ -61,7 +61,7 @@ export default class AdministracionFormulariosComponent extends Component {
                             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                                 HELPER_FUNCTIONS.logout()
                             } else {
-                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                 swal("Error al eliminar!", {
                                     icon: "error",
                                 });
@@ -97,12 +97,12 @@ export default class AdministracionFormulariosComponent extends Component {
     componentDidMount() {
         this.setState({ loading: true });
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"));
+        const tokenUser = JSON.parse(localStorage.getItem("token"));
         const token = tokenUser;
         const bearer = `Bearer ${token}`;
 
         axios.get(Global.getAllForms, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 allForms: response.data.Data,
                 allFormsFiltrado: response.data.Data,
@@ -114,7 +114,7 @@ export default class AdministracionFormulariosComponent extends Component {
                 if (!e.response?.data.Success && e.response?.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout();
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token));
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token));
                     this.setState({ loading: false });
                     swal("Error!", "Hubo un problema", "error");
                 }

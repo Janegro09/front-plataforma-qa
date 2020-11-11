@@ -15,7 +15,7 @@ export default class deleteRoleComponent extends Component {
     }
     componentDidMount() {
         // Protección de rutas
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         if (tokenUser === null) {
             return <Redirect to={'/'} />
         }
@@ -28,7 +28,7 @@ export default class deleteRoleComponent extends Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    let token = JSON.parse(localStorage.getItem('token'))
 
                     if (this.props.location.state) {
 
@@ -39,7 +39,7 @@ export default class deleteRoleComponent extends Component {
 
                         axios.delete(Global.getRoles + '/' + id, config)
                             .then(response => {
-                                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
 
                                 if (response.data.Success) {
                                     swal("Genial! se ha eliminado el rol correctamente", {
@@ -54,7 +54,7 @@ export default class deleteRoleComponent extends Component {
                                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                                     HELPER_FUNCTIONS.logout()
                                 } else {
-                                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                     swal("Error!", "Hubo un problema al intentar borrar el rol", "error");
                                     this.setState({
                                         redirect: true

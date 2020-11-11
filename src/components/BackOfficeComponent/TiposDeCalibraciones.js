@@ -32,13 +32,13 @@ export default class TiposDeCalibraciones extends Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    let token = JSON.parse(localStorage.getItem('token'))
                     const config = {
                         headers: { Authorization: `Bearer ${token}` }
                     };
                     axios.delete(Global.calibrationTypes + "/" + id, config)
                         .then(response => {
-                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                             if (response.data.Success) {
                                 swal("Felicidades!", `${response.data?.Message}`, "success").then(() => {
                                     window.location.reload(window.location.href);
@@ -50,7 +50,7 @@ export default class TiposDeCalibraciones extends Component {
                             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                                 HELPER_FUNCTIONS.logout()
                             } else {
-                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                 swal("Error al eliminar!", {
                                     icon: "error",
                                 });
@@ -70,12 +70,12 @@ export default class TiposDeCalibraciones extends Component {
             loading: true
         })
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"));
+        const tokenUser = JSON.parse(localStorage.getItem("token"));
         const token = tokenUser;
         const bearer = `Bearer ${token}`;
 
         axios.get(Global.calibrationTypes, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
             this.setState({
                 response: response.data.Data,
@@ -88,7 +88,7 @@ export default class TiposDeCalibraciones extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })

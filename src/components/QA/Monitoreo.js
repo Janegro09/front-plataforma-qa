@@ -49,13 +49,14 @@ export default class Monitoreo extends Component {
     }
 
     componentDidMount() {
+        HELPER_FUNCTIONS.set_page_title('Monitorings');
         // Treamos los programas y los usuarios
 
         this.setState({
             loading: true
         })
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
         axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
@@ -65,7 +66,7 @@ export default class Monitoreo extends Component {
             let users = response.data.Data;
             let usuariosConFiltro = users;
             axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                 // let p = response.data.Data || false;
                 // let programs;
                 // if (p) {
@@ -91,7 +92,7 @@ export default class Monitoreo extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })
@@ -132,11 +133,11 @@ export default class Monitoreo extends Component {
         }
 
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.get(Global.monitoreos + query, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 monitoreos: response.data.Data,
                 loading: false,
@@ -149,7 +150,7 @@ export default class Monitoreo extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })
@@ -311,13 +312,13 @@ export default class Monitoreo extends Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    let token = JSON.parse(localStorage.getItem('token'))
                     const config = {
                         headers: { Authorization: `Bearer ${token}` }
                     };
                     axios.delete(Global.monitoreos + "/" + id, config)
                         .then(response => {
-                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                             if (response.data.Success) {
                                 swal("Felicidades!", "Monitoreo eliminado correctamente", "success").then(() => {
                                     window.location.reload(window.location.href);
@@ -329,7 +330,7 @@ export default class Monitoreo extends Component {
                             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                                 HELPER_FUNCTIONS.logout()
                             } else {
-                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                 swal("Error al eliminar!", {
                                     icon: "error",
                                 });
@@ -352,7 +353,7 @@ export default class Monitoreo extends Component {
             monitoringsIds: monitoreosSeleccionados
         }
 
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -360,7 +361,7 @@ export default class Monitoreo extends Component {
         this.setState({ loading: true });
 
         axios.post(Global.monitoreos + '/exports', dataToSend, config).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 loading: false
             })
@@ -377,7 +378,7 @@ export default class Monitoreo extends Component {
             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                 HELPER_FUNCTIONS.logout()
             } else {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
                     loading: false
                 })
@@ -446,7 +447,7 @@ export default class Monitoreo extends Component {
             dataToSend.push(name)
         }
 
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -454,7 +455,7 @@ export default class Monitoreo extends Component {
         this.setState({ loading: true, empresasSeleccionadas: empresas });
 
         axios.post(Global.monitoreos + '/filters', dataToSend, config).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             let programs = response.data.Data.programs || false;
 
             this.setState({
@@ -469,7 +470,7 @@ export default class Monitoreo extends Component {
             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                 HELPER_FUNCTIONS.logout()
             } else {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
                     loading: false
                 })

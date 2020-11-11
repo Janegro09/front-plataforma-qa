@@ -84,7 +84,7 @@ class SelectGroup extends Component {
         })
 
         if (idGroup) {
-            let token = JSON.parse(sessionStorage.getItem('token'))
+            let token = JSON.parse(localStorage.getItem('token'))
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };
@@ -93,7 +93,7 @@ class SelectGroup extends Component {
                 Global.getAllProgramsGroups + '/' + idGroup + '/' + usuario.idDB,
                 config
             ).then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 // this.setState({
                 //     redirect: true
                 // })
@@ -102,7 +102,7 @@ class SelectGroup extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
@@ -132,12 +132,12 @@ class SelectGroup extends Component {
         this.setState({
             loading: true
         })
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
 
         axios.get(Global.getGroups, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 allUsers: response.data.Data,
                 loading: false
@@ -152,7 +152,7 @@ class SelectGroup extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         error: true,
                         redirect: true,

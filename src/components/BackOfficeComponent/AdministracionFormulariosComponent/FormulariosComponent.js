@@ -104,14 +104,14 @@ export default class Formularios extends Component {
 
         dataToSend.parts = cantSecciones;
 
-        let token = JSON.parse(sessionStorage.getItem('token'));
+        let token = JSON.parse(localStorage.getItem('token'));
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
 
         axios.post(Global.getForms, dataToSend, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
                 if (response.data.Success) {
                     swal("Felicidades!", "Se ha creado el modelo correctamente", "success");
                 }
@@ -120,7 +120,7 @@ export default class Formularios extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout();
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Atención", "No se ha agregado el grupo", "info");
                 }
                 console.log("Error: ", e)
@@ -156,13 +156,13 @@ export default class Formularios extends Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    let token = JSON.parse(sessionStorage.getItem('token'));
+                    let token = JSON.parse(localStorage.getItem('token'));
                     const config = {
                         headers: { Authorization: `Bearer ${token}` }
                     };
                     axios.delete(Global.getForms + "/" + id, config)
                         .then(response => {
-                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                             if (response.data.Success) {
                                 swal("Felicidades!", "Formulario eliminado correctamente", "success").then(() => {
                                     window.location.reload(window.location.href);
@@ -174,7 +174,7 @@ export default class Formularios extends Component {
                             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                                 HELPER_FUNCTIONS.logout();
                             } else {
-                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                 swal("Error al eliminar!", {
                                     icon: "error",
                                 });
@@ -236,7 +236,7 @@ export default class Formularios extends Component {
     componentDidMount() {
         this.setState({ loading: true });
 
-        let tokenUser = JSON.parse(sessionStorage.getItem("token"));
+        let tokenUser = JSON.parse(localStorage.getItem("token"));
         let token = tokenUser;
         let bearer = `Bearer ${token}`;
 
@@ -247,7 +247,7 @@ export default class Formularios extends Component {
             // ACÁ VAN A QUEDAR LAS DE M
             let allForms = response.data.Data.filter(form => form.section === 'M');
             axios.get(Global.getForms, { headers: { Authorization: bearer } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                 this.setState({ 
                     allForms,
                     models: response.data.Data, 
@@ -261,7 +261,7 @@ export default class Formularios extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })

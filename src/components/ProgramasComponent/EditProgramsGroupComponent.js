@@ -17,7 +17,7 @@ export default class EditProgramsGroupComponent extends Component {
 
     addUser = (event) => {
         event.preventDefault()
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -38,7 +38,7 @@ export default class EditProgramsGroupComponent extends Component {
             bodyParameters,
             config
         ).then(response => {
-            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+            localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
             this.setState({
                 loading: false
             })
@@ -55,7 +55,7 @@ export default class EditProgramsGroupComponent extends Component {
                 this.setState({
                     loading: false
                 })
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 swal("Error!", "Hubo un problema", "error");
             }
             console.log("Error: ", e)
@@ -66,7 +66,7 @@ export default class EditProgramsGroupComponent extends Component {
 
     componentDidMount() {
         const id = this.props.edit.id
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         this.setState({
@@ -82,7 +82,7 @@ export default class EditProgramsGroupComponent extends Component {
             } else {
                 this.setState({ loading: false });
             }
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         })
             .catch((e) => {
                 // Si hay algún error en el request lo deslogueamos
@@ -94,7 +94,7 @@ export default class EditProgramsGroupComponent extends Component {
                         redirect: true,
                         loading: false
                     })
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)

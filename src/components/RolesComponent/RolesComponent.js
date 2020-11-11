@@ -14,14 +14,14 @@ export default class Home extends Component {
     }
 
     logout = () => {
-        sessionStorage.setItem("userData", '')
-        sessionStorage.clear()
+        localStorage.setItem("userData", '')
+        localStorage.clear()
         this.setState({ redirect: true })
     }
 
     render() {
 
-        const userInfo = JSON.parse(sessionStorage.getItem("userData"));
+        const userInfo = JSON.parse(localStorage.getItem("userData"));
 
         return (
             <div>

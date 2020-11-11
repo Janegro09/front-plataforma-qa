@@ -48,13 +48,13 @@ export default class ModeloFormularios extends Component {
             loading: true
         })
 
-        let tokenUser = JSON.parse(sessionStorage.getItem("token"));
+        let tokenUser = JSON.parse(localStorage.getItem("token"));
         let token = tokenUser;
         let bearer = `Bearer ${token}`;
 
 
         axios.get(Global.newFormModel, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
             // ACÁ VAN A QUEDAR LAS DE M
 
@@ -70,7 +70,7 @@ export default class ModeloFormularios extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })
@@ -98,13 +98,13 @@ export default class ModeloFormularios extends Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    let token = JSON.parse(localStorage.getItem('token'))
                     const config = {
                         headers: { Authorization: `Bearer ${token}` }
                     };
                     axios.delete(Global.newFormModel + "/" + id, config)
                         .then(response => {
-                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                             if (response.data.Success) {
                                 swal("Felicidades!", "Modelo de formulario eliminado correctamente", "success").then(() => {
                                     window.location.reload(window.location.href);
@@ -116,7 +116,7 @@ export default class ModeloFormularios extends Component {
                             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                                 HELPER_FUNCTIONS.logout()
                             } else {
-                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                 swal("Error al eliminar!", {
                                     icon: "error",
                                 });

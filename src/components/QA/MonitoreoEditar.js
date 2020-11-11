@@ -102,11 +102,11 @@ export default class componentName extends Component {
         const { id } = this.props.match.params;
         this.setState({ id, loading: true });
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
         axios.get(Global.monitoreos + '/' + id, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             
             let monitoreo = response.data.Data[0] || false;
 
@@ -123,7 +123,7 @@ export default class componentName extends Component {
             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                 HELPER_FUNCTIONS.logout()
             } else {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
                     loading: false
                 })
@@ -143,11 +143,11 @@ export default class componentName extends Component {
                 loading: true
             })
     
-            const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+            const tokenUser = JSON.parse(localStorage.getItem("token"))
             let token = tokenUser
             let bearer = `Bearer ${token}`
             axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                 let users = response.data.Data;
                 let usuariosConFiltro = response.data.Data;
     
@@ -164,7 +164,7 @@ export default class componentName extends Component {
                     if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                         HELPER_FUNCTIONS.logout()
                     } else {
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                         this.setState({
                             loading: false
                         })
@@ -191,13 +191,13 @@ export default class componentName extends Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    let token = JSON.parse(localStorage.getItem('token'))
                     const config = {
                         headers: { Authorization: `Bearer ${token}` }
                     };
                     axios.delete(Global.monitoreos + "/" + this.state.id + '/neverUsed', config)
                         .then(response => {
-                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                             if (response.data.Success) {
                                 swal("Felicidades!", "Monitoreo eliminado correctamente", "success").then(() => {
                                     this.setState({ redirect: '/monitoreo' })
@@ -209,7 +209,7 @@ export default class componentName extends Component {
                             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                                 HELPER_FUNCTIONS.logout()
                             } else {
-                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                 swal("Error al eliminar!", {
                                     icon: "error",
                                 });
@@ -252,14 +252,14 @@ export default class componentName extends Component {
             dataToSend.transactionDate = "";
         }
 
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
 
         axios.put(Global.monitoreos + '/' + id, dataToSend, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 
                 this.setState({ loading: false })
                 swal('Excelente', 'Archivo modificado correctamente', 'success').then(() => {
@@ -274,7 +274,7 @@ export default class componentName extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Atención", "No se ha agregado el grupo", "info");
                 }
                 console.log("Error: ", e)
@@ -297,14 +297,14 @@ export default class componentName extends Component {
 
         formData.append('file', file);
 
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
 
         axios.put(Global.monitoreos + '/' + id + '/file', formData, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 
                 this.setState({ loading: false })
                 swal('Excelente', 'Archivo subido correctamente', 'success').then(() => {
@@ -319,7 +319,7 @@ export default class componentName extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Atención", "No se ha agregado el grupo", "info");
                 }
                 console.log("Error: ", e)
@@ -354,13 +354,13 @@ export default class componentName extends Component {
                 if (willDelete) {
                     this.setState({ loading: true });
 
-                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    let token = JSON.parse(localStorage.getItem('token'))
                     const config = {
                         headers: { Authorization: `Bearer ${token}` }
                     };
                     axios.delete(Global.monitoreos + '/' + id + '/' + fileId, config)
                     .then(response => {
-                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                        localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                         this.setState({ loading: false })
                         swal('Excelente', 'Archivo eliminado correctamente', 'success').then(() => {
                             
@@ -373,7 +373,7 @@ export default class componentName extends Component {
                         if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                             HELPER_FUNCTIONS.logout()
                         } else {
-                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                            localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                             swal("Atención", "No se ha agregado el grupo", "info");
                         }
                     });

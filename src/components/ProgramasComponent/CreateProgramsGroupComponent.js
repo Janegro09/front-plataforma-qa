@@ -8,7 +8,7 @@ import swal from 'sweetalert';
 export default class CreateProgramsGroupComponent extends Component {
     addUser = (event) => {
         event.preventDefault()
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -23,7 +23,7 @@ export default class CreateProgramsGroupComponent extends Component {
             bodyParameters,
             config
         ).then(response => {
-            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+            localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
             swal("Grupo de programas creado!", "Ya se encuentra registrado", "success").then(value => {
                 if (value) {
                     window.location.reload(window.location.href);
@@ -33,7 +33,7 @@ export default class CreateProgramsGroupComponent extends Component {
             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                 HELPER_FUNCTIONS.logout()
             } else {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token));
+                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token));
                 swal("Error!", "Hubo un problema", "error");
             }
             console.log("Error: ", e)

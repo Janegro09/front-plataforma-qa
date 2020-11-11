@@ -69,7 +69,7 @@ export default class GroupsTable extends Component {
 
     desasignarGrupo = (idGrupo) => {
         let idPrograma = this.state.specificGroup[0].id
-        let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
         this.setState({
@@ -85,13 +85,13 @@ export default class GroupsTable extends Component {
             this.setState({
                 loading: false
             })
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         })
             .catch((e) => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })
@@ -105,14 +105,14 @@ export default class GroupsTable extends Component {
     editProgram = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
         let id = userInfo.id
-        let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
         this.setState({
             loading: true
         })
         axios.get(Global.getAllPrograms + '/' + id, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             const { Data } = response.data
             this.setState({
                 loading: false
@@ -151,7 +151,7 @@ export default class GroupsTable extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })
@@ -170,7 +170,7 @@ export default class GroupsTable extends Component {
     deleteProgram = (event, userInfo) => {
         // Cargo en el estado la información del usuario seleccionado
         event.preventDefault()
-        let token = JSON.parse(sessionStorage.getItem('token'));
+        let token = JSON.parse(localStorage.getItem('token'));
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -188,7 +188,7 @@ export default class GroupsTable extends Component {
                         loading: true
                     })
                     axios.delete(Global.getAllPrograms + '/' + userInfo.id, config).then(response => {
-                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                        localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                         this.setState({
                             loading: false
                         })
@@ -204,7 +204,7 @@ export default class GroupsTable extends Component {
                         if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                             HELPER_FUNCTIONS.logout()
                         } else {
-                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                            localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                             this.setState({
                                 loading: false
                             })
@@ -278,7 +278,7 @@ export default class GroupsTable extends Component {
 
         let id = this.state.specificGroup[0].id || false
 
-        let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
         this.setState({
@@ -288,7 +288,7 @@ export default class GroupsTable extends Component {
 
         // setTimeout(() => {      
         axios.put(Global.getAllPrograms + '/' + id, dataSend, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             window.location.reload(window.location.href);
             this.setState({
                 loading: false
@@ -301,7 +301,7 @@ export default class GroupsTable extends Component {
                     this.setState({
                         loading: false
                     })
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
@@ -313,7 +313,7 @@ export default class GroupsTable extends Component {
 
     newProgram = (e) => {
         e.preventDefault()
-        let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
         this.setState({
@@ -324,7 +324,7 @@ export default class GroupsTable extends Component {
             this.setState({
                 loading: false
             })
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 gruposDeProgramas: Data,
                 okProgramas: true
@@ -337,7 +337,7 @@ export default class GroupsTable extends Component {
                     this.setState({
                         loading: false
                     })
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
@@ -365,7 +365,7 @@ export default class GroupsTable extends Component {
     crearPrograma = (e) => {
         e.preventDefault();
 
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -387,7 +387,7 @@ export default class GroupsTable extends Component {
             bodyParameters,
             config
         ).then(response => {
-            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+            localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
             swal("Programa creado!", "Ya se encuentra registrado", "success").then(() => {
                 this.setState({
                     redirect: true,
@@ -403,7 +403,7 @@ export default class GroupsTable extends Component {
                 this.setState({
                     loading: false
                 })
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 swal("Error!", "Hubo un problema", "error");
             }
             console.log("Error: ", e)
@@ -422,14 +422,15 @@ export default class GroupsTable extends Component {
     }
 
     componentDidMount() {
-        let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        HELPER_FUNCTIONS.set_page_title('Programs');
+        let tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
         this.setState({
             loading: true
         })
         axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
             this.setState({
                 allPrograms: response.data.Data,
@@ -447,7 +448,7 @@ export default class GroupsTable extends Component {
                     this.setState({
                         loading: false
                     })
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)

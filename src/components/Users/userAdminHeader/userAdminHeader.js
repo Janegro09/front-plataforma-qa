@@ -18,7 +18,7 @@ export default class UserAdminHeader extends Component {
     }
 
     changePass = () => {
-        const userData = JSON.parse(sessionStorage.getItem("userData"))
+        const userData = JSON.parse(localStorage.getItem("userData"))
         const id = userData.id
         swal(`Cambiando contraseña de ${userData.name}, ingresá: `, {
             content: {
@@ -30,7 +30,7 @@ export default class UserAdminHeader extends Component {
             },
         })
             .then((value) => {
-                let token = JSON.parse(sessionStorage.getItem('token'))
+                let token = JSON.parse(localStorage.getItem('token'))
                 const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };
@@ -47,13 +47,13 @@ export default class UserAdminHeader extends Component {
                         } else {
                             swal("Error!", "Hubo un error al cambiar la contraseña!", "error");
                         }
-                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                        localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                     })
                     .catch(e => {
                         if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                             HELPER_FUNCTIONS.logout()
                         } else {
-                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                            localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                             swal("Atención", "No has cambiado nada", "info");
                         }
                         console.log("Error: ", e)
@@ -73,8 +73,8 @@ export default class UserAdminHeader extends Component {
             return <Redirect to={'/'} />
         }
         // Protección de rutas
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
-        const userData = JSON.parse(sessionStorage.getItem("userData"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
+        const userData = JSON.parse(localStorage.getItem("userData"))
         if (tokenUser === null) {
             return <Redirect to={'/'} />
         }

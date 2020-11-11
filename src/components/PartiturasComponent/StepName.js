@@ -95,14 +95,14 @@ export default class StepName extends Component {
 
         // /analytics/partitures/:id/:userId/:stepId
 
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
 
         axios.put(Global.getAllPartitures + "/" + id + '/' + idUsuario + '/' + idStep, sendData, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
                 swal('Excelente', 'Paso modificado correctamente', 'success').then(() => {
                     window.location.reload(window.location.href);
                 })
@@ -111,7 +111,7 @@ export default class StepName extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema al agregar los roles", "error");
                 }
                 console.log("Error: ", e)
@@ -127,11 +127,11 @@ export default class StepName extends Component {
 
         let id = this.props.match.params.id
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.delete(Global.getAllPartitures + '/' + id + '/' + fileId, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 loading: false
             });
@@ -142,7 +142,7 @@ export default class StepName extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })
@@ -154,11 +154,11 @@ export default class StepName extends Component {
 
     descargarArchivoAudio = (idArchivo) => {
         let { id, idStep, idUsuario } = this.props.match.params;
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.get(`${Global.getAllPartitures}/${id}/${idUsuario}/${idStep}/${idArchivo}`, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             let idResp = response.data.Data
 
             let win = window.open(Global.download + '/' + idResp, '_blank');
@@ -170,7 +170,7 @@ export default class StepName extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })
@@ -213,7 +213,7 @@ export default class StepName extends Component {
 
         // /analytics/partitures/:id/:userId/:stepId/files?section=monitorings
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         this.setState({
@@ -221,7 +221,7 @@ export default class StepName extends Component {
         });
 
         axios.post(Global.getAllPartitures + '/' + id + '/' + idUsuario + '/' + idStep + '/files?section=monitorings', formData, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 loading: false
             });
@@ -231,7 +231,7 @@ export default class StepName extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema al agregar el arhcivo", "error");
                     this.setState({
                         loading: false
@@ -248,7 +248,7 @@ export default class StepName extends Component {
         let data = this.archivoSeleccionado[0];
         let { id, idStep, idUsuario } = this.props.match.params;
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         const formData = new FormData();
@@ -263,7 +263,7 @@ export default class StepName extends Component {
         });
 
         axios.post(Global.getAllPartitures + '/' + id + '/' + idUsuario + '/' + idStep + '/files?section=coachings', formData, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 loading: false
             });
@@ -273,7 +273,7 @@ export default class StepName extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema al agregar el arhcivo", "error");
                     this.setState({
                         loading: false
@@ -358,10 +358,10 @@ export default class StepName extends Component {
         this.setState({
             loading: true
         })
-        let role = JSON.parse(sessionStorage.getItem("userData"));
+        let role = JSON.parse(localStorage.getItem("userData"));
         role = role.role[0];
         role = role.role;
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
 
@@ -370,7 +370,7 @@ export default class StepName extends Component {
             bearer = `Bearer ${token}`;
             const data = response.data.Data;
             axios.get(Global.getAllPartitures + '/' + id + '/' + idUsuario + '/' + idStep, { headers: { Authorization: bearer } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                 const instances = response.data.Data[0].instances[0];
                 const step = instances ? instances.steps[0] : null;
 
@@ -395,7 +395,7 @@ export default class StepName extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)

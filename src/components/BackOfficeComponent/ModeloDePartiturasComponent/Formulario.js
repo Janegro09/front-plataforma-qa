@@ -111,7 +111,7 @@ export default class Formulario extends Component {
             sendData.instances.push(tempData);
         }
 
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -120,7 +120,7 @@ export default class Formulario extends Component {
             // entonces editamos
             axios.put(Global.getPartitureModels + "/" + id, bodyParameters, config)
                 .then(response => {
-                    sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                     if (response.data.Success) {
                         swal("Felicidades!", "Se ha modificado la plantilla de partitura correctamente", "success");
                         window.location.reload(window.location.href);
@@ -131,7 +131,7 @@ export default class Formulario extends Component {
                     if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                         HELPER_FUNCTIONS.logout()
                     } else {
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                         swal("Atención", "No se ha agregado el grupo", "info");
                         this.setState({
                             redirect: true
@@ -142,7 +142,7 @@ export default class Formulario extends Component {
         } else {
             axios.post(Global.getPartitureModels + "/new", bodyParameters, config)
                 .then(response => {
-                    sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                     if (response.data.Success) {
                         swal("Felicidades!", "Se ha creado la plantilla de partitura correctamente", "success");
                         window.location.reload(window.location.href);
@@ -153,7 +153,7 @@ export default class Formulario extends Component {
                     if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                         HELPER_FUNCTIONS.logout()
                     } else {
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                         swal("Atención", "No se ha agregado el grupo", "info");
                         this.setState({
                             redirect: true
@@ -242,14 +242,14 @@ export default class Formulario extends Component {
         const { idModificate } = this.props
         if (idModificate) {
 
-            let token = JSON.parse(sessionStorage.getItem('token'))
+            let token = JSON.parse(localStorage.getItem('token'))
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };
 
             axios.get(Global.getPartitureModels + "/" + idModificate, config)
                 .then(response => {
-                    sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                     const respuesta = response.data.Data[0];
                     if (respuesta) {
                         for (let i of respuesta.instances) {
@@ -265,7 +265,7 @@ export default class Formulario extends Component {
                     if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                         HELPER_FUNCTIONS.logout()
                     } else {
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token));
+                        localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token));
                         this.setState({
                             redirect: true
                         })

@@ -16,7 +16,7 @@ export default class deleteUserComponent extends Component {
 
     componentDidMount() {
         // Protección de rutas
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         if (tokenUser === null) {
             return <Redirect to={'/'} />
         }
@@ -29,7 +29,7 @@ export default class deleteUserComponent extends Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    let token = JSON.parse(localStorage.getItem('token'))
 
                     if (this.props.location.state) {
 
@@ -40,7 +40,7 @@ export default class deleteUserComponent extends Component {
 
                         axios.delete(Global.getGroups + '/' + id, config)
                             .then(response => {
-                                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                                 if (response.data.Success) {
                                     swal("Genial! el grupo se ha eliminado correctamente", {
                                         icon: "success",
@@ -56,7 +56,7 @@ export default class deleteUserComponent extends Component {
                                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                                     HELPER_FUNCTIONS.logout()
                                 } else {
-                                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                     swal("Error!", "Hubo un problema al agregar el usuario", "error");
                                     // Cambio el redirect a true para volver a /groups
                                     this.setState({

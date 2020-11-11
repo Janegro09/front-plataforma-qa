@@ -88,7 +88,7 @@ export default class ModalNuevoMonitoreo extends Component {
             loading: true
         })
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
         axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
@@ -99,7 +99,7 @@ export default class ModalNuevoMonitoreo extends Component {
             bearer = `Bearer ${token}`
 
             axios.get(Global.calibrationTypes, { headers: { Authorization: bearer } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
                 let calibrationTypes = []
                 if (response.data.Data) {
@@ -120,7 +120,7 @@ export default class ModalNuevoMonitoreo extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })
@@ -160,14 +160,14 @@ export default class ModalNuevoMonitoreo extends Component {
 
         this.setState({ loading: true })
 
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
 
         axios.post(Global.calibration + '/new', dataToSend, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 this.setState({ loading: false })
                 if (response.data.Success) {
                     swal("Felicidades!", "Se ha creado la sesion de calibracion correctamente", "success").then(() => {
@@ -180,7 +180,7 @@ export default class ModalNuevoMonitoreo extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Atención", "No se ha agregado la calibracion", "info");
                 }
                 console.log("Error: ", e)

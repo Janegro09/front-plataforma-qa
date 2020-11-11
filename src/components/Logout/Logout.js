@@ -12,14 +12,14 @@ export default class Logout extends Component {
     }
     
     logout = () => {
-        sessionStorage.setItem("userData", '')
-        sessionStorage.setItem("token", '')
-        sessionStorage.clear()
+        localStorage.setItem("userData", '')
+        localStorage.setItem("token", '')
+        localStorage.clear()
         this.setState({ redirect: true })
     }
     
     componentDidMount() {
-        if (sessionStorage.getItem("userData")) {
+        if (localStorage.getItem("userData")) {
         } else {
             this.setState({ redirect: true })
         }

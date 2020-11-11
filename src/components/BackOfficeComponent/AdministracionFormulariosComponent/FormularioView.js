@@ -75,12 +75,12 @@ export default class FormularioView extends Component {
         const { id } = this.props.match.params;
         // Hacemos el request para ver el formmulario
         this.setState({ loading: true });
-        let tokenUser = JSON.parse(sessionStorage.getItem("token"));
+        let tokenUser = JSON.parse(localStorage.getItem("token"));
         let token = tokenUser;
         let bearer = `Bearer ${token}`;
 
         axios.get(Global.getForms + '/' + id, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
             // ACÁ VAN A QUEDAR LAS DE M
             if (response.data.Data.length === 0) {
@@ -97,7 +97,7 @@ export default class FormularioView extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })

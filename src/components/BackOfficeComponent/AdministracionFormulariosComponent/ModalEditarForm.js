@@ -35,14 +35,14 @@ export default class ModalModeloFormulariosComponent extends Component {
 
         dataToSend.parts = cantSecciones;
 
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
 
         axios.put(Global.getForms + '/' + dataToSend.id, dataToSend, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 if (response.data.Success) {
                     swal("Felicidades!", "Se ha modficado el modelo correctamente", "success").then(() => {
                         window.location.reload(window.location.href);
@@ -54,7 +54,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Atención", "No se ha agregado el grupo", "info");
                 }
                 console.log("Error: ", e)
@@ -192,7 +192,7 @@ export default class ModalModeloFormulariosComponent extends Component {
             loading: true
         })
 
-        let tokenUser = JSON.parse(sessionStorage.getItem("token"));
+        let tokenUser = JSON.parse(localStorage.getItem("token"));
         let token = tokenUser;
         let bearer = `Bearer ${token}`;
 
@@ -205,7 +205,7 @@ export default class ModalModeloFormulariosComponent extends Component {
             let allForms = response.data.Data.filter(form => form.section === 'M');
             let { id } = this.props;
             axios.get(Global.getForms + '/' + id, { headers: { Authorization: bearer } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
                 let dataToSend = response.data.Data[0] || false;
                 if (dataToSend) {
@@ -220,7 +220,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })

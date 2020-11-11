@@ -137,13 +137,13 @@ export default class Modal extends Component {
 
         // Hacer rekes
         this.setState({ loading: true });
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"));
+        const tokenUser = JSON.parse(localStorage.getItem("token"));
         const token = tokenUser;
         const bearer = `Bearer ${token}`;
         if (!id) {
             axios.post(Global.getAllForms + "/new", bodyParameters, { headers: { Authorization: bearer } })
                 .then(response => {
-                    sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                     if (response.data.Success) {
                         swal("Felicidades!", "Se ha creado un campo personalizado correctamente", "success").then(() => {
                             window.location.reload(window.location.href);
@@ -154,7 +154,7 @@ export default class Modal extends Component {
                     if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                         HELPER_FUNCTIONS.logout()
                     } else {
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                         swal("Atención", "No se ha agregado el grupo", "info");
                         this.setState({
                             redirect: true
@@ -165,7 +165,7 @@ export default class Modal extends Component {
         } else {
             axios.put(Global.getAllForms + '/' + id, bodyParameters, { headers: { Authorization: bearer } })
                 .then(response => {
-                    sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                     if (response.data.Success) {
                         swal("Felicidades!", "Se ha editado un campo personalizado correctamente", "success").then(() => {
                             window.location.reload(window.location.href);
@@ -176,7 +176,7 @@ export default class Modal extends Component {
                     if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                         HELPER_FUNCTIONS.logout()
                     } else {
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                         swal("Atención", "No se ha agregado el grupo", "info");
                         this.setState({
                             redirect: true
@@ -192,19 +192,19 @@ export default class Modal extends Component {
 
         this.setState({ loading: true });
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"));
+        const tokenUser = JSON.parse(localStorage.getItem("token"));
         const token = tokenUser;
         const bearer = `Bearer ${token}`;
         axios.get(Global.getAllForms, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             if (idEditar) {
                 this.setState({ loading: true })
 
-                const tokenUser = JSON.parse(sessionStorage.getItem("token"));
+                const tokenUser = JSON.parse(localStorage.getItem("token"));
                 const token = tokenUser;
                 const bearer = `Bearer ${token}`;
                 axios.get(Global.getAllForms + '/' + idEditar, { headers: { Authorization: bearer } }).then(response => {
-                    sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                    localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                     let respuesta = response.data.Data[0];
                     let valueArray = respuesta.values;
                     this.setState({
@@ -226,7 +226,7 @@ export default class Modal extends Component {
                         if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                             HELPER_FUNCTIONS.logout()
                         } else {
-                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                            localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                             this.setState({
                                 loading: false
                             })
@@ -245,7 +245,7 @@ export default class Modal extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })

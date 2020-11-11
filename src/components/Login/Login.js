@@ -59,12 +59,12 @@ export default class Login extends Component {
             )
                 .then(response => {
                     if (response.data.Success) {
-                        sessionStorage.setItem('userData', JSON.stringify(response.data.loggedUser))
-                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                        localStorage.setItem('userData', JSON.stringify(response.data.loggedUser))
+                        localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                         this.setState({ redirect: true })
 
                     } else {
-                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                        localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                     }
                 })
                 .catch(err => {
@@ -85,7 +85,7 @@ export default class Login extends Component {
             return <Redirect to={'/home'} />
         }
 
-        if (sessionStorage.getItem("userData")) {
+        if (localStorage.getItem("userData")) {
             return <Redirect to={'/home'} />
         }
         return (

@@ -7,7 +7,8 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import swal from 'sweetalert';
 import ModalNuevoMonitoreo from './ModalNuevoMonitoreo';
 import './Mon.css';
-import moment from 'moment';
+// import moment from 'moment';
+import moment from 'moment-timezone';
 import { Redirect } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Breadcrumbs } from '@material-ui/core';
@@ -713,22 +714,23 @@ export default class Monitoreo extends Component {
                             <h6>Id del caso</h6>
                                 <br />
                                 <input className="form-control" type="text" id="caseId" onChange={this.changeBuscador} value={buscador.caseId} />
-                         <br />
-                                <h6>Estado</h6>
+                                <br />
+                                {/* Se comenta por pedido de Gabriel, modificaciones 20/11/2020 */}
+                                {/* <h6>Estado</h6>
                                 <br />
                                 <select onChange={this.changeBuscador} value={buscador.status} id="status">
                                     <option>Selecciona...</option>
                                     <option value="pending">Pendiente</option>
                                     <option value="run">En proceso</option>
                                     <option value="finished">Terminado</option>
-                                </select>   
+                                </select>    */}
                                 <span className="flexAlignCenter"> 
-                                <h6>Disputado</h6>
+                                <h6>Observado</h6>
                                 
                                 <Checkbox type="checkbox" id="disputado" onChange={this.changeBuscador} checked={buscador.disputado} />
                                 </span>
                                 <span className="flexAlignCenter">
-                                <h6>Evaluado</h6>
+                                <h6>Devolucion al representante</h6>
                                 
                                 <Checkbox type="checkbox" id="evaluated" onChange={this.changeBuscador} checked={buscador.evaluated} />
                                 </span>
@@ -767,9 +769,10 @@ export default class Monitoreo extends Component {
                                         <th>Fecha de Transacción</th>
                                         <th>Modificado por</th>
                                         <th>Programa</th>
-                                        <th>Estado</th>
+                                        {/* <th>Estado</th> */}
                                         <th>Observaciones</th>
                                         {/* <th>Invalidado</th> */}
+                                        <th>RT. Observación</th>
                                         <th>Devolución</th>
                                         <th>Calificación</th>
                                         <th>Acciones</th>
@@ -792,12 +795,13 @@ export default class Monitoreo extends Component {
                                                 <td>{mon.caseId}</td>
                                                 <td>{this.getUser(mon.createdBy)}</td>
                                                 <td>{this.getUser(mon.userId)}</td>
-                                                <td>{moment(mon.createdAt).format('DD/MM/YYYY  HH:mm')}</td>
-                                                <td>{moment(mon.transactionDate).format('DD/MM/YYYY  HH:mm')}</td>
+                                                <td>{moment(mon.createdAt).tz("Europe/Lisbon").format('DD/MM/YYYY  HH:mm')}</td>
+                                                <td>{moment(mon.transactionDate).tz("Europe/Lisbon").format('DD/MM/YYYY ')}</td>
                                                 <td>{mon.modifiedBy.length}</td>
                                                 <td>{mon.program}</td>
-                                                <td>{(mon.status === 'pending' ? <TimerIcon className="timerIcon" /> : (mon.status === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon className="PlayArrowRoundedIcon" />))}</td>
-                                                <td className="tablaVariables tableIcons"><div className={mon.disputado ? "estadoActivo" : "estadoInactivo"}></div></td>
+                                                {/* <td>{(mon.status === 'pending' ? <TimerIcon className="timerIcon" /> : (mon.status === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon className="PlayArrowRoundedIcon" />))}</td> */}
+                                                <td className="tablaVariables tableIcons"><div className={mon.disputado ? "estadoActivoObs" : "estadoInactivoObs"}></div></td>
+                                                <td className="tablaVariables tableIcons"><div className={mon.disputar_response ? "estadoActivo" : "estadoInactivo"}></div></td>
                                                 {/* <td className="tablaVariables tableIcons"><div className={mon.invalidated ? "estadoActivo" : "estadoInactivo"}></div></td> */}
                                                 <td className="tablaVariables tableIcons"><div className={mon.evaluated ? "estadoActivo" : "estadoInactivo"}></div></td>
                                                 <td>

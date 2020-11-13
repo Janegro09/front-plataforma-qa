@@ -612,8 +612,6 @@ svg {
   text-align: center;
 }
 
-
-
 .estadoInactivo {
   padding: 3px;
   width: 70px;
@@ -626,6 +624,40 @@ svg {
   color: white;
   font-size: 9px;
   content: "NO";
+  font-weight: 700;
+  text-align: center;
+}
+
+
+
+.estadoActivoObs {
+  padding: 3px;
+  width: 70px;
+  border-radius: 5px;
+  background-color: #0080009e!important; 
+}
+
+.estadoActivoObs::after {
+  display: block;
+  color: white;
+  font-size: 9px;
+  content: "NO";
+  font-weight: 700;
+  text-align: center;
+}
+
+.estadoInactivoObs {
+  padding: 3px;
+  width: 70px;
+  border-radius: 5px;
+  background-color: #ff000078!important;
+}
+
+.estadoInactivoObs::after {
+  display: block;
+  color: white;
+  font-size: 9px;
+  content: "SI";
   font-weight: 700;
   text-align: center;
 }

@@ -264,7 +264,7 @@ export default class componentName extends Component {
                 this.setState({ loading: false })
                 swal('Excelente', 'Archivo modificado correctamente', 'success').then(() => {
                     
-                    this.componentDidMount();
+                    this.setState({redirect:"/monitoreo"});
 
                 })
 
@@ -576,7 +576,8 @@ export default class componentName extends Component {
                                 defaultValue={defaultValue}
                                 id={sectionId+value.questionId+value.id}
                             />
-                            <label htmlFor={sectionId+value.questionId+value.id}>{value.name}</label>
+                            {/* Se comenta a pedido de Gabriel, cambios 20/11/2020 */}
+                            {/* <label htmlFor={sectionId+value.questionId+value.id}>{value.name}</label> */}
 
                         </span>
                     </>
@@ -598,7 +599,8 @@ export default class componentName extends Component {
                             >
 
                             </textarea>
-                            <label htmlFor={sectionId+value.questionId+value.id}>{value.name}</label>
+                            {/* Se comenta a pedido de Gabriel, cambios 20/11/2020 */}
+                            {/* <label htmlFor={sectionId+value.questionId+value.id}>{value.name}</label> */}
 
                         </span>
                     </>
@@ -832,14 +834,16 @@ export default class componentName extends Component {
                                     </select>
                                 </span>
 
-                                <span>
+
+                                {/* Se comenta por pedido de Gabriel, modificaciones 20/11/2020 */}
+                                {/* <span>
                                     <label>Estado</label>
                                     <select value={dataToSend.status} id="status" onChange={this.handleChange} >
                                         <option>Selecciona...</option>
                                         <option value="run">En proceso</option>
                                         <option value="finished">Finalizado</option>
                                     </select>
-                                </span>
+                                </span> */}
 
                             </article>
                             
@@ -871,7 +875,7 @@ export default class componentName extends Component {
                                     <input data-id="disputar" checked={disputarArea}  onClick={this.activeTextAreas} type="checkbox"/>
                                     {disputarArea && 
                                         <>
-                                        <textarea  id="disputar" onChange={this.handleChange} value={dataToSend.disputar}></textarea>
+                                        <textarea  id="disputar" onChange={this.handleChange} defaultValue={dataToSend.disputado}></textarea>
                                         <br />
                                         <h6>Respuesta a observación del monitoreo</h6>
                                         <textarea  id="disputar_response" onChange={this.handleChange} value={dataToSend.disputar_response}></textarea>

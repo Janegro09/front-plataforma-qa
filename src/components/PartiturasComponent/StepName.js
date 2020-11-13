@@ -241,6 +241,12 @@ export default class StepName extends Component {
             });
     }
 
+    subirArchivoCoaching = (e) => {
+        e.preventDefault();
+        this.enviar();
+        this.subirArchivo();
+    }
+
     subirArchivo = () => {
         if (!this.archivoSeleccionado) {
             return;
@@ -479,7 +485,7 @@ export default class StepName extends Component {
                                 </button>
                                 <h4>Nombre: {step.name}</h4>
                                 <br />
-                                <article className="btnArticle" 
+                                <article className="btnArticle d-none" 
                                 onClick={(e) => {
                                             e.preventDefault();
                                             this.asignarArchivos();
@@ -752,7 +758,7 @@ export default class StepName extends Component {
                                             <>
                                                 <h6 className="titulo-seccion">Subir Audio</h6>
                                                 <input type="file" onChange={(e) => { this.archivoSeleccionado = e.target.files }} />
-                                                <button className="buttonupload" onClick={(e) => { e.preventDefault(); this.subirArchivo() }}>
+                                                <button className="buttonupload" onClick={this.subirArchivoCoaching}>
                                                     Subir el archivo
                                             </button>
                                             </>

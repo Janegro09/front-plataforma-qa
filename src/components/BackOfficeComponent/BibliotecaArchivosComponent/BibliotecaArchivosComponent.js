@@ -31,7 +31,7 @@ export default class BibliotecaArchivosComponent extends Component {
             loading: true
         })
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         // Crear form data y añadir fichero
@@ -48,7 +48,7 @@ export default class BibliotecaArchivosComponent extends Component {
         )
 
         axios.post(Global.files, formData, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.seleccionarOpcion();
             this.setState({
                 loading: false
@@ -58,7 +58,7 @@ export default class BibliotecaArchivosComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })
@@ -68,11 +68,11 @@ export default class BibliotecaArchivosComponent extends Component {
     }
 
     eliminar = (id) => {
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.delete(Global.files + '/' + id + '?section=' + this.state.seccionSeleccionada, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 loading: false
             })
@@ -83,7 +83,7 @@ export default class BibliotecaArchivosComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })
@@ -110,11 +110,11 @@ export default class BibliotecaArchivosComponent extends Component {
             loading: true
         })
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.get(Global.files + '?section=' + this.state.seccionSeleccionada, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 loading: false
             })
@@ -127,7 +127,7 @@ export default class BibliotecaArchivosComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false,
                         errorMessage: e.response.data.Message

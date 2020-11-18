@@ -41,7 +41,7 @@ export default class PerfilamientoSelection extends Component {
 
     async componentDidMount() {
         let { files } = this.props;
-        let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
         let dataState = []
@@ -65,7 +65,7 @@ export default class PerfilamientoSelection extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })
@@ -75,7 +75,7 @@ export default class PerfilamientoSelection extends Component {
             }
         }
 
-        sessionStorage.setItem("token", JSON.stringify(token));
+        localStorage.setItem("token", JSON.stringify(token));
         this.setState({
             data: dataState,
             loading: false

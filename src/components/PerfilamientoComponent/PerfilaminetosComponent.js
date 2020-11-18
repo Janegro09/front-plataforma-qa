@@ -457,7 +457,7 @@ export default class PerfilaminetosComponent extends Component {
 
 
 
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -468,7 +468,7 @@ export default class PerfilaminetosComponent extends Component {
 
         axios.post(Global.getAllFiles + '/' + id + '/perfilamiento', bodyParameters, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 if (response.data.Success) {
                     swal("Felicidades!", "Perfilamiento modificado!", "success").then(() => {
                         this.setState({
@@ -490,7 +490,7 @@ export default class PerfilaminetosComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Atención", "No has cambiado nada", "info");
                 }
                 console.log("Error: ", e)
@@ -521,12 +521,12 @@ export default class PerfilaminetosComponent extends Component {
 
         modelSend.values = JSON.stringify(modelSend.values);
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`;
         this.setState({ loading: true });
         let response = await axios.post(Global.perfilamientosModel, modelSend, { headers: { Authorization: bearer } });
-        sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+        localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         this.setState({ loading: false })
         swal('Excelente', "Modelo guardado correctamente", "success");
         this.componentDidMount();
@@ -556,12 +556,12 @@ export default class PerfilaminetosComponent extends Component {
 
         modelSend.values = JSON.stringify(modelSend.values);
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`;
         this.setState({ loading: true });
         let response = await axios.put(Global.perfilamientosModel + '/' + this.state.modeloSelected._id, modelSend, { headers: { Authorization: bearer } });
-        sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+        localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         this.setState({ loading: false })
         swal('Excelente', "Modelo modificado correctamente", "success")
         this.componentDidMount();
@@ -577,7 +577,7 @@ export default class PerfilaminetosComponent extends Component {
         }
 
         let id = cuartilSeleccionado;
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
 
@@ -598,7 +598,7 @@ export default class PerfilaminetosComponent extends Component {
                 axios.get(Global.perfilamientosModel, { headers: { Authorization: bearer } }).then(response => {
 
                     let perfilamientosModel = response.data.Data;
-                    sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                    localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
                     this.setState({
                         allUsers,

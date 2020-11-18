@@ -47,19 +47,19 @@ export default class RecordAudio extends Component {
         let { id, idStep, idUsuario } = this.props.ids;
 
         // /analytics/partitures/:id/:userId/:stepId/files?section=monitorings
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
 
         axios.post(Global.getAllPartitures + '/' + id + '/' + idUsuario + '/' + idStep + '/files?section=coachings', formData, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             window.location.reload(window.location.href);
         })
             .catch((e) => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema al agregar el arhcivo", "error");
                     this.setState({
                         loading: false

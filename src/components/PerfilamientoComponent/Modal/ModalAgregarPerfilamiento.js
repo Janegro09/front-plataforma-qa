@@ -30,7 +30,7 @@ export default class Modal extends Component {
             .then((willDelete) => {
                 if (willDelete) {
 
-                    const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+                    const tokenUser = JSON.parse(localStorage.getItem("token"))
                     const token = tokenUser
                     const bearer = `Bearer ${token}`
                     // Crear form data y añadir fichero
@@ -42,7 +42,7 @@ export default class Modal extends Component {
                     );
 
                     axios.post(Global.reasignProgram, formData, { headers: { Authorization: bearer } }).then(response => {
-                        sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                        localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                         this.setState({ loaded: true })
                         setTimeout(() => {
                             this.setState({ loaded: false })
@@ -53,7 +53,7 @@ export default class Modal extends Component {
                             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                                 HELPER_FUNCTIONS.logout()
                             } else {
-                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                 swal("Error!", `${e.response.data.Message}`, "error");
                             }
                             console.log("Error: ", e)

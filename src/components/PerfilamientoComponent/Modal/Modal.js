@@ -35,7 +35,7 @@ export default class Modal extends Component {
     enviarPrograma = (programa) => {
         let id = programa.id;
         const { idFile } = this.props
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -45,7 +45,7 @@ export default class Modal extends Component {
 
         axios.put(Global.reasignProgram + "/" + idFile, bodyParameters, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 swal("Felicidades!", "Has reasignado el programa", "success").then(() => {
                     this.cerrarModal()
                 })
@@ -54,7 +54,7 @@ export default class Modal extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Atención!", "No has cambiado nada", "info");
                 }
                 console.log("Error: ", e)
@@ -62,14 +62,14 @@ export default class Modal extends Component {
     }
 
     componentDidMount() {
-        let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
         this.setState({
             loading: true
         })
         axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             let losP = response.data.Data.filter(data => data.section === 'P');
             this.setState({
                 allPrograms: losP,
@@ -86,7 +86,7 @@ export default class Modal extends Component {
                     this.setState({
                         loading: false
                     })
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)

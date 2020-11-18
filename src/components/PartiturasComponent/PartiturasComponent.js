@@ -81,7 +81,7 @@ export default class PartiturasComponent extends Component {
     }
 
     eliminarPartitura = (id) => {
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         this.setState({
             loading: true
         })
@@ -90,7 +90,7 @@ export default class PartiturasComponent extends Component {
         };
         axios.delete(Global.getAllPartitures + '/' + id, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
                 this.setState({
                     loading: false
                 })
@@ -106,7 +106,7 @@ export default class PartiturasComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema al intentar borrar el rol", "error");
                     this.setState({
                         loading: false,
@@ -138,16 +138,17 @@ export default class PartiturasComponent extends Component {
     }
 
     componentDidMount() {
+        HELPER_FUNCTIONS.set_page_title('Partitures');
         // Hacer rekest
         this.setState({
             loading: true
         })
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.get(Global.getAllPartitures, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             console.log('la response: ', response.data);
 
             this.setState({
@@ -163,7 +164,7 @@ export default class PartiturasComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false,
                         withoutPartitures: true

@@ -35,13 +35,13 @@ export default class componentName extends Component {
         document.addEventListener('click', () => {
             this.setState({ viewHeaders: true, printScreen: false })
         })
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
 
 
         axios.get(Global.calibration + '/' + id,{ headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
             if(response.data.Data) {
 
@@ -62,7 +62,7 @@ export default class componentName extends Component {
             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                 HELPER_FUNCTIONS.logout()
             } else {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
                     loading: false
                 })

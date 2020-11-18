@@ -15,7 +15,7 @@ export default class deleteUserComponent extends Component {
     }
     componentDidMount() {
         // DELETE USER
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         // Protección de rutas
         if (token === null) {
             return <Redirect to={'/'} />
@@ -38,7 +38,7 @@ export default class deleteUserComponent extends Component {
                     if (willDelete) {
                         axios.delete(Global.getUsers + '/' + id, config)
                             .then(response => {
-                                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                                 swal("El usuario ha sido borrado", {
                                     icon: "success",
                                 });
@@ -52,7 +52,7 @@ export default class deleteUserComponent extends Component {
                                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                                     HELPER_FUNCTIONS.logout()
                                 } else {
-                                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                     swal("Error!", "Hubo un problema", "error");
 
                                     // Seteo de estado para el redirect

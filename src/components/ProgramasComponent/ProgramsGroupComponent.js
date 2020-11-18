@@ -84,11 +84,11 @@ export default class ProgramsGroupComponent extends Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+                    const tokenUser = JSON.parse(localStorage.getItem("token"))
                     const token = tokenUser
                     const bearer = `Bearer ${token}`
                     axios.delete(Global.getAllProgramsGroups + '/' + userInfo.id, { headers: { Authorization: bearer } }).then(response => {
-                        sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                        localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                         swal("El grupo ha sido eliminado!", {
                             icon: "success",
                         }).then(value => {
@@ -101,7 +101,7 @@ export default class ProgramsGroupComponent extends Component {
                         if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                             HELPER_FUNCTIONS.logout()
                         } else {
-                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token));
+                            localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token));
                             if (e.response.data.Message) {
                                 swal("Error!", `${e.response.data.Message}`, "error");
                             } else {
@@ -119,8 +119,9 @@ export default class ProgramsGroupComponent extends Component {
     }
 
     componentDidMount() {
+        HELPER_FUNCTIONS.set_page_title('Programs Groups');
         this.setState({ loading: true });
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"));
+        const tokenUser = JSON.parse(localStorage.getItem("token"));
         const token = tokenUser;
         const bearer = `Bearer ${token}`;
         axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
@@ -128,10 +129,10 @@ export default class ProgramsGroupComponent extends Component {
                 searchedGroups: response.data.Data,
                 loading: false
             })
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         })
             .catch((e) => {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
                     searchedGroups: [],
                     loading: false

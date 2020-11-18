@@ -52,7 +52,7 @@ import Reporteria from '../components/Reporteria/Reporteria';
 export default class DashboardRoutes extends Component {
   render() {
 
-    let token = JSON.parse(sessionStorage.getItem('token'));
+    let token = JSON.parse(localStorage.getItem('token'));
     
     return (
       <BrowserRouter>

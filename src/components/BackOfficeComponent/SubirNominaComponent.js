@@ -13,7 +13,7 @@ export default class SubirNominaComponent extends Component {
     };
 
     fileChange = (event) => {
-        let mail = JSON.parse(sessionStorage.getItem("userData")).email;
+        let mail = JSON.parse(localStorage.getItem("userData")).email;
         this.setState({
             selectedFile: event.target.files[0]
         });
@@ -34,7 +34,7 @@ export default class SubirNominaComponent extends Component {
                 .then((willDelete) => {
                     if (willDelete) {
 
-                        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+                        const tokenUser = JSON.parse(localStorage.getItem("token"))
                         const token = tokenUser
                         const bearer = `Bearer ${token}`
                         // Crear form data y añadir fichero
@@ -46,7 +46,7 @@ export default class SubirNominaComponent extends Component {
                         );
 
                         axios.post(Global.sendNomina, formData, { headers: { Authorization: bearer } }).then(response => {
-                            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                             swal(`Nómina en proceso de actualización, cuando finalice recibirás un mail en ${mail}`, {
                                 icon: "success",
                             });
@@ -58,7 +58,7 @@ export default class SubirNominaComponent extends Component {
                                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                                     HELPER_FUNCTIONS.logout()
                                 } else {
-                                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                     swal("Error!", "Hubo un problema al agregar la nómina", "error");
                                     this.setState({
                                         loading: false

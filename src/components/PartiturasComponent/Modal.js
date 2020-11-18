@@ -79,12 +79,12 @@ export default class Modal extends Component {
             loading: true
         })
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.post(Global.getAllPartitures + "/new", sendObject, { headers: { Authorization: bearer } })
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 if (response.data.Success) {
                     swal("Felicidades!", "Se ha creado la partitura", "success").then(() => {
                         window.location.reload(window.location.href);
@@ -96,7 +96,7 @@ export default class Modal extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Atención", "No se ha agregado el grupo", "info");
                     this.setState({
                         redirect: true

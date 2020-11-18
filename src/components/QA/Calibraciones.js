@@ -23,12 +23,13 @@ export default class Calibraciones extends Component {
     }
 
     componentDidMount() {
+        HELPER_FUNCTIONS.set_page_title('Calibrations');
         this.setState({
             loading: true
         })
 
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
         axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
@@ -37,7 +38,7 @@ export default class Calibraciones extends Component {
             bearer = `Bearer ${token}`
             let users = response.data.Data;
             axios.get(Global.calibration, { headers: { Authorization: bearer } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                 let calibraciones = response.data.Data;
 
                 this.setState({
@@ -51,7 +52,7 @@ export default class Calibraciones extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })
@@ -69,7 +70,7 @@ export default class Calibraciones extends Component {
             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                 HELPER_FUNCTIONS.logout()
             } else {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
                     loading: false
                 })
@@ -104,13 +105,13 @@ export default class Calibraciones extends Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    let token = JSON.parse(localStorage.getItem('token'))
                     const config = {
                         headers: { Authorization: `Bearer ${token}` }
                     };
                     axios.delete(Global.calibration + "/" + id, config)
                         .then(response => {
-                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                             if (response.data.Success) {
                                 swal("Felicidades!", "Calibracion eliminada correctamente", "success").then(() => {
                                     window.location.reload(window.location.href);
@@ -122,7 +123,7 @@ export default class Calibraciones extends Component {
                             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                                 HELPER_FUNCTIONS.logout()
                             } else {
-                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                 swal("Error al eliminar!", {
                                     icon: "error",
                                 });

@@ -86,13 +86,13 @@ export default class componentName extends Component {
             loading: true
         })
 
-        let tokenUser = JSON.parse(sessionStorage.getItem("token"));
+        let tokenUser = JSON.parse(localStorage.getItem("token"));
         let token = tokenUser;
         let bearer = `Bearer ${token}`;
 
 
         axios.get(Global.newFormModel + '/' + id, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
             // ACÁ VAN A QUEDAR LAS DE M
             if (response.data.Data.length === 0) {
@@ -110,7 +110,7 @@ export default class componentName extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })

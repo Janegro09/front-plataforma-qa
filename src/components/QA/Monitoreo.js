@@ -7,7 +7,8 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import swal from 'sweetalert';
 import ModalNuevoMonitoreo from './ModalNuevoMonitoreo';
 import './Mon.css';
-import moment from 'moment';
+// import moment from 'moment';
+import moment from 'moment-timezone';
 import { Redirect } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Breadcrumbs } from '@material-ui/core';
@@ -49,13 +50,14 @@ export default class Monitoreo extends Component {
     }
 
     componentDidMount() {
+        HELPER_FUNCTIONS.set_page_title('Monitorings');
         // Treamos los programas y los usuarios
 
         this.setState({
             loading: true
         })
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
         axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
@@ -65,7 +67,7 @@ export default class Monitoreo extends Component {
             let users = response.data.Data;
             let usuariosConFiltro = users;
             axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                 // let p = response.data.Data || false;
                 // let programs;
                 // if (p) {
@@ -91,7 +93,7 @@ export default class Monitoreo extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })
@@ -132,11 +134,11 @@ export default class Monitoreo extends Component {
         }
 
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.get(Global.monitoreos + query, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 monitoreos: response.data.Data,
                 loading: false,
@@ -149,7 +151,7 @@ export default class Monitoreo extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })
@@ -311,13 +313,13 @@ export default class Monitoreo extends Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    let token = JSON.parse(sessionStorage.getItem('token'))
+                    let token = JSON.parse(localStorage.getItem('token'))
                     const config = {
                         headers: { Authorization: `Bearer ${token}` }
                     };
                     axios.delete(Global.monitoreos + "/" + id, config)
                         .then(response => {
-                            sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                            localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                             if (response.data.Success) {
                                 swal("Felicidades!", "Monitoreo eliminado correctamente", "success").then(() => {
                                     window.location.reload(window.location.href);
@@ -329,7 +331,7 @@ export default class Monitoreo extends Component {
                             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                                 HELPER_FUNCTIONS.logout()
                             } else {
-                                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                                 swal("Error al eliminar!", {
                                     icon: "error",
                                 });
@@ -352,7 +354,7 @@ export default class Monitoreo extends Component {
             monitoringsIds: monitoreosSeleccionados
         }
 
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -360,7 +362,7 @@ export default class Monitoreo extends Component {
         this.setState({ loading: true });
 
         axios.post(Global.monitoreos + '/exports', dataToSend, config).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 loading: false
             })
@@ -377,7 +379,7 @@ export default class Monitoreo extends Component {
             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                 HELPER_FUNCTIONS.logout()
             } else {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
                     loading: false
                 })
@@ -446,7 +448,7 @@ export default class Monitoreo extends Component {
             dataToSend.push(name)
         }
 
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -454,7 +456,7 @@ export default class Monitoreo extends Component {
         this.setState({ loading: true, empresasSeleccionadas: empresas });
 
         axios.post(Global.monitoreos + '/filters', dataToSend, config).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             let programs = response.data.Data.programs || false;
 
             this.setState({
@@ -469,7 +471,7 @@ export default class Monitoreo extends Component {
             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                 HELPER_FUNCTIONS.logout()
             } else {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
                     loading: false
                 })
@@ -712,22 +714,23 @@ export default class Monitoreo extends Component {
                             <h6>Id del caso</h6>
                                 <br />
                                 <input className="form-control" type="text" id="caseId" onChange={this.changeBuscador} value={buscador.caseId} />
-                         <br />
-                                <h6>Estado</h6>
+                                <br />
+                                {/* Se comenta por pedido de Gabriel, modificaciones 20/11/2020 */}
+                                {/* <h6>Estado</h6>
                                 <br />
                                 <select onChange={this.changeBuscador} value={buscador.status} id="status">
                                     <option>Selecciona...</option>
                                     <option value="pending">Pendiente</option>
                                     <option value="run">En proceso</option>
                                     <option value="finished">Terminado</option>
-                                </select>   
+                                </select>    */}
                                 <span className="flexAlignCenter"> 
-                                <h6>Disputado</h6>
+                                <h6>Observado</h6>
                                 
                                 <Checkbox type="checkbox" id="disputado" onChange={this.changeBuscador} checked={buscador.disputado} />
                                 </span>
                                 <span className="flexAlignCenter">
-                                <h6>Evaluado</h6>
+                                <h6>Devolucion al representante</h6>
                                 
                                 <Checkbox type="checkbox" id="evaluated" onChange={this.changeBuscador} checked={buscador.evaluated} />
                                 </span>
@@ -766,9 +769,10 @@ export default class Monitoreo extends Component {
                                         <th>Fecha de Transacción</th>
                                         <th>Modificado por</th>
                                         <th>Programa</th>
-                                        <th>Estado</th>
+                                        {/* <th>Estado</th> */}
                                         <th>Observaciones</th>
                                         {/* <th>Invalidado</th> */}
+                                        <th>RT. Observación</th>
                                         <th>Devolución</th>
                                         <th>Calificación</th>
                                         <th>Acciones</th>
@@ -791,12 +795,13 @@ export default class Monitoreo extends Component {
                                                 <td>{mon.caseId}</td>
                                                 <td>{this.getUser(mon.createdBy)}</td>
                                                 <td>{this.getUser(mon.userId)}</td>
-                                                <td>{moment(mon.createdAt).format('DD/MM/YYYY  HH:mm')}</td>
-                                                <td>{moment(mon.transactionDate).format('DD/MM/YYYY  HH:mm')}</td>
+                                                <td>{moment(mon.createdAt).tz("Europe/Lisbon").format('DD/MM/YYYY  HH:mm')}</td>
+                                                <td>{moment(mon.transactionDate).tz("Europe/Lisbon").format('DD/MM/YYYY ')}</td>
                                                 <td>{mon.modifiedBy.length}</td>
                                                 <td>{mon.program}</td>
-                                                <td>{(mon.status === 'pending' ? <TimerIcon className="timerIcon" /> : (mon.status === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon className="PlayArrowRoundedIcon" />))}</td>
-                                                <td className="tablaVariables tableIcons"><div className={mon.disputado ? "estadoActivo" : "estadoInactivo"}></div></td>
+                                                {/* <td>{(mon.status === 'pending' ? <TimerIcon className="timerIcon" /> : (mon.status === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon className="PlayArrowRoundedIcon" />))}</td> */}
+                                                <td className="tablaVariables tableIcons"><div className={mon.disputado ? "estadoActivoObs" : "estadoInactivoObs"}></div></td>
+                                                <td className="tablaVariables tableIcons"><div className={mon.disputar_response ? "estadoActivo" : "estadoInactivo"}></div></td>
                                                 {/* <td className="tablaVariables tableIcons"><div className={mon.invalidated ? "estadoActivo" : "estadoInactivo"}></div></td> */}
                                                 <td className="tablaVariables tableIcons"><div className={mon.evaluated ? "estadoActivo" : "estadoInactivo"}></div></td>
                                                 <td>

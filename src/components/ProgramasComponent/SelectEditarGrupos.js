@@ -27,7 +27,7 @@ export default class SelectEditarGrupos extends Component {
         })
 
         if (idGroup) {
-            let token = JSON.parse(sessionStorage.getItem('token'))
+            let token = JSON.parse(localStorage.getItem('token'))
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };
@@ -36,14 +36,14 @@ export default class SelectEditarGrupos extends Component {
                 Global.getAllProgramsGroups + '/' + idGroup + '/' + usuario.id,
                 config
             ).then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 swal("Genial!", "Usuario desasignado", "success");
 
             }).catch(e => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
@@ -76,12 +76,12 @@ export default class SelectEditarGrupos extends Component {
         })
 
         setTimeout(() => {
-            const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+            const tokenUser = JSON.parse(localStorage.getItem("token"))
             const token = tokenUser
             const bearer = `Bearer ${token}`
 
             axios.get(Global.getGroups, { headers: { Authorization: bearer } }).then(response => {
-                sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
                 let { defaultValue } = this.props;
                 this.setState({
@@ -99,7 +99,7 @@ export default class SelectEditarGrupos extends Component {
                     if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                         HELPER_FUNCTIONS.logout()
                     } else {
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                         this.setState({
                             error: true,
                             redirect: true,

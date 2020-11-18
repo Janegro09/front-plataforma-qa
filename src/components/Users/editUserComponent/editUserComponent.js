@@ -33,7 +33,7 @@ export default class editUserComponent extends Component {
 
     modifyUser = () => {
         // e.preventDefault()
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -78,7 +78,7 @@ export default class editUserComponent extends Component {
 
         axios.post(Global.modifyUser + id, bodyParameters, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 this.setState({
                     redirect: true
                 })
@@ -88,7 +88,7 @@ export default class editUserComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema al agregar el usuario", "error");
                 }
                 console.log("Error: ", e)
@@ -97,7 +97,7 @@ export default class editUserComponent extends Component {
     }
 
     componentDidMount() {
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         // Protección de rutas
         if (token === null) {
             return <Redirect to={'/'} />
@@ -114,13 +114,13 @@ export default class editUserComponent extends Component {
                     this.setState({
                         userInfo: response.data.Data[0]
                     })
-                    sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 })
                 .catch(e => {
                     if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                         HELPER_FUNCTIONS.logout()
                     } else {
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                         swal("Error!", "Hubo un problema", "error");
                         this.setState({
                             redirect: true

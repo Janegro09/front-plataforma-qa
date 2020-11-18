@@ -6,14 +6,14 @@ import '../components/Users/UserTable/UserTable.css'
 
 export const HELPER_FUNCTIONS = {
     logout: () => {
-        sessionStorage.setItem("userData", '')
-        sessionStorage.setItem("token", '')
-        sessionStorage.clear()
+        localStorage.setItem("userData", '')
+        localStorage.setItem("token", '')
+        localStorage.clear()
         window.location.href = document.location.origin;
         return (<Redirect to='/' />)
     },
     checkPermissionGroup: (grupo) => {
-        const userInfo = JSON.parse(sessionStorage.getItem("userData"))
+        const userInfo = JSON.parse(localStorage.getItem("userData"))
         if (userInfo !== null) {
             const permissions = userInfo.role[0].permissionAssign
             for (let index = 0; index < permissions.length; index++) {
@@ -26,7 +26,7 @@ export const HELPER_FUNCTIONS = {
         return false
     },
     checkPermission: (route) => {
-        const userInfo = JSON.parse(sessionStorage.getItem("userData"))
+        const userInfo = JSON.parse(localStorage.getItem("userData"))
         if (userInfo !== null) {
             const permissions = userInfo.role[0].permissionAssign
             for (let index = 0; index < permissions.length; index++) {
@@ -149,5 +149,8 @@ export const HELPER_FUNCTIONS = {
         }
 
         return id;
+    },
+    set_page_title: (name = 'QA') => {
+        document.title = `${name} | Telecom Argentina`;
     }
 } 

@@ -139,9 +139,9 @@ export default class UserTable extends Component {
     }
 
     logout = () => {
-        sessionStorage.setItem("userData", '')
-        sessionStorage.setItem("token", '')
-        sessionStorage.clear()
+        localStorage.setItem("userData", '')
+        localStorage.setItem("token", '')
+        localStorage.clear()
         this.setState({ redirect: true })
     }
 
@@ -177,14 +177,15 @@ export default class UserTable extends Component {
     }
 
     componentDidMount() {
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        HELPER_FUNCTIONS.set_page_title('Usuarios');
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.get(Global.getUsers, { headers: { Authorization: bearer } }).then(response => {
             this.setState({
                 allUsers: response.data.Data
             })
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.buscar()
         })
             .catch((e) => {
@@ -196,7 +197,7 @@ export default class UserTable extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)

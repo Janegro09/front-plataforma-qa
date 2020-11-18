@@ -56,12 +56,12 @@ class SelectGroupParent extends Component {
 
     componentDidMount() {
         /**Acá se cargan las opciones */
-        let tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        let tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
 
         axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
             let arrayData = []
             response.data.Data.map(value => {
@@ -81,7 +81,7 @@ class SelectGroupParent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)

@@ -34,7 +34,7 @@ export default class addUserComponent extends Component {
             this.validator.showMessages();
             this.forceUpdate();
         } else {
-            let token = JSON.parse(sessionStorage.getItem('token'))
+            let token = JSON.parse(localStorage.getItem('token'))
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };
@@ -79,7 +79,7 @@ export default class addUserComponent extends Component {
                 bodyParameters,
                 config
             ).then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 this.setState({
                     redirect: true
                 })
@@ -88,7 +88,7 @@ export default class addUserComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema al agregar el usuario", "error");
                 }
                 console.log("Error: ", e)
@@ -119,7 +119,7 @@ export default class addUserComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema al agregar el usuario", "error");
                 }
                 console.log("Error: ", e)
@@ -128,7 +128,7 @@ export default class addUserComponent extends Component {
 
     render() {
         // Protección de rutas
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         if (tokenUser === null) {
             return <Redirect to={'/'} />
         }

@@ -31,7 +31,7 @@ export default class editRoleComponent extends Component {
 
     modifyUser(e) {
         e.preventDefault()
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -45,7 +45,7 @@ export default class editRoleComponent extends Component {
 
         axios.put(Global.getRoles + "/" + id, bodyParameters, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 swal("Felicidades!", "Has cambiado el nombre del grupo", "success");
                 this.setState({
                     redirect: true
@@ -55,7 +55,7 @@ export default class editRoleComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema al agregar los roles", "error");
                 }
                 console.log("Error: ", e)
@@ -64,7 +64,7 @@ export default class editRoleComponent extends Component {
     }
 
     componentDidMount() {
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         // Protección de rutas
         if (token === null) {
             return <Redirect to={'/'} />
@@ -82,14 +82,14 @@ export default class editRoleComponent extends Component {
                         userInfo: response.data.Data[0],
                         // redirect: true
                     })
-                    sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                     // swal("Genial!", "El rol ha sido modificado correctamente", "success");
                 })
                 .catch(e => {
                     if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                         HELPER_FUNCTIONS.logout()
                     } else {
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                         swal("Error!", "Hubo un problema", "error");
                         this.setState({
                             redirect: true

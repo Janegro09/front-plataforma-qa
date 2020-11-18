@@ -29,7 +29,7 @@ export default class createGroupComponent extends Component {
 
     modifyUser = (e) => {
         // e.preventDefault()
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -39,7 +39,7 @@ export default class createGroupComponent extends Component {
 
         axios.post(Global.getGroups + "/new", bodyParameters, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 if (response.data.Success) {
                     swal("Felicidades!", "Se ha creado el grupo correctamente", "success");
                     this.setState({
@@ -52,7 +52,7 @@ export default class createGroupComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Atención", "No se ha agregado el grupo", "info");
                     this.setState({
                         redirect: true
@@ -65,7 +65,7 @@ export default class createGroupComponent extends Component {
 
     componentDidMount() {
         // Protección de rutas
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         if (tokenUser === null) {
             return <Redirect to={'/'} />
         }

@@ -66,7 +66,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
         } else {
             result = result.filter(elem => elem.selected === true);
             result = JSON.stringify(result);
-            let token = JSON.parse(sessionStorage.getItem('token'))
+            let token = JSON.parse(localStorage.getItem('token'))
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };
@@ -79,7 +79,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
             if (Object.keys(modelSelected).length > 0) {
                 axios.put(Global.newModel + '/' + modelSelected._id, bodyParameters, config)
                     .then(response => {
-                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                        localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                         if (response.data.Success) {
                             swal("Felicidades!", "Se ha modificado el modelo correctamente", "success").then(() => {
                                 this.componentDidMount();
@@ -91,7 +91,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                         if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                             HELPER_FUNCTIONS.logout()
                         } else {
-                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                            localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                             swal("Atención", "No se ha creado el modelo", "info");
                             this.setState({
                                 redirect: true
@@ -102,7 +102,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
             } else {
                 axios.post(Global.newModel, bodyParameters, config)
                     .then(response => {
-                        sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                        localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                         if (response.data.Success) {
                             swal("Felicidades!", "Se ha creado el modelo correctamente", "success").then(() => {
                                 this.componentDidMount();
@@ -114,7 +114,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                         if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                             HELPER_FUNCTIONS.logout()
                         } else {
-                            sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                            localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                             swal("Atención", "No se ha creado el modelo", "info");
                             this.setState({
                                 redirect: true
@@ -172,7 +172,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
         e.preventDefault();
         const { id, result } = this.state;
 
-        let token = JSON.parse(sessionStorage.getItem('token'))
+        let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -182,7 +182,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
         axios.post(Global.reasignProgram + '/' + id + '/cuartiles', bodyParameters, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                 if (response.data.Success) {
                     swal("Felicidades!", "Cuartiles modificados!", "success").then(() => {
                         window.location.reload(window.location.href);
@@ -196,7 +196,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Atención", "No has cambiado nada", "info");
                 }
                 console.log("Error: ", e)
@@ -220,7 +220,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
         let id = cuartilSeleccionado;
         this.setState({ id, loading: true })
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
 
@@ -260,7 +260,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
 
                 axios.get(Global.newModel, { headers: { Authorization: `Bearer ${token3}` } }).then(response => {
-                    sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                    localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                     this.setState({
                         nombreColumnas,
                         dataFiltered: nombreColumnas,
@@ -273,7 +273,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                     if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                         HELPER_FUNCTIONS.logout()
                     } else {
-                        sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                        localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                         swal("Error!", "Hubo un problema", "error");
                     }
                     console.log("Error: ", e)
@@ -285,7 +285,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
@@ -295,7 +295,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)

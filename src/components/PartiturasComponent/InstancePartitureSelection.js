@@ -210,13 +210,13 @@ export default class InstancePartitureSelection extends Component {
             loading: true
         })
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
 
         try {
             let response = await axios.get(Global.getAllPartituresModel, { headers: { Authorization: bearer } })
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
 
             this.setState({
                 AllPartituresModel: response.data.Data,
@@ -227,7 +227,7 @@ export default class InstancePartitureSelection extends Component {
             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                 HELPER_FUNCTIONS.logout()
             } else {
-                sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                 this.setState({
                     loading: false
                 })

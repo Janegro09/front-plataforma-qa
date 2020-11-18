@@ -20,7 +20,7 @@ export default class ModalNuevoTipoCalibracion extends Component {
     handleSubmit = () => {
         let { name, description } = this.state;
 
-        let token = JSON.parse(sessionStorage.getItem('token'));
+        let token = JSON.parse(localStorage.getItem('token'));
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -31,7 +31,7 @@ export default class ModalNuevoTipoCalibracion extends Component {
 
         axios.post(Global.calibrationTypes, dataToSend, config)
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
                 console.log(response.data)
                 if (response.data.Success) {
                     swal("Felicidades!", `${response.data?.Message}`, "success").then(() => {
@@ -44,7 +44,7 @@ export default class ModalNuevoTipoCalibracion extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Atención", "No se ha agregado el grupo", "info");
                 }
                 console.log("Error: ", e)

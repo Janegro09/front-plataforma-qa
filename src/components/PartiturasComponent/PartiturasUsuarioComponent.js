@@ -33,18 +33,18 @@ export default class PartiturasUsuarioComponent extends Component {
             { "stepId": StepId, "completed": true }
         ];
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.put(Global.getAllPartitures + '/' + id + '/' + idUsuario, bodyParameters, { headers: { Authorization: bearer } })
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
+                localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
             })
             .catch(e => {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Atención", "No se ha agregado el grupo", "info");
                     this.setState({
                         redirect: true
@@ -139,17 +139,18 @@ export default class PartiturasUsuarioComponent extends Component {
     }
 
     componentDidMount() {
+        HELPER_FUNCTIONS.set_page_title('Partitures');
         let { id, idUsuario } = this.props.match.params;
 
         this.setState({
             loading: true
         });
 
-        const tokenUser = JSON.parse(sessionStorage.getItem("token"))
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
         axios.get(Global.getAllPartitures + '/' + id + '/' + idUsuario, { headers: { Authorization: bearer } }).then(response => {
-            sessionStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
                 loading: false,
                 data: response.data.Data
@@ -161,7 +162,7 @@ export default class PartiturasUsuarioComponent extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    sessionStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false
                     })

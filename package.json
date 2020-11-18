@@ -13,6 +13,7 @@
     "material-table": "^1.58.2",
     "mic-recorder-to-mp3": "^2.2.2",
     "moment": "^2.27.0",
+    "moment-timezone": "^0.5.31",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-google-recaptcha": "^2.1.0",

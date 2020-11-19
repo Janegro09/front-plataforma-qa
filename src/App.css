@@ -79,3 +79,7 @@
 .swal-overlay {
   background-color: transparent;
 }
+
+.selectWidth{
+  width: 50% !important;
+}

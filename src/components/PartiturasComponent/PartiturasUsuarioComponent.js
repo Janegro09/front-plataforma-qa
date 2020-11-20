@@ -115,8 +115,8 @@ export default class PartiturasUsuarioComponent extends Component {
                         <tr>
                             <td>{(users.partitureStatus === 'pending' ? <TimerIcon className="clockIcon" /> : (users.partitureStatus === 'finished' ? <CheckIcon /> : <PlayArrowRoundedIcon />))}</td>
                             <td>{(users.improvment === "+" ?
-                                <ExpandLessIcon className="arrowUp" /> : (users.improvment === "+-" ?
-                                    <ExpandMoreIcon className="arrowDown" /> : <ImportExportRoundedIcon />))}</td>
+                                <ExpandLessIcon className="arrowUp" /> : (users.improvment === "+-" ?  <ImportExportRoundedIcon />
+                                   : <ExpandMoreIcon className="arrowDown" />))}</td>
                             {ReturnData.actual.map((value, key) => {
                                 return <th key={key}>{value}</th>
                             })

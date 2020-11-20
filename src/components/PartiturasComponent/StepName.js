@@ -600,6 +600,7 @@ export default class StepName extends Component {
                                                     <button
                                                         onClick={(e) => {
                                                             e.preventDefault();
+                                                            this.enviar();
                                                             this.agregarArchivo(value);
                                                         }}
                                                     >

@@ -522,7 +522,8 @@ export default class componentName extends Component {
 
         return (
             <article key={index}>
-                <p>{value.question || value.name}</p>
+                {/* Se comenta a pedido de Gabriel, cambios 20/11/2020 */}
+                <p>{value.question || ""}</p>
                 {value.type === 'select' &&
 
                     <>

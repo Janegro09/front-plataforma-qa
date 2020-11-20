@@ -729,6 +729,11 @@ export default class Monitoreo extends Component {
                                 
                                 <Checkbox type="checkbox" id="disputado" onChange={this.changeBuscador} checked={buscador.disputado} />
                                 </span>
+                                <span className="flexAlignCenter"> 
+                                <h6>Respuesta a observacion</h6>
+                                
+                                <Checkbox type="checkbox" id="disputar_response" onChange={this.changeBuscador} checked={buscador.disputar_response} />
+                                </span>
                                 <span className="flexAlignCenter">
                                 <h6>Devolucion al representante</h6>
                                 
@@ -803,7 +808,7 @@ export default class Monitoreo extends Component {
                                                 <td className="tablaVariables tableIcons"><div className={mon.disputado ? "estadoActivoObs" : "estadoInactivoObs"}></div></td>
                                                 <td className="tablaVariables tableIcons"><div className={mon.disputar_response ? "estadoActivo" : "estadoInactivo"}></div></td>
                                                 {/* <td className="tablaVariables tableIcons"><div className={mon.invalidated ? "estadoActivo" : "estadoInactivo"}></div></td> */}
-                                                <td className="tablaVariables tableIcons"><div className={mon.evaluated ? "estadoActivo" : "estadoInactivo"}></div></td>
+                                                <td className="tablaVariables tableIcons"><div className={mon.devolucionRepresentante ? "estadoActivo" : "estadoInactivo"}></div></td>
                                                 <td>
                                                     {(mon.improvment === "+" || mon.improvment === '++' ? 
                                                         <ExpandLessIcon className="arrowUp" /> : (mon.improvment === "+-" ?

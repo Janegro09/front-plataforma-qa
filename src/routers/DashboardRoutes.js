@@ -48,6 +48,10 @@ import Calibraciones from '../components/QA/Calibraciones';
 import TiposDeCalibraciones from '../components/BackOfficeComponent/TiposDeCalibraciones';
 import CalibracionesView from '../components/QA/CalibracionesView';
 import Reporteria from '../components/Reporteria/Reporteria';
+import ModeloCuartiles from '../components/BackOfficeComponent/ModelosAnalytics/ModeloCuartiles';
+import ModeloPerfilamiento from '../components/BackOfficeComponent/ModelosAnalytics/ModeloPerfilamiento';
+
+
 
 export default class DashboardRoutes extends Component {
   render() {
@@ -106,6 +110,8 @@ export default class DashboardRoutes extends Component {
           <Route exact path="/monitoreo/:id" component={MonitoreoEditar} />
           <Route exact path="/calibraciones" component={Calibraciones} />
           <Route exact path="/calibraciones/:id" component={CalibracionesView} />
+          <Route exact path="/modelo-perfilamiento" component={ModeloPerfilamiento} />
+          <Route exact path="/modelo-cuartil" component={ModeloCuartiles} />
         </Switch>
       </BrowserRouter>
     )

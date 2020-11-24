@@ -505,6 +505,13 @@ export default class componentName extends Component {
         }
     }
 
+
+
+    volverAtras = (e) => {
+        e.preventDefault();
+        this.setState({redirect: "/monitoreo"});
+    }
+
     getCustomField = (value, sectionId) => {
         let index = (Date.now() * Math.random()).toString();
 
@@ -942,6 +949,9 @@ export default class componentName extends Component {
                         {monitoreo.modifiedBy.length === 0 &&
                             <button type="button" className="btnSecundario" onClick={this.eliminarMonitoreo}>Eliminar</button>     
                         }
+
+
+                        <button type="button" className="btnSecundario" onClick={this.volverAtras}> Volver Atras</button>
 
                         <button type="button" className="btnSecundario" onClick={this.modificarFormulario}>
                             

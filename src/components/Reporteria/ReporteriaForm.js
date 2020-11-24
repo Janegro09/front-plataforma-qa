@@ -68,9 +68,22 @@ export default class ReporteriaForm extends Component {
         const { id, value } = e.target;
         let { dataToSend } = this.state;
 
-        if(!dataToSend[id].includes(value)){
-            dataToSend[id].push(value)
+
+        if(value === "SeleccionarTodos"){
+            if(id == "instances"){
+                dataToSend[id] = [];
+                dataToSend[id] = this.state.instances.map(v=> v.id);
+            }else{
+                dataToSend[id] = this.state[id];
+            }
+        }else if(value === "DeseleccionarTodos"){
+            dataToSend[id] = [];
+        }else{
+            if(!dataToSend[id].includes(value)){
+                dataToSend[id].push(value)
+            }
         }
+
 
         this.setState({ dataToSend })
     }
@@ -250,6 +263,8 @@ export default class ReporteriaForm extends Component {
                             <br />
                             <select value="" className="form-control" id="clusters" onChange={this.handleChange}>
                                 <option>Selecciona ...</option>
+                                <option value="SeleccionarTodos">Seleccionar Todos</option>
+                                <option value="DeseleccionarTodos">Deseleccionar Todos</option>
                                 {clusters &&
                                     clusters.map(v => {
                                     return <option value={v}>{v}</option>
@@ -276,6 +291,8 @@ export default class ReporteriaForm extends Component {
                             <br />
                             <select value="" className="form-control" id="instances" onChange={this.handleChange}>
                                 <option value="">Selecciona ...</option>
+                                <option value="SeleccionarTodos">Seleccionar Todos</option>
+                                <option value="DeseleccionarTodos">Deseleccionar Todos</option>
                                 {instances &&
                                     instances.map(v => {
                                         return <option value={v.id}>{v.name}</option>

@@ -363,7 +363,7 @@ export default class ModalModeloFormulariosComponent extends Component {
                                                                         value={field.question}
                                                                     />
                                                                     <select
-                                                                        name="customField"
+                                                                        name="customField" className="selectWidth"
                                                                         onChange={this.handleChangeQuestion}
                                                                         value={field.customField}
                                                                     >

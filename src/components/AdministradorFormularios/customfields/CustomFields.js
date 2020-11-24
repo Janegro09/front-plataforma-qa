@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './customFields.css';
 import Checkbox from '@material-ui/core/Checkbox';
-import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
+// import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
 
 export default class CustomFields extends Component {
 

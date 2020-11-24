@@ -805,7 +805,7 @@ export default class Monitoreo extends Component {
                                                 <td>{mon.modifiedBy.length}</td>
                                                 <td>{mon.program}</td>
                                                 {/* <td>{(mon.status === 'pending' ? <TimerIcon className="timerIcon" /> : (mon.status === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon className="PlayArrowRoundedIcon" />))}</td> */}
-                                                <td className="tablaVariables tableIcons"><div className={mon.disputado ? "estadoActivoObs" : "estadoInactivoObs"}></div></td>
+                                                <td className="tablaVariables tableIcons"><div className={mon.disputado ? "estadoInactivoObs" : "estadoActivoObs" }></div></td>
                                                 <td className="tablaVariables tableIcons"><div className={mon.disputar_response ? "estadoActivo" : "estadoInactivo"}></div></td>
                                                 {/* <td className="tablaVariables tableIcons"><div className={mon.invalidated ? "estadoActivo" : "estadoInactivo"}></div></td> */}
                                                 <td className="tablaVariables tableIcons"><div className={mon.devolucionRepresentante ? "estadoActivo" : "estadoInactivo"}></div></td>

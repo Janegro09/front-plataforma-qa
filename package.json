@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
     "express": "^4.17.1",
+    "joi": "^17.3.0",
     "material-table": "^1.58.2",
     "mic-recorder-to-mp3": "^2.2.2",
     "moment": "^2.27.0",

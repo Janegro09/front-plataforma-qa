@@ -563,8 +563,7 @@ export default class PerfilaminetosComponent extends Component {
         let response = await axios.put(Global.perfilamientosModel + '/' + this.state.modeloSelected._id, modelSend, { headers: { Authorization: bearer } });
         localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
         this.setState({ loading: false })
-        swal('Excelente', "Modelo modificado correctamente", "success")
-        this.componentDidMount();
+        swal('Excelente', "Modelo modificado correctamente", "success");
     }
 
     componentDidMount() {

@@ -319,7 +319,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
         const  { dataset, value, name } = e.target;
         const { id } = dataset;
         let { result } = this.state;
-
+        
         let index = result.findIndex(elem => elem.QName === id);
         if(value !== undefined && index !== -1) {
             switch(name) {

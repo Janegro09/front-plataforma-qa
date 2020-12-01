@@ -70,7 +70,7 @@ export default class ReporteriaForm extends Component {
 
 
         if(value === "SeleccionarTodos"){
-            if(id == "instances"){
+            if(id === "instances"){
                 dataToSend[id] = [];
                 dataToSend[id] = this.state.instances.map(v=> v.id);
             }else{

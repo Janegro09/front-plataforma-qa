@@ -1,0 +1,95 @@
+.modal {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.hijo {
+    width: 90vw;
+    /* height: 90vh; */
+    /* height: 400px; */
+    background-color: white;
+    color: black;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.boton-cerrar {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.partituresModels {
+    height: 100%;
+    padding: 22px;
+    border-radius: 5px;
+    display: flex;
+    min-height: 300px;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #ebecf0 !important;
+}
+
+.partituresModels .mainButtons {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.partituresModels .AllInstances {
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.AllInstances .instance {
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 5px;
+    margin: 5px 0;
+    min-height: 100px;
+    max-height: 200px;
+    background-color: #ffffff2e;
+    -webkit-box-shadow: 0px 0px 6px 1px #9596981c;
+}
+
+.AllInstances .instance .mainButtons {
+    width: 100%;
+}
+
+.AllInstances .instance .AllSteps {
+    padding: 5px;
+    overflow-y: scroll;
+    /* -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.17); */
+}
+
+.AllInstances .instance .AllSteps .step {
+    display: flex;
+    border: 1px solid #e4e4e4;
+    padding: 10px;
+    margin: 5px 0;
+    align-items: center;
+}
+
+.mainButtons .form-control {
+    margin: 0;
+}
+
+button.addItem {
+    margin-left: 10px;
+}

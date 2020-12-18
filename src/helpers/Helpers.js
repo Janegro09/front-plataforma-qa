@@ -28,11 +28,13 @@ export const HELPER_FUNCTIONS = {
     checkPermission: (route) => {
         const userInfo = JSON.parse(localStorage.getItem("userData"))
         if (userInfo !== null) {
-            const permissions = userInfo.role[0].permissionAssign
-            for (let index = 0; index < permissions.length; index++) {
-                const element = permissions[index];
-                if (route === element.route) {
-                    return true
+            const permissions = userInfo.role[0].permissionAssign;
+            if(permissions && permissions.length > 0){
+                for (let index = 0; index < permissions.length; index++) {
+                    const element = permissions[index];
+                    if (route === element.route) {
+                        return true
+                    }
                 }
             }
         }

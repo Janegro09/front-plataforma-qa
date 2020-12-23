@@ -113,29 +113,27 @@ export default class EditProgramsGroupComponent extends Component {
                 {this.state.loading &&
                     HELPER_FUNCTIONS.backgroundLoading()
                 }
-                {HELPER_FUNCTIONS.checkPermission("GET|programs/groups/:id") &&
-                    <div>
-                        <form onSubmit={this.addUser} className="inputsEditUser addUserPadding">
-                            <span className="Label">Nombre</span>
-                            <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={edit.name ? edit.name : ''} />
-                            <span className="Label">Descripción</span>
-                            <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} defaultValue={edit.description ? edit.description : ''} />
-                            <span className="Label">Grupos asignados</span>
-                            {/* enviar defaultValue={user.group ? user.group : ''}  */}
-                            {specific &&
-                                <SelectEditarGrupos getValue={(c) => this.usersAssign = c} defaultValue={specific} idGroup={edit.id} />
-                            }
-                            <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Editar Grupo de Programas</button>
-                        </form>
-                        <button className="btnClose"
-                            onClick={() => {
-                                this.setState({
-                                    editProgramGroup: false
-                                })
-                            }}
-                        >x</button>
-                    </div>
-                }
+                <div>
+                    <form onSubmit={this.addUser} className="inputsEditUser addUserPadding">
+                        <span className="Label">Nombre</span>
+                        <input className="form-control" type="text" placeholder="" ref={(c) => this.name = c} defaultValue={edit.name ? edit.name : ''} />
+                        <span className="Label">Descripción</span>
+                        <input className="form-control" type="text" placeholder="" ref={(c) => this.description = c} defaultValue={edit.description ? edit.description : ''} />
+                        <span className="Label">Grupos asignados</span>
+                        {/* enviar defaultValue={user.group ? user.group : ''}  */}
+                        {specific &&
+                            <SelectEditarGrupos getValue={(c) => this.usersAssign = c} defaultValue={specific} idGroup={edit.id} />
+                        }
+                        <button className="btn btn-block btn-info ripple-effect confirmar" type="submit" name="Submit" alt="sign in">Editar Grupo de Programas</button>
+                    </form>
+                    <button className="btnClose"
+                        onClick={() => {
+                            this.setState({
+                                editProgramGroup: false
+                            })
+                        }}
+                    >x</button>
+                </div>
 
             </div>
         )

@@ -67,8 +67,8 @@ export default class componentName extends Component {
             invalidated,
             evaluated,
             status,
-            transactionDate: moment(transactionDate).format('YYYY-MM-DD'),
-            monitoringDate: moment(monitoringDate).format('YYYY-MM-DD'),
+            transactionDate: moment(transactionDate).tz("Europe/Lisbon").format('YYYY-MM-DD'),
+            monitoringDate: moment(monitoringDate).tz("Europe/Lisbon").format('YYYY-MM-DD'),
             comments,
             comentariosDevolucion: devolucion?.comentariosDevolucion,
             fortalezasUsuario: devolucion?.fortalezasUsuario, 
@@ -750,7 +750,7 @@ export default class componentName extends Component {
 
         let d = new Date(monitoreo.transactionDate)
 
-        let data = `${d.getUTCDate()}/${d.getUTCMonth()}/${d.getUTCFullYear()}`;
+        let data = `${d.getUTCDate()}/${d.getUTCMonth() + 1}/${d.getUTCFullYear()}`;
 
         return (
             <>

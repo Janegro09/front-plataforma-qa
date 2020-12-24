@@ -84,12 +84,20 @@ export default class ModalNuevoMonitoreo extends Component {
         let token = tokenUser
         let bearer = `Bearer ${token}`
         axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
-            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            token = response.data.loggedUser.token
+            bearer = `Bearer ${token}`
+            
             let users = response.data.Data;
             let usuariosConFiltro = response.data.Data;
 
-            axios.get(Global.frontUtilities).then(response => {
-                const empresas = response.data.Data?.programsGroups || false;
+            axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
+                localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                const empresas = [];
+                if(response.data?.Data) {
+                    for(const { name,  id } of response.data.Data) {
+                        empresas.push({ name, id });
+                    }
+                }
                 this.setState({
                     empresas,
                     users,
@@ -97,6 +105,7 @@ export default class ModalNuevoMonitoreo extends Component {
                     loading: false
                 })
             })
+
 
 
         })

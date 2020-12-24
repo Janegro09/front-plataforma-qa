@@ -41,7 +41,9 @@ export default class Monitoreo extends Component {
             program: []
         },
         usuarioSeleccionado: null,
-        toggleBuscador: true
+        toggleBuscador: true,
+        offset: 0,
+        limit: 50
     }
 
     nuevoMonitoreo = (e) => {
@@ -108,10 +110,23 @@ export default class Monitoreo extends Component {
 
     buscar = (e) => {
         e.preventDefault();
+        this.setState({ monitoreos: [], offset: 0, limit: 50 });
+        this.get_monitorings();
+    }
+
+    verMas = (e) => {
+        e.preventDefault();
+        this.get_monitorings();
+    }
+
+    get_monitorings = () => {
         const { buscador } = this.state;
         this.setState({
             loading: true
         })
+
+        buscador.offset = this.state.offset || 0;
+        buscador.limit  = this.state.limit  || 50;
 
         // Convert to query string
         let query = "";
@@ -140,7 +155,8 @@ export default class Monitoreo extends Component {
         axios.get(Global.monitoreos + query, { headers: { Authorization: bearer } }).then(response => {
             localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             this.setState({
-                monitoreos: response.data.Data,
+                monitoreos: [...this.state.monitoreos, ...response.data.Data],
+                offset: [...this.state.monitoreos, ...response.data.Data].length,
                 loading: false,
                 toggleBuscador: false
             })
@@ -828,11 +844,15 @@ export default class Monitoreo extends Component {
                                     )
                                 })}
                             </table>
+  
                         }
                         {monitoreos.length === 0 &&
                             <div className="alert alert-warning">No existen monitoreos para mostrar</div>
                         }
                     </div>
+                    {monitoreos.length > 0 &&
+                        <button className="btnSecundario" onClick={this.verMas}>VER MAS</button>
+                    }
                 </div>
             </>
         )

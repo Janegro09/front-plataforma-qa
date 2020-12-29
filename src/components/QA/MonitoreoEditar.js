@@ -969,8 +969,9 @@ export default class componentName extends Component {
                                         <h6>Editado por: </h6>
                                         <article>
                                             {monitoreo.modifiedBy.map(v => {
+                                                let name = v.name ? v.lastName + " " + v.name : v.userId;
                                                 return (<span key={v._id}>
-                                                    {v.userId} - {v.rol} - {moment(v.modifiedAt).format("DD/MM/YYYY HH:mm")}
+                                                    {name} - {v.rol} - {moment(v.modifiedAt).format("DD/MM/YYYY HH:mm")}
                                                 </span>)
                                             })}
                                         </article>

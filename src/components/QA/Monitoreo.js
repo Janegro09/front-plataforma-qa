@@ -69,16 +69,12 @@ export default class Monitoreo extends Component {
             let users = response.data.Data;
             let usuariosConFiltro = users;
             axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
-                localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                // let p = response.data.Data || false;
-                // let programs;
-                // if (p) {
-                //     programs = p.filter(elem => elem.section === 'M');
-                // }
-
-                axios.get(Global.frontUtilities).then(response => {
-                    
-                    const programsGroups = response.data.Data?.programsGroups || [];
+                token = response.data.loggedUser.token;
+                bearer = `Bearer ${token}`;
+                axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
+                    localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+                        
+                    const programsGroups = response.data.Data || [];
                     this.setState({
                         programsGroups,
                         usuariosConFiltro,

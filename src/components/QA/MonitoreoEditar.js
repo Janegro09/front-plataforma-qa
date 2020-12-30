@@ -494,6 +494,9 @@ export default class componentName extends Component {
                     valrtn = values.child.data;
                     if(values.child.child) {
                         valrtn += `~~${values.child.child.data}`;
+                        if(values.child.child.child) {
+                            valrtn += `~~${values.child.child.child.data}`;
+                        }
                     }
                 } else {
                     valrtn = getById(id, values.child);

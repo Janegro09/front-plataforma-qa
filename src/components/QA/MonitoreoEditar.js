@@ -477,7 +477,6 @@ export default class componentName extends Component {
         } else {
             responses.push(q);
         }
-
         this.setState({ responses });
 
     }
@@ -485,26 +484,28 @@ export default class componentName extends Component {
 
 
     getDefaultValue = (id, question, section, multiselect = false) => {
+        const getById = (id, values) => {
+            if (!values) return "";
+            let valrtn = "";
+            if (values.id && values.id === id) {
+                valrtn = values.data
+            } else if (values.child) {
+                if(multiselect) {
+                    valrtn = values.child.data;
+                    if(values.child.child) {
+                        valrtn += `~~${values.child.child.data}`;
+                    }
+                } else {
+                    valrtn = getById(id, values.child);
+                }
+            }
+            
+            return valrtn;
+        }
+
         const { responses } = this.state;
         if(responses) {
             let q = responses.find(elem => elem.question === question && elem.section === section);
-    
-            const getById = (id, values) => {
-                if (!values) return "";
-                let valrtn = "";
-                if (values.id && values.id === id) {
-                    valrtn = values.data
-                } else if (values.child) {
-                    if(multiselect) {
-                        valrtn = values.child.data;
-                    } else {
-                        valrtn = getById(id, values.child);
-                    }
-                }
-                
-                return valrtn;
-            }
-    
             return getById(id, q?.response)
         }
     }

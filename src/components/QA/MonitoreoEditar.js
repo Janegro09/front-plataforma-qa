@@ -490,12 +490,21 @@ export default class componentName extends Component {
             if (values.id && values.id === id) {
                 valrtn = values.data
             } else if (values.child) {
+                /**
+                 * Por falta de tiempo evitamos la funcion recuriva con los 5 condicionales en piramide que vemos abajo. Para la nueva modificacion debemos editar la posibilidad de recibir multiples ids en el backend y la posibilidad de dividir esoss ids para que pueda diferenciar y funcionar la funcion recursiva. Esto queda pendiente de desarrollo. 30/12/2020 PENDIENTE DE DESARROLLO! ATENCION!
+                 */
                 if(multiselect) {
                     valrtn = values.child.data;
                     if(values.child.child) {
                         valrtn += `~~${values.child.child.data}`;
                         if(values.child.child.child) {
                             valrtn += `~~${values.child.child.child.data}`;
+                            if(values.child.child.child.child) {
+                                valrtn += `~~${values.child.child.child.child.data}`;
+                                if(values.child.child.child.child.child) {
+                                    valrtn += `~~${values.child.child.child.child.child.data}`;
+                                }
+                            }
                         }
                     }
                 } else {

@@ -47,6 +47,7 @@ export default class componentName extends Component {
 
         for(let r of responses) {
             for(let qst of r.customFields) {
+                if(qst.response) continue;
                 let td = {
                     section: r.id,
                     question: qst.questionId,
@@ -390,7 +391,6 @@ export default class componentName extends Component {
         let { responses } = this.state;
         const { question, section, parent, id, multiselect } = e.target.dataset;
         const divisor = "~~";
-
         const changeValue = ({ id, value, parent, multiselect }, object) => {
             // Buscar en object el padre y le agregamos un child
             if (object.id === parent) {
@@ -416,7 +416,6 @@ export default class componentName extends Component {
                         data: value
                     }
                 }
-                console.log(object)
                 return object;
             } else if (object.child) {
                 return changeValue({ id, value, parent, multiselect }, object.child);
@@ -433,7 +432,6 @@ export default class componentName extends Component {
             q = responses[respIndex];
         }
 
-
         if (!q) {
             // Creamos la respuesta
             q = {
@@ -447,24 +445,26 @@ export default class componentName extends Component {
             // Entonces significa que estamos respondiendo una pregunta padre
             if(multiselect && q.response) {
                 q.response.id = id;
+                if(!q.response.data) {
+                    q.response.data = "";
+                }
                 let v =  q.response.data.split(divisor);
                 if(v.includes(value)) {
                     // Si existe lo eliminamos
                     q.response.data = "";
                     for(let temp of v) {
                         if(temp === value) continue;
-                         q.response.data =  q.response.data ?  q.response.data + divisor + temp : temp;
+                        q.response.data =  q.response.data ?  q.response.data + divisor + temp : temp;
                     }
                 } else {
                     // Lo agregamos
-                    q.response.data = q.response.data + divisor + value;
+                    q.response.data = q.response.data ? `${q.response.data}${divisor}${value}` : value;
                 }
             } else {
                 q.response = {
                     data: value,
                     id
                 }
-                console.log(q.response)
             }
         } else if (respIndex !== -1) {
             // Entonces estamos contestando una pregunta hija
@@ -484,7 +484,7 @@ export default class componentName extends Component {
 
 
 
-    getDefaultValue = (id, question, section) => {
+    getDefaultValue = (id, question, section, multiselect = false) => {
         const { responses } = this.state;
         if(responses) {
             let q = responses.find(elem => elem.question === question && elem.section === section);
@@ -495,9 +495,13 @@ export default class componentName extends Component {
                 if (values.id && values.id === id) {
                     valrtn = values.data
                 } else if (values.child) {
-                    valrtn = getById(id, values.child);
+                    if(multiselect) {
+                        valrtn = values.child.data;
+                    } else {
+                        valrtn = getById(id, values.child);
+                    }
                 }
-    
+                
                 return valrtn;
             }
     
@@ -514,10 +518,8 @@ export default class componentName extends Component {
 
     getCustomField = (value, sectionId) => {
         let index = (Date.now() * Math.random()).toString();
-
-        let defaultValue = this.getDefaultValue(value.id, value.questionId, sectionId);
+        let defaultValue = this.getDefaultValue(value.id, value.questionId, sectionId, value.type === 'checkbox');
         let childs = [];
-
         // console.log(this.getDefaultValue(value.id, value.questionId, sectionId););
 
         return (
@@ -616,9 +618,7 @@ export default class componentName extends Component {
                 {value.type === 'radio' &&
                     <>
                         {value.values.map((cf, ind) => {
-
                             return (
-                                
                                 <span className="active" key={ind}>
                                     <label>
                                     <input
@@ -659,7 +659,6 @@ export default class componentName extends Component {
                         {value.values.map((cf, ind) => {
 
                             let chequedValues = defaultValue.split('~~');
-
                             return (
                                 <span className="active" key={sectionId+value.questionId+value.id}>
 
@@ -679,7 +678,7 @@ export default class componentName extends Component {
                                     <label htmlFor={sectionId+value.questionId+value.id+ind}>{cf.value}</label>
 
                                     {cf.customFieldsSync &&
-                                        <div className={cf.value === defaultValue ? "conditionalCF active" : "conditionalCF"}>
+                                        <div className={chequedValues.includes(cf.value) ? "conditionalCF active" : "conditionalCF"}>
                                             {
                                                 this.getCustomField({
                                                     ...cf.customFieldsSync[0],
@@ -914,7 +913,6 @@ export default class componentName extends Component {
                                         <label>Fortalezas del usuario</label>
                                         <textarea id="fortalezasUsuario" onChange={this.handleChange} value={dataToSend.fortalezasUsuario}></textarea>
                                     </span>
-
                                     <span>
                                         <label>Pasos de mejora</label>
                                         <textarea id="pasosMejora" onChange={this.handleChange}  value={dataToSend.pasosMejora}></textarea>

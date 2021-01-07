@@ -29,8 +29,7 @@ export default class PartiturasEspecificComponent extends Component {
     }
 
     buscar = (e) => {
-        const val = e.target.value;
-        val = val.toUpperCase()
+        const val = e.target.value.toUpperCase();
         let { data, filtredData } = this.state;
         const users = data[0].users;
         if (val) {

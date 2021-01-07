@@ -37,9 +37,12 @@ export default class PartiturasEspecificComponent extends Component {
 
             for (let u of users) {
                 let nameLastName = `${u.name} ${u.lastName}`
+                let lider = u.lider
                 if (u.id.indexOf(val) >= 0) {
                     filtredData.push(u)
                 } else if (nameLastName.indexOf(val) >= 0) {
+                    filtredData.push(u)
+                } else if (lider.indexOf(val) >= 0) {
                     filtredData.push(u)
                 } else {
                     let nameDividido = nameLastName.split(' ');

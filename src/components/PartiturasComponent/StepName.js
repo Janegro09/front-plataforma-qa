@@ -565,8 +565,8 @@ export default class StepName extends Component {
                                                         })
                                                     }
                                                     <div className="audiosReq">
-                                                        <p>Audios requeridos: {step.requestedMonitorings}</p>
-                                                        <p>Audios faltantes: {(step.audioFiles === false ? step.requestedMonitorings : (step.requestedMonitorings - contadorAudios))} </p>
+                                                        <p>Archivos requeridos: {step.requestedMonitorings}</p>
+                                                        <p>Archivos faltantes: {(step.audioFiles === false ? step.requestedMonitorings : (step.requestedMonitorings - contadorAudios))} </p>
                                                     </div>
                                                     <div className="titleInBox">
                                                         <h6 className="titulo-seccion">Media (Monitorings)</h6>
@@ -749,7 +749,7 @@ export default class StepName extends Component {
 
                                     <select value={this.state.valueCoach} onChange={this.handleChangeCoach}>
                                         <option value="-">Selecciona...</option>
-                                        <option value="file">Audio</option>
+                                        <option value="file">Archivo</option>
                                         <option value="record">Grabacion</option>
                                     </select>
 

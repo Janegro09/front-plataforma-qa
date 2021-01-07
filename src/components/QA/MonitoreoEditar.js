@@ -57,7 +57,7 @@ export default class componentName extends Component {
                 rsp.push(td);
             }
         }
-        
+
         monitoreo.modifiedBy = monitoreo.modifiedBy.sort((a,b) => Date.parse(b.modifiedAt) - Date.parse(a.modifiedAt));
 
         dataToSend = {

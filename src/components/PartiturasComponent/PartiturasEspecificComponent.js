@@ -30,6 +30,7 @@ export default class PartiturasEspecificComponent extends Component {
 
     buscar = (e) => {
         const val = e.target.value;
+        val = val.toUpperCase()
         let { data, filtredData } = this.state;
         const users = data[0].users;
         if (val) {
@@ -37,7 +38,9 @@ export default class PartiturasEspecificComponent extends Component {
 
             for (let u of users) {
                 let nameLastName = `${u.name} ${u.lastName}`
+                nameLastName = nameLastName.toUpperCase() 
                 let lider = u.lider
+                lider = lider.toUpperCase() 
                 if (u.id.indexOf(val) >= 0) {
                     filtredData.push(u)
                 } else if (nameLastName.indexOf(val) >= 0) {

@@ -484,6 +484,7 @@ export default class componentName extends Component {
 
 
     getDefaultValue = (id, question, section, multiselect = false) => {
+<<<<<<< HEAD
         const getById = (id, values) => {
             if (!values) return "";
             let valrtn = "";
@@ -510,6 +511,26 @@ export default class componentName extends Component {
                 } else {
                     valrtn = getById(id, values.child);
                 }
+=======
+        const { responses } = this.state;
+        if(responses) {
+            let q = responses.find(elem => elem.question === question && elem.section === section);
+    
+            const getById = (id, values) => {
+                if (!values) return "";
+                let valrtn = "";
+                if (values.id && values.id === id) {
+                    valrtn = values.data
+                } else if (values.child) {
+                    if(multiselect) {
+                        valrtn = values.child.data;
+                    } else {
+                        valrtn = getById(id, values.child);
+                    }
+                }
+                
+                return valrtn;
+>>>>>>> 007e219baec18e37ee8ba3cca85416a2f55dd27c
             }
             
             return valrtn;
@@ -926,7 +947,6 @@ export default class componentName extends Component {
                                         <label>Fortalezas del usuario</label>
                                         <textarea id="fortalezasUsuario" onChange={this.handleChange} value={dataToSend.fortalezasUsuario}></textarea>
                                     </span>
-
                                     <span>
                                         <label>Pasos de mejora</label>
                                         <textarea id="pasosMejora" onChange={this.handleChange}  value={dataToSend.pasosMejora}></textarea>

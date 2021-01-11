@@ -429,8 +429,6 @@ export default class Modal extends Component {
                             <select value={this.state.valueSelectPerfilamiento} onChange={this.handleChangeSelectPerfilamiento}>
                                 <option value="RESP">Responsable</option>
                                 <option value="GTE">Gerente</option>
-                                <option value="COR">Coordinador</option>
-                                <option value="COC">Coordinador OC</option>
                                 <option value="COO">On site</option>
                                 <option value="ADM">Administrador</option>
                                 <option value="COACH">Coach</option>

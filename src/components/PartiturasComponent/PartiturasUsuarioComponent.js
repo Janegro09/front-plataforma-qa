@@ -85,6 +85,8 @@ export default class PartiturasUsuarioComponent extends Component {
             if (th === 'id') continue;
             let value = users.rowFromPartiture[th]
             if(th.includes("%")){
+                value = value.replace(/,/g, ".");
+                console.log(value)
                 value = parseFloat(value) * 100;
             } 
             ReturnData.headers.push(th)

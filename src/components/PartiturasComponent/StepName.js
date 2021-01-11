@@ -310,6 +310,7 @@ export default class StepName extends Component {
             if (th === 'id') continue;
             let value = users.rowFromPartiture[th]
             if(th.includes("%")){
+                value = value.replace(/\,/g, ".")
                 value = parseFloat(value) * 100;
             } 
             ReturnData.headers.push(th)

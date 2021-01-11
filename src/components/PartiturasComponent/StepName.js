@@ -309,6 +309,9 @@ export default class StepName extends Component {
         for (let th in users.rowFromPartiture) {
             if (th === 'id') continue;
             const value = users.rowFromPartiture[th]
+            if(th.includes("%")){
+                value = parseFloat(value) * 100;
+            } 
             ReturnData.headers.push(th)
             ReturnData.actual.push(value);
         }
@@ -685,7 +688,49 @@ export default class StepName extends Component {
 
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' &&
                                             <article>
-                                                <h6 className="titulo-seccion">Coordinador On Site</h6>
+                                                <h6 className="titulo-seccion">Coordinador</h6>
+                                                <hr />
+                                                {customFields &&
+                                                    <CustomFields
+                                                        disabled={this.state.role !== 'GERENTE' && this.state.role !== 'ADMINISTRATOR'}
+                                                        fields={customFields}
+                                                        section='P'
+                                                        subsection='COR'
+                                                        values={step.coordinatorComments}
+                                                        data={(d) => {
+                                                            this.armarObjeto('coordinatorComments', d)
+                                                        }}
+                                                    />
+                                                }
+                                            </article>
+
+                                        }
+                                        
+
+                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' &&
+                                            <article>
+                                                <h6 className="titulo-seccion">Coordinador OC</h6>
+                                                <hr />
+                                                {customFields &&
+                                                    <CustomFields
+                                                        disabled={this.state.role !== 'GERENTE' && this.state.role !== 'ADMINISTRATOR'}
+                                                        fields={customFields}
+                                                        section='P'
+                                                        subsection='COC'
+                                                        values={step.coordinatorOCComments}
+                                                        data={(d) => {
+                                                            this.armarObjeto('coordinatorOCComments', d)
+                                                        }}
+                                                    />
+                                                }
+                                            </article>
+
+                                        }
+
+
+                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' &&
+                                            <article>
+                                                <h6 className="titulo-seccion">On Site</h6>
                                                 <hr />
                                                 {customFields &&
                                                     <CustomFields

@@ -309,6 +309,9 @@ export default class StepName extends Component {
         for (let th in users.rowFromPartiture) {
             if (th === 'id') continue;
             const value = users.rowFromPartiture[th]
+            if(th.includes("%")){
+                value = parseFloat(value) * 100;
+            } 
             ReturnData.headers.push(th)
             ReturnData.actual.push(value);
         }

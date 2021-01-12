@@ -582,7 +582,7 @@ export default class StepName extends Component {
                                                 {step.requestedMonitorings - contadorAudios > 0 &&
                                                     <select value={this.state.value} onChange={this.handleChange} disabled={this.state.role === 'REPRESENTANTE'}>
                                                         <option value="-">Selecciona...</option>
-                                                        <option value="file">Audio</option>
+                                                        <option value="file">Archivo</option>
                                                         <option value="message">Mensaje</option>
                                                     </select>
                                                 }

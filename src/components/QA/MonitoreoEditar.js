@@ -47,7 +47,6 @@ export default class componentName extends Component {
 
         for(let r of responses) {
             for(let qst of r.customFields) {
-                if(qst.response) continue;
                 let td = {
                     section: r.id,
                     question: qst.questionId,
@@ -57,7 +56,7 @@ export default class componentName extends Component {
                 rsp.push(td);
             }
         }
-
+        
         monitoreo.modifiedBy = monitoreo.modifiedBy.sort((a,b) => Date.parse(b.modifiedAt) - Date.parse(a.modifiedAt));
 
         dataToSend = {
@@ -391,6 +390,7 @@ export default class componentName extends Component {
         let { responses } = this.state;
         const { question, section, parent, id, multiselect } = e.target.dataset;
         const divisor = "~~";
+
         const changeValue = ({ id, value, parent, multiselect }, object) => {
             // Buscar en object el padre y le agregamos un child
             if (object.id === parent) {
@@ -416,6 +416,7 @@ export default class componentName extends Component {
                         data: value
                     }
                 }
+                console.log(object)
                 return object;
             } else if (object.child) {
                 return changeValue({ id, value, parent, multiselect }, object.child);
@@ -432,6 +433,7 @@ export default class componentName extends Component {
             q = responses[respIndex];
         }
 
+
         if (!q) {
             // Creamos la respuesta
             q = {
@@ -445,26 +447,24 @@ export default class componentName extends Component {
             // Entonces significa que estamos respondiendo una pregunta padre
             if(multiselect && q.response) {
                 q.response.id = id;
-                if(!q.response.data) {
-                    q.response.data = "";
-                }
                 let v =  q.response.data.split(divisor);
                 if(v.includes(value)) {
                     // Si existe lo eliminamos
                     q.response.data = "";
                     for(let temp of v) {
                         if(temp === value) continue;
-                        q.response.data =  q.response.data ?  q.response.data + divisor + temp : temp;
+                         q.response.data =  q.response.data ?  q.response.data + divisor + temp : temp;
                     }
                 } else {
                     // Lo agregamos
-                    q.response.data = q.response.data ? `${q.response.data}${divisor}${value}` : value;
+                    q.response.data = q.response.data + divisor + value;
                 }
             } else {
                 q.response = {
                     data: value,
                     id
                 }
+                console.log(q.response)
             }
         } else if (respIndex !== -1) {
             // Entonces estamos contestando una pregunta hija
@@ -477,41 +477,14 @@ export default class componentName extends Component {
         } else {
             responses.push(q);
         }
+
         this.setState({ responses });
 
     }
 
 
 
-    getDefaultValue = (id, question, section, multiselect = false) => {
-<<<<<<< HEAD
-        const getById = (id, values) => {
-            if (!values) return "";
-            let valrtn = "";
-            if (values.id && values.id === id) {
-                valrtn = values.data
-            } else if (values.child) {
-                /**
-                 * Por falta de tiempo evitamos la funcion recuriva con los 5 condicionales en piramide que vemos abajo. Para la nueva modificacion debemos editar la posibilidad de recibir multiples ids en el backend y la posibilidad de dividir esoss ids para que pueda diferenciar y funcionar la funcion recursiva. Esto queda pendiente de desarrollo. 30/12/2020 PENDIENTE DE DESARROLLO! ATENCION!
-                 */
-                if(multiselect) {
-                    valrtn = values.child.data;
-                    if(values.child.child) {
-                        valrtn += `~~${values.child.child.data}`;
-                        if(values.child.child.child) {
-                            valrtn += `~~${values.child.child.child.data}`;
-                            if(values.child.child.child.child) {
-                                valrtn += `~~${values.child.child.child.child.data}`;
-                                if(values.child.child.child.child.child) {
-                                    valrtn += `~~${values.child.child.child.child.child.data}`;
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    valrtn = getById(id, values.child);
-                }
-=======
+    getDefaultValue = (id, question, section) => {
         const { responses } = this.state;
         if(responses) {
             let q = responses.find(elem => elem.question === question && elem.section === section);
@@ -522,23 +495,12 @@ export default class componentName extends Component {
                 if (values.id && values.id === id) {
                     valrtn = values.data
                 } else if (values.child) {
-                    if(multiselect) {
-                        valrtn = values.child.data;
-                    } else {
-                        valrtn = getById(id, values.child);
-                    }
+                    valrtn = getById(id, values.child);
                 }
-                
+    
                 return valrtn;
->>>>>>> 007e219baec18e37ee8ba3cca85416a2f55dd27c
             }
-            
-            return valrtn;
-        }
-
-        const { responses } = this.state;
-        if(responses) {
-            let q = responses.find(elem => elem.question === question && elem.section === section);
+    
             return getById(id, q?.response)
         }
     }
@@ -552,8 +514,10 @@ export default class componentName extends Component {
 
     getCustomField = (value, sectionId) => {
         let index = (Date.now() * Math.random()).toString();
-        let defaultValue = this.getDefaultValue(value.id, value.questionId, sectionId, value.type === 'checkbox');
+
+        let defaultValue = this.getDefaultValue(value.id, value.questionId, sectionId);
         let childs = [];
+
         // console.log(this.getDefaultValue(value.id, value.questionId, sectionId););
 
         return (
@@ -652,7 +616,9 @@ export default class componentName extends Component {
                 {value.type === 'radio' &&
                     <>
                         {value.values.map((cf, ind) => {
+
                             return (
+                                
                                 <span className="active" key={ind}>
                                     <label>
                                     <input
@@ -693,6 +659,7 @@ export default class componentName extends Component {
                         {value.values.map((cf, ind) => {
 
                             let chequedValues = defaultValue.split('~~');
+
                             return (
                                 <span className="active" key={sectionId+value.questionId+value.id}>
 
@@ -712,7 +679,7 @@ export default class componentName extends Component {
                                     <label htmlFor={sectionId+value.questionId+value.id+ind}>{cf.value}</label>
 
                                     {cf.customFieldsSync &&
-                                        <div className={chequedValues.includes(cf.value) ? "conditionalCF active" : "conditionalCF"}>
+                                        <div className={cf.value === defaultValue ? "conditionalCF active" : "conditionalCF"}>
                                             {
                                                 this.getCustomField({
                                                     ...cf.customFieldsSync[0],
@@ -1001,9 +968,8 @@ export default class componentName extends Component {
                                         <h6>Editado por: </h6>
                                         <article>
                                             {monitoreo.modifiedBy.map(v => {
-                                                let name = v.name ? v.lastName + " " + v.name : v.userId;
                                                 return (<span key={v._id}>
-                                                    {name} - {v.rol} - {moment(v.modifiedAt).format("DD/MM/YYYY HH:mm")}
+                                                    {v.userId} - {v.rol} - {moment(v.modifiedAt).format("DD/MM/YYYY HH:mm")}
                                                 </span>)
                                             })}
                                         </article>

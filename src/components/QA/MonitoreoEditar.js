@@ -433,7 +433,6 @@ export default class componentName extends Component {
             q = responses[respIndex];
         }
 
-
         if (!q) {
             // Creamos la respuesta
             q = {
@@ -445,7 +444,7 @@ export default class componentName extends Component {
 
         if (!parent) {
             // Entonces significa que estamos respondiendo una pregunta padre
-            if(multiselect && q.response) {
+            if(multiselect && Object.keys(q.response).length > 0) {
                 q.response.id = id;
                 let v =  q.response.data.split(divisor);
                 if(v.includes(value)) {
@@ -464,7 +463,6 @@ export default class componentName extends Component {
                     data: value,
                     id
                 }
-                console.log(q.response)
             }
         } else if (respIndex !== -1) {
             // Entonces estamos contestando una pregunta hija

@@ -389,7 +389,6 @@ export default class Modal extends Component {
 
                         {(valueArray && valueSelect !== 'text' && valueSelect !== 'area') && this.state.valueSelectMP === 'M' &&
                             <>
-
                                 <div className="flexContent">
                                     <input type="checkbox" name="esCalibrable" id="escalibrable" checked={this.state.esCalibrable} onChange={this.handleChangeCalibrable} />
                                     <label htmlFor="escalibrable" className="label" >* ¿Es calibrable? </label>

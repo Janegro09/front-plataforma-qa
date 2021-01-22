@@ -56,7 +56,7 @@ export default class StepName extends Component {
         let { dataToSend } = this.state;
 
         dataToSend[id] = data === false ? e.target.value : data;
-
+        console.log(dataToSend);
         this.setState({
             dataToSend
         });
@@ -99,6 +99,9 @@ export default class StepName extends Component {
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
+
+        console.log(sendData, dataToSend);
+        debugger;
 
         axios.put(Global.getAllPartitures + "/" + id + '/' + idUsuario + '/' + idStep, sendData, config)
             .then(response => {

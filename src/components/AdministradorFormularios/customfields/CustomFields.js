@@ -120,7 +120,9 @@ export default class CustomFields extends Component {
                                         }} />
                                     }
                                     {value.type === 'area' &&
-                                        <textarea disabled={disabled} className="textarea" cols="30" rows="10" required={value.required} name={value.sectionName} />
+                                        <textarea disabled={disabled} className="textarea" cols="30" rows="10" required={value.required} value={value.defaultValue} name={value.sectionName} onChange={(e) => {
+                                            this.changeValues(e, value);
+                                        }} />
                                     }
                                     {value.type === 'select' &&
                                         <select disabled={disabled} required={value.required} name={value.sectionName} value={value.defaultValue} onChange={(e) => this.changeValues(e, value)}>

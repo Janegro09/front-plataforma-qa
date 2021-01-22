@@ -243,9 +243,9 @@ export default class ReporteriaForm extends Component {
                                         <tbody key={p.id}
                                             onClick={(e) => { e.preventDefault(); this.agregarPartitura(p); }}
                                         >
-                                            <tr>
-                                                <td>{p.name}</td>
-                                            </tr>
+                                        <tr>
+                                            <td>{p.name} - {p.grupoAssigned}</td>
+                                        </tr>
                                         </tbody>
                                     )
                                 })}

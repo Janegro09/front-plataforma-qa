@@ -663,7 +663,7 @@ export default class StepName extends Component {
                                                 }
                                             </article>
                                         }
-                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' &&
+                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'LIDER ON SITE' &&
 
                                             <article>
                                                 <h6 className="titulo-seccion">Gerente</h6>
@@ -692,7 +692,7 @@ export default class StepName extends Component {
                                                 <hr />
                                                 {customFields &&
                                                     <CustomFields
-                                                        disabled={this.state.role !== 'GERENTE' && this.state.role !== 'ADMINISTRATOR'}
+                                                        disabled={this.state.role !== 'LIDER ON SITE' && this.state.role !== 'ADMINISTRATOR'}
                                                         fields={customFields}
                                                         section='P'
                                                         subsection='COO'

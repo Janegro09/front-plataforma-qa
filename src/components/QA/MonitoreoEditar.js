@@ -45,6 +45,7 @@ export default class componentName extends Component {
 
         let rsp = [];
 
+<<<<<<< Updated upstream
         for(let r of responses) {
             for(let qst of r.customFields) {
                 if(qst.response) continue;
@@ -58,6 +59,20 @@ export default class componentName extends Component {
             }
         }
 
+=======
+        // for(let r of responses) {
+        //     for(let qst of r.customFields) {
+        //         let td = {
+        //             section: r.id,
+        //             question: qst.questionId,
+        //             response: qst.response
+        //         }
+
+        //         rsp.push(td);
+        //     }
+        // }
+        
+>>>>>>> Stashed changes
         monitoreo.modifiedBy = monitoreo.modifiedBy.sort((a,b) => Date.parse(b.modifiedAt) - Date.parse(a.modifiedAt));
 
         dataToSend = {
@@ -97,7 +112,6 @@ export default class componentName extends Component {
         dataToSend.userId = user.id;
         this.setState({ dataToSend, buscadorUsuario, usuarioSeleccionado });
     }
-
 
     componentDidMount() {
         const { id } = this.props.match.params;
@@ -327,7 +341,6 @@ export default class componentName extends Component {
             })
     }
 
-
     downloadFile = (e) => {
         e.preventDefault();
 
@@ -386,6 +399,7 @@ export default class componentName extends Component {
     }
 
     changeSelection = (e) => {
+<<<<<<< Updated upstream
         e.preventDefault();
         const { value } = e.target;
         let { responses } = this.state;
@@ -478,6 +492,88 @@ export default class componentName extends Component {
             responses.push(q);
         }
         this.setState({ responses });
+=======
+        // e.preventDefault();
+        // const { value } = e.target;
+        // let { responses } = this.state;
+        // const { question, section, parent, id, multiselect } = e.target.dataset;
+
+        // const changeValue = ({ id, value, parent, multiselect }, object) => {   
+        //         // Buscar en object el padre y le agregamos un child
+        //     if (object.id === parent) {
+        //         if(multiselect && object.child) {
+        //             object.child.id = id;
+        //             if(object.child.data) {
+        //                 let v = object.child.data;
+        //                 if(v.includes(value)) {
+        //                     object.child.data = object.child.data.filter(e => e !== value);
+        //                 } else {
+        //                     // Lo agregamos
+        //                     object.child.data.push(value);
+        //                 }
+        //             }
+        //         } else {
+        //             object.child = {
+        //                 id,
+        //                 data: [value]
+        //             }
+        //         }
+        //         return object;
+        //     } else if (object.child) {
+        //         return changeValue({ id, value, parent, multiselect }, object.child);
+        //     } else {
+        //         return false;
+        //     }
+        // }
+
+        // if (!value && value !== '') return true;
+        // let respIndex = responses.findIndex(elem => elem.section === section && elem.question === question);
+        // let q = false;
+        // if (respIndex !== -1) {
+        //     q = responses[respIndex];
+        // }
+
+        // if (!q) {
+        //     // Creamos la respuesta
+        //     q = {
+        //         section,
+        //         question,
+        //         response: {}
+        //     }
+        // }
+
+        // if (!parent) {
+        //     // Entonces significa que estamos respondiendo una pregunta padre
+        //     if(multiselect && Object.keys(q.response).length > 0) {
+        //         q.response.id = id;
+        //         let v =  q.response.data;
+        //         if(v.includes(value)) {
+        //             // Si existe lo eliminamos
+        //             q.response.data = v.response.data.filter(e => e !== value);
+        //         } else {
+        //             // Lo agregamos
+        //             q.response.data.push(value);
+        //         }
+        //     } else {
+        //         q.response = {
+        //             data: [value],
+        //             id
+        //         }
+        //     }
+        // } else if (respIndex !== -1) {
+        //     // Entonces estamos contestando una pregunta hija
+        //     changeValue({ id, value, parent, multiselect }, q.response);
+        // } else return false;
+
+
+        // if (respIndex !== -1) {
+        //     responses[respIndex] = q;
+        // } else {
+        //     responses.push(q);
+        // }
+
+        // this.setState({ responses });
+>>>>>>> Stashed changes
 
     }
 
@@ -722,7 +818,6 @@ export default class componentName extends Component {
             monitoringDate = true;
         }
         if(id) {
-            
             dataToSend[id] = value;
         }
 

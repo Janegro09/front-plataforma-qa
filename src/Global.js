@@ -1,4 +1,4 @@
-const BASE = process.env.REACT_APP_ENV === "development" ? "https://testingapi_plataformaqa.solucionesdigitalesteco.com.ar/api/v1" : "https://apieqa.solucionesdigitalesteco.com.ar/api/v1";
+const BASE = process.env.REACT_APP_ENV === "development" ? "https://testingapi_plataformaeqa.solucionesdigitalesteco.com.ar/api/v1" : "https://apieqa.solucionesdigitalesteco.com.ar/api/v1";
 
 let Global = {
     login: `${BASE}/login`,

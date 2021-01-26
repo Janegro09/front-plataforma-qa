@@ -395,6 +395,10 @@ export default class Modal extends Component {
                                     <label htmlFor="escalibrable" className="label" >* ¿Es calibrable? </label>
                                 </div>
                                 {valueArray.map((v, i) => {
+<<<<<<< Updated upstream
+=======
+                                    console.log(v);
+>>>>>>> Stashed changes
                                     if (v.customFieldsSync !== undefined) {
                                         let defValue = '';
                                         if (v.customFieldsSync?.length > 0) {

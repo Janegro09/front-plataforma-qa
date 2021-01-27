@@ -9,6 +9,7 @@ import './Mon.css';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import '../BackOfficeComponent/AdministracionFormulariosComponent/formularios.css';
+import { responsiveFontSizes } from '@material-ui/core';
 
 
 export default class componentName extends Component {
@@ -45,21 +46,6 @@ export default class componentName extends Component {
 
         let rsp = [];
 
-<<<<<<< Updated upstream
-        for(let r of responses) {
-            for(let qst of r.customFields) {
-                if(qst.response) continue;
-                let td = {
-                    section: r.id,
-                    question: qst.questionId,
-                    response: qst.response
-                }
-
-                rsp.push(td);
-            }
-        }
-
-=======
         // for(let r of responses) {
         //     for(let qst of r.customFields) {
         //         let td = {
@@ -72,7 +58,6 @@ export default class componentName extends Component {
         //     }
         // }
         
->>>>>>> Stashed changes
         monitoreo.modifiedBy = monitoreo.modifiedBy.sort((a,b) => Date.parse(b.modifiedAt) - Date.parse(a.modifiedAt));
 
         dataToSend = {
@@ -399,222 +384,129 @@ export default class componentName extends Component {
     }
 
     changeSelection = (e) => {
-<<<<<<< Updated upstream
-        e.preventDefault();
-        const { value } = e.target;
-        let { responses } = this.state;
-        const { question, section, parent, id, multiselect } = e.target.dataset;
-        const divisor = "~~";
-        const changeValue = ({ id, value, parent, multiselect }, object) => {
-            // Buscar en object el padre y le agregamos un child
-            if (object.id === parent) {
-                if(multiselect && object.child) {
-                    object.child.id = id;
-                    if(object.child.data) {
-                        let v = object.child.data.split(divisor);
-                        if(v.includes(value)) {
-                            // Si existe lo eliminamos
-                            object.child.data = "";
-                            for(let temp of v) {
-                                if(temp === value) continue;
-                                object.child.data = object.child.data ? object.child.data + divisor + temp : temp;
-                            }
+        // Metodos
+        function change_value_of_childrens ({ id, parentvalue, value, parent, multiselect }, o) {
+            for(let object of o.responses) {
+                console.log(object.value, parentvalue, parent, object.id, id);
+                // console.log('object', object);
+                if(object.id === parent && object.value === parentvalue) {
+                    if(multiselect && object.responses) {
+                        if(object.responses.find(e => e.value === value)) {
+                            object.responses = object.responses.filter(elem => elem.value !== value);
                         } else {
-                            // Lo agregamos
-                            object.child.data = object.child.data + divisor + value;
+                            object.responses.push(get_response_schema(id, value))
                         }
+                    } else {
+                        object.responses = [get_response_schema(id, value)]
                     }
-                } else {
-                    object.child = {
-                        id,
-                        data: value
-                    }
-                }
-                return object;
-            } else if (object.child) {
-                return changeValue({ id, value, parent, multiselect }, object.child);
-            } else {
-                return false;
+                    return object;
+                } else if(object.id === parent && object.value !== parentvalue) continue; 
+                else if(object.responses) {
+                    // console.log('responses',object.responses);
+                    return change_value_of_childrens({ id: object.id, parentvalue, value, parent, multiselect }, object);
+                } else return false;
             }
         }
 
-
-        if (!value && value !== '') return true;
-        let respIndex = responses.findIndex(elem => elem.section === section && elem.question === question);
-        let q = false;
-        if (respIndex !== -1) {
-            q = responses[respIndex];
+        function get_response_schema(id, value) {
+            return { id, value, responses: [] };
         }
 
-        if (!q) {
-            // Creamos la respuesta
-            q = {
+        e.preventDefault();
+        const { value, dataset } = e.target;
+        const { question, section, parent, id, multiselect, parentvalue } = dataset;
+        let { responses } = this.state;
+
+        if(value === "" || !value) return true;
+        const response_index = responses.findIndex(response => response.section === section && response.question === question);
+    
+
+        let selected_response = response_index !== -1 ? responses[response_index] : null;
+
+        if(!selected_response) {
+            selected_response = {
                 section,
                 question,
-                response: {}
+                responses: []
             }
         }
 
-        if (!parent) {
-            // Entonces significa que estamos respondiendo una pregunta padre
-            if(multiselect && q.response) {
-                q.response.id = id;
-                if(!q.response.data) {
-                    q.response.data = "";
-                }
-                let v =  q.response.data.split(divisor);
-                if(v.includes(value)) {
-                    // Si existe lo eliminamos
-                    q.response.data = "";
-                    for(let temp of v) {
-                        if(temp === value) continue;
-                        q.response.data =  q.response.data ?  q.response.data + divisor + temp : temp;
-                    }
+        if(parent && response_index !== -1) {
+            // Significa que es un elemento hijo
+            change_value_of_childrens({ id, parentvalue, value, parent, multiselect }, selected_response);
+        } else if(!parent) {
+            // Entonces estamos respondiendo una pregunta principa
+            if(multiselect) {
+                // Pusheamos el valor si no existe
+                if(selected_response.responses.find(e => e.value === value && e.id === id)) {
+                    selected_response.responses = selected_response.response.filter(e => e.value !== value);
                 } else {
-                    // Lo agregamos
-                    q.response.data = q.response.data ? `${q.response.data}${divisor}${value}` : value;
+                    selected_response.responses.push(get_response_schema(id, value));
                 }
             } else {
-                q.response = {
-                    data: value,
-                    id
-                }
+                selected_response.response = [get_response_schema(id, value)];
             }
-        } else if (respIndex !== -1) {
-            // Entonces estamos contestando una pregunta hija
-            changeValue({ id, value, parent, multiselect }, q.response);
         } else return false;
 
-
-        if (respIndex !== -1) {
-            responses[respIndex] = q;
+        if (response_index !== -1) {
+            responses[response_index] = selected_response;
         } else {
-            responses.push(q);
+            responses.push(selected_response);
         }
+        console.log(responses);
+
         this.setState({ responses });
-=======
-        // e.preventDefault();
-        // const { value } = e.target;
-        // let { responses } = this.state;
-        // const { question, section, parent, id, multiselect } = e.target.dataset;
-
-        // const changeValue = ({ id, value, parent, multiselect }, object) => {   
-        //         // Buscar en object el padre y le agregamos un child
-        //     if (object.id === parent) {
-        //         if(multiselect && object.child) {
-        //             object.child.id = id;
-        //             if(object.child.data) {
-        //                 let v = object.child.data;
-        //                 if(v.includes(value)) {
-        //                     object.child.data = object.child.data.filter(e => e !== value);
-        //                 } else {
-        //                     // Lo agregamos
-        //                     object.child.data.push(value);
-        //                 }
-        //             }
-        //         } else {
-        //             object.child = {
-        //                 id,
-        //                 data: [value]
-        //             }
-        //         }
-        //         return object;
-        //     } else if (object.child) {
-        //         return changeValue({ id, value, parent, multiselect }, object.child);
-        //     } else {
-        //         return false;
-        //     }
-        // }
-
-        // if (!value && value !== '') return true;
-        // let respIndex = responses.findIndex(elem => elem.section === section && elem.question === question);
-        // let q = false;
-        // if (respIndex !== -1) {
-        //     q = responses[respIndex];
-        // }
-
-        // if (!q) {
-        //     // Creamos la respuesta
-        //     q = {
-        //         section,
-        //         question,
-        //         response: {}
-        //     }
-        // }
-
-        // if (!parent) {
-        //     // Entonces significa que estamos respondiendo una pregunta padre
-        //     if(multiselect && Object.keys(q.response).length > 0) {
-        //         q.response.id = id;
-        //         let v =  q.response.data;
-        //         if(v.includes(value)) {
-        //             // Si existe lo eliminamos
-        //             q.response.data = v.response.data.filter(e => e !== value);
-        //         } else {
-        //             // Lo agregamos
-        //             q.response.data.push(value);
-        //         }
-        //     } else {
-        //         q.response = {
-        //             data: [value],
-        //             id
-        //         }
-        //     }
-        // } else if (respIndex !== -1) {
-        //     // Entonces estamos contestando una pregunta hija
-        //     changeValue({ id, value, parent, multiselect }, q.response);
-        // } else return false;
-
-
-        // if (respIndex !== -1) {
-        //     responses[respIndex] = q;
-        // } else {
-        //     responses.push(q);
-        // }
-
-        // this.setState({ responses });
->>>>>>> Stashed changes
-
     }
 
 
 
     getDefaultValue = (id, question, section, multiselect = false) => {
-        const getById = (id, values) => {
-            if (!values) return "";
-            let valrtn = "";
-            if (values.id && values.id === id) {
-                valrtn = values.data
-            } else if (values.child) {
-                /**
-                 * Por falta de tiempo evitamos la funcion recuriva con los 5 condicionales en piramide que vemos abajo. Para la nueva modificacion debemos editar la posibilidad de recibir multiples ids en el backend y la posibilidad de dividir esoss ids para que pueda diferenciar y funcionar la funcion recursiva. Esto queda pendiente de desarrollo. 30/12/2020 PENDIENTE DE DESARROLLO! ATENCION!
-                 */
-                if(multiselect) {
-                    valrtn = values.child.data;
-                    if(values.child.child) {
-                        valrtn += `~~${values.child.child.data}`;
-                        if(values.child.child.child) {
-                            valrtn += `~~${values.child.child.child.data}`;
-                            if(values.child.child.child.child) {
-                                valrtn += `~~${values.child.child.child.child.data}`;
-                                if(values.child.child.child.child.child) {
-                                    valrtn += `~~${values.child.child.child.child.child.data}`;
-                                }
-                            }
+        const search_in_responses = (id, response) => {
+            if(response.id === id) return response;
+            else if(response.responses){
+                let data_return = multiselect ? [] : "";
+                for(let r of response.responses){
+                    const return_reponse = search_in_responses(id, r);
+                    if(multiselect && return_reponse) {
+                        if(return_reponse instanceof Array && return_reponse.length > 0) {
+                            data_return = [...data_return, ...return_reponse];
+                        } else if(return_reponse.value) {
+                            data_return.push(return_reponse.value);
                         }
+                    } else if(return_reponse) return return_reponse 
+                }
+                return data_return;
+            }
+        }
+
+        const getById = (id, responses) => {
+            if(!responses) return "";
+            let value_to_return = "";
+
+            if(multiselect) {
+                value_to_return = [];
+            }
+
+            for(let r of responses) {
+                let question = search_in_responses(id, r);
+                if(multiselect && question) {
+                    if(question instanceof Array) {
+                        value_to_return = [...value_to_return, ...question];
+                    } else if(question){
+                        value_to_return.push(question.value);
                     }
-                } else {
-                    valrtn = getById(id, values.child);
+                } else if(question) {
+                    value_to_return = question.value;
+                    break;
                 }
             }
-            
-            return valrtn;
+            return value_to_return;
         }
 
         const { responses } = this.state;
         if(responses) {
             let q = responses.find(elem => elem.question === question && elem.section === section);
-            return getById(id, q?.response)
+            return getById(id, q?.responses)
         }
     }
 
@@ -629,8 +521,9 @@ export default class componentName extends Component {
         let index = (Date.now() * Math.random()).toString();
         let defaultValue = this.getDefaultValue(value.id, value.questionId, sectionId, value.type === 'checkbox');
         let childs = [];
-        // console.log(this.getDefaultValue(value.id, value.questionId, sectionId););
-
+        if(defaultValue.length > 0) {
+            // console.log(defaultValue)
+        }
         return (
             <article key={index}>
                 {/* Se comenta a pedido de Gabriel, cambios 20/11/2020 */}
@@ -650,7 +543,7 @@ export default class componentName extends Component {
                             <option>Selecciona...</option>
                             {value.values.map((cf, ind) => {
                                 if (cf.customFieldsSync) {
-                                    childs.push({...cf.customFieldsSync[0], parentValue: cf.value})
+                                    childs.push({...cf.customFieldsSync[0], parentvalue: cf.value})
                                 }
 
                                 return (<option value={cf.value} key={ind}>{cf.value}</option>)
@@ -665,7 +558,7 @@ export default class componentName extends Component {
                             childs.map((cf, ind) => {
 
                                 return (
-                                    <div key={ind} className={cf.parentValue === defaultValue ? "conditionalCF active" : "conditionalCF"}>
+                                    <div key={ind} className={cf.parentvalue === defaultValue ? "conditionalCF active" : "conditionalCF"}>
                                         {
                                             this.getCustomField({
                                                 ...cf,
@@ -766,20 +659,19 @@ export default class componentName extends Component {
                 {value.type === 'checkbox' &&
                     <>
                         {value.values.map((cf, ind) => {
-
-                            let chequedValues = defaultValue.split('~~');
                             return (
-                                <span className="active" key={sectionId+value.questionId+value.id}>
+                                <span className="active" key={sectionId+value.questionId+value.id+ind}>
 
                                     <input
                                         type="checkbox"
-                                        checked={chequedValues.includes(cf.value)}
+                                        checked={defaultValue.includes(cf.value)}
                                         value={cf.value}
                                         name={sectionId+value.questionId+value.id+index}
                                         data-id={value.id}
                                         data-section={sectionId}
                                         data-question={value.questionId}
                                         data-parent={value.parentId}
+                                        data-parentvalue={value.parentvalue || ""}
                                         onChange={this.changeSelection}
                                         data-multiselect={true}
                                         id={sectionId+value.questionId+value.id+ind}
@@ -787,12 +679,13 @@ export default class componentName extends Component {
                                     <label htmlFor={sectionId+value.questionId+value.id+ind}>{cf.value}</label>
 
                                     {cf.customFieldsSync &&
-                                        <div className={chequedValues.includes(cf.value) ? "conditionalCF active" : "conditionalCF"}>
+                                        <div className={defaultValue.includes(cf.value) ? "conditionalCF active" : "conditionalCF"}>
                                             {
                                                 this.getCustomField({
                                                     ...cf.customFieldsSync[0],
                                                     questionId: value.questionId,
-                                                    parentId: value.id
+                                                    parentId: value.id,
+                                                    parentvalue: cf.value
                                                 }, sectionId)
                                             }
                                         </div>
@@ -800,7 +693,6 @@ export default class componentName extends Component {
                                 </ span>
                             )
                         })
-
                         }
                     </>
                 }

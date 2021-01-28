@@ -84,9 +84,13 @@ export default class PartiturasUsuarioComponent extends Component {
         for (let th in users.rowFromPartiture) {
             if (th === 'id') continue;
             let value = users.rowFromPartiture[th]
-            if(th.includes("%")){
-                value = parseFloat(value) * 100;
+            console.log(value);
+            if(th.includes('%')){
+                if(!isNaN(value)){
+                    value = parseFloat(value) * 100;
+                }
             } 
+
             ReturnData.headers.push(th)
             ReturnData.actual.push(value);
         }

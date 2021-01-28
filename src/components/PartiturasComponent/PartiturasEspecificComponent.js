@@ -25,7 +25,14 @@ export default class PartiturasEspecificComponent extends Component {
         data: null,
         idUsuario: null,
         filtredData: null,
-        totalDisplayed: 20
+        totalDisplayed: 20,
+        redirect:null
+    }
+
+    volverAtras = (e) => {
+        // console.log(e.preventDefault());
+        e.preventDefault();
+        this.setState({redirect: "/partituras"});
     }
 
     buscar = (e) => {
@@ -148,12 +155,16 @@ export default class PartiturasEspecificComponent extends Component {
     }
 
     render() {
-        let { loading, data, idUsuario, filtredData, totalDisplayed } = this.state;
+        let { loading, data, idUsuario, filtredData, totalDisplayed,redirect } = this.state;
         data = data ? data[0] : null;
 
         if (idUsuario) {
             let id = this.props.match.params.id;
             return <Redirect to={`/partituras/${id}/${idUsuario}`} />
+        }
+        
+        if(redirect) {
+            return <Redirect to={redirect} />
         }
 
         return (
@@ -312,6 +323,14 @@ export default class PartiturasEspecificComponent extends Component {
                     </div>
 
                 }
+
+                    <button
+                        className="btnSecundario pasoAnterior"
+                        
+                            onClick={this.volverAtras}
+                    >
+                        Paso anterior
+                    </button>
             </>
         )
     }

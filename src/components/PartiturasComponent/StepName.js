@@ -56,7 +56,6 @@ export default class StepName extends Component {
         let { dataToSend } = this.state;
 
         dataToSend[id] = data === false ? e.target.value : data;
-        console.log(dataToSend);
         this.setState({
             dataToSend
         });
@@ -641,6 +640,7 @@ export default class StepName extends Component {
                                                     this.armarObjeto
                                                 }>
                                                 <option value="">Selecciona</option>
+                                                <option value="n/a">No Aplica</option>
                                                 <option value="+">Mejoro</option>
                                                 <option value="+-">Sigue igual</option>
                                                 <option value="-">Empeoró</option>

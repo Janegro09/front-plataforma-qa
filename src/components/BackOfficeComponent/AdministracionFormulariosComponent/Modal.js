@@ -207,6 +207,7 @@ export default class Modal extends Component {
                     localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                     let respuesta = response.data.Data[0];
                     let valueArray = respuesta.values;
+                    valueArray = valueArray.map(v => v.customFieldsSync && v.customFieldsSync !== null ? v : { ...v, customFieldsSync: undefined });
                     this.setState({
                         id: idEditar,
                         loading: false,
@@ -275,6 +276,8 @@ export default class Modal extends Component {
     viewValues = (e) => {
         const { value } = e.target;
         let { valueArray } = this.state;
+
+        console.log(value, valueArray)
         if (value) {
             valueArray = [];
             let values = value.split(',');
@@ -394,7 +397,7 @@ export default class Modal extends Component {
                                     <label htmlFor="escalibrable" className="label" >* ¿Es calibrable? </label>
                                 </div>
                                 {valueArray.map((v, i) => {
-                                    if (v.customFieldsSync !== undefined && v.customFieldsSync !== null) {
+                                    if (v.customFieldsSync !== undefined) {
                                         let defValue = '';
                                         if (v.customFieldsSync?.length > 0) {
                                             defValue = v.customFieldsSync[0].id

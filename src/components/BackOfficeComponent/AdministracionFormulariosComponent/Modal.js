@@ -207,6 +207,7 @@ export default class Modal extends Component {
                     localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                     let respuesta = response.data.Data[0];
                     let valueArray = respuesta.values;
+                    valueArray = valueArray.map(v => v.customFieldsSync && v.customFieldsSync !== null ? v : { ...v, customFieldsSync: undefined });
                     this.setState({
                         id: idEditar,
                         loading: false,
@@ -275,6 +276,8 @@ export default class Modal extends Component {
     viewValues = (e) => {
         const { value } = e.target;
         let { valueArray } = this.state;
+
+        console.log(value, valueArray)
         if (value) {
             valueArray = [];
             let values = value.split(',');
@@ -389,7 +392,6 @@ export default class Modal extends Component {
 
                         {(valueArray && valueSelect !== 'text' && valueSelect !== 'area') && this.state.valueSelectMP === 'M' &&
                             <>
-
                                 <div className="flexContent">
                                     <input type="checkbox" name="esCalibrable" id="escalibrable" checked={this.state.esCalibrable} onChange={this.handleChangeCalibrable} />
                                     <label htmlFor="escalibrable" className="label" >* ¿Es calibrable? </label>
@@ -429,7 +431,7 @@ export default class Modal extends Component {
                             <select value={this.state.valueSelectPerfilamiento} onChange={this.handleChangeSelectPerfilamiento}>
                                 <option value="RESP">Responsable</option>
                                 <option value="GTE">Gerente</option>
-                                <option value="COO">Coordinador on site</option>
+                                <option value="COO">On site</option>
                                 <option value="ADM">Administrador</option>
                                 <option value="COACH">Coach</option>
                             </select>

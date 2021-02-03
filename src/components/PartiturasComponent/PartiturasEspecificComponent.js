@@ -25,11 +25,18 @@ export default class PartiturasEspecificComponent extends Component {
         data: null,
         idUsuario: null,
         filtredData: null,
-        totalDisplayed: 20
+        totalDisplayed: 20,
+        redirect:null
+    }
+
+    volverAtras = (e) => {
+        // console.log(e.preventDefault());
+        e.preventDefault();
+        this.setState({redirect: "/partituras"});
     }
 
     buscar = (e) => {
-        const val = e.target.value;
+        const val = e.target.value.toUpperCase();
         let { data, filtredData } = this.state;
         const users = data[0].users;
         if (val) {
@@ -37,9 +44,14 @@ export default class PartiturasEspecificComponent extends Component {
 
             for (let u of users) {
                 let nameLastName = `${u.name} ${u.lastName}`
+                nameLastName = nameLastName.toUpperCase() 
+                let lider = u.lider
+                lider = lider.toUpperCase() 
                 if (u.id.indexOf(val) >= 0) {
                     filtredData.push(u)
                 } else if (nameLastName.indexOf(val) >= 0) {
+                    filtredData.push(u)
+                } else if (lider.indexOf(val) >= 0) {
                     filtredData.push(u)
                 } else {
                     let nameDividido = nameLastName.split(' ');
@@ -143,12 +155,16 @@ export default class PartiturasEspecificComponent extends Component {
     }
 
     render() {
-        let { loading, data, idUsuario, filtredData, totalDisplayed } = this.state;
+        let { loading, data, idUsuario, filtredData, totalDisplayed,redirect } = this.state;
         data = data ? data[0] : null;
 
         if (idUsuario) {
             let id = this.props.match.params.id;
             return <Redirect to={`/partituras/${id}/${idUsuario}`} />
+        }
+        
+        if(redirect) {
+            return <Redirect to={redirect} />
         }
 
         return (
@@ -307,6 +323,14 @@ export default class PartiturasEspecificComponent extends Component {
                     </div>
 
                 }
+
+                    <button
+                        className="btnSecundario pasoAnterior"
+                        
+                            onClick={this.volverAtras}
+                    >
+                        Paso anterior
+                    </button>
             </>
         )
     }

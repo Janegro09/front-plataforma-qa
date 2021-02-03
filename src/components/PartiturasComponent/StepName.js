@@ -56,7 +56,6 @@ export default class StepName extends Component {
         let { dataToSend } = this.state;
 
         dataToSend[id] = data === false ? e.target.value : data;
-
         this.setState({
             dataToSend
         });
@@ -99,6 +98,9 @@ export default class StepName extends Component {
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
+
+        console.log(sendData, dataToSend);
+        debugger;
 
         axios.put(Global.getAllPartitures + "/" + id + '/' + idUsuario + '/' + idStep, sendData, config)
             .then(response => {
@@ -308,7 +310,10 @@ export default class StepName extends Component {
 
         for (let th in users.rowFromPartiture) {
             if (th === 'id') continue;
-            const value = users.rowFromPartiture[th]
+            let value = users.rowFromPartiture[th]
+            if(th.includes("%")){
+                value = parseFloat(value) * 100;
+            } 
             ReturnData.headers.push(th)
             ReturnData.actual.push(value);
         }
@@ -565,8 +570,8 @@ export default class StepName extends Component {
                                                         })
                                                     }
                                                     <div className="audiosReq">
-                                                        <p>Audios requeridos: {step.requestedMonitorings}</p>
-                                                        <p>Audios faltantes: {(step.audioFiles === false ? step.requestedMonitorings : (step.requestedMonitorings - contadorAudios))} </p>
+                                                        <p>Archivos requeridos: {step.requestedMonitorings}</p>
+                                                        <p>Archivos faltantes: {(step.audioFiles === false ? step.requestedMonitorings : (step.requestedMonitorings - contadorAudios))} </p>
                                                     </div>
                                                     <div className="titleInBox">
                                                         <h6 className="titulo-seccion">Media (Monitorings)</h6>
@@ -579,7 +584,7 @@ export default class StepName extends Component {
                                                 {step.requestedMonitorings - contadorAudios > 0 &&
                                                     <select value={this.state.value} onChange={this.handleChange} disabled={this.state.role === 'REPRESENTANTE'}>
                                                         <option value="-">Selecciona...</option>
-                                                        <option value="file">Audio</option>
+                                                        <option value="file">Archivo</option>
                                                         <option value="message">Mensaje</option>
                                                     </select>
                                                 }
@@ -635,6 +640,7 @@ export default class StepName extends Component {
                                                     this.armarObjeto
                                                 }>
                                                 <option value="">Selecciona</option>
+                                                <option value="n/a">No Aplica</option>
                                                 <option value="+">Mejoro</option>
                                                 <option value="+-">Sigue igual</option>
                                                 <option value="-">Empeoró</option>
@@ -660,7 +666,7 @@ export default class StepName extends Component {
                                                 }
                                             </article>
                                         }
-                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' &&
+                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'LIDER ON SITE' &&
 
                                             <article>
                                                 <h6 className="titulo-seccion">Gerente</h6>
@@ -685,11 +691,11 @@ export default class StepName extends Component {
 
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' &&
                                             <article>
-                                                <h6 className="titulo-seccion">Coordinador On Site</h6>
+                                                <h6 className="titulo-seccion">On Site</h6>
                                                 <hr />
                                                 {customFields &&
                                                     <CustomFields
-                                                        disabled={this.state.role !== 'GERENTE' && this.state.role !== 'ADMINISTRATOR'}
+                                                        disabled={this.state.role !== 'LIDER ON SITE' && this.state.role !== 'ADMINISTRATOR'}
                                                         fields={customFields}
                                                         section='P'
                                                         subsection='COO'
@@ -749,7 +755,7 @@ export default class StepName extends Component {
 
                                     <select value={this.state.valueCoach} onChange={this.handleChangeCoach}>
                                         <option value="-">Selecciona...</option>
-                                        <option value="file">Audio</option>
+                                        <option value="file">Archivo</option>
                                         <option value="record">Grabacion</option>
                                     </select>
 

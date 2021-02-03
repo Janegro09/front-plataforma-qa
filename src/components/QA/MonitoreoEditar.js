@@ -38,13 +38,13 @@ export default class componentName extends Component {
     setDefaultData = () => {
         let { invalidarArea, disputarArea, dataToSend, monitoreo, usuarioSeleccionado } = this.state;
 
-        const { disputar_response, responses, userId, improvment, disputado, invalidated, evaluated, status, transactionDate, monitoringDate, comments, devolucion } = monitoreo;
+        const { disputar_response, responses_object,responses, userId, improvment, disputado, invalidated, evaluated, status, transactionDate, monitoringDate, comments, devolucion } = monitoreo;
 
         usuarioSeleccionado = {
             ...monitoreo.userInfo
         }
-
-        let rsp = [];
+        let rsp = responses_object;
+        console.log(rsp)
 
         // for(let r of responses) {
         //     for(let qst of r.customFields) {
@@ -403,7 +403,7 @@ export default class componentName extends Component {
                 } else if(object.id === parent && object.value !== parentvalue) continue; 
                 else if(object.responses) {
                     // console.log('responses',object.responses);
-                    return change_value_of_childrens({ id: object.id, parentvalue, value, parent, multiselect }, object);
+                    return change_value_of_childrens({ id, parentvalue, value, parent, multiselect }, object);
                 } else return false;
             }
         }
@@ -444,7 +444,7 @@ export default class componentName extends Component {
                     selected_response.responses.push(get_response_schema(id, value));
                 }
             } else {
-                selected_response.response = [get_response_schema(id, value)];
+                selected_response.responses = [get_response_schema(id, value)];
             }
         } else return false;
 
@@ -453,7 +453,6 @@ export default class componentName extends Component {
         } else {
             responses.push(selected_response);
         }
-        console.log(responses);
 
         this.setState({ responses });
     }
@@ -519,6 +518,7 @@ export default class componentName extends Component {
 
     getCustomField = (value, sectionId) => {
         let index = (Date.now() * Math.random()).toString();
+
         let defaultValue = this.getDefaultValue(value.id, value.questionId, sectionId, value.type === 'checkbox');
         let childs = [];
         if(defaultValue.length > 0) {
@@ -620,7 +620,9 @@ export default class componentName extends Component {
                 {value.type === 'radio' &&
                     <>
                         {value.values.map((cf, ind) => {
+
                             return (
+                                
                                 <span className="active" key={ind}>
                                     <label>
                                     <input
@@ -913,7 +915,6 @@ export default class componentName extends Component {
                                         <label>Fortalezas del usuario</label>
                                         <textarea id="fortalezasUsuario" onChange={this.handleChange} value={dataToSend.fortalezasUsuario}></textarea>
                                     </span>
-
                                     <span>
                                         <label>Pasos de mejora</label>
                                         <textarea id="pasosMejora" onChange={this.handleChange}  value={dataToSend.pasosMejora}></textarea>
@@ -968,9 +969,8 @@ export default class componentName extends Component {
                                         <h6>Editado por: </h6>
                                         <article>
                                             {monitoreo.modifiedBy.map(v => {
-                                                let name = v.name ? v.lastName + " " + v.name : v.userId;
                                                 return (<span key={v._id}>
-                                                    {name} - {v.rol} - {moment(v.modifiedAt).format("DD/MM/YYYY HH:mm")}
+                                                    {v.userId} - {v.rol} - {moment(v.modifiedAt).format("DD/MM/YYYY HH:mm")}
                                                 </span>)
                                             })}
                                         </article>

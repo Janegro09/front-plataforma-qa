@@ -15,6 +15,7 @@ import TimerIcon from '@material-ui/icons/Timer';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import Checkbox from '@material-ui/core/Checkbox';
 import './partitures.css';
+import { LensTwoTone } from '@material-ui/icons';
 
 export default class PartiturasUsuarioComponent extends Component {
 
@@ -82,7 +83,14 @@ export default class PartiturasUsuarioComponent extends Component {
 
         for (let th in users.rowFromPartiture) {
             if (th === 'id') continue;
-            const value = users.rowFromPartiture[th]
+            let value = users.rowFromPartiture[th]
+            console.log(value);
+            if(th.includes('%')){
+                if(!isNaN(value)){
+                    value = parseFloat(value) * 100;
+                }
+            } 
+
             ReturnData.headers.push(th)
             ReturnData.actual.push(value);
         }

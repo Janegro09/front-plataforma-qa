@@ -387,17 +387,15 @@ export default class componentName extends Component {
         // Metodos
         function change_value_of_childrens ({ id, parentvalue, value, parent, multiselect }, o) {
             for(let object of o.responses) {
-                console.log(object.value, parentvalue, parent, object.id, id);
-                // console.log('object', object);
                 if(object.id === parent && object.value === parentvalue) {
                     if(multiselect && object.responses) {
                         if(object.responses.find(e => e.value === value)) {
                             object.responses = object.responses.filter(elem => elem.value !== value);
                         } else {
-                            object.responses.push(get_response_schema(id, value))
+                            object.responses.push(get_response_schema(id, value, parent, parentvalue))
                         }
                     } else {
-                        object.responses = [get_response_schema(id, value)]
+                        object.responses = [get_response_schema(id, value, parent, parentvalue)]
                     }
                     return object;
                 } else if(object.id === parent && object.value !== parentvalue) continue; 
@@ -408,8 +406,8 @@ export default class componentName extends Component {
             }
         }
 
-        function get_response_schema(id, value) {
-            return { id, value, responses: [] };
+        function get_response_schema(id, value, parent_id = false, parent_value = false) {
+            return { id, parent_id: parent_id || id, parent_value: parent_value || id, value, responses: [] };
         }
 
         e.preventDefault();
@@ -439,7 +437,8 @@ export default class componentName extends Component {
             if(multiselect) {
                 // Pusheamos el valor si no existe
                 if(selected_response.responses.find(e => e.value === value && e.id === id)) {
-                    selected_response.responses = selected_response.response.filter(e => e.value !== value);
+
+                    selected_response.responses = selected_response.responses.filter(e => e.value !== value);
                 } else {
                     selected_response.responses.push(get_response_schema(id, value));
                 }
@@ -459,13 +458,13 @@ export default class componentName extends Component {
 
 
 
-    getDefaultValue = (id, question, section, multiselect = false) => {
-        const search_in_responses = (id, response) => {
-            if(response.id === id) return response;
+    getDefaultValue = (id, question, section, multiselect = false, parent_id, parent_value) => {
+        const search_in_responses = (id, response, parent_id, parent_value) => {
+            if(response.id === id && response.parent_id === parent_id && response.parent_value === parent_value) return response;
             else if(response.responses){
                 let data_return = multiselect ? [] : "";
                 for(let r of response.responses){
-                    const return_reponse = search_in_responses(id, r);
+                    const return_reponse = search_in_responses(id, r, parent_id, parent_value);
                     if(multiselect && return_reponse) {
                         if(return_reponse instanceof Array && return_reponse.length > 0) {
                             data_return = [...data_return, ...return_reponse];
@@ -478,7 +477,7 @@ export default class componentName extends Component {
             }
         }
 
-        const getById = (id, responses) => {
+        const getById = (id, responses, parent_id, parent_value) => {
             if(!responses) return "";
             let value_to_return = "";
 
@@ -487,7 +486,7 @@ export default class componentName extends Component {
             }
 
             for(let r of responses) {
-                let question = search_in_responses(id, r);
+                let question = search_in_responses(id, r, parent_id, parent_value);
                 if(multiselect && question) {
                     if(question instanceof Array) {
                         value_to_return = [...value_to_return, ...question];
@@ -505,7 +504,7 @@ export default class componentName extends Component {
         const { responses } = this.state;
         if(responses) {
             let q = responses.find(elem => elem.question === question && elem.section === section);
-            return getById(id, q?.responses)
+            return getById(id, q?.responses, parent_id || id, parent_value || id)
         }
     }
 
@@ -519,7 +518,7 @@ export default class componentName extends Component {
     getCustomField = (value, sectionId) => {
         let index = (Date.now() * Math.random()).toString();
 
-        let defaultValue = this.getDefaultValue(value.id, value.questionId, sectionId, value.type === 'checkbox');
+        let defaultValue = this.getDefaultValue(value.id, value.questionId, sectionId, value.type === 'checkbox',value.parentId, value.parentvalue);
         let childs = [];
         if(defaultValue.length > 0) {
             // console.log(defaultValue)
@@ -543,7 +542,7 @@ export default class componentName extends Component {
                             <option>Selecciona...</option>
                             {value.values.map((cf, ind) => {
                                 if (cf.customFieldsSync) {
-                                    childs.push({...cf.customFieldsSync[0], parentvalue: cf.value})
+                                    childs.push({...cf.customFieldsSync[0], parentvalue: cf.value })
                                 }
 
                                 return (<option value={cf.value} key={ind}>{cf.value}</option>)

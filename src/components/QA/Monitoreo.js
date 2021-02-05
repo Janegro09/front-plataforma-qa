@@ -24,26 +24,32 @@ import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 
 export default class Monitoreo extends Component {
     state = {
-        loading: false,
-        monitoreos: [],
-        redirect: false,
         abrirModal: false,
-        programs: [],
-        programsGroups: [],
-        empresasSeleccionadas: [],
-        users: [],
-        usuariosConFiltro: [],
-        monitoreosSeleccionados: [],
-        buscadorUsuario: "",
-        buscadorUsuarioCreatedBy: "",
-        usuarioSeleccionadoCreatedBy: null,
         buscador: {
             program: []
         },
-        usuarioSeleccionado: null,
-        toggleBuscador: true,
+        buscadorUsuario: "",
+        buscadorUsuarioCreatedBy: "",
+        empresasSeleccionadas: [],
+        loading: false,
+        monitoreos: [],
+        monitoreosSeleccionados: [],
         offset: 0,
-        limit: 50
+        programs: [],
+        programsGroups: [],
+        redirect: false,
+        limit: 50,
+        toggleBuscador: true,
+        users: [],
+        usuariosConFiltro: [],
+        usuarioSeleccionado: null,
+        usuarioSeleccionadoCreatedBy: null,
+    }
+
+    handleChangeLimit = (e) => {
+        this.setState({
+            limit :e.target.value
+        })
     }
 
     nuevoMonitoreo = (e) => {
@@ -106,7 +112,7 @@ export default class Monitoreo extends Component {
 
     buscar = (e) => {
         e.preventDefault();
-        let buscador_init = { monitoreos: [], offset: 0, limit: 50 }
+        let buscador_init = { monitoreos: [], offset: 0, limit: this.setState.limit }
         this.setState(buscador_init);
         this.get_monitorings(buscador_init);
     }
@@ -116,12 +122,11 @@ export default class Monitoreo extends Component {
         this.get_monitorings({});
     }
 
-    get_monitorings = ({ limit = false, offset = false }) => {
+    get_monitorings = ({ limit = this.state.limit, offset = false }) => {
         const { buscador } = this.state;
         this.setState({
             loading: true
-        })
-        console.log(offset);
+        });
         buscador.offset = this.state.offset || 0;
         buscador.limit  = this.state.limit  || 50;
 
@@ -132,7 +137,7 @@ export default class Monitoreo extends Component {
         if( limit !== false ){
             buscador.limit=limit;
         }
-        console.log(buscador.offset);
+
         // Convert to query string
         let query = "";
 
@@ -250,6 +255,8 @@ export default class Monitoreo extends Component {
         this.get_programs(empresasSeleccionadas);
     }
 
+    
+
     changeBuscador = (e) => {
         // e.preventDefault();
         let { value, id, type } = e.target;
@@ -291,7 +298,6 @@ export default class Monitoreo extends Component {
         const { users } = this.state;
 
         let user = users.find(elem => elem.id === userId);
-
         if (user) {
             userId = (user.legajo || user.id) + ' - ' + user.name + ' ' + user.lastName
         }
@@ -353,7 +359,7 @@ export default class Monitoreo extends Component {
                                 HELPER_FUNCTIONS.logout()
                             } else {
                                 localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                                swal("Error al eliminar!", {
+                                swal(e.response.data.Message, {
                                     icon: "error",
                                 });
 
@@ -645,6 +651,37 @@ export default class Monitoreo extends Component {
 
                                     </div>
                                 </article>
+
+
+                                <article>
+                                <h6>Cantidad de Monitoreos</h6>
+                                <br />
+                                <select onChange={ this.handleChangeLimit } value={this.state.limit} id="limit">
+                                        <option>Selecciona...</option>
+
+                                        {[10,50,150,300].map(v => {
+                                            return <option key={v} value={v}>{v}</option>
+                                        })
+                                        }
+                                    </select>
+                                    
+                                <div className="programasSeleccionados">
+                                    {empresasSeleccionadas.length > 0 &&
+                                        empresasSeleccionadas.map(p => {
+                                            return (
+                                                <span key={p.id}>{p.name}
+                                                    <button id={p.id} onClick={this.eliminarEmpresa}>X</button>
+                                                </span>)
+                                        })
+                                    }
+
+                                </div>
+                            </article>
+                            <br/>
+
+
+
+
                                 <br />
                                 
                            

@@ -113,7 +113,7 @@ export default class Monitoreo extends Component {
 
     verMas = (e) => {
         e.preventDefault();
-        this.get_monitorings();
+        this.get_monitorings({});
     }
 
     get_monitorings = ({ limit = false, offset = false }) => {
@@ -121,10 +121,18 @@ export default class Monitoreo extends Component {
         this.setState({
             loading: true
         })
+        console.log(offset);
+        buscador.offset = this.state.offset || 0;
+        buscador.limit  = this.state.limit  || 50;
 
-        buscador.offset = offset || this.state.offset || 0;
-        buscador.limit  = limit  || this.state.limit  || 50;
+        if( offset !== false ){
+            buscador.offset=offset;
+        } 
 
+        if( limit !== false ){
+            buscador.limit=limit;
+        }
+        console.log(buscador.offset);
         // Convert to query string
         let query = "";
 

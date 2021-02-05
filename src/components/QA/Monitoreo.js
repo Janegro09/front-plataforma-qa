@@ -106,8 +106,9 @@ export default class Monitoreo extends Component {
 
     buscar = (e) => {
         e.preventDefault();
-        this.setState({ monitoreos: [], offset: 0, limit: 50 });
-        this.get_monitorings();
+        let buscador_init = { monitoreos: [], offset: 0, limit: 50 }
+        this.setState(buscador_init);
+        this.get_monitorings(buscador_init);
     }
 
     verMas = (e) => {
@@ -115,8 +116,12 @@ export default class Monitoreo extends Component {
         this.get_monitorings();
     }
 
-    get_monitorings = () => {
-        const { buscador } = this.state;
+    get_monitorings = (buscador_init = false) => {
+        let buscador = buscador_init;
+        if(!buscador_init) {
+            buscador = this.state.buscador;
+        }
+
         this.setState({
             loading: true
         })

@@ -116,18 +116,14 @@ export default class Monitoreo extends Component {
         this.get_monitorings();
     }
 
-    get_monitorings = (buscador_init = false) => {
-        let buscador = buscador_init;
-        if(!buscador_init) {
-            buscador = this.state.buscador;
-        }
-
+    get_monitorings = ({ limit = false, offset = false }) => {
+        const { buscador } = this.state;
         this.setState({
             loading: true
         })
 
-        buscador.offset = this.state.offset || 0;
-        buscador.limit  = this.state.limit  || 50;
+        buscador.offset = offset || this.state.offset || 0;
+        buscador.limit  = limit  || this.state.limit  || 50;
 
         // Convert to query string
         let query = "";

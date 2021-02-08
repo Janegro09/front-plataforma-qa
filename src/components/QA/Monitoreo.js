@@ -485,8 +485,6 @@ export default class Monitoreo extends Component {
         axios.post(Global.monitoreos + '/filters', dataToSend, config).then(response => {
             localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             let programs = response.data.Data.programs || false;
-            console.log(programs);
-            console.log(response.data.Data.programs);
             this.setState({
                 buscador,
                 empresasSeleccionadas: empresas,

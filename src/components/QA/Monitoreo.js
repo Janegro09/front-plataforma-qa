@@ -485,7 +485,8 @@ export default class Monitoreo extends Component {
         axios.post(Global.monitoreos + '/filters', dataToSend, config).then(response => {
             localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             let programs = response.data.Data.programs || false;
-
+            console.log(programs);
+            console.log(response.data.Data.programs);
             this.setState({
                 buscador,
                 empresasSeleccionadas: empresas,
@@ -659,7 +660,7 @@ export default class Monitoreo extends Component {
                                 <select onChange={ this.handleChangeLimit } value={this.state.limit} id="limit">
                                         <option>Selecciona...</option>
 
-                                        {[10,50,100,200].map(v => {
+                                        {[10,50,100,150].map(v => {
                                             return <option key={v} value={v}>{v}</option>
                                         })
                                         }

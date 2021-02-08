@@ -665,17 +665,6 @@ export default class Monitoreo extends Component {
                                         }
                                     </select>
                                     
-                                <div className="programasSeleccionados">
-                                    {empresasSeleccionadas.length > 0 &&
-                                        empresasSeleccionadas.map(p => {
-                                            return (
-                                                <span key={p.id}>{p.name}
-                                                    <button id={p.id} onClick={this.eliminarEmpresa}>X</button>
-                                                </span>)
-                                        })
-                                    }
-
-                                </div>
                             </article>
                             <br/>
 

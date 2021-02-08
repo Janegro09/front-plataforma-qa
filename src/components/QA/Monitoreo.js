@@ -112,7 +112,7 @@ export default class Monitoreo extends Component {
 
     buscar = (e) => {
         e.preventDefault();
-        let buscador_init = { monitoreos: [], offset: 0, limit: this.setState.limit }
+        let buscador_init = { monitoreos: [], offset: 0, limit: this.state.limit }
         this.setState(buscador_init);
         this.get_monitorings(buscador_init);
     }
@@ -659,7 +659,7 @@ export default class Monitoreo extends Component {
                                 <select onChange={ this.handleChangeLimit } value={this.state.limit} id="limit">
                                         <option>Selecciona...</option>
 
-                                        {[10,50,150,300].map(v => {
+                                        {[10,50,100,200].map(v => {
                                             return <option key={v} value={v}>{v}</option>
                                         })
                                         }

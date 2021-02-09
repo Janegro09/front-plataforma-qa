@@ -44,8 +44,6 @@ export default class componentName extends Component {
             ...monitoreo.userInfo
         }
         let rsp = responses_object;
-        console.log(rsp)
-
         // for(let r of responses) {
         //     for(let qst of r.customFields) {
         //         let td = {
@@ -534,6 +532,7 @@ export default class componentName extends Component {
                             data-question={value.questionId}
                             data-parent={value.parentId}
                             data-section={sectionId}
+                            data-parentvalue={value.parentvalue || ""}
                             value={defaultValue}
                             data-id={value.id}
                             name={sectionId+value.questionId+value.id}
@@ -562,7 +561,8 @@ export default class componentName extends Component {
                                             this.getCustomField({
                                                 ...cf,
                                                 questionId: value.questionId,
-                                                parentId: value.id
+                                                parentId: value.id,
+                                                parentvalue: cf.value
                                             }, sectionId)
                                         }
                                     </div>)
@@ -581,6 +581,7 @@ export default class componentName extends Component {
                                 data-section={sectionId}
                                 data-question={value.questionId}
                                 data-parent={value.parentId}
+                                data-parentvalue={value.parentvalue || ""}
                                 onBlur={this.changeSelection}
                                 data-id={value.id}
                                 name={sectionId+value.questionId+value.id}
@@ -601,6 +602,7 @@ export default class componentName extends Component {
                                 data-section={sectionId}
                                 data-question={value.questionId}
                                 data-parent={value.parentId}
+                                data-parentvalue={value.parentvalue || ""}
                                 onBlur={this.changeSelection}
                                 data-id={value.id}
                                 id={sectionId+value.questionId+value.id}
@@ -631,6 +633,7 @@ export default class componentName extends Component {
                                         name={sectionId+value.questionId+value.id+index}
                                         data-id={value.id}
                                         data-section={sectionId}
+                                        data-parentvalue={value.parentvalue || ""}
                                         data-question={value.questionId}
                                         data-parent={value.parentId}
                                         onChange={this.changeSelection}
@@ -644,6 +647,7 @@ export default class componentName extends Component {
                                                 this.getCustomField({
                                                     ...cf.customFieldsSync[0],
                                                     questionId: value.questionId,
+                                                    parentvalue: cf.value,
                                                     parentId: value.id
                                                 }, sectionId)
                                             }

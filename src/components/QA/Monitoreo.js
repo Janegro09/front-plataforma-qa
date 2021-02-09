@@ -881,7 +881,7 @@ export default class Monitoreo extends Component {
                         }
                     </div>
                     {monitoreos.length > 0 &&
-                        <button className="btnSecundario" onClick={this.verMas}>VER MAS</button>
+                        <button className="btnSecundario" onClick={this.verMas}>VER MAS ({this.state.limit}) </button>
                     }
                 </div>
             </>

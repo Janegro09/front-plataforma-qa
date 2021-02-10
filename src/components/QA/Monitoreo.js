@@ -851,7 +851,7 @@ export default class Monitoreo extends Component {
                                                 <td>{this.getUser(mon.createdBy)}</td>
                                                 <td>{this.getUser(mon.userId)}</td>
                                                 <td>{moment(mon.createdAt).tz("America/Argentina/Buenos_Aires").format('DD/MM/YYYY  HH:mm')}</td>
-                                                <td>{moment(mon.transactionDate).tz("America/Argentina/Buenos_Aires").format('DD/MM/YYYY ')}</td>
+                                                <td>{moment(mon.transactionDate).tz("Europe/Lisbon").format('DD/MM/YYYY ')}</td>
                                                 <td>{mon.modifiedBy.length}</td>
                                                 <td>{mon.program}</td>
                                                 {/* <td>{(mon.status === 'pending' ? <TimerIcon className="timerIcon" /> : (mon.status === 'finished' ? <CheckIcon className="CheckIcon" /> : <PlayArrowRoundedIcon className="PlayArrowRoundedIcon" />))}</td> */}

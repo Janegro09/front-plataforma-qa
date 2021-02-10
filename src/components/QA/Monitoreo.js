@@ -31,14 +31,15 @@ export default class Monitoreo extends Component {
         buscadorUsuario: "",
         buscadorUsuarioCreatedBy: "",
         empresasSeleccionadas: [],
+        limit: 150,
         loading: false,
         monitoreos: [],
         monitoreosSeleccionados: [],
+        monitoreosTotales:0,
         offset: 0,
         programs: [],
         programsGroups: [],
         redirect: false,
-        limit: 50,
         toggleBuscador: true,
         users: [],
         usuariosConFiltro: [],
@@ -128,7 +129,7 @@ export default class Monitoreo extends Component {
             loading: true
         });
         buscador.offset = this.state.offset || 0;
-        buscador.limit  = this.state.limit  || 50;
+        buscador.limit  = this.state.limit  || 150;
 
         if( offset !== false ){
             buscador.offset=offset;
@@ -164,7 +165,9 @@ export default class Monitoreo extends Component {
         const bearer = `Bearer ${token}`
         axios.get(Global.monitoreos + query, { headers: { Authorization: bearer } }).then(response => {
             localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            console.log(response.data.Data);
             this.setState({
+                monitoreosTotales:response.data.Data[0].monitoring_total_count,
                 monitoreos: [...this.state.monitoreos, ...response.data.Data],
                 offset: [...this.state.monitoreos, ...response.data.Data].length,
                 loading: false,
@@ -652,7 +655,7 @@ export default class Monitoreo extends Component {
                                 </article>
 
 
-                                <article>
+                                {/* <article>
                                 <h6>Cantidad de Monitoreos</h6>
                                 <br />
                                 <select onChange={ this.handleChangeLimit } value={this.state.limit} id="limit">
@@ -664,7 +667,7 @@ export default class Monitoreo extends Component {
                                         }
                                     </select>
                                     
-                            </article>
+                                </article>   */}
                             <br/>
 
 
@@ -809,6 +812,7 @@ export default class Monitoreo extends Component {
                     </div>
                     <div className="resultados">
                         {monitoreos.length > 0 &&
+                        <>
                             <table>
                                 <thead>
                                     <tr>
@@ -873,15 +877,28 @@ export default class Monitoreo extends Component {
                                         </tbody>
                                     )
                                 })}
+
                             </table>
-  
+                            <div className="flex-row-reverse">
+                                <small>
+                                    Mostrando {monitoreos.length} de {this.state.monitoreosTotales}
+                                </small>
+                            </div>
+                        </> 
                         }
                         {monitoreos.length === 0 &&
                             <div className="alert alert-warning">No existen monitoreos para mostrar</div>
                         }
                     </div>
-                    {monitoreos.length > 0 &&
-                        <button className="btnSecundario" onClick={this.verMas}>VER MAS ({this.state.limit}) </button>
+                    {monitoreos.length > 0 && (this.state.monitoreosTotales-monitoreos.length)>0 &&
+                        <button 
+                            className="btnSecundario" 
+                            onClick={this.verMas}
+                            disabled={(this.state.monitoreosTotales-monitoreos.length)<=0}
+                                >
+                            VER MAS 
+                            ({this.state.monitoreosTotales-monitoreos.length})
+                            </button>
                     }
                 </div>
             </>

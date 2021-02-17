@@ -55,7 +55,8 @@ export default class deleteRoleComponent extends Component {
                                     HELPER_FUNCTIONS.logout()
                                 } else {
                                     localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                                    swal("Error!", "Hubo un problema al intentar borrar el rol", "error");
+                                    // swal("Error!", "Hubo un problema al intentar borrar el rol", "error");
+                                    swal("Error!", `${e.response.data.Message}`, "error");
                                     this.setState({
                                         redirect: true
                                     })

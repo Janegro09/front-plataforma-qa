@@ -224,7 +224,8 @@ export default class ModalModeloFormulariosComponent extends Component {
                     this.setState({
                         loading: false
                     })
-                    swal("Error!", "Hubo un problema", "error");
+                    swal("Error!", `${e.response.data.Message}`, "error");
+                    // swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
             });

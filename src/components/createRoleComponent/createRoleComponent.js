@@ -58,7 +58,8 @@ export default class createRoleComponent extends Component {
                     HELPER_FUNCTIONS.logout()
                 } else {
                     localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema al agregar los roles", "error");
+                    // swal("Error!", "Hubo un problema al agregar los roles", "error");
+                    swal("Error!", `${e.response.data.Message}`, "error");
                     this.setState({
                         redirect: true
                     })

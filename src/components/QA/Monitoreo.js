@@ -680,15 +680,15 @@ export default class Monitoreo extends Component {
                             <div className="buscadorMon">
                             {/* Fecha de transaccion */}
                             <article>
-                                <h6>Fecha de transacción</h6>
+                                <h6>Fecha de Creación</h6>
                                 <br />
                                 <span>
                                     <label>Desde</label>
-                                    <input className="form-control" type="date" id="dateTransactionStart" onChange={this.changeBuscador} />
+                                    <input className="form-control" type="date" id="dateCreatedAtStart" onChange={this.changeBuscador} />
                                 </span>
                                 <span>
                                     <label>Hasta</label>
-                                    <input className="form-control" type="date" id="dateTransactionEnd" onChange={this.changeBuscador} />
+                                    <input className="form-control" type="date" id="dateCreatedAtEnd" onChange={this.changeBuscador} />
                                 </span>
                             </article>
                             <br />

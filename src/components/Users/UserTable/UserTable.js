@@ -198,7 +198,8 @@ export default class UserTable extends Component {
                     HELPER_FUNCTIONS.logout()
                 } else {
                     localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema", "error");
+                    swal("Error!", `${e.response.data.Message}`, "error");
+                    // swal("Error!", "Hubo un problema", "error");
                 }
                 console.log("Error: ", e)
             });

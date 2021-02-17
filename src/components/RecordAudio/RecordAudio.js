@@ -105,6 +105,7 @@ export default class RecordAudio extends Component {
                 {stopRec && !isRecording &&
                     <button className="controlButtons" onClick={(e) => {
                         e.preventDefault();
+                        this.props.onSend();
                         this.send(dataSend);
                     }} disabled={!dataSend}>
                         Enviar

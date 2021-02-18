@@ -12,16 +12,9 @@ import moment from 'moment-timezone';
 import { Redirect } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Breadcrumbs } from '@material-ui/core';
-// import EditIcon from '@material-ui/icons/Edit';
-// import DeleteIcon from '@material-ui/icons/Delete';
-// import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
-// import CheckIcon from '@material-ui/icons/Check';
-// import TimerIcon from '@material-ui/icons/Timer';
-// import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
-
 export default class Monitoreo extends Component {
     state = {
         loading: false,
@@ -33,6 +26,7 @@ export default class Monitoreo extends Component {
         empresasSeleccionadas: [],
         users: [],
         usuariosConFiltro: [],
+<<<<<<< Updated upstream
         monitoreosSeleccionados: [],
         buscadorUsuario: "",
         buscadorUsuarioCreatedBy: "",
@@ -44,6 +38,16 @@ export default class Monitoreo extends Component {
         toggleBuscador: true,
         offset: 0,
         limit: 50
+=======
+        usuarioSeleccionado: null,
+        usuarioSeleccionadoCreatedBy: null
+    }
+
+    handleChangeLimit = (e) => {
+        this.setState({
+            limit: e.target.value
+        })
+>>>>>>> Stashed changes
     }
 
     nuevoMonitoreo = (e) => {
@@ -51,57 +55,57 @@ export default class Monitoreo extends Component {
         this.setState({ abrirModal: true });
     }
 
-    componentDidMount() {
-        HELPER_FUNCTIONS.set_page_title('Monitorings');
-        // Treamos los programas y los usuarios
-
-        this.setState({
-            loading: true
-        })
-
+    get_all_programs = () => {
         const tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
-        axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
-
-            token = response.data.loggedUser.token;
-            bearer = `Bearer ${token}`
-            let users = response.data.Data;
-            let usuariosConFiltro = users;
-            axios.get(Global.getAllPrograms, { headers: { Authorization: bearer } }).then(response => {
-                token = response.data.loggedUser.token;
-                bearer = `Bearer ${token}`;
-                axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
-                    localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-                        
-                    const programsGroups = response.data.Data || [];
-                    this.setState({
-                        programsGroups,
-                        usuariosConFiltro,
-                        users,
-                        loading: false
-                    })
-                })
+        axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
+            const programsGroups = response.data.Data || [];
+            this.setState({
+                programsGroups,
+                loading: false
             })
+        }).catch((e) => {
+            // Si hay algún error en el request lo deslogueamos
+            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                HELPER_FUNCTIONS.logout()
+            } else {
+                this.setState({
+                    loading: false
+                })
+                swal("Error!", `${e.response.data.Message}`, "error");
+            }
+            console.log("Error: ", e)
+        });
+    }
 
+    get_users = async (q = "") => {
+        this.setState({ loading: true })
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
+        let token = tokenUser
+        let bearer = `Bearer ${token}`
+        try {
+            const response =  await axios.get(Global.getUsers + '?specificdata=true&limit=5&offset=0&q=' + q, { headers: { Authorization: bearer } });
+            let users = response.data.Data;
+            this.setState({ loading: false })
+            return users || [];
+        } catch (e) {
+            this.setState({ loading: false })
 
-        })
-            .catch((e) => {
-                // Si hay algún error en el request lo deslogueamos
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
-                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    this.setState({
-                        loading: false
-                    })
-                    swal("Error!", `${e.response.data.Message}`, "error");
-                }
-                console.log("Error: ", e)
-            });
+            // Si hay algún error en el request lo deslogueamos
+            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                HELPER_FUNCTIONS.logout()
+            } else {
+                return []
+            }
 
-        // Hacer rekest
+            console.log("Error: ", e)
+        }
+    }
 
+    componentDidMount() {
+        HELPER_FUNCTIONS.set_page_title('Monitorings');
+        this.get_all_programs();
     }
 
     buscar = (e) => {
@@ -175,23 +179,23 @@ export default class Monitoreo extends Component {
 
     buscarUsuario = (e) => {
         let buscado = e.target.value.toLowerCase();
-        const { users } = this.state;
 
-        let encontrado = users.filter(user => user.id.includes(buscado) || `${user.name} ${user.lastName}`.includes(buscado)
-        )
-
-        this.setState({ usuariosConFiltro: encontrado, buscadorUsuario: buscado });
+        this.get_users(buscado).then(v => {
+            this.setState({ usuariosConFiltro: v, buscadorUsuario: buscado });
+        }).catch(() => {
+            this.setState({ loading: false })
+        }) 
 
     }
+
     buscarUsuarioCreatedBy = (e) => {
         let buscado = e.target.value.toLowerCase();
-        const { users } = this.state;
 
-        let encontrado = users.filter(user => user.id.includes(buscado) || `${user.name} ${user.lastName}`.includes(buscado)
-        )
-
-        this.setState({ usuariosConFiltro: encontrado, buscadorUsuarioCreatedBy: buscado });
-
+        this.get_users(buscado).then(v => {
+            this.setState({ usuariosConFiltro: v, buscadorUsuarioCreatedBy: buscado });
+        }).catch(() => {
+            this.setState({ loading: false })
+        }) 
     }
 
     marcarFila = (user) => {
@@ -200,6 +204,7 @@ export default class Monitoreo extends Component {
             background: user.id === this.state.buscador.userId ? "#ebecf0" : ""
         }
     }
+
     marcarFilaCreatedBy = (user) => {
         return {
             cursor: "pointer",
@@ -546,8 +551,7 @@ export default class Monitoreo extends Component {
                                 <input
                                     type="text"
                                     placeholder="Buscar usuario"
-                                    onChange={this.buscarUsuario}
-                                    value={buscadorUsuario}
+                                    onBlur={this.buscarUsuario}
                                     className="form-control margin-bottom-10"
                                 />
                                 {!buscadorUsuario && usuarioSeleccionado &&
@@ -564,7 +568,7 @@ export default class Monitoreo extends Component {
                                                 <th>Nombre y apellido</th>
                                             </tr>
                                         </thead>
-                                        {usuariosConFiltro?.slice(0, 10).map(user => {
+                                        {usuariosConFiltro.map(user => {
                                             return (
                                                 <tbody key={user.id}
                                                     style={this.marcarFila(user)}
@@ -677,8 +681,7 @@ export default class Monitoreo extends Component {
                                 <input
                                     type="text"
                                     placeholder="Buscar usuario"
-                                    onChange={this.buscarUsuarioCreatedBy}
-                                    value={buscadorUsuarioCreatedBy}
+                                    onBlur={this.buscarUsuarioCreatedBy}
                                     className="form-control margin-bottom-10"
                                 />
                                 {!buscadorUsuarioCreatedBy && usuarioSeleccionadoCreatedBy &&

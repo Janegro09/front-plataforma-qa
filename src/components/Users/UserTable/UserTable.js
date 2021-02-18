@@ -23,15 +23,23 @@ export default class UserTable extends Component {
             addUser: false,
             deleteUser: false,
             userSelected: null,
-            allUsers: null,
+            allUsers: [],
             searched: false,
             error: false,
             redirect: false,
             changePassword: false,
             actualPage: 1,
             searchedUsers: [],
-            totalDisplayed: 15
+            totalDisplayed: 15,
+            loading: false,
+            search_params: { limit: 10, offset: 0, q: "" }
         }
+    }
+
+    init_search_params = (q) => {
+        const aux = { limit: 10, offset: 0, q };
+        this.setState({search_params: aux, allUsers: []})
+        return aux
     }
 
     dynamicSort = (property) => {
@@ -57,50 +65,11 @@ export default class UserTable extends Component {
     buscar = () => {
         let searched
         if (this.title && this.title !== undefined) {
-            searched = this.title.value.toUpperCase();
-        }
-        let returnData = []
-        this.state.allUsers.map(user => {
-            let nameLastName = `${user.name} ${user.lastName}`
-            if (searched !== undefined) {
-                if (searched.indexOf('@') >= 0) {
-                    if (user.email.indexOf(searched) >= 0) {
-                        returnData.push(user)
-                    }
-                } else {
-                    if (user.id.indexOf(searched) >= 0) {
-                        returnData.push(user)
-                    } else if (nameLastName.indexOf(searched) >= 0) {
-                        returnData.push(user)
-                    } else if (user.legajo.toUpperCase().indexOf(searched) >= 0) {
-                        returnData.push(user)
-                    } else {
-                        // Generamos parametros de busqueda 
-                        let nameDividido = nameLastName.split(' ');
-                        let busquedaDividida = searched.split(' ');
-                        let coincide = 0;
-                        for (let x = 0; x < nameDividido.length; x++) {
-                            for (let y = 0; y < busquedaDividida.length; y++) {
-                                if (nameDividido[x].indexOf(busquedaDividida[y]) >= 0) {
-                                    coincide++;
-                                }
-                            }
-                        }
-                        if (coincide === busquedaDividida.length) {
-                            returnData.push(user);
-                        }
-                    }
-                }
-            } else {
-                returnData.push(user)
-            }
-            return true
-        })
+            searched = this.title.value.toLowerCase();
 
-        this.setState({
-            searchedUsers: returnData,
-            actualPage: 1
-        })
+            this.get_users(this.init_search_params(searched));
+
+        }
     }
 
     editUser = (event, userInfo) => {
@@ -146,115 +115,92 @@ export default class UserTable extends Component {
     }
 
     showMore = () => {
-        let { totalDisplayed } = this.state;
-        totalDisplayed += 10;
-        this.setState({ totalDisplayed });
-        document.getElementById('ver-mas-grupos').focus();
+        this.get_users();
     }
 
 
-    getUsersPage = (page, allUsers) => {
-        let total = []
-        let cantOfPages = 0
-        if (allUsers !== null) {
-            const cantPerPage = 200
-            cantOfPages = Math.ceil(allUsers.length / cantPerPage)
-
-            let index = (page - 1) * cantPerPage
-            let acum = index + cantPerPage
-            if (acum > allUsers.length) {
-                acum = allUsers.length
-            }
-            while (index < acum) {
-                total.push(allUsers[index])
-                index++
-            }
-        }
-        return {
-            total: total,
-            cantOfPages: cantOfPages
-        }
-    }
-
-    componentDidMount() {
+    get_users = (search_params = false) => {
+        this.setState({ loading: true })
         HELPER_FUNCTIONS.set_page_title('Usuarios');
         const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
-        axios.get(Global.getUsers, { headers: { Authorization: bearer } }).then(response => {
+
+        let url_with_params = Global.getUsers;
+
+        // Ponemos un codicional, por si el usuario buscó entonces renovamos el array
+        let renovar_array = false;
+        if(search_params.q) {
+            renovar_array = true;
+        }
+
+        if(!search_params) {
+            search_params = this.state.search_params
+        }
+
+        for(let p in search_params) {
+            if(!search_params[p]) continue;
+            url_with_params += url_with_params.includes('?') ? "&" : "?";
+            url_with_params += `${p}=${search_params[p]}`
+        }
+        axios.get(url_with_params, { headers: { Authorization: bearer } }).then(response => {
+
+            const allUsers = renovar_array ? response.data.Data : [...this.state.allUsers,...response.data.Data];
+            search_params.offset = allUsers.length;
             this.setState({
-                allUsers: response.data.Data
+                allUsers,
+                search_params,
+                loading: false
             })
-            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            this.buscar()
         })
             .catch((e) => {
                 // Si hay algún error en el request lo deslogueamos
-                this.setState({
-                    error: true,
-                    redirect: true
-                })
+                this.setState({ loading: false });
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema", "error");
+                    swal("Error", "No hay mas usuarios para mostrar", "error");
                 }
                 console.log("Error: ", e)
             });
     }
 
+    componentDidMount() {
+        this.get_users();
+    }
+
     render() {
-        const allUsers = this.state.searchedUsers
-        let pagina = this.getUsersPage(this.state.actualPage, allUsers)
-        let { totalDisplayed } = this.state
-        let totalUsuarios = pagina.total
-        let botones = []
+        let { allUsers, redirect, editUser, userSelected, addUser, changePassword, deleteUser, loading } = this.state
 
-        for (let index = this.state.actualPage - 1; index < pagina.cantOfPages; index++) {
-            if (botones.length < 4) {
-                botones.push(
-                    <button className={this.state.actualPage === index + 1 ? 'active' : ''} key={index} onClick={() => {
-                        this.setState({
-                            actualPage: index + 1
-                        })
-                    }}>
-                        {index + 1}
-                    </button>
-                )
-            }
+        if (redirect) {
+            return <Redirect to='/home' />
         }
 
-
-        if (this.state.redirect) {
-            return <Redirect to={'/home'} />
-        }
-        // Si se selecciono editar usuario lo envío a la página editUser con los datos del usuario
-        if (this.state.editUser) {
+        if (editUser) {
             return <Redirect to={{
                 pathname: '/editUser',
-                state: { userSelected: this.state.userSelected }
+                state: { userSelected }
             }}
             />
         }
 
         // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
-        if (this.state.addUser) {
+        if (addUser) {
             return <Redirect to="/addUser"
             />
         }
 
         // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
-        if (this.state.changePassword) {
+        if (changePassword) {
             return <Redirect to="/changePassword"
             />
         }
 
         // Si se selecciono borrar usuario lo envío a la página deleteUser con los datos del usuario
-        if (this.state.deleteUser) {
+        if (deleteUser) {
             return <Redirect to={{
                 pathname: '/deleteUser',
-                state: { userSelected: this.state.userSelected }
+                state: { userSelected }
             }}
             />
         }
@@ -277,7 +223,7 @@ export default class UserTable extends Component {
                                     this.title = c
                                 }}
                                 placeholder="Buscar"
-                                onChange={this.buscar}
+                                onBlur={this.buscar}
                             />
                         }
 
@@ -292,8 +238,8 @@ export default class UserTable extends Component {
                             <h1>Hubo un error en la búsqueda, inténtalo más tarde</h1>
                         }
                     </div>
-</div>
-                    {this.state.allUsers === null &&
+                </div>
+                    {loading &&
                         <React.Fragment>
                             {HELPER_FUNCTIONS.backgroundLoading()}
                         </React.Fragment>
@@ -331,9 +277,9 @@ export default class UserTable extends Component {
                         </thead>
 
                         <tbody>
-                            {totalUsuarios &&
+                            {allUsers &&
 
-                                totalUsuarios.slice(0, totalDisplayed).map(user => {
+                                allUsers.map(user => {
                                     return (
                                         <tr id="parent" key={user.idDB}>
                                             <td >{user.id}</td>
@@ -371,37 +317,11 @@ export default class UserTable extends Component {
                     <div
                         id="ver-mas-grupos"
                         className="ver-mas"
-                        onClick={() => this.showMore()}
+                        onClick={this.showMore}
                     >
                         <ExpandMoreIcon />
                     </div>
-
-                    {/* <div className="botones">
-                        {this.state.actualPage > 1 &&
-                            <button onClick={() => {
-                                this.setState({
-                                    actualPage: this.state.actualPage - 1
-                                })
-                            }}>◄</button>
-                        }
-
-                        {botones}
-
-                        {this.state.actualPage !== pagina.cantOfPages &&
-                            <button onClick={() => {
-                                this.setState({
-                                    actualPage: this.state.actualPage + 1
-                                })
-                            }}>►</button>
-                        }
-
-                    </div> */}
-
-                    {/* {this.state.allUsers &&
-                        <div className="cantUsuarios">Cantidad de usuarios: {this.state.allUsers.length}</div>
-                    } */}
                 </div>
-
             </div>
         )
     }

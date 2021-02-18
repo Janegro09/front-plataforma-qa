@@ -26,7 +26,6 @@ export default class Monitoreo extends Component {
         empresasSeleccionadas: [],
         users: [],
         usuariosConFiltro: [],
-<<<<<<< Updated upstream
         monitoreosSeleccionados: [],
         buscadorUsuario: "",
         buscadorUsuarioCreatedBy: "",
@@ -38,16 +37,12 @@ export default class Monitoreo extends Component {
         toggleBuscador: true,
         offset: 0,
         limit: 50
-=======
-        usuarioSeleccionado: null,
-        usuarioSeleccionadoCreatedBy: null
     }
 
     handleChangeLimit = (e) => {
         this.setState({
             limit: e.target.value
         })
->>>>>>> Stashed changes
     }
 
     nuevoMonitoreo = (e) => {

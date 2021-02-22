@@ -14,57 +14,31 @@ import TimerIcon from '@material-ui/icons/Timer';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 export default class PartiturasComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: true,
-            allPartitures: null,
+            loading: false,
+            allPartitures: [],
             specific: false,
             idSpecific: '',
             modalAgregar: false,
             filtredData: null,
             orderedData: null,
             withoutPartitures: false,
-            grupoAssigned: null
+            grupoAssigned: null,
+            search_params: { limit: 10, offset: 0, q: "" }
         }
     }
 
     buscar = (e) => {
         let val = e.target.value;
-        let { filtredData, allPartitures } = this.state;
-        filtredData = [];
-        if (val) {
-            for (let p of allPartitures) {
-                let name = p.name.toLowerCase();
-                val = val.toLowerCase();
-                if (name === val) {
-                    filtredData.push(p)
-                } else {
-                    let actualPartitureName = name.split(' ');
-                    let busquedaActual = val.split(' ');
-                    let coincide = 0;
-
-                    for (let x = 0; x < actualPartitureName.length; x++) {
-                        for (let j = 0; j < busquedaActual.length; j++) {
-                            if (actualPartitureName[x].indexOf(busquedaActual[j]) >= 0) {
-                                coincide++;
-                            }
-                        }
-                    }
-
-                    if (coincide === busquedaActual.length) {
-                        filtredData.push(p);
-                    }
-
-                }
-            }
-        } else {
-            filtredData = allPartitures;
-        }
-
-        this.setState({ filtredData });
+        let { search_params } = this.state
+        search_params.q = val;
+        search_params.offset = 0;
+        this.get_partitures(search_params);
+        this.setState({ search_params });
 
     }
 
@@ -137,9 +111,7 @@ export default class PartiturasComponent extends Component {
         })
     }
 
-    componentDidMount() {
-        HELPER_FUNCTIONS.set_page_title('Partitures');
-        // Hacer rekest
+    get_partitures = (search_params = false) => {
         this.setState({
             loading: true
         })
@@ -147,15 +119,35 @@ export default class PartiturasComponent extends Component {
         const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
-        axios.get(Global.getAllPartitures, { headers: { Authorization: bearer } }).then(response => {
-            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            console.log('la response: ', response.data);
 
+        let url_with_params = Global.getAllPartitures;
+
+        // Ponemos un codicional, por si el usuario buscó entonces renovamos el array
+        let renovar_array = false;
+
+        if(!search_params) {
+            search_params = this.state.search_params
+        } else {
+            renovar_array = true;
+        }
+
+
+
+        for(let p in search_params) {
+            if(!search_params[p]) continue;
+            url_with_params += url_with_params.includes('?') ? "&" : "?";
+            url_with_params += `${p}=${search_params[p]}`
+        }
+
+        axios.get(url_with_params, { headers: { Authorization: bearer } }).then(response => {
+            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            const array_to_insert = renovar_array ? response.data.Data : [ ...this.state.allPartitures, ...response.data.Data ];
+            search_params.offset = array_to_insert.length;
             this.setState({
-                allPartitures: response.data.Data,
-                filtredData: response.data.Data,
+                allPartitures: array_to_insert,
                 loading: false,
-                grupoAssigned: response.data.Data.grupoAssigned
+                grupoAssigned: response.data.Data.grupoAssigned,
+                search_params
             })
 
         })
@@ -167,13 +159,21 @@ export default class PartiturasComponent extends Component {
                     localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
                         loading: false,
-                        withoutPartitures: true
+                        withoutPartitures: true,
+                        allPartitures: renovar_array ? [] : this.state.allPartitures
                     })
                 }
                 console.log("Error: ", e)
             });
-
     }
+
+    componentDidMount() {
+        HELPER_FUNCTIONS.set_page_title('Partitures');
+        // Hacer rekest
+        this.get_partitures();
+    }
+
+    verMas = () => { this.get_partitures(); }
 
     render() {
         let { allPartitures, loading, specific, idSpecific, modalAgregar, filtredData, withoutPartitures } = this.state;
@@ -206,9 +206,7 @@ export default class PartiturasComponent extends Component {
                         <hr />
                         <br />
                         <div className="flex-input-add">
-                            {!withoutPartitures &&
-                                < input onChange={this.buscar} className="form-control" placeholder="Buscar por nombre de archivo" />
-                            }
+                            < input onBlur={this.buscar} className="form-control" placeholder="Buscar por nombre de archivo" />
                             {HELPER_FUNCTIONS.checkPermission('POST|analytics/partitures/new') &&
                                 <button className="addItem morph"
                                     onClick={
@@ -253,7 +251,7 @@ export default class PartiturasComponent extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filtredData.map((partiture, key) => {
+                                {allPartitures.map((partiture, key) => {
                                     return (
                                         <tr key={key}>
                                             <td>{moment(partiture.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>
@@ -302,6 +300,18 @@ export default class PartiturasComponent extends Component {
                             </tbody>
                         </table>
                     }
+                    <div
+                        id="ver-mas"
+                        className="ver-mas"
+                        onClick={
+                            (e) => {
+                                e.preventDefault();
+                                this.verMas();
+                            }
+                        }
+                    >
+                        <ExpandMoreIcon />
+                    </div>
                 </div>
             </div >
         )

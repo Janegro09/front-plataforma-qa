@@ -20,8 +20,7 @@ export default class Perfilamiento extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: null,
-            dataFiltered: null,
+            data: [],
             id: null,
             agregarPerfilamiento: false,
             cuartiles: false,
@@ -29,16 +28,13 @@ export default class Perfilamiento extends Component {
             nameCuartilSelected: '',
             perfilamientos: false,
             loading: false,
-            totalDisplayed: 15
+            totalDisplayed: 15,
+            search_params: { limit: 10, offset: 0, q: "" }
         }
     }
 
     verMas = () => {
-        document.getElementById('ver-mas').focus();
-        let { totalDisplayed } = this.state;
-        totalDisplayed += 15;
-
-        this.setState({ totalDisplayed });
+        this.get_perfilamientos();
     }
 
     dynamicSort = (property) => {
@@ -62,12 +58,13 @@ export default class Perfilamiento extends Component {
     }
 
     buscar = () => {
-        const { data } = this.state
-        let searched = this.searched.value.toLowerCase()
-        const result = data?.filter(word => word.name.toLowerCase().includes(searched));
-
+        let { search_params } = this.state
+        let searched = this.searched.value.toLowerCase();
+        search_params.offset = 0;
+        search_params.q = searched;
+        this.get_perfilamientos(search_params);
         this.setState({
-            dataFiltered: result
+            search_params
         })
     }
 
@@ -174,22 +171,41 @@ export default class Perfilamiento extends Component {
         this.setState({ perfilamientos: true, cuartilSeleccionado });
     }
 
-    componentDidMount() {
-        HELPER_FUNCTIONS.set_page_title('Perfilamientos');
+    get_perfilamientos = (search_params = false) => {
         this.setState({
             loading: true
         })
         const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
-        axios.get(Global.getAllFiles, { headers: { Authorization: bearer } }).then(response => {
+
+        let url_with_params = Global.getAllFiles;
+
+        // Ponemos un codicional, por si el usuario buscó entonces renovamos el array
+        let renovar_array = false;
+
+        if(!search_params) {
+            search_params = this.state.search_params
+        } else {
+            renovar_array = true;
+        }
+
+        for(let p in search_params) {
+            if(!search_params[p]) continue;
+            url_with_params += url_with_params.includes('?') ? "&" : "?";
+            url_with_params += `${p}=${search_params[p]}`
+        }
+
+        axios.get(url_with_params, { headers: { Authorization: bearer } }).then(response => {
             localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             let respuesta = response.data.Data;
+            const array_to_insert = renovar_array ? respuesta : [ ...this.state.data, ...respuesta ];
+            search_params.offset = array_to_insert.length;
 
             this.setState({
-                data: respuesta,
-                dataFiltered: respuesta,
-                loading: false
+                data: array_to_insert,
+                loading: false,
+                search_params
             })
         })
             .catch((e) => {
@@ -199,7 +215,8 @@ export default class Perfilamiento extends Component {
                 } else {
                     localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
-                        loading: false
+                        loading: false,
+                        data: renovar_array ? [] : this.state.data
                     })
                     // swal("Error!", "Hubo un problema", "error");
                 }
@@ -207,8 +224,13 @@ export default class Perfilamiento extends Component {
             });
     }
 
+    componentDidMount() {
+        HELPER_FUNCTIONS.set_page_title('Perfilamientos');
+        this.get_perfilamientos();
+    }
+
     render() {
-        let { data, dataFiltered, id, agregarPerfilamiento, cuartiles, cuartilSeleccionado, perfilamientos, loading, totalDisplayed } = this.state;
+        let { data, id, agregarPerfilamiento, cuartiles, cuartilSeleccionado, perfilamientos, loading, totalDisplayed } = this.state;
 
         if (cuartiles) {
             return <Redirect
@@ -240,7 +262,7 @@ export default class Perfilamiento extends Component {
                     {loading &&
                         HELPER_FUNCTIONS.backgroundLoading()
                     }
-                    <input className="form-control" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onChange={this.buscar} />
+                    <input className="form-control" type="text" placeholder="Buscar" ref={(c) => this.searched = c} onBlur={this.buscar} />
                     {HELPER_FUNCTIONS.checkPermission('POST|analytics/file/:fileId/perfilamiento') &&
                         <button className="boton-agregar" onClick={(e) => {
                             e.preventDefault();
@@ -273,7 +295,7 @@ export default class Perfilamiento extends Component {
                         </thead>
 
                         <tbody>
-                            {dataFiltered.slice(0, totalDisplayed).map((row, key) => {
+                            {data.map((row, key) => {
                                 return (
                                     <tr key={key}>
                                         <td>{moment(row.date).format("DD-MM-YYYY")}</td>

@@ -66,3 +66,11 @@
     border: 1px solid #efeff3;
     border-radius: 5px;
 }
+
+.selected_file {
+    background-color: #c2f3c5;
+}
+
+.alert_falta_perfilamiento {
+    margin-top: 20px;
+}

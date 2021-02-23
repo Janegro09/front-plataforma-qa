@@ -241,6 +241,7 @@ export default class InstancePartitureSelection extends Component {
         let { loading, AllPartituresModel, partitureModelSelected } = this.state;
         return (
             <>
+                <h2>Plantilla de partitura</h2>
                 {loading &&
                     HELPER_FUNCTIONS.backgroundLoading()
                 }
@@ -253,6 +254,7 @@ export default class InstancePartitureSelection extends Component {
                         })}
                     </select>
                 }
+                
                 {partitureModelSelected &&
                     <div className="partituresModels">
                         <button className="btn"

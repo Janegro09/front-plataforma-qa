@@ -564,6 +564,18 @@ h4 {
   -webkit-box-shadow: 0 0.125rem 0.625rem rgb(22 170 255 / 33%), 0 0.0625rem 0.125rem rgb(22 170 255 / 50%);
 }
 
+.buttonAnterior {
+  color: white;
+  bottom: 40px;
+  left: 40px;
+  z-index: 1;
+  position: fixed;
+  padding: 15px 20px;
+  border-radius: 5px;
+  background-color: #03a9f4;
+  -webkit-box-shadow: 0 0.125rem 0.625rem rgb(22 170 255 / 33%), 0 0.0625rem 0.125rem rgb(22 170 255 / 50%);
+}
+
 .contenedorPartituras {
   height: 200px;
 }
@@ -634,6 +646,10 @@ h4 {
 
 .descargar:hover > svg {
   color: white;
+}
+
+.progressBar {
+  width: 100%;
 }
 
 .descargar {

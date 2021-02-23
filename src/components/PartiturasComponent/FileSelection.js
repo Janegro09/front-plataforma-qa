@@ -8,113 +8,123 @@ import moment from 'moment'
 export default class FileSelection extends Component {
 
     state = {
-        data: null,
-        dataFiltered: null,
-        orderedData: null,
+        selecteds: [],
         loading: false,
-        itemsToShow: 60,
-        expanded: false,
-        arrayToSend: []
+        files: [],
+        arrayToSend: [],
+        search_params: { limit: 10, offset: 0, q: "" }
     }
-
-    dynamicSort = (property) => {
-        var sortOrder = 1;
-        if (property[0] === "-") {
-            sortOrder = -1;
-            property = property.substr(1);
-        }
-        return (a, b) => {
-            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-            return result * sortOrder;
-        }
-    }
-
-    ascDesc = (field) => {
-        let { data } = this.state
-        let dataOrdenada = data.sort(this.dynamicSort(field));
-        this.setState({
-            orderedData: dataOrdenada
-        })
-    }
-
     showMore = () => {
-        this.state.itemsToShow >= 50 ? (
-            this.setState({ itemsToShow: this.state.itemsToShow + 10, expanded: true })
-        ) : (
-                this.setState({ itemsToShow: 6, expanded: false })
-            )
+        this.get_files();
     }
 
-    filtrarTexto = () => {
-        let { data } = this.state;
-        let searchString = document.getElementById('searched').value.toLowerCase();
+    buscar = (e) => {
+        const { value } = e.target;
+        let { search_params } = this.state;
 
-        let arrayData = []
-        data.map(v => {
-            if (v.name.toLowerCase().includes(searchString)) {
-                arrayData.push(v)
-            }
-            return true;
-        })
+        search_params.q = value;
+        search_params.offset = 0;
 
-        this.setState({
-            dataFiltered: arrayData
-        })
+        this.setState({ search_params });
+        this.get_files(search_params);
     }
 
-    agregar = (data) => {
-        this.setState(prevState => ({
-            arrayToSend: [...prevState.arrayToSend, data]
-        }));
-    }
+    agregar = (e) => {
+        const { fileid } = e.target.dataset;
+        let { selecteds, files, arrayToSend } = this.state;
 
-    eliminar = (data) => {
-        let { arrayToSend } = this.state;
-        const index = arrayToSend.indexOf(data);
-        if (index > -1) {
-            arrayToSend.splice(index, 1);
+        if(fileid) {
+            // Buscamos el archivo en el array de files
+            const file = files.find(element => element.id === fileid);
+            if(!file) return;
+
+            
+            // En selecteds guardamos todo el objeto para poder mostrarlos en el margen superior
+            selecteds.push(file);
+
+            // En array to send solo agregamos el id del archivo
+            arrayToSend.push(fileid);
+            this.setState({ selecteds, arrayToSend });
         }
-        this.setState({ arrayToSend });
     }
 
-    componentDidMount() {
+    eliminar = (e) => {
+        const { fileid } = e.target.dataset;
+        let { selecteds, arrayToSend } = this.state;
+
+        if(fileid) {
+            // En selecteds guardamos todo el objeto para poder mostrarlos en el margen superior
+            selecteds = selecteds.filter(elem => elem.id !== fileid);
+
+            // En array to send solo agregamos el id del archivo
+            arrayToSend = arrayToSend.filter(elem => elem !== fileid);
+            this.setState({ selecteds, arrayToSend });
+        }
+
+    }
+
+    get_files = (search_params) => {
         this.setState({
             loading: true
         })
 
+        let url_with_params = Global.getAllFiles;
+
+        // Ponemos un codicional, por si el usuario buscó entonces renovamos el array
+        let renovar_array = false;
+        if(!search_params) {
+            search_params = this.state.search_params
+        } else {
+            renovar_array = true;
+        }
+
+        for(let p in search_params) {
+            if(!search_params[p]) continue;
+            url_with_params += url_with_params.includes('?') ? "&" : "?";
+            url_with_params += `${p}=${search_params[p]}`
+        }
+
         const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
-        axios.get(Global.getAllFiles, { headers: { Authorization: bearer } }).then(response => {
-            localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+        axios.get(url_with_params, { headers: { Authorization: bearer } }).then(response => {
+            const array_to_insert = renovar_array ? response.data.Data : [ ...this.state.files, ...response.data.Data ];
+            search_params.offset = array_to_insert.length;
+
             this.setState({
                 loading: false,
-                data: response.data.Data,
-                dataFiltered: response.data.Data,
+                files: array_to_insert,
+                search_params,
             })
 
-        })
-            .catch((e) => {
-                // Si hay algún error en el request lo deslogueamos
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
-                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    this.setState({
-                        loading: false
-                    })
-                    swal("Error!", "Hubo un problema", "error");
-                }
-                console.log("Error: ", e)
-            });
+        }).catch((e) => {
+            // Si hay algún error en el request lo deslogueamos
+            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                HELPER_FUNCTIONS.logout()
+            } else {
+                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                this.setState({
+                    loading: false
+                })
+                swal("Error!", "Hubo un problema", "error");
+            }
+            console.log("Error: ", e)
+        });
     }
+
+    componentDidMount() {
+        this.get_files();
+    }
+
     render() {
-        let { data, dataFiltered, arrayToSend } = this.state;
+        let { selecteds, files, arrayToSend } = this.state;
         return (
             <>
-                {data &&
+                <h2>Seleccion de archivos</h2>
+                <h4>{arrayToSend.length} archivos seleccionados</h4>
+                {files &&
                     <>
-                        <input className="form-control" type="text" id="searched" onChange={this.filtrarTexto} />
+                        <input className="form-control" type="text" id="searched" onBlur={this.buscar} />
                         <table>
                             <thead>
                                 <tr>
@@ -125,56 +135,54 @@ export default class FileSelection extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {dataFiltered.slice(0, this.state.itemsToShow).map(file => {
+                                {/* Mostamos los archivos seleccionados */}
+                                {selecteds.map(file => {
                                     return (
-                                        <tr key={file.id}>
+                                        <tr key={file.id} className="selected_file">
                                             <td>
-                                                {!arrayToSend.includes(file.id) &&
-                                                    <button
-                                                        disabled={arrayToSend.length > 0}
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            this.agregar(file.id);
-                                                        }}
-                                                    >
-                                                        Añadir
-                                                    </button>
-                                                }
-
-                                                {arrayToSend.includes(file.id) &&
-                                                    <button
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            this.eliminar(file.id);
-                                                        }}
-                                                    >
-                                                        Quitar
-                                                    </button>
-                                                }
+                                                <button
+                                                    type='button'
+                                                    onClick={this.eliminar}
+                                                    data-fileid={file.id}>Quitar</button>
                                             </td>
                                             <td>{file.name}</td>
                                             <td>{moment(file.date).format("DD/MM/YYYY")}</td>
-                                            <td>{file.program ? file.program.name : '-'}</td>
+                                            <td>{file.program ? file.program.name : 'Sin Programa asignado'}</td>
                                         </tr>
                                     )
                                 })
-
+                                }
+                                {/* Mostramos los siguientes archivos */}
+                                {files.map(file => {
+                                    if(arrayToSend.includes(file.id)) return true;
+                                    return (
+                                        <tr key={file.id}>
+                                            <td>
+                                                <button
+                                                    type='button'
+                                                    onClick={this.agregar}
+                                                    data-fileid={file.id}>Añadir</button>
+                                            </td>
+                                            <td>{file.name}</td>
+                                            <td>{moment(file.date).format("DD/MM/YYYY")}</td>
+                                            <td>{file.program ? file.program.name : 'Sin Programa asignado'}</td>
+                                        </tr>
+                                    )
+                                })
                                 }
 
                             </tbody>
                         </table>
                         <div className="verMas">
-                            <button
-                                onClick={this.showMore}
-                            >
-                                Ver mas
-                        </button>
+                            <button onClick={this.showMore}>Ver mas</button>
                         </div>
                         {arrayToSend.length >= 1 &&
-                            <button className="buttonSiguiente"
+                            <button 
+                                type="button"
+                                className="buttonSiguiente"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    this.props.getData(arrayToSend);
+                                    this.props.getData(selecteds);
                                 }}
                             >
                                 Siguiente

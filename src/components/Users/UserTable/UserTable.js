@@ -159,13 +159,9 @@ export default class UserTable extends Component {
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
-<<<<<<< HEAD
-                    swal("Error", "No hay mas usuarios para mostrar", "error");
-=======
                     localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Error!", `${e.response.data.Message}`, "error");
                     // swal("Error!", "Hubo un problema", "error");
->>>>>>> origin/master
                 }
                 console.log("Error: ", e)
             });

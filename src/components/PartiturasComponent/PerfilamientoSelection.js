@@ -102,7 +102,6 @@ export default class PerfilamientoSelection extends Component {
 
         if(!files[file_selected] || !perfilamiento) return false;
 
-<<<<<<< HEAD
         const fileId = files[file_selected].fileId[0];
 
         // Buscamos el perfilamiento
@@ -122,33 +121,6 @@ export default class PerfilamientoSelection extends Component {
                 files[file_selected].perfilamientosAsignados = files[file_selected].perfilamientosAsignados.filter(e => e.name !== perf.name)
             } else {
                 files[file_selected].perfilamientosAsignados.push(aux);
-=======
-        for (let i = 0; i < files.length; i++) {
-            try {
-                let resp = await axios.get(Global.getAllFiles + '/' + files[i] + '/perfilamiento', { headers: { Authorization: bearer } });
-                token = resp.data.loggedUser.token;
-                bearer = `Bearer ${token}`
-
-                if (resp.data.Data) {
-                    dataState.push({
-                        "id": files[i],
-                        "perfilamientos": resp.data.Data
-                    })
-                }
-            } catch (e) {
-                // Si hay algún error en el request lo deslogueamos
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
-                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    this.setState({
-                        loading: false
-                    })
-                    // swal("Error!", "Hubo un problema", "error");
-                    swal("Error!", `${e.response.data.Message}`, "error");
-                }
-                console.log("Error: ", e)
->>>>>>> origin/master
             }
         }
 

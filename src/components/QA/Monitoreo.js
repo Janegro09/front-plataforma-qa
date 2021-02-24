@@ -272,7 +272,6 @@ export default class Monitoreo extends Component {
         if (id === 'program') {
             if (value === 'allPrograms') {
                 buscador.program = programs;
-
             } else if(value === 'clearPrograms'){
                 buscador.program = [];
             } else if (buscador.program.findIndex(elemento => elemento.id === value) === -1) {
@@ -281,8 +280,19 @@ export default class Monitoreo extends Component {
             }
 
         } else if (id) {
+            switch(id) {
+                case 'dateCreatedAtStart':
+                case 'dateCreatedAtEnd':
+                    // Formateamos la fecha y le agregamos la zona horaria a 0
+                    value += ':00.00Z';
+                break;
+                default:
+
+            }
             buscador[id] = value;
         }
+
+        console.log(value);
 
         this.setState({ buscador });
     }
@@ -683,11 +693,11 @@ export default class Monitoreo extends Component {
                                 <br />
                                 <span>
                                     <label>Desde</label>
-                                    <input className="form-control" type="date" id="dateCreatedAtStart" onChange={this.changeBuscador} />
+                                    <input className="form-control" type="datetime-local" id="dateCreatedAtStart" onChange={this.changeBuscador} />
                                 </span>
                                 <span>
                                     <label>Hasta</label>
-                                    <input className="form-control" type="date" id="dateCreatedAtEnd" onChange={this.changeBuscador} />
+                                    <input className="form-control" type="datetime-local" id="dateCreatedAtEnd" onChange={this.changeBuscador} />
                                 </span>
                             </article>
                             <br />

@@ -60,7 +60,8 @@ export default class RecordAudio extends Component {
                     HELPER_FUNCTIONS.logout()
                 } else {
                     localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema al agregar el arhcivo", "error");
+                    // swal("Error!", "Hubo un problema al agregar el arhcivo", "error");
+                    swal("Error!", `${e.response.data.Message}`, "error");
                     this.setState({
                         loading: false
                     })
@@ -105,6 +106,7 @@ export default class RecordAudio extends Component {
                 {stopRec && !isRecording &&
                     <button className="controlButtons" onClick={(e) => {
                         e.preventDefault();
+                        this.props.onSend();
                         this.send(dataSend);
                     }} disabled={!dataSend}>
                         Enviar

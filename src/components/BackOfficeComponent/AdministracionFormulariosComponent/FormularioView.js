@@ -101,7 +101,7 @@ export default class FormularioView extends Component {
                     this.setState({
                         loading: false
                     })
-                    swal("Error!", "Hubo un problema", "error");
+                    swal("Error!", `${e.response.data.Message}`, "error");
                 }
                 console.log("Error: ", e)
             });

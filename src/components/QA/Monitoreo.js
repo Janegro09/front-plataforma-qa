@@ -17,26 +17,33 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 export default class Monitoreo extends Component {
     state = {
-        loading: false,
-        monitoreos: [],
-        redirect: false,
         abrirModal: false,
-        programs: [],
-        programsGroups: [],
-        empresasSeleccionadas: [],
-        users: [],
-        usuariosConFiltro: [],
-        monitoreosSeleccionados: [],
-        buscadorUsuario: "",
-        buscadorUsuarioCreatedBy: "",
-        usuarioSeleccionadoCreatedBy: null,
         buscador: {
             program: []
         },
-        usuarioSeleccionado: null,
-        toggleBuscador: true,
+        buscadorUsuario: "",
+        buscadorUsuarioCreatedBy: "",
+        empresasSeleccionadas: [],
+        limit: 150,
+        loading: false,
+        monitoreos: [],
+        monitoreosSeleccionados: [],
+        monitoreosTotales:0,
         offset: 0,
-        limit: 50
+        programs: [],
+        programsGroups: [],
+        redirect: false,
+        toggleBuscador: true,
+        users: [],
+        usuariosConFiltro: [],
+        usuarioSeleccionado: null,
+        usuarioSeleccionadoCreatedBy: null,
+    }
+
+    handleChangeLimit = (e) => {
+        this.setState({
+            limit :e.target.value
+        })
     }
 
     handleChangeLimit = (e) => {
@@ -105,23 +112,31 @@ export default class Monitoreo extends Component {
 
     buscar = (e) => {
         e.preventDefault();
-        this.setState({ monitoreos: [], offset: 0, limit: 50 });
-        this.get_monitorings();
+        let buscador_init = { monitoreos: [], offset: 0, limit: this.state.limit }
+        this.setState(buscador_init);
+        this.get_monitorings(buscador_init);
     }
 
     verMas = (e) => {
         e.preventDefault();
-        this.get_monitorings();
+        this.get_monitorings({});
     }
 
-    get_monitorings = () => {
+    get_monitorings = ({ limit = this.state.limit, offset = false }) => {
         const { buscador } = this.state;
         this.setState({
             loading: true
-        })
-
+        });
         buscador.offset = this.state.offset || 0;
-        buscador.limit  = this.state.limit  || 50;
+        buscador.limit  = this.state.limit  || 150;
+
+        if( offset !== false ){
+            buscador.offset=offset;
+        } 
+
+        if( limit !== false ){
+            buscador.limit=limit;
+        }
 
         // Convert to query string
         let query = "";
@@ -149,7 +164,9 @@ export default class Monitoreo extends Component {
         const bearer = `Bearer ${token}`
         axios.get(Global.monitoreos + query, { headers: { Authorization: bearer } }).then(response => {
             localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            console.log(response.data.Data);
             this.setState({
+                monitoreosTotales:response.data.Data[0].monitoring_total_count,
                 monitoreos: [...this.state.monitoreos, ...response.data.Data],
                 offset: [...this.state.monitoreos, ...response.data.Data].length,
                 loading: false,
@@ -241,6 +258,8 @@ export default class Monitoreo extends Component {
         this.get_programs(empresasSeleccionadas);
     }
 
+    
+
     changeBuscador = (e) => {
         // e.preventDefault();
         let { value, id, type } = e.target;
@@ -282,7 +301,6 @@ export default class Monitoreo extends Component {
         const { users } = this.state;
 
         let user = users.find(elem => elem.id === userId);
-
         if (user) {
             userId = (user.legajo || user.id) + ' - ' + user.name + ' ' + user.lastName
         }
@@ -344,7 +362,7 @@ export default class Monitoreo extends Component {
                                 HELPER_FUNCTIONS.logout()
                             } else {
                                 localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                                swal("Error al eliminar!", {
+                                swal(e.response.data.Message, {
                                     icon: "error",
                                 });
 
@@ -470,7 +488,6 @@ export default class Monitoreo extends Component {
         axios.post(Global.monitoreos + '/filters', dataToSend, config).then(response => {
             localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
             let programs = response.data.Data.programs || false;
-
             this.setState({
                 buscador,
                 empresasSeleccionadas: empresas,
@@ -635,6 +652,26 @@ export default class Monitoreo extends Component {
 
                                     </div>
                                 </article>
+
+
+                                {/* <article>
+                                <h6>Cantidad de Monitoreos</h6>
+                                <br />
+                                <select onChange={ this.handleChangeLimit } value={this.state.limit} id="limit">
+                                        <option>Selecciona...</option>
+
+                                        {[10,50,100,150].map(v => {
+                                            return <option key={v} value={v}>{v}</option>
+                                        })
+                                        }
+                                    </select>
+                                    
+                                </article>   */}
+                            <br/>
+
+
+
+
                                 <br />
                                 
                            
@@ -642,15 +679,15 @@ export default class Monitoreo extends Component {
                             <div className="buscadorMon">
                             {/* Fecha de transaccion */}
                             <article>
-                                <h6>Fecha de transacción</h6>
+                                <h6>Fecha de Creación</h6>
                                 <br />
                                 <span>
                                     <label>Desde</label>
-                                    <input className="form-control" type="date" id="dateTransactionStart" onChange={this.changeBuscador} />
+                                    <input className="form-control" type="date" id="dateCreatedAtStart" onChange={this.changeBuscador} />
                                 </span>
                                 <span>
                                     <label>Hasta</label>
-                                    <input className="form-control" type="date" id="dateTransactionEnd" onChange={this.changeBuscador} />
+                                    <input className="form-control" type="date" id="dateCreatedAtEnd" onChange={this.changeBuscador} />
                                 </span>
                             </article>
                             <br />
@@ -773,6 +810,7 @@ export default class Monitoreo extends Component {
                     </div>
                     <div className="resultados">
                         {monitoreos.length > 0 &&
+                        <>
                             <table>
                                 <thead>
                                     <tr>
@@ -810,7 +848,7 @@ export default class Monitoreo extends Component {
                                                 <td>{mon.caseId}</td>
                                                 <td>{this.getUser(mon.createdBy)}</td>
                                                 <td>{this.getUser(mon.userId)}</td>
-                                                <td>{moment(mon.createdAt).tz("Europe/Lisbon").format('DD/MM/YYYY  HH:mm')}</td>
+                                                <td>{moment(mon.createdAt).tz("America/Argentina/Buenos_Aires").format('DD/MM/YYYY  HH:mm')}</td>
                                                 <td>{moment(mon.transactionDate).tz("Europe/Lisbon").format('DD/MM/YYYY ')}</td>
                                                 <td>{mon.modifiedBy.length}</td>
                                                 <td>{mon.program}</td>
@@ -837,15 +875,28 @@ export default class Monitoreo extends Component {
                                         </tbody>
                                     )
                                 })}
+
                             </table>
-  
+                            <div className="flex-row-reverse">
+                                <small>
+                                    Mostrando {monitoreos.length} de {this.state.monitoreosTotales}
+                                </small>
+                            </div>
+                        </> 
                         }
                         {monitoreos.length === 0 &&
                             <div className="alert alert-warning">No existen monitoreos para mostrar</div>
                         }
                     </div>
-                    {monitoreos.length > 0 &&
-                        <button className="btnSecundario" onClick={this.verMas}>VER MAS</button>
+                    {monitoreos.length > 0 && (this.state.monitoreosTotales-monitoreos.length)>0 &&
+                        <button 
+                            className="btnSecundario" 
+                            onClick={this.verMas}
+                            disabled={(this.state.monitoreosTotales-monitoreos.length)<=0}
+                                >
+                            VER MAS 
+                            ({this.state.monitoreosTotales-monitoreos.length})
+                            </button>
                     }
                 </div>
             </>

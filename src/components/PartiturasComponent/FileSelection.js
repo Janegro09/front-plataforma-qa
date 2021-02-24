@@ -97,19 +97,21 @@ export default class FileSelection extends Component {
                 search_params,
             })
 
-        }).catch((e) => {
-            // Si hay algún error en el request lo deslogueamos
-            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                HELPER_FUNCTIONS.logout()
-            } else {
-                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                this.setState({
-                    loading: false
-                })
-                swal("Error!", "Hubo un problema", "error");
-            }
-            console.log("Error: ", e)
-        });
+        })
+            .catch((e) => {
+                // Si hay algún error en el request lo deslogueamos
+                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                    HELPER_FUNCTIONS.logout()
+                } else {
+                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                    this.setState({
+                        loading: false
+                    })
+                    // swal("Error!", "Hubo un problema", "error");
+                    swal("Error!", `${e.response.data.Message}`, "error");
+                }
+                console.log("Error: ", e)
+            });
     }
 
     componentDidMount() {

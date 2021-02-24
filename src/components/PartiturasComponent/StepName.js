@@ -99,9 +99,6 @@ export default class StepName extends Component {
             headers: { Authorization: `Bearer ${token}` }
         };
 
-        console.log(sendData, dataToSend);
-        debugger;
-
         axios.put(Global.getAllPartitures + "/" + id + '/' + idUsuario + '/' + idStep, sendData, config)
             .then(response => {
                 localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
@@ -148,7 +145,8 @@ export default class StepName extends Component {
                     this.setState({
                         loading: false
                     })
-                    swal("Error!", "Hubo un problema", "error");
+                    // swal("Error!", "Hubo un problema", "error");
+                    swal("Error!", `${e.response.data.Message}`, "error");
                 }
                 console.log("Error: ", e)
             });
@@ -176,7 +174,8 @@ export default class StepName extends Component {
                     this.setState({
                         loading: false
                     })
-                    swal("Error!", "Hubo un problema", "error");
+                    // swal("Error!", "Hubo un problema", "error");
+                    swal("Error!", `${e.response.data.Message}`, "error");
                 }
                 console.log("Error: ", e)
             });
@@ -244,7 +243,6 @@ export default class StepName extends Component {
     }
 
     subirArchivoCoaching = (e) => {
-        e.preventDefault();
         this.enviar();
         this.subirArchivo();
     }
@@ -407,7 +405,8 @@ export default class StepName extends Component {
                     HELPER_FUNCTIONS.logout()
                 } else {
                     localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema", "error");
+                    // swal("Error!", "Hubo un problema", "error");
+                    swal("Error!", `${e.response.data.Message}`, "error");
                 }
                 console.log("Error: ", e)
             });
@@ -691,11 +690,11 @@ export default class StepName extends Component {
 
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' &&
                                             <article>
-                                                <h6 className="titulo-seccion">On Site</h6>
+                                                <h6 className="titulo-seccion">Coordinador / Coordinador on Site</h6>
                                                 <hr />
                                                 {customFields &&
                                                     <CustomFields
-                                                        disabled={this.state.role !== 'LIDER ON SITE' && this.state.role !== 'ADMINISTRATOR'}
+                                                        disabled={this.state.role !== 'COORDINADOR OC' && this.state.role !== 'COORDINADOR' && this.state.role !== 'ADMINISTRATOR'}
                                                         fields={customFields}
                                                         section='P'
                                                         subsection='COO'
@@ -706,7 +705,6 @@ export default class StepName extends Component {
                                                     />
                                                 }
                                             </article>
-
                                         }
 
                                         {/* {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' && this.state.role !== 'GERENTE' &&
@@ -774,7 +772,7 @@ export default class StepName extends Component {
                                         {this.state.valueCoach === 'record' &&
                                             <>
                                                 <h6 className="titulo-seccion">Grabar Audio</h6>
-                                                <RecordAudio ids={this.props.match.params} />
+                                                <RecordAudio onSend={this.enviar} ids={this.props.match.params} />
                                             </>
                                         }
 

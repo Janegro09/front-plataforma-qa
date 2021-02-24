@@ -175,9 +175,7 @@ export default class Formularios extends Component {
                                 HELPER_FUNCTIONS.logout();
                             } else {
                                 localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                                swal("Error al eliminar!", {
-                                    icon: "error",
-                                });
+                                swal("Error al eliminar!", `${e.response.data.Message}`, "Error");
 
                             }
                             console.log("Error: ", e)
@@ -265,7 +263,7 @@ export default class Formularios extends Component {
                     this.setState({
                         loading: false
                     })
-                    swal("Error!", "Hubo un problema", "error");
+                    swal("Error!", `${e.response.data.Message}`, "error");
                 }
                 console.log("Error: ", e)
             });

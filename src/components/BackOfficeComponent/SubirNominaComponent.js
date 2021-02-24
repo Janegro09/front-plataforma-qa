@@ -59,7 +59,7 @@ export default class SubirNominaComponent extends Component {
                                     HELPER_FUNCTIONS.logout()
                                 } else {
                                     localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                                    swal("Error!", "Hubo un problema al agregar la nómina", "error");
+                                    swal("Error!", `${e.response.data.Message}`, "error");
                                     this.setState({
                                         loading: false
                                     })

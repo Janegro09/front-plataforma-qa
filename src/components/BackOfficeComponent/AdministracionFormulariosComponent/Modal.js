@@ -155,7 +155,7 @@ export default class Modal extends Component {
                         HELPER_FUNCTIONS.logout()
                     } else {
                         localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                        swal("Atención", "No se ha agregado el grupo", "info");
+                        swal("Atención!", `${e.response.data.Message}`, "info");
                         this.setState({
                             redirect: true
                         })
@@ -177,7 +177,7 @@ export default class Modal extends Component {
                         HELPER_FUNCTIONS.logout()
                     } else {
                         localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                        swal("Atención", "No se ha agregado el grupo", "info");
+                        swal("Error!", `${e.response.data.Message}`, "error");
                         this.setState({
                             redirect: true
                         })
@@ -231,7 +231,7 @@ export default class Modal extends Component {
                             this.setState({
                                 loading: false
                             })
-                            swal("Error!", "Hubo un problema", "error");
+                            swal("Error!", `${e.response.data.Message}`, "error");
                         }
                         console.log("Error: ", e)
                     });
@@ -250,7 +250,7 @@ export default class Modal extends Component {
                     this.setState({
                         loading: false
                     })
-                    swal("Error!", "Hubo un problema", "error");
+                    swal("Error!", `${e.response.data.Message}`, "error");
                 }
                 console.log("Error: ", e)
             });

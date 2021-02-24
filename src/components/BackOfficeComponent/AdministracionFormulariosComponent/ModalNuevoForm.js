@@ -58,6 +58,7 @@ export default class ModalNuevoForm extends Component {
                 } else {
                     localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     swal("Atención", "No se ha agregado el grupo", "info");
+                    // swal("Atencion", `${e.response.data.Message}`, "info");
                 }
                 console.log("Error: ", e)
             })
@@ -306,7 +307,8 @@ export default class ModalNuevoForm extends Component {
                     this.setState({
                         loading: false
                     })
-                    swal("Error!", "Hubo un problema", "error");
+                    // swal("Error!", "Hubo un problema", "error");
+                    swal("Error!", `${e.response.data.Message}`, "error");
                 }
                 console.log("Error: ", e)
             });

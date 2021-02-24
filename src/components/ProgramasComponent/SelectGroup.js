@@ -103,7 +103,8 @@ class SelectGroup extends Component {
                     HELPER_FUNCTIONS.logout()
                 } else {
                     localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema", "error");
+                    // swal("Error!", "Hubo un problema", "error");
+                    swal("Error!", `${e.response.data.Message}`, "error");
                 }
                 console.log("Error: ", e)
             });
@@ -158,7 +159,8 @@ class SelectGroup extends Component {
                         redirect: true,
                         loading: false
                     })
-                    swal("Error!", "Hubo un problema", "error");
+                    // swal("Error!", "Hubo un problema", "error");
+                    swal("Error!", `${e.response.data.Message}`, "error");
                 }
                 console.log("Error: ", e)
             });

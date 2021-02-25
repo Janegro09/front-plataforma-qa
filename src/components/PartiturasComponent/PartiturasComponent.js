@@ -243,7 +243,7 @@ export default class PartiturasComponent extends Component {
                                     >
                                         Nombre
                                     </th>
-                                    <th className="tableIcons">Grupo asignado</th>
+                                    <th className="tableIcons">Clusters</th>
                                     <th className="tableIcons">Estado</th>
                                     <th className="tableIcons">Archivos</th>
                                     <th className="tableIcons">Ver</th>
@@ -256,7 +256,7 @@ export default class PartiturasComponent extends Component {
                                         <tr key={key}>
                                             <td>{moment(partiture.dates.createdAt).format("DD/MM/YYYY HH:mm")}</td>
                                             <td>{partiture.name}</td>
-                                            <td>{partiture.grupoAssigned}</td>
+                                            <td>{partiture.cuartiles.map(e => `${e} `)}</td>
                                             <td className="tableIcons">{(partiture.partitureStatus === 'pending' ? <TimerIcon className="clockIcon" /> : (partiture.partitureStatus === 'finished' ? <CheckIcon /> : <PlayArrowRoundedIcon />))}</td>
                                             <td className="tableIcons">{partiture.fileId.length.toString()}</td>
                                             <td className="tableIcons">

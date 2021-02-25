@@ -249,7 +249,6 @@ export default class PerfilaminetosComponent extends Component {
         }
 
         this.setState({ grupos });
-
         this.reasignUsers();
     }
 
@@ -337,7 +336,7 @@ export default class PerfilaminetosComponent extends Component {
                         newAssign.assignedUsers.push(dni)
                         tempCuartil.usersToAssign.push(dni)
                         tempGroup.users.push(dni)
-                    } else if (oldGroup.applyAllUsers) {
+                    } else if (oldGroup.applyAllUsers && match) {
                         tempCuartil.usersToAssign.push(dni)
                         if (!tempGroup.users.includes(dni)) {
                             tempGroup.users.push(dni)

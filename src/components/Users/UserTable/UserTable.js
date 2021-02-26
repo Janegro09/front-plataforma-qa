@@ -224,7 +224,7 @@ export default class UserTable extends Component {
                                 ref={(c) => {
                                     this.title = c
                                 }}
-                                placeholder="Buscar"
+                                placeholder="Colocá un usuario, presioná TAB para buscarlo"
                                 onBlur={this.buscar}
                             />
                         }

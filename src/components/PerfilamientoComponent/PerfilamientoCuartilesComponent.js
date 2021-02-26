@@ -340,7 +340,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
         let index = result.findIndex(elem => elem.QName === id);
         if(index !== -1) {
             result[index].selected = !result[index].selected;
-            
         } else return false;
 
         if(result[index].selected) {
@@ -368,7 +367,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                     result[index].Q3.VMax = parseFloat(value);
                 break;
                 default:
-                    result[index][name] = parseFloat(value)
+                    result[index][name] = value
             }
             this.setState({ result });
         } else return false;

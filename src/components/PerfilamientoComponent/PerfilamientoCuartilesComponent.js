@@ -305,7 +305,34 @@ export default class PerfilamientoCuartilesComponent extends Component {
             });
     }
 
-    selectRow = (e) => {
+    get_media = async (media_object) => {
+        if(!media_object) return;
+        const { id } = this.state;
+
+        this.setState({ loading: true });
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
+        const token = tokenUser
+        const bearer = `Bearer ${token}`
+
+        try{
+    
+            let response = await axios.post(Global.reasignProgram + '/' + id + '/mediana', media_object ,{ headers: { Authorization: bearer } });
+            this.setState({ loading: false });
+            return response.data.Data || false;
+        } catch(e) {
+            // Si hay algún error en el request lo deslogueamos
+            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                HELPER_FUNCTIONS.logout()
+            } else {
+                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                // swal("Error!", "Hubo un problema", "error");
+                swal("Error!", `${e.response.data.Message}`, "error");
+            }
+            console.log("Error: ", e)
+        }   
+    }
+
+    selectRow = async(e) => {
         e.preventDefault();
         const { id } = e.target;
         let { result } = this.state;
@@ -313,9 +340,17 @@ export default class PerfilamientoCuartilesComponent extends Component {
         let index = result.findIndex(elem => elem.QName === id);
         if(index !== -1) {
             result[index].selected = !result[index].selected;
-            this.setState({ result })
+            
         } else return false;
 
+        if(result[index].selected) {
+            // Enviamos el objeto para traer la media
+            const media = await this.get_media(result[index]);
+            if(media !== false && media.Q2 !== undefined) {
+                result[index].Q2 = media.Q2;
+            }
+        }
+        this.setState({ result })
     }
 
     changeValues = e => {
@@ -327,13 +362,13 @@ export default class PerfilamientoCuartilesComponent extends Component {
         if(value !== undefined && index !== -1) {
             switch(name) {
                 case "VMin": 
-                    result[index].Q1.VMax = value
+                    result[index].Q1.VMax = parseFloat(value)
                 break;
                 case "VMax": 
-                    result[index].Q3.VMax = value;
+                    result[index].Q3.VMax = parseFloat(value);
                 break;
                 default:
-                    result[index][name] = value
+                    result[index][name] = parseFloat(value)
             }
             this.setState({ result });
         } else return false;

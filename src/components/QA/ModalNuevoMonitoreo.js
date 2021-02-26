@@ -40,12 +40,11 @@ export default class ModalNuevoMonitoreo extends Component {
     buscarUsuario = (e) => {
         let buscado = e.target.value.toLowerCase();
 
-        const { users } = this.state;
-
-        let encontrado = users.filter(user => user.id.includes(buscado) || `${user.name} ${user.lastName}`.includes(buscado) || user.legajo.includes(buscado));
-
-        this.setState({ usuariosConFiltro: encontrado, buscadorUsuario: buscado });
-
+        this.get_users(buscado).then(v => {
+            this.setState({ usuariosConFiltro: v, buscadorUsuario: buscado });
+        }).catch(() => {
+            this.setState({ loading: false })
+        }) 
     }
 
     uploadFile = (e) => {
@@ -75,6 +74,30 @@ export default class ModalNuevoMonitoreo extends Component {
         }
     }
 
+    get_users = async (q = "") => {
+        this.setState({ loading: true })
+        const tokenUser = JSON.parse(localStorage.getItem("token"))
+        let token = tokenUser
+        let bearer = `Bearer ${token}`
+        try {
+            const response =  await axios.get(Global.getUsers + '?specificdata=true&limit=5&offset=0&q=' + q, { headers: { Authorization: bearer } });
+            let users = response.data.Data;
+            this.setState({ loading: false })
+            return users || [];
+        } catch (e) {
+            this.setState({ loading: false })
+
+            // Si hay algún error en el request lo deslogueamos
+            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                HELPER_FUNCTIONS.logout()
+            } else {
+                return []
+            }
+
+            console.log("Error: ", e)
+        }
+    }
+
     componentDidMount() {
         this.setState({
             loading: true
@@ -83,15 +106,7 @@ export default class ModalNuevoMonitoreo extends Component {
         const tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
-        axios.get(Global.getUsers + '?specificdata=true', { headers: { Authorization: bearer } }).then(response => {
-            token = response.data.loggedUser.token
-            bearer = `Bearer ${token}`
-            
-            let users = response.data.Data;
-            let usuariosConFiltro = response.data.Data;
-
             axios.get(Global.getAllProgramsGroups, { headers: { Authorization: bearer } }).then(response => {
-                localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
                 const empresas = [];
                 if(response.data?.Data) {
                     for(const { name,  id } of response.data.Data) {
@@ -100,41 +115,30 @@ export default class ModalNuevoMonitoreo extends Component {
                 }
                 this.setState({
                     empresas,
-                    users,
-                    usuariosConFiltro,
                     loading: false
                 })
-            })
-
-
-
-        })
-            .catch((e) => {
-                // Si hay algún error en el request lo deslogueamos
-                if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
-                    HELPER_FUNCTIONS.logout()
-                } else {
-                    localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    this.setState({
-                        loading: false
-                    })
-                    swal("Error!", `${e.response.data.Message}`, "error");
-                }
-                console.log("Error: ", e)
-            });
+        }).catch((e) => {
+            // Si hay algún error en el request lo deslogueamos
+            if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
+                HELPER_FUNCTIONS.logout()
+            } else {
+                localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
+                this.setState({
+                    loading: false
+                })
+                swal("Error!", `${e.response.data.Message}`, "error");
+            }
+            console.log("Error: ", e)
+        });
     }
     changeMonitoringValues = (e) => {
         e.preventDefault();
         const { value, id } = e.target;
         let { dataToSend } = this.state;
         if(id) {
-
             dataToSend[id] = value;
-
         }
-
         this.setState({ dataToSend });
-
     }
 
     crearMonitoreo = (e) => {
@@ -260,8 +264,7 @@ export default class ModalNuevoMonitoreo extends Component {
                         <input
                             type="text"
                             placeholder="Buscar usuario"
-                            onChange={this.buscarUsuario}
-                            value={buscadorUsuario}
+                            onBlur={this.buscarUsuario}
                             className="form-control"
                         /> 
                         {!buscadorUsuario && usuarioSeleccionado &&

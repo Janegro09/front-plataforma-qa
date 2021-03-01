@@ -361,10 +361,10 @@ export default class PerfilamientoCuartilesComponent extends Component {
         if(value !== undefined && index !== -1) {
             switch(name) {
                 case "VMin": 
-                    result[index].Q1.VMax = parseFloat(value)
+                    result[index].Q1.VMax = (value)
                 break;
                 case "VMax": 
-                    result[index].Q3.VMax = parseFloat(value);
+                    result[index].Q3.VMax = (value);
                 break;
                 default:
                     result[index][name] = value

@@ -141,12 +141,14 @@ export default class PartiturasComponent extends Component {
 
         axios.get(url_with_params, { headers: { Authorization: bearer } }).then(response => {
             localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
-            const array_to_insert = renovar_array ? response.data.Data : [ ...this.state.allPartitures, ...response.data.Data ];
+            const data = response.data?.Data || [];
+            const array_to_insert = renovar_array ? data : [ ...this.state.allPartitures, ...data ];
             search_params.offset = array_to_insert.length;
-            this.setState({
+
+            this.setState(
+                {
                 allPartitures: array_to_insert,
                 loading: false,
-                grupoAssigned: response.data.Data.grupoAssigned,
                 search_params
             })
 

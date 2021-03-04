@@ -4,7 +4,7 @@ import swal from 'sweetalert';
 import Global from '../../Global';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import './Reporteria.css';
-
+import moment from 'moment';
 export default class ReporteriaForm extends Component {
     constructor(props) {
         super(props);
@@ -261,7 +261,7 @@ export default class ReporteriaForm extends Component {
                                             onClick={(e) => { e.preventDefault(); this.agregarPartitura(p); }}
                                         >
                                         <tr>
-                                            <td>{p.name} - {p.grupoAssigned}</td>
+                                            <td>{p.name} - {p.cuartiles.map(e => e + ' ')} - Created: {moment(p.dates.createdAt).format('D/M/Y')}</td>
                                         </tr>
                                         </tbody>
                                     )

@@ -28,7 +28,7 @@ export default class PartiturasComponent extends Component {
             orderedData: null,
             withoutPartitures: false,
             grupoAssigned: null,
-            search_params: { limit: 10, offset: 0, q: "" }
+            search_params: { limit: 10, offset: 0, q: "" },
         }
     }
 
@@ -213,7 +213,12 @@ export default class PartiturasComponent extends Component {
                         <hr />
                         <br />
                         <div className="flex-input-add">
-                            < input onBlur={this.buscar} className="form-control" placeholder="Buscar por nombre de archivo" />
+                            {
+                                this.state.search_params.q == '' ?
+                                < input onBlur={this.buscar} className="form-control" placeholder="Buscar por nombre de archivo" />
+                                :
+                                < input onBlur={this.buscar} className="form-control" placeholder={this.state.search_params.q} />
+                            }
                             {HELPER_FUNCTIONS.checkPermission('POST|analytics/partitures/new') &&
                                 <button className="addItem morph"
                                     onClick={

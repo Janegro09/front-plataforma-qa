@@ -1,15 +1,32 @@
+/**
+ * Componente de los pasos de una partitura. 
+ * 
+ * Por favor, es necesario mantenera el orden del archivo y funciones.
+ * 
+ * @copyright Telecom Argentina SA
+ * @author Soluciones Digitales - Telecom Argentina SA
+ */
+
+// Globals
 import React, { Component } from 'react'
-import SiderbarLeft from '../SidebarLeft/SiderbarLeft'
-import UserAdminHeader from '../Users/userAdminHeader/userAdminHeader'
+import { Redirect } from 'react-router-dom';
+import swal from 'sweetalert';
+import moment from 'moment';
 import Global from '../../Global';
 import axios from 'axios';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
-import swal from 'sweetalert';
-import moment from 'moment';
+import SiderbarLeft from '../SidebarLeft/SiderbarLeft'
+import UserAdminHeader from '../Users/userAdminHeader/userAdminHeader'
+
+// CSS Files
 import './steps.css'
+
+// External components
 import CustomFields from '../AdministradorFormularios/customfields/CustomFields';
 import AsignarArchivos from './AsignarArchivos'
 import RecordAudio from '../RecordAudio/RecordAudio'
+
+// Iconos
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import EmailIcon from '@material-ui/icons/Email';
 import CheckIcon from '@material-ui/icons/Check';
@@ -19,10 +36,8 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ImportExportRoundedIcon from '@material-ui/icons/ImportExportRounded';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { Redirect } from 'react-router-dom';
 
 export default class StepName extends Component {
-
     state = {
         loading: false,
         data: null,
@@ -39,7 +54,6 @@ export default class StepName extends Component {
     }
 
     asignarArchivos = () => {
-
         this.setState({
             abrirModalAsignarArchivos: true
         });
@@ -54,7 +68,6 @@ export default class StepName extends Component {
             id = e.target.name;
         }
         let { dataToSend } = this.state;
-
         dataToSend[id] = data === false ? e.target.value : data;
         this.setState({
             dataToSend
@@ -78,7 +91,6 @@ export default class StepName extends Component {
                 let data = temp[1];
 
                 data += `@${dataToSend[item]}`;
-
                 /**
                  * Si ya existe un dato o es uno nuevo
                  * 
@@ -87,23 +99,18 @@ export default class StepName extends Component {
             } else {
                 sendData[item] = dataToSend[item];
             }
-
         }
 
-
-
         // /analytics/partitures/:id/:userId/:stepId
-
         let token = JSON.parse(localStorage.getItem('token'))
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-
         axios.put(Global.getAllPartitures + "/" + id + '/' + idUsuario + '/' + idStep, sendData, config)
             .then(response => {
                 localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token));
                 swal('Excelente', 'Paso modificado correctamente', 'success').then(() => {
-                    window.location.reload(window.location.href);
+                    this.subirArchivo();
                 })
             })
             .catch(e => {
@@ -244,7 +251,6 @@ export default class StepName extends Component {
 
     subirArchivoCoaching = (e) => {
         this.enviar();
-        this.subirArchivo();
     }
 
     subirArchivo = () => {
@@ -280,7 +286,7 @@ export default class StepName extends Component {
                     HELPER_FUNCTIONS.logout()
                 } else {
                     localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
-                    swal("Error!", "Hubo un problema al agregar el arhcivo", "error");
+                    swal("Error!", "Hubo un problema al agregar el archivo", "error");
                     this.setState({
                         loading: false
                     })
@@ -415,11 +421,9 @@ export default class StepName extends Component {
     render() {
         let { data, customFields, abrirModalAsignarArchivos, archivosSeleccionados, value, loading, step, volver } = this.state;
         data = data ? data[0] : null;
-
         if (volver) {
             return <Redirect to={'/partituras/' + this.props.match.params.id + '/' + this.props.match.params.idUsuario} />
         }
-
         let contadorAudios = 0;
         return (
             <>

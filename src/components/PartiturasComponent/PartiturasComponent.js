@@ -37,9 +37,9 @@ export default class PartiturasComponent extends Component {
         let { search_params } = this.state
         search_params.q = val;
         search_params.offset = 0;
+        localStorage.setItem('searchPartiture', JSON.stringify(val));
         this.get_partitures(search_params);
         this.setState({ search_params });
-
     }
 
     verPartitura = (id) => {
@@ -116,6 +116,7 @@ export default class PartiturasComponent extends Component {
             loading: true
         })
 
+        const searchPartiture = JSON.parse(localStorage.getItem("searchPartiture"))
         const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
@@ -124,6 +125,10 @@ export default class PartiturasComponent extends Component {
 
         // Ponemos un codicional, por si el usuario buscó entonces renovamos el array
         let renovar_array = false;
+
+        if(searchPartiture!=''){
+            this.state.search_params.q=searchPartiture;
+        } 
 
         if(!search_params) {
             search_params = this.state.search_params

@@ -4,7 +4,7 @@ import swal from 'sweetalert';
 import Global from '../../Global';
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import './Reporteria.css';
-
+import moment from 'moment';
 export default class ReporteriaForm extends Component {
     constructor(props) {
         super(props);
@@ -14,54 +14,71 @@ export default class ReporteriaForm extends Component {
             partitures: [],
             clusters: [],
             instances: [],
-            partituresFiltred: [],
             buscadorPartitura: null,
             dataToSend: {
                 partitureId: "",
                 clusters: [],
                 instances: []
-            }
+            },
+            search_params: { limit: 10, offset: 0, q: "" }
         }
     }
 
+    get_partitures = (search_params = false) => {
+        this.setState({
+            loading: true
+        })
 
-    componentDidMount () {
-        HELPER_FUNCTIONS.set_page_title('Reporting');
-        this.setState({ loading: true });
         const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
-        axios.get(Global.getAllPartitures, { headers: { Authorization: bearer } }).then(response => {
+
+        let url_with_params = Global.getAllPartitures;
+
+        for(let p in search_params) {
+            if(!search_params[p]) continue;
+            url_with_params += url_with_params.includes('?') ? "&" : "?";
+            url_with_params += `${p}=${search_params[p]}`
+        }
+
+        axios.get(url_with_params, { headers: { Authorization: bearer } }).then(response => {
             localStorage.setItem("token", JSON.stringify(response.data.loggedUser.token));
+            const partitures = response.data?.Data || [];
+
             this.setState({
-                partitures: response.data.Data,
-                loading: false,
+                partitures,
+                buscadorPartitura: search_params.q,
+                loading: false
             })
 
-        })
-            .catch((e) => {
+        }).catch((e) => {
                 // Si hay algún error en el request lo deslogueamos
                 if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
                     HELPER_FUNCTIONS.logout()
                 } else {
                     localStorage.setItem('token', JSON.stringify(e.response.data.loggedUser.token))
                     this.setState({
-                        loading: false
+                        loading: false,
+                        allPartitures: [],
+                        buscadorPartitura: false
                     })
-                    swal("Error!", `${e.response.data.Message}`, "error");
                 }
                 console.log("Error: ", e)
             });
     }
 
+    componentDidMount () {
+        HELPER_FUNCTIONS.set_page_title('Reporting');
+    }
+
     searchPartiture = (e) => {
-        let buscado = e.target.value.toUpperCase();
-        const { partitures } = this.state;
-
-        let encontrado = partitures.filter(p => p.name.includes(buscado));
-
-        this.setState({ partituresFiltred: encontrado, buscadorPartitura: buscado });
-
+        let val = e.target.value;
+        let { search_params } = this.state
+        search_params.q = val;
+        search_params.offset = 0;
+        localStorage.setItem('searchPartiture', JSON.stringify(val));
+        this.get_partitures(search_params);
+        this.setState({ search_params });
     }
 
     handleChange = (e) => {
@@ -198,7 +215,7 @@ export default class ReporteriaForm extends Component {
     }
 
     render() {
-        const { loading, buscadorPartitura, partituresFiltred, dataToSend, clusters, instances } = this.state;
+        const { loading, buscadorPartitura, partitures, dataToSend, clusters, instances } = this.state;
         return (
 
 
@@ -221,8 +238,8 @@ export default class ReporteriaForm extends Component {
                         <input
                             type="text"
                             placeholder="Buscar partitura"
-                            onChange={this.searchPartiture}
-                            value={buscadorPartitura}
+                            onBlur={this.searchPartiture}
+                            defaultValue={buscadorPartitura}
                             className="form-control margin-bottom-10"
                         />
                         {!buscadorPartitura && dataToSend.partitureId &&
@@ -231,20 +248,20 @@ export default class ReporteriaForm extends Component {
                             </small>
                         }
 
-                        {partituresFiltred && buscadorPartitura &&
+                        {partitures.length > 0 && !!buscadorPartitura &&
                             <table className="tablaBuscarUsuarios">
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
                                     </tr>
                                 </thead>
-                                {partituresFiltred?.slice(0, 10).map(p => {
+                                {partitures.map(p => {
                                     return (
                                         <tbody key={p.id}
                                             onClick={(e) => { e.preventDefault(); this.agregarPartitura(p); }}
                                         >
                                         <tr>
-                                            <td>{p.name} - {p.grupoAssigned}</td>
+                                            <td>{p.name} - {p.cuartiles.map(e => e + ' ')} - Created: {moment(p.dates.createdAt).format('D/M/Y')}</td>
                                         </tr>
                                         </tbody>
                                     )

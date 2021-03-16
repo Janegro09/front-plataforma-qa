@@ -1,0 +1,11 @@
+.sliderContainer{
+    width: 90%;
+    margin: 50px auto 0px;
+}
+
+.guardar{
+    background: #5677fc;
+}
+.cerrar{
+    background: #dc3545;
+}

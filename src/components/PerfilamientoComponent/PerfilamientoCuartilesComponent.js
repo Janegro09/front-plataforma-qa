@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import SideBarLeft from '../SidebarLeft/SiderbarLeft'
 import axios from 'axios';
 import Global from '../../Global';
@@ -7,6 +7,7 @@ import { HELPER_FUNCTIONS } from '../../helpers/Helpers';
 import { Redirect } from 'react-router-dom';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import Checkbox from '@material-ui/core/Checkbox';
+import { ModalPerfilamientoOnline } from './Modal/ModalPerfilamientoOnline';
 
 
 export default class PerfilamientoCuartilesComponent extends Component {
@@ -26,9 +27,15 @@ export default class PerfilamientoCuartilesComponent extends Component {
             modelsOfCuartiles: [],
             modelSelected: {},
             nameModelSelected: '',
-            used: []
+            used: [],
+            idOnline:22
         }
     }
+
+    verOnline = () => {
+        console.log("hola");
+    }
+
 
     buscar = () => {
         const { nombreColumnas } = this.state
@@ -218,7 +225,10 @@ export default class PerfilamientoCuartilesComponent extends Component {
             return;
         }
         let id = cuartilSeleccionado;
-        this.setState({ id, loading: true })
+        this.setState({ id, loading: true });
+        this.setState({
+            idOnline:id
+        })
 
         const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
@@ -315,7 +325,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
         const bearer = `Bearer ${token}`
 
         try{
-    
             let response = await axios.post(Global.reasignProgram + '/' + id + '/mediana', media_object ,{ headers: { Authorization: bearer } });
             this.setState({ loading: false });
             return response.data.Data || false;
@@ -459,7 +468,9 @@ export default class PerfilamientoCuartilesComponent extends Component {
                             </thead>
                             <tbody>
                                 {dataFiltered.map(columna => {
+                                        const { idOnline } = this.state;
                                         let def = result.find(e => e.QName === columna.columnName);
+                                        def.codigo = idOnline;
                                         return (
                                             <tr key={columna.columnName}>
                                                 <td>{columna.columnName}</td>
@@ -506,7 +517,13 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                         checked={def.selected}
                                                         id={columna.columnName}
                                                         onChange={this.selectRow}
-                                                    />
+                                                    />{
+                                                        def.Q4.VMax>1 &&
+                                                        <ModalPerfilamientoOnline
+                                                        valor={def}
+                                                        />
+                                                    }
+
                                                 </td>
                                             </tr>
                                         )

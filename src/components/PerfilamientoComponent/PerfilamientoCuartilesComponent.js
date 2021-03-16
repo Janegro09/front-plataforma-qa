@@ -411,7 +411,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 }} />
         }
 
-
         return (
             <div>
                 {loading &&

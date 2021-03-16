@@ -120,10 +120,12 @@ const MyVerticallyCenteredModal =   (props) => {
       valoresTemporales[1].value=sliderValue;
     } else if (e.target.dataset.index==1 && (sliderValue < valoresTemporales[3].value  && sliderValue > valoresTemporales[1].value)) {
       valoresTemporales[2].value=sliderValue;
-    } else if(e.target.dataset.index==2 && (sliderValue > valoresTemporales[3].value  && sliderValue > valoresTemporales[2].value)){
+    } else if(e.target.dataset.index==2 && (sliderValue > valoresTemporales[2].value)){
       valoresTemporales[3].value=sliderValue;
     } else {
+      
     }
+    
     setValores([...valoresTemporales]);   
 
     calcularCantCuartiles(valoresTemporales);

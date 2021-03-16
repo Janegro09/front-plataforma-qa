@@ -341,7 +341,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
         }   
     }
 
-    selectRow = async(e) => {
+     selectRow = async(e) => {
         e.preventDefault();
         const { id } = e.target;
         let { result } = this.state;
@@ -518,7 +518,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                         id={columna.columnName}
                                                         onChange={this.selectRow}
                                                     />{
-                                                        def.Q4.VMax>1 &&
+                                                        def.selected>1 &&
                                                         <ModalPerfilamientoOnline
                                                         valor={def}
                                                         />

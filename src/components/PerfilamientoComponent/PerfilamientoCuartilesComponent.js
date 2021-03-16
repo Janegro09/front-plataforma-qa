@@ -28,7 +28,8 @@ export default class PerfilamientoCuartilesComponent extends Component {
             modelSelected: {},
             nameModelSelected: '',
             used: [],
-            idOnline:22
+            idOnline:22,
+            cuartilamientoOnline:false
         }
     }
 
@@ -383,6 +384,14 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
     }
 
+    guardarValores = (valoresModal) => {
+        const {cuartilamientoOnline} = this.state;
+        if(valoresModal){
+            this.setState({
+                cuartilamientoOnline:valoresModal
+            })
+        }
+    }
 
     render() {
 
@@ -468,8 +477,15 @@ export default class PerfilamientoCuartilesComponent extends Component {
                             </thead>
                             <tbody>
                                 {dataFiltered.map(columna => {
-                                        const { idOnline } = this.state;
-                                        let def = result.find(e => e.QName === columna.columnName);
+                                        const { idOnline,cuartilamientoOnline } = this.state;
+                                        let def;
+                                        // if(cuartilamientoOnline){
+                                        //     def=cuartilamientoOnline;
+                                        // } else {
+                                        //     def = result.find(e => e.QName === columna.columnName);
+                                            
+                                        // }
+                                        def = result.find(e => e.QName === columna.columnName);
                                         def.codigo = idOnline;
                                         return (
                                             <tr key={columna.columnName}>
@@ -522,6 +538,9 @@ export default class PerfilamientoCuartilesComponent extends Component {
                                                         (def.Q1.VMax !=  def.Q4.VMax) &&
                                                         <ModalPerfilamientoOnline
                                                         key={columna.columnName}
+                                                        guardar={
+                                                                this.guardarValores
+                                                            }
                                                         valor={def}
                                                         />
                                                     }

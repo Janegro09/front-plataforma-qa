@@ -24,7 +24,6 @@ const get_online = async (idPar,columnName) => {
 
   try{
       let response = await axios.get(Global.reasignProgram + '/' + id + '/online/' + columnName, { headers: { Authorization: bearer } });
-      console.log(response.data.Data)
       return response.data.Data || false;
   } catch(e) {
       // Si hay algún error en el request lo deslogueamos
@@ -40,9 +39,8 @@ const get_online = async (idPar,columnName) => {
 }
 
 
-export const ModalPerfilamientoOnline = ({valor}) => {
+export const ModalPerfilamientoOnline = ({valor,guardar}) => {
   const [modalShow, setModalShow] = React.useState(false);
-  console.log(valor);
   return (
     <>
       <VisibilityRoundedIcon
@@ -56,6 +54,7 @@ export const ModalPerfilamientoOnline = ({valor}) => {
         show={modalShow}
         onHide={() => setModalShow(false)}
         valor={valor}
+        guardar={guardar}
         />
       }
     </>
@@ -112,7 +111,6 @@ const MyVerticallyCenteredModal =   (props) => {
   } else {
     stepRange=1
   }
-  console.log(stepRange);
   
   const setearValores = (e) => {
     let sliderValue = parseFloat(e.target.ariaValueNow);
@@ -151,25 +149,30 @@ const MyVerticallyCenteredModal =   (props) => {
     let cantQ4=0;
 
     valoresOnline.map(v => {
-      if(Vmin.value<=v && v<Q2.value){
+      if(Vmin.value<=v && v<=Q2.value){
         cantQ1++
-      } else if (Q2.value<=v && v<Q3.value){
+      } else if (Q2.value<v && v<=Q3.value){
         cantQ2++
-      } else if (Q3.value<=v && v<Q4.value){
+      } else if (Q3.value<v && v<=Q4.value){
         cantQ3++
-      } else if (Q4.value<=v && v<=Vmax.value){
+      } else if (Q4.value<v && v<=Vmax.value){
         cantQ4++
       }
     });
-    console.log(cantQ1,cantQ2,cantQ3,cantQ4)
     setCantidadesCuartiles([cantQ1,cantQ2,cantQ3,cantQ4]);
-
   }
   
   const guardarValores = (e) => {
     e.preventDefault();
-    setValores(valores);
-    console.log(valores);
+    let valoresReemplazados=props.valor;
+    valoresReemplazados.Q1.VMax=valores[1].value;
+    valoresReemplazados.Q2.VMin=valores[1].value;
+    valoresReemplazados.Q2.VMax=valores[2].value;
+    valoresReemplazados.Q3.VMin=valores[2].value;
+    valoresReemplazados.Q3.VMax=valores[3].value;
+    valoresReemplazados.Q4.VMin=valores[3].value;
+    props.guardar(valoresReemplazados);
+    props.onHide();
   }
 
   return (
@@ -179,6 +182,7 @@ const MyVerticallyCenteredModal =   (props) => {
     
       <Modal
       {...props}
+      guardar={props.guardar()}
       //   key={props.valor.QName}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
@@ -190,14 +194,14 @@ const MyVerticallyCenteredModal =   (props) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h4>Titulo en H4</h4>
+          <h4>Prueba</h4>
           <p>
               Prueba de perfilamiento Online
           </p>
           <div className="sliderContainer">
           <h5></h5>
           <Slider
-              key={`slider-${valores.map(v=>{return v.value})}`}
+              key={`slider-${valores.map((v,i)=>{return v.value+i})}`}
               max={valores[4].value}
               min={valores[0].value}
               // track={false}

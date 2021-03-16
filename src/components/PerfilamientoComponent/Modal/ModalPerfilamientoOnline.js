@@ -10,7 +10,7 @@ import axios from 'axios';
 import Global from '../../../Global';
 import swal from 'sweetalert';
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
-import { Table } from '@material-ui/core';
+import { createGenerateClassName, Table } from '@material-ui/core';
 
 
 const get_online = async (idPar,columnName) => {
@@ -42,15 +42,13 @@ const get_online = async (idPar,columnName) => {
 
 export const ModalPerfilamientoOnline = ({valor}) => {
   const [modalShow, setModalShow] = React.useState(false);
-  const [loading, setLoading] = useState(true)
-  // const [valor.id, setstate] = useState(idPar)
+  console.log(valor);
   return (
     <>
       <VisibilityRoundedIcon
       onClick={() => setModalShow(true)}
       className="verIcon"
       />
-
       
       {
         modalShow &&         
@@ -94,6 +92,8 @@ const MyVerticallyCenteredModal =   (props) => {
       value:props.valor.Q4.VMax
     }
   ];
+  
+  let stepRange;
 
   useEffect(() => {
     
@@ -104,10 +104,15 @@ const MyVerticallyCenteredModal =   (props) => {
         calcularCantCuartiles(arrayInicial,v);
       }
     })
-    
     setValores(arrayInicial)
   }, []);
   
+  if(arrayInicial[4].value==1){
+    stepRange=(arrayInicial[0].value + arrayInicial[4].value)/100;
+  } else {
+    stepRange=1
+  }
+  console.log(stepRange);
   
   const setearValores = (e) => {
     let sliderValue = parseFloat(e.target.ariaValueNow);
@@ -203,6 +208,7 @@ const MyVerticallyCenteredModal =   (props) => {
               // onChcange={setearValores}
               onClick={setearValores}
               marks={valores}
+              step={stepRange}
             />
 
           <div className="contenedor-cuartiles">

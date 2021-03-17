@@ -9,7 +9,7 @@ import './Mon.css';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import '../BackOfficeComponent/AdministracionFormulariosComponent/formularios.css';
-import { responsiveFontSizes } from '@material-ui/core';
+// import { responsiveFontSizes } from '@material-ui/core';
 
 
 export default class componentName extends Component {

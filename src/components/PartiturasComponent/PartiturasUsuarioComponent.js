@@ -15,7 +15,7 @@ import TimerIcon from '@material-ui/icons/Timer';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import Checkbox from '@material-ui/core/Checkbox';
 import './partitures.css';
-import { LensTwoTone } from '@material-ui/icons';
+// import { LensTwoTone } from '@material-ui/icons';
 
 export default class PartiturasUsuarioComponent extends Component {
 

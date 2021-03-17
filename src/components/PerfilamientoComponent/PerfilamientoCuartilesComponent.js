@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component } from 'react'
 import SideBarLeft from '../SidebarLeft/SiderbarLeft'
 import axios from 'axios';
 import Global from '../../Global';
@@ -385,7 +385,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
     }
 
     guardarValores = (valoresModal) => {
-        const {cuartilamientoOnline} = this.state;
+        // const {cuartilamientoOnline} = this.state;
         if(valoresModal){
             this.setState({
                 cuartilamientoOnline:valoresModal
@@ -476,7 +476,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                             </thead>
                             <tbody>
                                 {dataFiltered.map(columna => {
-                                        const { idOnline,cuartilamientoOnline } = this.state;
+                                        const { idOnline } = this.state;
                                         let def;
                                         // if(cuartilamientoOnline){
                                         //     def=cuartilamientoOnline;

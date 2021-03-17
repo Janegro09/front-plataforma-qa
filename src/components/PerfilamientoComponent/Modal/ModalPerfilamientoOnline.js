@@ -10,7 +10,7 @@ import axios from 'axios';
 import Global from '../../../Global';
 import swal from 'sweetalert';
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
-import { createGenerateClassName, Table } from '@material-ui/core';
+import { Table } from '@material-ui/core';
 
 
 const get_online = async (idPar,columnName) => {
@@ -63,38 +63,38 @@ export const ModalPerfilamientoOnline = ({valor,guardar}) => {
 
 const MyVerticallyCenteredModal =   (props) => {
 
-  const {codigo, QName} = props.valor;
   const [online, setOnline] = useState();
   const [loading, setLoading] = useState(true)
   const [valores, setValores] = useState([]);
   const [cantidadesCuartiles, setCantidadesCuartiles] = useState([0,0,0,0])
-
+  
   const arrayInicial = [
     {
       label:"Q1-Min",
-      value:props.valor.Q1.VMin
+      value:parseFloat(props.valor.Q1.VMin)
     },
     {
       label:"Q1",
-      value:props.valor.Q1.VMax
+      value:parseFloat(props.valor.Q1.VMax)
     },
     {
       label:"Q2",
-      value:props.valor.Q2.VMax
+      value:parseFloat(props.valor.Q2.VMax)
     },
     {
       label:"Q3",
-      value:props.valor.Q3.VMax
+      value:parseFloat(props.valor.Q3.VMax)
     },
     {
       label:"Q4-Max",
-      value:props.valor.Q4.VMax
+      value:parseFloat(props.valor.Q4.VMax)
     }
   ];
   
   let stepRange;
-
+  
   useEffect(() => {
+    const {codigo, QName} = props.valor;
     
     get_online(codigo,QName).then(v=>{
       if(loading){
@@ -106,7 +106,7 @@ const MyVerticallyCenteredModal =   (props) => {
     setValores(arrayInicial)
   }, []);
   
-  if(arrayInicial[4].value==1){
+  if(arrayInicial[4].value===1){
     stepRange=(arrayInicial[0].value + arrayInicial[4].value)/100;
   } else {
     stepRange=1
@@ -114,16 +114,17 @@ const MyVerticallyCenteredModal =   (props) => {
   
   const setearValores = (e) => {
     let sliderValue = parseFloat(e.target.ariaValueNow);
+    let indice=parseInt(e.target.dataset.index);
     let valoresTemporales=valores;
     if(valoresTemporales[0].value===sliderValue || valoresTemporales[4].value===sliderValue){
       return;
     }
-
-    if(e.target.dataset.index==0 && (sliderValue < valoresTemporales[2].value)){
+    if(indice===0 && (sliderValue < valoresTemporales[2].value)){
+      
       valoresTemporales[1].value=sliderValue;
-    } else if (e.target.dataset.index==1 && (sliderValue < valoresTemporales[3].value  && sliderValue > valoresTemporales[1].value)) {
+    } else if (indice===1 && (sliderValue < valoresTemporales[3].value  && sliderValue > valoresTemporales[1].value)) {
       valoresTemporales[2].value=sliderValue;
-    } else if(e.target.dataset.index==2 && (sliderValue > valoresTemporales[2].value)){
+    } else if(indice===2 && (sliderValue > valoresTemporales[2].value)){
       valoresTemporales[3].value=sliderValue;
     } else {
       
@@ -158,6 +159,7 @@ const MyVerticallyCenteredModal =   (props) => {
       } else if (Q4.value<v && v<=Vmax.value){
         cantQ4++
       }
+      return v;
     });
     setCantidadesCuartiles([cantQ1,cantQ2,cantQ3,cantQ4]);
   }

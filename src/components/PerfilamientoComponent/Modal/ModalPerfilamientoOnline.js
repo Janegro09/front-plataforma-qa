@@ -209,9 +209,8 @@ const MyVerticallyCenteredModal =   (props) => {
               // track={false}
               name="valores"
               defaultValue={[valores[1].value, valores[2].value,valores[3].value]}
-              valueLabelDisplay="on"
+              valueLabelDisplay="auto"
               aria-labelledby="discrete-slider-always"
-              // onChcange={setearValores}
               onClick={setearValores}
               marks={valores}
               step={stepRange}

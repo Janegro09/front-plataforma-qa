@@ -9,3 +9,24 @@
 .cerrar{
     background: #dc3545;
 }
+
+.MuiSlider-track{
+    height: 5px!important;
+}
+
+.MuiSlider-marked{
+    height: 15px;
+    cursor: text;
+}
+.jss14{
+    color: black!important;
+}
+
+.MuiSlider-rail {
+    height: 4px!important;
+}
+
+.MuiSlider-thumb{
+    width: 15px!important;
+    height: 15px!important;
+}

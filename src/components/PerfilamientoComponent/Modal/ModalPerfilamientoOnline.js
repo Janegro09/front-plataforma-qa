@@ -118,13 +118,13 @@ const MyVerticallyCenteredModal =   (props) => {
     })
     setValores(arrayInicial)
   }, []);
+
   let valoresSolamente=arrayInicial;
 
   valoresSolamente=valoresSolamente.map(a=> {
     return a.value
   })
 
-  
   if(arrayInicial[4].value<=1){
     stepRange=(arrayInicial[0].value + arrayInicial[4].value)/100;
   } else {
@@ -133,14 +133,14 @@ const MyVerticallyCenteredModal =   (props) => {
   // console.log(valoresSolamente, stepRange);
   
   const setearValores = (e) => {
+    console.log("hola");
     let sliderValue = parseFloat(e.target.ariaValueNow);
     let indice=parseInt(e.target.dataset.index);
     let valoresTemporales=valores;
     if(valoresTemporales[0].value===sliderValue || valoresTemporales[4].value===sliderValue){
       return;
     }
-    if(indice===0 && (sliderValue < valoresTemporales[2].value)){
-      
+    if(indice===0 && (sliderValue < valoresTemporales[2].value)){      
       valoresTemporales[1].value=sliderValue;
     } else if (indice===1 && (sliderValue < valoresTemporales[3].value  && sliderValue > valoresTemporales[1].value)) {
       valoresTemporales[2].value=sliderValue;
@@ -155,7 +155,6 @@ const MyVerticallyCenteredModal =   (props) => {
     calcularCantCuartiles(valoresTemporales);
     
   }
-
 
   const calcularCantCuartiles = (valoresTemporales,v=false) => {
     let valoresOnline = online;
@@ -181,6 +180,7 @@ const MyVerticallyCenteredModal =   (props) => {
       }
       return v;
     });
+    
     setCantidadesCuartiles([cantQ1,cantQ2,cantQ3,cantQ4]);
   }
   
@@ -197,6 +197,9 @@ const MyVerticallyCenteredModal =   (props) => {
     props.onHide();
   }
 
+  const hola = (e) => {
+    console.log(e)
+  }
   return (
     <>      
     {
@@ -226,10 +229,9 @@ const MyVerticallyCenteredModal =   (props) => {
               key={`slider-${valores.map((v,i)=>{return v.value+i})}`}
               max={valores[4].value}
               min={valores[0].value}
-              // track={false}
               name="valores"
               defaultValue={[valores[1].value, valores[2].value,valores[3].value]}
-              valueLabelDisplay="auto"
+              valueLabelDisplay="on"
               aria-labelledby="discrete-slider-always"
               onClick={setearValores}
               marks={valores}

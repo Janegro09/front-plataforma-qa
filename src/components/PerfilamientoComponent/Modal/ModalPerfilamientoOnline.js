@@ -10,7 +10,7 @@ import axios from 'axios';
 import Global from '../../../Global';
 import swal from 'sweetalert';
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
-import { Table } from '@material-ui/core';
+import { createGenerateClassName, Table } from '@material-ui/core';
 
 
 const get_online = async (idPar,columnName) => {
@@ -23,7 +23,20 @@ const get_online = async (idPar,columnName) => {
   const bearer = `Bearer ${token}`
 
   try{
-      let response = await axios.get(Global.reasignProgram + '/' + id + '/online/' + columnName, { headers: { Authorization: bearer } });
+      let response = await 
+      // axios.post(
+      //   Global.reasignProgram + '/' + id + '/online/',
+      //   {columnName}, 
+      //   { headers: { Authorization: bearer } }
+      //   );
+      axios({
+        method:'post',
+        url: Global.reasignProgram + '/' + id + '/online/',
+        headers: { Authorization: bearer },
+        data:{
+          columnName
+        }
+      });      
       return response.data.Data || false;
   } catch(e) {
       // Si hay algún error en el request lo deslogueamos
@@ -105,12 +118,19 @@ const MyVerticallyCenteredModal =   (props) => {
     })
     setValores(arrayInicial)
   }, []);
+  let valoresSolamente=arrayInicial;
+
+  valoresSolamente=valoresSolamente.map(a=> {
+    return a.value
+  })
+
   
-  if(arrayInicial[4].value===1){
+  if(arrayInicial[4].value<=1){
     stepRange=(arrayInicial[0].value + arrayInicial[4].value)/100;
   } else {
     stepRange=1
   }
+  // console.log(valoresSolamente, stepRange);
   
   const setearValores = (e) => {
     let sliderValue = parseFloat(e.target.ariaValueNow);

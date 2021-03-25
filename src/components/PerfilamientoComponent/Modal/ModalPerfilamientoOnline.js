@@ -125,7 +125,7 @@ const MyVerticallyCenteredModal =   (props) => {
     return a.value
   })
 
-  if(arrayInicial[4].value<=1){
+  if(arrayInicial[4].value<=2){
     stepRange=(arrayInicial[0].value + arrayInicial[4].value)/100;
   } else {
     stepRange=1
@@ -231,7 +231,7 @@ const MyVerticallyCenteredModal =   (props) => {
               min={valores[0].value}
               name="valores"
               defaultValue={[valores[1].value, valores[2].value,valores[3].value]}
-              valueLabelDisplay="on"
+              valueLabelDisplay="auto"
               aria-labelledby="discrete-slider-always"
               onClick={setearValores}
               marks={valores}

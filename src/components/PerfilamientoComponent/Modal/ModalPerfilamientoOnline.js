@@ -86,6 +86,7 @@ const MyVerticallyCenteredModal =   (props) => {
 
   const [online, setOnline] = useState();
   const [loading, setLoading] = useState(true)
+  const [slider, setSlider] = useState([''])
   const [valores, setValores] = useState([]);
   const [valoresOnline, setValoresOnline] = useState([])
   const [cantidadesCuartiles, setCantidadesCuartiles] = useState([0,0,0,0])
@@ -138,6 +139,7 @@ const MyVerticallyCenteredModal =   (props) => {
       }
     })
     setValores(arrayInicial)
+    setSlider([arrayInicial[1].value, arrayInicial[2].value,arrayInicial[3].value])
   }, []);
 
   let valoresSolamente=arrayInicial;
@@ -153,7 +155,7 @@ const MyVerticallyCenteredModal =   (props) => {
   // }
   // console.log(valoresSolamente, stepRange);
   
-  const setearValores = (e) => {
+  const handleChange = (e) => {
     let sliderValue = parseFloat(e.target.ariaValueNow);
     let indice=parseInt(e.target.dataset.index);
     let valoresTemporales=valores;
@@ -170,7 +172,7 @@ const MyVerticallyCenteredModal =   (props) => {
       
     }
     
-    setValores([...valoresTemporales]);   
+    // setValores([...valoresTemporales]);   
 
     calcularCantCuartiles(valoresTemporales);
     
@@ -198,7 +200,6 @@ const MyVerticallyCenteredModal =   (props) => {
       } else if (Q4.value<v && v<=Vmax.value){
         cantQ4++
       }
-      return v;
     });
     
     setCantidadesCuartiles([cantQ1,cantQ2,cantQ3,cantQ4]);
@@ -217,6 +218,7 @@ const MyVerticallyCenteredModal =   (props) => {
     props.onHide();
   }
 
+  // console.log(props.valor.Qorder)
   return (
     <>      
     {
@@ -236,20 +238,22 @@ const MyVerticallyCenteredModal =   (props) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h4>Prueba</h4>
+          <h4>Orden {props.valor.Qorder}</h4>
           <p>
               Prueba de perfilamiento Online
           </p>
           <div className="sliderContainer">
           <h5></h5>
           <IOSSlider
+              
               key={`${valoresOnline.map((v,i)=>{ return v.value+i})}`}
               max={valores[4].value}
               min={valores[0].value}
-              defaultValue={[valores[1].value, valores[2].value,valores[3].value]}
+              defaultValue={slider}
               valueLabelDisplay="auto"
               aria-labelledby="discrete-slider-always"
-              onClick={setearValores}
+              onClick={handleChange}
+              // onChangeCommitted={handleChange}
               marks={valoresOnline}
               // marks={valores}
               step={null}
@@ -276,6 +280,36 @@ const MyVerticallyCenteredModal =   (props) => {
             <tbody>
               <tr>
                 <td>Valores</td>
+                {valores.map(v=>{
+                  return <td key={v.value}>{v.value}</td>
+                })}
+              </tr>
+            </tbody>
+
+          </Table>
+          <div className="contenedor-cuartiles">
+            <h4>Detalles Valores</h4>          
+          </div>
+          <Table 
+            striped={"true"}
+            bordered={"true"}
+            hover={"true"}>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Q1 Min</th>
+                <th>Q2</th>
+                <th>Q3</th>
+                <th>Q4</th>
+                <th>Q4 Max</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Valores</td>
+                {
+                  
+                }
                 {valores.map(v=>{
                   return <td key={v.value}>{v.value}</td>
                 })}

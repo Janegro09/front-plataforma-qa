@@ -13,13 +13,19 @@ import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
 import { createGenerateClassName, Table } from '@material-ui/core';
 
 const IOSSlider = withStyles({
+  // root,colorPrimary,colorSecondary,marked,vertical,disabled,rail,track,trackFalse,trackInverted,thumb,thumbColorPrimary,thumbColorSecondary,active,focusVisible,valueLabel,mark,markActive,markLabel,markLabelActive,
+  // markLabel:{
+  //   background: '#000',
+  //   height:10,
+  //   width:10
+  // },
   valueLabel: {
     '& *': {
       background: 'transparent',
       color: '#000',
     },
   },
-  
+
 })(Slider);
 
 const get_online = async (idPar,columnName) => {
@@ -118,9 +124,8 @@ const MyVerticallyCenteredModal = (props) => {
   ];
   
   // let stepRange;
-  let onlineValues=[];
   // let valoresInvertidos=[];
-
+  
   useEffect(() => {
     const {codigo, QName} = props.valor;
     
@@ -131,13 +136,17 @@ const MyVerticallyCenteredModal = (props) => {
         calcularCantCuartiles(arrayInicial,v);
         let i=0;
         let anterior=v[0];
+        let onlineValues=[{label:"",value:anterior}];
         v.map(a=>{
           if(anterior!==a){
-            onlineValues=[...onlineValues,{label:"Q-"+a,value:parseFloat(a)}];
+            onlineValues=[...onlineValues,{label:"",value:parseFloat(a)}];
           }
           anterior=a;
           i++;
-        })
+        });
+        onlineValues[0].label="Q1-Min";
+        // const size=onlineValues.length
+        onlineValues[onlineValues.length-1].label="Q4-Max";
         setValoresOnline(onlineValues);
         // console.log(onlineValues)
       }

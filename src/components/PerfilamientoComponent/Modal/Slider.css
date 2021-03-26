@@ -41,7 +41,7 @@
     padding: 40px 0!important;
 }
 .MuiSlider-markLabel{
-    display: none;
+    top:59px!important;
 }
 /* .MuiSlider-valueLabel{
     background-color: yellow;

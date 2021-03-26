@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button'
 import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
 import Slider from '@material-ui/core/Slider';
 // import PropTypes from 'prop-types';
-// import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import '../Modal/Slider.css'  
 import axios from 'axios';
 import Global from '../../../Global';
@@ -12,6 +12,14 @@ import swal from 'sweetalert';
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
 import { createGenerateClassName, Table } from '@material-ui/core';
 
+const IOSSlider = withStyles({
+  valueLabel: {
+    '& *': {
+      background: 'transparent',
+      color: '#000',
+    },
+  },
+})(Slider);
 
 const get_online = async (idPar,columnName) => {
   const id =idPar;
@@ -79,6 +87,7 @@ const MyVerticallyCenteredModal =   (props) => {
   const [online, setOnline] = useState();
   const [loading, setLoading] = useState(true)
   const [valores, setValores] = useState([]);
+  const [valoresOnline, setValoresOnline] = useState([])
   const [cantidadesCuartiles, setCantidadesCuartiles] = useState([0,0,0,0])
   
   const arrayInicial = [
@@ -104,8 +113,9 @@ const MyVerticallyCenteredModal =   (props) => {
     }
   ];
   
-  let stepRange;
-  
+  // let stepRange;
+  let onlineValues=[];
+
   useEffect(() => {
     const {codigo, QName} = props.valor;
     
@@ -114,6 +124,17 @@ const MyVerticallyCenteredModal =   (props) => {
         setOnline(v)
         setLoading(false)
         calcularCantCuartiles(arrayInicial,v);
+        let i=0;
+        let anterior=v[0];
+        v.map(a=>{
+          if(anterior!==a){
+            onlineValues=[...onlineValues,{label:"",value:parseFloat(a)}];
+          }
+          anterior=a;
+          i++;
+        })
+        setValoresOnline(onlineValues);
+        // console.log(onlineValues)
       }
     })
     setValores(arrayInicial)
@@ -125,15 +146,14 @@ const MyVerticallyCenteredModal =   (props) => {
     return a.value
   })
 
-  if(arrayInicial[4].value<=2){
-    stepRange=(arrayInicial[0].value + arrayInicial[4].value)/100;
-  } else {
-    stepRange=1
-  }
+  // if(arrayInicial[4].value<=2){
+  //   stepRange=(arrayInicial[0].value + arrayInicial[4].value)/100;
+  // } else {
+  //   stepRange=1
+  // }
   // console.log(valoresSolamente, stepRange);
   
   const setearValores = (e) => {
-    console.log("hola");
     let sliderValue = parseFloat(e.target.ariaValueNow);
     let indice=parseInt(e.target.dataset.index);
     let valoresTemporales=valores;
@@ -197,9 +217,6 @@ const MyVerticallyCenteredModal =   (props) => {
     props.onHide();
   }
 
-  const hola = (e) => {
-    console.log(e)
-  }
   return (
     <>      
     {
@@ -208,7 +225,7 @@ const MyVerticallyCenteredModal =   (props) => {
       <Modal
       {...props}
       guardar={props.guardar()}
-      //   key={props.valor.QName}
+      key={props.valor.QName}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -225,17 +242,18 @@ const MyVerticallyCenteredModal =   (props) => {
           </p>
           <div className="sliderContainer">
           <h5></h5>
-          <Slider
-              key={`slider-${valores.map((v,i)=>{return v.value+i})}`}
+          <IOSSlider
+              key={`${valoresOnline.map((v,i)=>{ return v.value+i})}`}
               max={valores[4].value}
               min={valores[0].value}
-              name="valores"
               defaultValue={[valores[1].value, valores[2].value,valores[3].value]}
               valueLabelDisplay="auto"
               aria-labelledby="discrete-slider-always"
               onClick={setearValores}
-              marks={valores}
-              step={stepRange}
+              marks={valoresOnline}
+              // marks={valores}
+              step={null}
+              // step={stepRange}
             />
 
           <div className="contenedor-cuartiles">

@@ -30,3 +30,18 @@
     width: 15px!important;
     height: 15px!important;
 }
+.MuiSlider-mark{
+    width: 0px!important;
+}
+/* .MuiSlider-valueLabel{
+    background-color: yellow;
+}
+.PrivateValueLabel-circle{
+    background-color: turquoise;
+}
+.PrivateValueLabel-label-9, .PrivateValueLabel-circle-19, .PrivateValueLabel-circle-13,.PrivateValueLabel-circle-14{
+    color: black!important;
+}
+.PrivateValueLabel-circle-8, .PrivateValueLabel-circle-18, .PrivateValueLabel-circle-13, .PrivateValueLabel-label-14{
+    background-color: white!important;
+} */

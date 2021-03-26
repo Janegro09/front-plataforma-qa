@@ -19,6 +19,7 @@ const IOSSlider = withStyles({
       color: '#000',
     },
   },
+  
 })(Slider);
 
 const get_online = async (idPar,columnName) => {
@@ -87,7 +88,6 @@ const MyVerticallyCenteredModal = (props) => {
   const [online, setOnline] = useState();
   const [loading, setLoading] = useState(true);
   const [slider, setSlider] = useState(['']);
-  const [sliderAsc, setSliderAsc] = useState(['']);
   const [valores, setValores] = useState([]);
   const [valoresAsc, setValoresAsc] = useState([]);
   const [valoresOnline, setValoresOnline] = useState([]);
@@ -133,7 +133,7 @@ const MyVerticallyCenteredModal = (props) => {
         let anterior=v[0];
         v.map(a=>{
           if(anterior!==a){
-            onlineValues=[...onlineValues,{label:"",value:parseFloat(a)}];
+            onlineValues=[...onlineValues,{label:"Q-"+a,value:parseFloat(a)}];
           }
           anterior=a;
           i++;
@@ -143,8 +143,7 @@ const MyVerticallyCenteredModal = (props) => {
       }
     })
     // valoresInvertidos=arrayInicial;
-    setValoresAsc(arrayInicial.reverse());
-    setValores(arrayInicial.reverse());
+    setValores(arrayInicial);
 
     setSlider([arrayInicial[1].value, arrayInicial[2].value,arrayInicial[3].value])
     // setSliderAsc([arrayInicial[3].value, arrayInicial[2].value,arrayInicial[1].value])

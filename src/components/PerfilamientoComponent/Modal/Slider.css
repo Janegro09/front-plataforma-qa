@@ -1,6 +1,6 @@
 .sliderContainer{
     width: 90%;
-    margin: 50px auto 0px;
+    margin: 20px auto 0px;
 }
 
 .guardar{
@@ -18,9 +18,9 @@
     height: 15px;
     cursor: text;
 }
-.jss14{
+/* .jss14{
     color: black!important;
-}
+} */
 
 .MuiSlider-rail {
     height: 4px!important;
@@ -35,8 +35,10 @@
     background-color: #000!important;
 }
 .MuiSlider-markActive{
-    background-color: #fff!important;
-
+    background-color: currentColor!important;
+}
+.MuiSlider-root{
+    padding: 40px 0!important;
 }
 /* .MuiSlider-valueLabel{
     background-color: yellow;

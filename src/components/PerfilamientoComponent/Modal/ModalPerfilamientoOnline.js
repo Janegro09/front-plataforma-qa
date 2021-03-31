@@ -100,6 +100,8 @@ const MyVerticallyCenteredModal = (props) => {
   const [cantidadesCuartilesDESC, setcantidadesCuartilesDESC] = useState([0,0,0,0]);
   const [cantidadesCuartilesASC, setcantidadesCuartilesASC] = useState([0,0,0,0]);
   
+  const ordenPerfilamiento=props.valor.Qorder;
+
   const arrayInicial = [
     {
       label:"Q1-Min",
@@ -144,11 +146,14 @@ const MyVerticallyCenteredModal = (props) => {
           anterior=a;
           i++;
         });
-        onlineValues[0].label="Q1-Min";
-        // const size=onlineValues.length
-        onlineValues[onlineValues.length-1].label="Q4-Max";
+        if(ordenPerfilamiento=="DESC"){
+          onlineValues[0].label="Q1-Min";
+          onlineValues[onlineValues.length-1].label="Q4-Max";  
+        } else {
+          onlineValues[0].label="Q4-Max";
+          onlineValues[onlineValues.length-1].label="Q1-Min";  
+        }
         setValoresOnline(onlineValues);
-        // console.log(onlineValues)
       }
     })
     // valoresInvertidos=arrayInicial;
@@ -172,12 +177,18 @@ const MyVerticallyCenteredModal = (props) => {
   // console.log(valoresSolamente, stepRange);
   
   const handleChange = (e) => {
+
+    
     let sliderValue = parseFloat(e.target.ariaValueNow);
     let indice=parseInt(e.target.dataset.index);
-    let valoresTemporales=valores;
-    if(valoresTemporales[0].value===sliderValue || valoresTemporales[4].value===sliderValue){
-      return;
+    if(!sliderValue){
+      alert("Tenes que mantenerte en el deslizador para calcular el perfilamiento Online")
     }
+    let valoresTemporales=valores;
+    
+    // if(valoresTemporales[0].value===sliderValue || valoresTemporales[4].value===sliderValue){
+    //   return;
+    // }
     if(indice===0 && (sliderValue < valoresTemporales[2].value)){      
       valoresTemporales[1].value=sliderValue;
     } else if (indice===1 && (sliderValue < valoresTemporales[3].value  && sliderValue > valoresTemporales[1].value)) {
@@ -188,8 +199,8 @@ const MyVerticallyCenteredModal = (props) => {
       
     }
     
-    // setValores([...valoresTemporales]);   
-
+    setValores([...valoresTemporales]);   
+    console.log(valoresTemporales);
     calcularCantCuartiles(valoresTemporales);
     
   }
@@ -270,6 +281,8 @@ const MyVerticallyCenteredModal = (props) => {
               valueLabelDisplay="auto"
               aria-labelledby="discrete-slider-always"
               // onClick={handleChange}
+              // onChange={(e)=>{console.log("Change:",e.target)}}
+              // onChangeCommitted={(e)=>{console.log("Commmited:",e)}}
               onChangeCommitted={handleChange}
               marks={valoresOnline}
               // marks={valores}
@@ -295,24 +308,26 @@ const MyVerticallyCenteredModal = (props) => {
               </tr>
             </thead>
             <tbody>
-              <tr>
                 { props.valor.Qorder ==='DESC' && 
                 <>
+                <tr>
                   <td>Valores</td>
-                    {valores.map(v=>{
-                      return <td key={v.value}>{v.value}</td>
+                    {valores.map((v,i)=>{
+                      return <td key={v.value+i}>{v.value}</td>
                     })}
+                </tr>
                 </>
                 }
                 { props.valor.Qorder ==='ASC' && 
                   <>
+                  <tr>
                     <td>Valores</td>
-                    {valores.slice(0).reverse().map(v=>{
-                      return <td key={v.value}>{v.value}</td>
-                      })}
+                    {valores.slice(0).reverse().map((v,i)=>{
+                      return <td key={v.value+isNaN}>{v.value}</td>
+                    })}
+                  </tr>
                   </>              
                 }
-              </tr>
             </tbody>
 
           </Table>

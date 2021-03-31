@@ -323,7 +323,7 @@ const MyVerticallyCenteredModal = (props) => {
                   <tr>
                     <td>Valores</td>
                     {valores.slice(0).reverse().map((v,i)=>{
-                      return <td key={v.value+isNaN}>{v.value}</td>
+                      return <td key={v.value+i}>{v.value}</td>
                     })}
                   </tr>
                   </>              

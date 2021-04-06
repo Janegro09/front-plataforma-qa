@@ -47,9 +47,13 @@
     height: 120px!important;
     top: -50px!important;
 }
-
-.MuiSlider-root:hover{
-    background: rgb(#000, #000, #000, 0.5)!important;
+.MuiSlider-marked{
+    transition: 0.5!important;
+}
+.MuiSlider-marked:hover{
+    transition: 0.5!important;
+    border-radius: 10px;
+    background: rgb(000, 000, 000, 0.05 )!important;
 }
 /* .MuiSlider-valueLabel{
     background-color: yellow;

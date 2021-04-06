@@ -298,6 +298,8 @@ const MyVerticallyCenteredModal = (props) => {
             bordered={"true"}
             hover={"true"}>
             <thead>
+            { props.valor.Qorder ==='DESC' && 
+                <>
               <tr>
                 <th>#</th>
                 <th>Q1 Min</th>
@@ -306,28 +308,32 @@ const MyVerticallyCenteredModal = (props) => {
                 <th>Q4</th>
                 <th>Q4 Max</th>
               </tr>
+
+                </>
+                }
+                { props.valor.Qorder ==='ASC' && 
+                  <>
+              <tr>
+                <th>#</th>
+                <th>Q4 Max</th>
+                <th>Q4</th>
+                <th>Q3</th>
+                <th>Q2</th>
+                <th>Q1 Min</th>
+              </tr>
+
+                  </>              
+                }
+
             </thead>
             <tbody>
-                { props.valor.Qorder ==='DESC' && 
-                <>
                 <tr>
                   <td>Valores</td>
                     {valores.map((v,i)=>{
                       return <td key={v.value+i}>{v.value}</td>
                     })}
                 </tr>
-                </>
-                }
-                { props.valor.Qorder ==='ASC' && 
-                  <>
-                  <tr>
-                    <td>Valores</td>
-                    {valores.slice(0).reverse().map((v,i)=>{
-                      return <td key={v.value+i}>{v.value}</td>
-                    })}
-                  </tr>
-                  </>              
-                }
+
             </tbody>
 
           </Table>
@@ -339,37 +345,37 @@ const MyVerticallyCenteredModal = (props) => {
             hover={"true"}>
             <thead>
               <tr>
-                <th>#</th>
-                <th>Q1</th>
-                <th>Q2</th>
-                <th>Q3</th>
-                <th>Q4</th>
+              {
+                  props.valor.Qorder === "DESC" &&
+                  <>
+                    <th>#</th>
+                    <th>Q1</th>
+                    <th>Q2</th>
+                    <th>Q3</th>
+                    <th>Q4</th>
+                  </>
+                }
+                {
+                  props.valor.Qorder === "ASC" &&
+                  <>
+                    <th>#</th>
+                    <th>Q4</th>
+                    <th>Q3</th>
+                    <th>Q2</th>
+                    <th>Q1</th>
+                  </>
+                }
               </tr>
             </thead>
             <tbody>
               <tr>
-                {
-                  props.valor.Qorder === "DESC" &&
-                  <>
+                
                   <td>Cantidades</td>
                   {
                     cantidadesCuartilesDESC.map((v,i) => {
                       return <td key={i}> {v} </td>
                     })
                   }
-                  </>
-                }
-                {
-                  props.valor.Qorder === "ASC" &&
-                  <>
-                  <td>Cantidades</td>
-                  {
-                    cantidadesCuartilesASC.map((v,i) => {
-                      return <td key={i}> {v} </td>
-                    })
-                  }
-                  </>
-                }
 
               </tr>
             </tbody>

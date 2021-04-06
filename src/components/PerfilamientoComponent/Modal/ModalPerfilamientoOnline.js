@@ -4,14 +4,29 @@ import Button from 'react-bootstrap/Button'
 import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
 import Slider from '@material-ui/core/Slider';
 // import PropTypes from 'prop-types';
-// import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import '../Modal/Slider.css'  
 import axios from 'axios';
 import Global from '../../../Global';
 import swal from 'sweetalert';
 import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
-import { Table } from '@material-ui/core';
+import { createGenerateClassName, Table } from '@material-ui/core';
 
+const IOSSlider = withStyles({
+  // root,colorPrimary,colorSecondary,marked,vertical,disabled,rail,track,trackFalse,trackInverted,thumb,thumbColorPrimary,thumbColorSecondary,active,focusVisible,valueLabel,mark,markActive,markLabel,markLabelActive,
+  // markLabel:{
+  //   background: '#000',
+  //   height:10,
+  //   width:10
+  // },
+  valueLabel: {
+    '& *': {
+      background: 'transparent',
+      color: '#000',
+    },
+  },
+
+})(Slider);
 
 const get_online = async (idPar,columnName) => {
   const id =idPar;
@@ -23,7 +38,20 @@ const get_online = async (idPar,columnName) => {
   const bearer = `Bearer ${token}`
 
   try{
-      let response = await axios.get(Global.reasignProgram + '/' + id + '/online/' + columnName, { headers: { Authorization: bearer } });
+      let response = await 
+      // axios.post(
+      //   Global.reasignProgram + '/' + id + '/online/',
+      //   {columnName}, 
+      //   { headers: { Authorization: bearer } }
+      //   );
+      axios({
+        method:'post',
+        url: Global.reasignProgram + '/' + id + '/online/',
+        headers: { Authorization: bearer },
+        data:{
+          columnName
+        }
+      });      
       return response.data.Data || false;
   } catch(e) {
       // Si hay algún error en el request lo deslogueamos
@@ -61,13 +89,19 @@ export const ModalPerfilamientoOnline = ({valor,guardar}) => {
   );
 }
 
-const MyVerticallyCenteredModal =   (props) => {
+const MyVerticallyCenteredModal = (props) => {
 
   const [online, setOnline] = useState();
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [slider, setSlider] = useState(['']);
   const [valores, setValores] = useState([]);
-  const [cantidadesCuartiles, setCantidadesCuartiles] = useState([0,0,0,0])
+  const [valoresAsc, setValoresAsc] = useState([]);
+  const [valoresOnline, setValoresOnline] = useState([]);
+  const [cantidadesCuartilesDESC, setcantidadesCuartilesDESC] = useState([0,0,0,0]);
+  const [cantidadesCuartilesASC, setcantidadesCuartilesASC] = useState([0,0,0,0]);
   
+  const ordenPerfilamiento=props.valor.Qorder;
+
   const arrayInicial = [
     {
       label:"Q1-Min",
@@ -91,7 +125,8 @@ const MyVerticallyCenteredModal =   (props) => {
     }
   ];
   
-  let stepRange;
+  // let stepRange;
+  // let valoresInvertidos=[];
   
   useEffect(() => {
     const {codigo, QName} = props.valor;
@@ -101,26 +136,60 @@ const MyVerticallyCenteredModal =   (props) => {
         setOnline(v)
         setLoading(false)
         calcularCantCuartiles(arrayInicial,v);
+        let i=0;
+        let anterior=v[0];
+        let onlineValues=[{label:"",value:anterior}];
+        v.map(a=>{
+          if(anterior!==a){
+            onlineValues=[...onlineValues,{label:"",value:parseFloat(a)}];
+          }
+          anterior=a;
+          i++;
+        });
+        if(ordenPerfilamiento=="DESC"){
+          onlineValues[0].label="Q1-Min";
+          onlineValues[onlineValues.length-1].label="Q4-Max";  
+        } else {
+          onlineValues[0].label="Q4-Max";
+          onlineValues[onlineValues.length-1].label="Q1-Min";  
+        }
+        setValoresOnline(onlineValues);
       }
     })
-    setValores(arrayInicial)
+    // valoresInvertidos=arrayInicial;
+    setValores(arrayInicial);
+
+    setSlider([arrayInicial[1].value, arrayInicial[2].value,arrayInicial[3].value])
+    // setSliderAsc([arrayInicial[3].value, arrayInicial[2].value,arrayInicial[1].value])
   }, []);
+
+  let valoresSolamente=arrayInicial;
+
+  valoresSolamente=valoresSolamente.map(a=> {
+    return a.value
+  })
+
+  // if(arrayInicial[4].value<=2){
+  //   stepRange=(arrayInicial[0].value + arrayInicial[4].value)/100;
+  // } else {
+  //   stepRange=1
+  // }
+  // console.log(valoresSolamente, stepRange);
   
-  if(arrayInicial[4].value===1){
-    stepRange=(arrayInicial[0].value + arrayInicial[4].value)/100;
-  } else {
-    stepRange=1
-  }
-  
-  const setearValores = (e) => {
+  const handleChange = (e) => {
+
+    
     let sliderValue = parseFloat(e.target.ariaValueNow);
     let indice=parseInt(e.target.dataset.index);
-    let valoresTemporales=valores;
-    if(valoresTemporales[0].value===sliderValue || valoresTemporales[4].value===sliderValue){
-      return;
+    if(!sliderValue){
+      alert("Tenes que mantenerte en el deslizador para calcular el perfilamiento Online")
     }
-    if(indice===0 && (sliderValue < valoresTemporales[2].value)){
-      
+    let valoresTemporales=valores;
+    
+    // if(valoresTemporales[0].value===sliderValue || valoresTemporales[4].value===sliderValue){
+    //   return;
+    // }
+    if(indice===0 && (sliderValue < valoresTemporales[2].value)){      
       valoresTemporales[1].value=sliderValue;
     } else if (indice===1 && (sliderValue < valoresTemporales[3].value  && sliderValue > valoresTemporales[1].value)) {
       valoresTemporales[2].value=sliderValue;
@@ -131,11 +200,10 @@ const MyVerticallyCenteredModal =   (props) => {
     }
     
     setValores([...valoresTemporales]);   
-
+    console.log(valoresTemporales);
     calcularCantCuartiles(valoresTemporales);
     
   }
-
 
   const calcularCantCuartiles = (valoresTemporales,v=false) => {
     let valoresOnline = online;
@@ -159,9 +227,10 @@ const MyVerticallyCenteredModal =   (props) => {
       } else if (Q4.value<v && v<=Vmax.value){
         cantQ4++
       }
-      return v;
     });
-    setCantidadesCuartiles([cantQ1,cantQ2,cantQ3,cantQ4]);
+    
+    setcantidadesCuartilesDESC([cantQ1,cantQ2,cantQ3,cantQ4]);
+    setcantidadesCuartilesASC([cantQ4,cantQ3,cantQ2,cantQ1]);
   }
   
   const guardarValores = (e) => {
@@ -177,6 +246,7 @@ const MyVerticallyCenteredModal =   (props) => {
     props.onHide();
   }
 
+  // console.log(props.valor.Qorder)
   return (
     <>      
     {
@@ -185,7 +255,7 @@ const MyVerticallyCenteredModal =   (props) => {
       <Modal
       {...props}
       guardar={props.guardar()}
-      //   key={props.valor.QName}
+      key={props.valor.QName}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -196,24 +266,28 @@ const MyVerticallyCenteredModal =   (props) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h4>Prueba</h4>
+          <h4>Orden {props.valor.Qorder}</h4>
           <p>
               Prueba de perfilamiento Online
           </p>
           <div className="sliderContainer">
           <h5></h5>
-          <Slider
-              key={`slider-${valores.map((v,i)=>{return v.value+i})}`}
+          <IOSSlider
+              
+              key={`${valoresOnline.map((v,i)=>{ return v.value+i})}`}
               max={valores[4].value}
               min={valores[0].value}
-              // track={false}
-              name="valores"
-              defaultValue={[valores[1].value, valores[2].value,valores[3].value]}
+              defaultValue={slider}
               valueLabelDisplay="auto"
               aria-labelledby="discrete-slider-always"
-              onClick={setearValores}
-              marks={valores}
-              step={stepRange}
+              // onClick={handleChange}
+              // onChange={(e)=>{console.log("Change:",e.target)}}
+              // onChangeCommitted={(e)=>{console.log("Commmited:",e)}}
+              onChangeCommitted={handleChange}
+              marks={valoresOnline}
+              // marks={valores}
+              step={null}
+              // step={stepRange}
             />
 
           <div className="contenedor-cuartiles">
@@ -224,6 +298,8 @@ const MyVerticallyCenteredModal =   (props) => {
             bordered={"true"}
             hover={"true"}>
             <thead>
+            { props.valor.Qorder ==='DESC' && 
+                <>
               <tr>
                 <th>#</th>
                 <th>Q1 Min</th>
@@ -232,15 +308,34 @@ const MyVerticallyCenteredModal =   (props) => {
                 <th>Q4</th>
                 <th>Q4 Max</th>
               </tr>
+
+                </>
+                }
+                { props.valor.Qorder ==='ASC' && 
+                  <>
+              <tr>
+                <th>#</th>
+                <th>Q4 Max</th>
+                <th>Q4</th>
+                <th>Q3</th>
+                <th>Q2</th>
+                <th>Q1 Min</th>
+              </tr>
+
+                  </>              
+                }
+
             </thead>
             <tbody>
-              <tr>
-                <td>Valores</td>
-                {valores.map(v=>{
-                  return <td key={v.value}>{v.value}</td>
-                })}
-              </tr>
+                <tr>
+                  <td>Valores</td>
+                    {valores.map((v,i)=>{
+                      return <td key={v.value+i}>{v.value}</td>
+                    })}
+                </tr>
+
             </tbody>
+
           </Table>
 
           <h4>Detalles Cantidades</h4>          
@@ -250,21 +345,38 @@ const MyVerticallyCenteredModal =   (props) => {
             hover={"true"}>
             <thead>
               <tr>
-                <th>#</th>
-                <th>Q1</th>
-                <th>Q2</th>
-                <th>Q3</th>
-                <th>Q4</th>
+              {
+                  props.valor.Qorder === "DESC" &&
+                  <>
+                    <th>#</th>
+                    <th>Q1</th>
+                    <th>Q2</th>
+                    <th>Q3</th>
+                    <th>Q4</th>
+                  </>
+                }
+                {
+                  props.valor.Qorder === "ASC" &&
+                  <>
+                    <th>#</th>
+                    <th>Q4</th>
+                    <th>Q3</th>
+                    <th>Q2</th>
+                    <th>Q1</th>
+                  </>
+                }
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Cantidades</td>
-                {
-                  cantidadesCuartiles.map((v,i) => {
-                    return <td key={i}> {v} </td>
-                  })
-                }
+                
+                  <td>Cantidades</td>
+                  {
+                    cantidadesCuartilesDESC.map((v,i) => {
+                      return <td key={i}> {v} </td>
+                    })
+                  }
+
               </tr>
             </tbody>
           </Table>

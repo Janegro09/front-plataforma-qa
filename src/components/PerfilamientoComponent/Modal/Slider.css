@@ -1,6 +1,6 @@
 .sliderContainer{
     width: 90%;
-    margin: 50px auto 0px;
+    margin: 20px auto 0px;
 }
 
 .guardar{
@@ -9,3 +9,61 @@
 .cerrar{
     background: #dc3545;
 }
+
+.MuiSlider-track{
+    height: 5px!important;
+}
+
+.MuiSlider-marked{
+    height: 15px;
+    cursor: text;
+}
+/* .jss14{
+    color: black!important;
+} */
+
+.MuiSlider-rail {
+    height: 4px!important;
+}
+
+.MuiSlider-thumb{
+    width: 15px!important;
+    height: 15px!important;
+}
+.MuiSlider-mark{
+    height: 5px!important;
+    background-color: #000!important;
+}
+.MuiSlider-markActive{
+    background-color: currentColor!important;
+}
+.MuiSlider-root{
+    padding: 40px 0!important;
+}
+.MuiSlider-markLabel{
+    top:59px!important;
+}
+.MuiSlider-thumb::after{
+    height: 120px!important;
+    top: -50px!important;
+}
+.MuiSlider-marked{
+    transition: 0.5!important;
+}
+.MuiSlider-marked:hover{
+    transition: 0.5!important;
+    border-radius: 10px;
+    background: rgb(000, 000, 000, 0.05 )!important;
+}
+/* .MuiSlider-valueLabel{
+    background-color: yellow;
+}
+.PrivateValueLabel-circle{
+    background-color: turquoise;
+}
+.PrivateValueLabel-label-9, .PrivateValueLabel-circle-19, .PrivateValueLabel-circle-13,.PrivateValueLabel-circle-14{
+    color: black!important;
+}
+.PrivateValueLabel-circle-8, .PrivateValueLabel-circle-18, .PrivateValueLabel-circle-13, .PrivateValueLabel-label-14{
+    background-color: white!important;
+} */

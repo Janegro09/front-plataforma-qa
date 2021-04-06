@@ -246,7 +246,6 @@ const MyVerticallyCenteredModal = (props) => {
     props.onHide();
   }
 
-  // console.log(props.valor.Qorder)
   return (
     <>      
     {

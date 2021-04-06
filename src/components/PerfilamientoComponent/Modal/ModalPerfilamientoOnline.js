@@ -181,7 +181,8 @@ const MyVerticallyCenteredModal = (props) => {
     
     let sliderValue = parseFloat(e.target.ariaValueNow);
     let indice=parseInt(e.target.dataset.index);
-    if(!sliderValue){
+    console.log(sliderValue);
+    if(isNaN(sliderValue)){
       alert("Tenes que mantenerte en el deslizador para calcular el perfilamiento Online")
     }
     let valoresTemporales=valores;

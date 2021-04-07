@@ -146,13 +146,8 @@ const MyVerticallyCenteredModal = (props) => {
           anterior=a;
           i++;
         });
-        if(ordenPerfilamiento=="DESC"){
-          onlineValues[0].label="Q1-Min";
-          onlineValues[onlineValues.length-1].label="Q4-Max";  
-        } else {
-          onlineValues[0].label="Q4-Max";
-          onlineValues[onlineValues.length-1].label="Q1-Min";  
-        }
+        onlineValues[0].label="Q1-Min";
+        onlineValues[onlineValues.length-1].label="Q4-Max";  
         setValoresOnline(onlineValues);
       }
     })

@@ -95,8 +95,6 @@ const MyVerticallyCenteredModal = (props) => {
   const [cantidadesCuartilesDESC, setcantidadesCuartilesDESC] = useState([0,0,0,0]);
   const [cantidadesCuartilesASC, setcantidadesCuartilesASC] = useState([0,0,0,0]);
   
-  const ordenPerfilamiento=props.valor.Qorder;
-  
   const arrayInicial = [
     {
       label:"Q1-Min",
@@ -276,9 +274,9 @@ const MyVerticallyCenteredModal = (props) => {
           cantQ1++
         } else if (Q4.value<v && v<=Q3.value){
           cantQ2++
-        } else if (Q3.value<v && v<=Q2.value){
+        } else if (Q3.value<v && v<Q2.value){
           cantQ3++
-        } else if (Q2.value<v && v<=Vmin.value){
+        } else if (Q2.value<=v && v<=Vmin.value){
           cantQ4++
         }
       });
@@ -291,9 +289,9 @@ const MyVerticallyCenteredModal = (props) => {
           cantQ1++
         } else if (Q2.value<v && v<=Q3.value){
           cantQ2++
-        } else if (Q3.value<v && v<=Q4.value){
+        } else if (Q3.value<v && v<Q4.value){
           cantQ3++
-        } else if (Q4.value<v && v<=Vmax.value){
+        } else if (Q4.value<=v && v<=Vmax.value){
           cantQ4++
         }
       });

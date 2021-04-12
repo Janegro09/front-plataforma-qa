@@ -361,18 +361,18 @@ const MyVerticallyCenteredModal = (props) => {
 
           {
             props.valor.Qorder=='ASC' && 
-              <IOSSlider  
-              key={`${valoresAsc.map((v,i)=>{ return v.value+i})}`}
-              max={valores[4].value*(-1)}
-              min={valores[0].value*(-1)}
-              defaultValue={sliderAsc}
-              valueLabelDisplay="auto"
-              aria-labelledby="discrete-slider-always"
-              onChangeCommitted={handleChangeASC}
-              marks={valoresAsc}
-              step={null}
-              scale={valorAbsoluto}
-              />
+            <IOSSlider  
+            key={`${valoresAsc.map((v,i)=>{ return v.value+i})}`}
+            max={valores[4].value*(-1)}
+            min={valores[0].value*(-1)}
+            defaultValue={sliderAsc}
+            valueLabelDisplay="auto"
+            aria-labelledby="discrete-slider-always"
+            onChangeCommitted={handleChangeASC}
+            marks={valoresAsc}
+            step={null}
+            scale={valorAbsoluto}
+            />
           }
 
           <div className="contenedor-cuartiles">
@@ -443,7 +443,7 @@ const MyVerticallyCenteredModal = (props) => {
           <Button variant="secondary" onClick={props.onHide}>Cancelar</Button>
         </Modal.Footer>
       </Modal>
-}
+    }
     </>
   );
 }

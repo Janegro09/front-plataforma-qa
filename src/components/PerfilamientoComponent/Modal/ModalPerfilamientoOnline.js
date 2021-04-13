@@ -13,12 +13,6 @@ import { HELPER_FUNCTIONS } from '../../../helpers/Helpers';
 import { createGenerateClassName, Table } from '@material-ui/core';
 
 const IOSSlider = withStyles({
-  // root,colorPrimary,colorSecondary,marked,vertical,disabled,rail,track,trackFalse,trackInverted,thumb,thumbColorPrimary,thumbColorSecondary,active,focusVisible,valueLabel,mark,markActive,markLabel,markLabelActive,
-  // markLabel:{
-  //   background: '#000',
-  //   height:10,
-  //   width:10
-  // },
   valueLabel: {
     '& *': {
       background: 'transparent',
@@ -178,11 +172,11 @@ const MyVerticallyCenteredModal = (props) => {
       }
     });
     if(props.valor.Qorder=='DESC'){
-      setValores(arrayInicial);
     }
-    if(props.valor.Qorder=='ASC'){
-      setValores(arrayInicialAsc);
-    }
+    setValores(arrayInicial);
+    // if(props.valor.Qorder=='ASC'){
+    //   setValores(arrayInicialAsc);
+    // }
 
     
     setSlider([arrayInicial[1].value, arrayInicial[2].value,arrayInicial[3].value])
@@ -226,8 +220,23 @@ const MyVerticallyCenteredModal = (props) => {
     if(isNaN(sliderValue)){
       alert("Tenes que mantenerte en el deslizador para calcular el perfilamiento Online")
     }
-
+    console.log(sliderValue);
+    console.log(indice);
     let valoresTemporales=valores;
+
+    if(props.valor.Qorder=="ASC"){
+      switch (indice) {
+        case 0:
+          indice=2;          
+          break;
+        case 2:
+          indice=0;          
+          break;
+
+        default:
+          break;
+      }
+    }
 
     if(indice===0 && (sliderValue < valoresTemporales[2].value)){      
       valoresTemporales[1].value=sliderValue;
@@ -255,48 +264,22 @@ const MyVerticallyCenteredModal = (props) => {
     let cantQ2=0;
     let cantQ3=0;
     let cantQ4=0;
-    if(props.valor.Qorder=='DESC'){
-      valoresOnline.map(v => {
-        
-        if(Vmin.value<=v && v<=Q2.value){
-          cantQ1++
-        } else if (Q2.value<v && v<=Q3.value){
-          cantQ2++
-        } else if (Q3.value<v && v<=Q4.value){
-          cantQ3++
-        } else if (Q4.value<v && v<=Vmax.value){
-          cantQ4++
-        }
-      });
-    } else {
-      valoresOnline.map(v => {
-        if(Vmax.value<=v && v<=Q4.value){
-          cantQ1++
-        } else if (Q4.value<v && v<=Q3.value){
-          cantQ2++
-        } else if (Q3.value<v && v<Q2.value){
-          cantQ3++
-        } else if (Q2.value<=v && v<=Vmin.value){
-          cantQ4++
-        }
-      });
-    }
+
+    valoresOnline.map(v => {
+      
+      if(Vmin.value<=v && v<=Q2.value){
+        cantQ1++
+      } else if (Q2.value<v && v<=Q3.value){
+        cantQ2++
+      } else if (Q3.value<v && v<=Q4.value){
+        cantQ3++
+      } else if (Q4.value<v && v<=Vmax.value){
+        cantQ4++
+      }
+    });
+
     setcantidadesCuartilesDESC([cantQ1,cantQ2,cantQ3,cantQ4]);
-    if([cantQ1,cantQ2,cantQ3,cantQ4]==[0,0,0,0]){
-    } else {
-        valoresOnline.map(v => {
-        if(Vmin.value<=v && v<=Q2.value){
-          cantQ1++
-        } else if (Q2.value<v && v<=Q3.value){
-          cantQ2++
-        } else if (Q3.value<v && v<Q4.value){
-          cantQ3++
-        } else if (Q4.value<=v && v<=Vmax.value){
-          cantQ4++
-        }
-      });
-      setcantidadesCuartilesASC([cantQ4,cantQ3,cantQ2,cantQ1]);
-    }
+
   }
   
   const guardarValores = (e) => {
@@ -361,18 +344,21 @@ const MyVerticallyCenteredModal = (props) => {
 
           {
             props.valor.Qorder=='ASC' && 
-              <IOSSlider  
-              key={`${valoresAsc.map((v,i)=>{ return v.value+i})}`}
-              max={valores[4].value*(-1)}
-              min={valores[0].value*(-1)}
-              defaultValue={sliderAsc}
-              valueLabelDisplay="auto"
-              aria-labelledby="discrete-slider-always"
-              onChangeCommitted={handleChangeASC}
-              marks={valoresAsc}
-              step={null}
-              scale={valorAbsoluto}
-              />
+            <IOSSlider  
+            key={`${valoresAsc.map((v,i)=>{ return v.value+i})}`}
+            min={valores[4].value*(-1)}
+            max={valores[0].value*(-1)}
+            defaultValue={slider.map(x => {return x*(-1)})}
+            valueLabelDisplay="auto"
+            aria-labelledby="discrete-slider-always"
+            onChangeCommitted={handleChange}
+            marks={valoresOnline.map(x => {return {
+              "label":x.label,
+              "value":x.value*(-1)
+            }})}
+            step={null}
+            scale={valorAbsoluto}
+            />
           }
 
           <div className="contenedor-cuartiles">
@@ -423,9 +409,9 @@ const MyVerticallyCenteredModal = (props) => {
                 <td>Cantidades</td>
                 {
                   props.valor.Qorder=='ASC' ?
-                  cantidadesCuartilesASC.map((v,i) => {
-                  return <td key={i}> {v} </td>
-                })
+                  cantidadesCuartilesDESC.map((v,i) => {
+                    return <td key={i}> {v} </td>
+                  })
                 :
                 cantidadesCuartilesDESC.map((v,i) => {
                     return <td key={i}> {v} </td>
@@ -443,7 +429,7 @@ const MyVerticallyCenteredModal = (props) => {
           <Button variant="secondary" onClick={props.onHide}>Cancelar</Button>
         </Modal.Footer>
       </Modal>
-}
+    }
     </>
   );
 }

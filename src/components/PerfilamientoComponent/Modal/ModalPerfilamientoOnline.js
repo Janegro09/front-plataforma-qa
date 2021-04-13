@@ -173,8 +173,6 @@ const MyVerticallyCenteredModal = (props) => {
     if(isNaN(sliderValue)){
       alert("Tenes que mantenerte en el deslizador para calcular el perfilamiento Online")
     }
-    console.log(sliderValue);
-    console.log(indice);
     let valoresTemporales=valores;
 
     if(props.valor.Qorder=="ASC"){

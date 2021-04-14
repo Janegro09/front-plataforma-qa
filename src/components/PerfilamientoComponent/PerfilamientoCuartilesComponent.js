@@ -371,22 +371,26 @@ export default class PerfilamientoCuartilesComponent extends Component {
         if(value !== undefined && index !== -1) {
             switch(name) {
                 case "VMin": 
-                    result[index].Q1.VMax = (value)
+                    result[index].Q1.VMax = (value);
+                    result[index].cuartilEditado = true;
                 break;
                 case "VMax": 
                     result[index].Q3.VMax = (value);
+                    result[index].cuartilEditado = true;
                 break;
                 default:
                     result[index][name] = value
             }
             this.setState({ result });
+            console.log(result[index])
         } else return false;
 
     }
 
     guardarValores = (valoresModal) => {
-        // const {cuartilamientoOnline} = this.state;
+        console.log(valoresModal)
         if(valoresModal){
+            valoresModal.cuartilEditado=true;
             this.setState({
                 cuartilamientoOnline:valoresModal
             })

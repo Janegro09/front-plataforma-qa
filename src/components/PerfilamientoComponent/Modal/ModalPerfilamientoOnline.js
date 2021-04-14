@@ -365,7 +365,7 @@ const MyVerticallyCenteredModal = (props) => {
                     return <td key={i}> {v} </td>
                   })
                 :
-                cantidadesCuartilesDESC.slide(0).reverse().map((v,i) => {
+                cantidadesCuartilesDESC.map((v,i) => {
                     return <td key={i}> {v} </td>
                   })
 

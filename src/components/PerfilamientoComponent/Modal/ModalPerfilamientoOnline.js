@@ -81,7 +81,6 @@ const MyVerticallyCenteredModal = (props) => {
   const [online, setOnline] = useState();
   const [loading, setLoading] = useState(true);
   const [slider, setSlider] = useState(['']);
-  const [sliderAsc, setSliderAsc] = useState(['']);
   const [orden, setOrden] = useState('');
   const [valores, setValores] = useState([]);
   const [valoresAsc, setValoresAsc] = useState([]);
@@ -112,29 +111,6 @@ const MyVerticallyCenteredModal = (props) => {
     }
   ];
 
-  const arrayInicialAsc = [
-    {
-      label:"Q1-Min",
-      value:parseFloat(props.valor.Q4.VMax)
-    },
-    {
-      label:"Q1",
-      value:parseFloat(props.valor.Q3.VMax)
-    },
-    {
-      label:"Q2",
-      value:parseFloat(props.valor.Q2.VMax)
-    },
-    {
-      label:"Q3",
-      value:parseFloat(props.valor.Q1.VMax)
-    },
-    {
-      label:"Q4-Max",
-      value:parseFloat(props.valor.Q1.VMin)
-    }
-  ];
-  
   useEffect(() => {
     setOrden(props.valor.Qorder);
     const {codigo, QName} = props.valor;
@@ -180,7 +156,6 @@ const MyVerticallyCenteredModal = (props) => {
 
     
     setSlider([arrayInicial[1].value, arrayInicial[2].value,arrayInicial[3].value])
-    setSliderAsc([arrayInicial[1].value*(-1), arrayInicial[2].value*(-1),arrayInicial[3].value*(-1)])
   }, []);
 
   let valoresSolamente=arrayInicial;
@@ -189,29 +164,7 @@ const MyVerticallyCenteredModal = (props) => {
     return a.value
   })
 
-  const handleChangeASC = (e) =>{
-    let sliderValue = parseFloat(e.target.ariaValueNow);
-    let indice=parseInt(e.target.dataset.index);
-    if(isNaN(sliderValue)){
-      alert("Tenes que mantenerte en el deslizador para calcular el perfilamiento Online")
-    }
-    
-    let valoresTemporales=valores;
-    // valoresTemporales.reverse();
-    if(indice===2 && (sliderValue < valoresTemporales[1].value)){      
-      valoresTemporales[3].value=sliderValue;
-    } else if (indice===1 && (sliderValue > valoresTemporales[3].value  || sliderValue < valoresTemporales[2].value)) {
-      valoresTemporales[2].value=sliderValue;
-    } else if(indice===0 && (sliderValue > valoresTemporales[2].value)){
-      valoresTemporales[1].value=sliderValue;
-    } else {
-      
-    }
-    // valoresTemporales.reverse();
-    
-    calcularCantCuartiles(valoresTemporales);
-    setValores([...valoresTemporales]);   
-  } 
+
   
   const handleChange = (e) => {
     
@@ -220,8 +173,7 @@ const MyVerticallyCenteredModal = (props) => {
     if(isNaN(sliderValue)){
       alert("Tenes que mantenerte en el deslizador para calcular el perfilamiento Online")
     }
-    console.log(sliderValue);
-    console.log(indice);
+
     let valoresTemporales=valores;
 
     if(props.valor.Qorder=="ASC"){
@@ -279,6 +231,9 @@ const MyVerticallyCenteredModal = (props) => {
     });
 
     setcantidadesCuartilesDESC([cantQ1,cantQ2,cantQ3,cantQ4]);
+
+    setcantidadesCuartilesASC([cantQ4,cantQ3,cantQ2,cantQ1]);
+
 
   }
   
@@ -409,11 +364,12 @@ const MyVerticallyCenteredModal = (props) => {
                 <td>Cantidades</td>
                 {
                   props.valor.Qorder=='ASC' ?
-                  cantidadesCuartilesDESC.map((v,i) => {
+
+                  cantidadesCuartilesASC.map((v,i) => {
                     return <td key={i}> {v} </td>
                   })
                 :
-                cantidadesCuartilesDESC.map((v,i) => {
+                cantidadesCuartilesDESC.slide(0).reverse().map((v,i) => {
                     return <td key={i}> {v} </td>
                   })
 

@@ -85,8 +85,7 @@ const MyVerticallyCenteredModal = (props) => {
   const [valores, setValores] = useState([]);
   const [valoresAsc, setValoresAsc] = useState([]);
   const [valoresOnline, setValoresOnline] = useState([]);
-  const [cantidadesCuartilesDESC, setcantidadesCuartilesDESC] = useState([0,0,0,0]);
-  const [cantidadesCuartilesASC, setcantidadesCuartilesASC] = useState([0,0,0,0]);
+  const [cantidadesCuartiles, setcantidadesCuartiles] = useState([0,0,0,0]);
   
   const arrayInicial = [
     {
@@ -229,11 +228,11 @@ const MyVerticallyCenteredModal = (props) => {
         cantQ4++
       }
     });
-
-    setcantidadesCuartilesDESC([cantQ1,cantQ2,cantQ3,cantQ4]);
-
-    setcantidadesCuartilesASC([cantQ4,cantQ3,cantQ2,cantQ1]);
-
+    if(props.valor.Qorder=="ASC"){
+      setcantidadesCuartiles([cantQ4,cantQ3,cantQ2,cantQ1]);
+    } else {
+      setcantidadesCuartiles([cantQ1,cantQ2,cantQ3,cantQ4]);
+    }
 
   }
   
@@ -363,16 +362,9 @@ const MyVerticallyCenteredModal = (props) => {
               <tr>
                 <td>Cantidades</td>
                 {
-                  props.valor.Qorder=='ASC' ?
-
-                  cantidadesCuartilesASC.map((v,i) => {
+                  cantidadesCuartiles.map((v,i) => {
                     return <td key={i}> {v} </td>
                   })
-                :
-                cantidadesCuartilesDESC.map((v,i) => {
-                    return <td key={i}> {v} </td>
-                  })
-
                 }
               </tr>
             </tbody>

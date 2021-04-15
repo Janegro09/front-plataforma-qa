@@ -448,7 +448,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
     }
 
     guardarValores = (valoresModal) => {
-        console.log(valoresModal)
         if(valoresModal){
             valoresModal.cuartilEditado=true;
             this.setState({

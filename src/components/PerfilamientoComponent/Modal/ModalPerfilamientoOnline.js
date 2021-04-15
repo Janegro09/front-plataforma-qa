@@ -173,6 +173,7 @@ const MyVerticallyCenteredModal = (props) => {
     if(isNaN(sliderValue)){
       alert("Tenes que mantenerte en el deslizador para calcular el perfilamiento Online")
     }
+
     let valoresTemporales=valores;
 
     if(props.valor.Qorder=="ASC"){
@@ -230,7 +231,9 @@ const MyVerticallyCenteredModal = (props) => {
     });
 
     setcantidadesCuartilesDESC([cantQ1,cantQ2,cantQ3,cantQ4]);
+
     setcantidadesCuartilesASC([cantQ4,cantQ3,cantQ2,cantQ1]);
+
 
   }
   
@@ -361,6 +364,7 @@ const MyVerticallyCenteredModal = (props) => {
                 <td>Cantidades</td>
                 {
                   props.valor.Qorder=='ASC' ?
+
                   cantidadesCuartilesASC.map((v,i) => {
                     return <td key={i}> {v} </td>
                   })

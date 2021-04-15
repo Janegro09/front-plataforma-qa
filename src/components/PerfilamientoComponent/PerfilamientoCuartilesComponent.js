@@ -8,7 +8,24 @@ import { Redirect } from 'react-router-dom';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import Checkbox from '@material-ui/core/Checkbox';
 import { ModalPerfilamientoOnline } from './Modal/ModalPerfilamientoOnline';
+import { Row } from 'react-bootstrap';
 
+function calcular_modelo(valor_minimo, valor_maximo) {
+
+    if(valor_minimo === undefined || valor_maximo === undefined) return false;
+
+    this.valor_minimo = parseFloat(valor_minimo);
+    this.valor_maximo = parseFloat(valor_maximo);
+
+    this.diferencia_valores = this.valor_maximo - this.valor_minimo;
+
+    this.abs_to_rel = (valor_absoluto) => ((parseFloat(valor_absoluto) - this.valor_minimo) / this.diferencia_valores);
+
+    this.rel_to_abs = (valor_relativo) => ((parseFloat(valor_relativo) * this.diferencia_valores) + this.valor_minimo);
+
+    return this;
+
+}
 
 export default class PerfilamientoCuartilesComponent extends Component {
     constructor(props) {
@@ -64,7 +81,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
     }
 
     guardarModel = () => {
-        let { modelSelected, result } = this.state;
+        let { modelSelected, result, nombreColumnas } = this.state;
         let modelName = document.getElementById('model-name').value;
 
         if (modelName.trim() === '') {
@@ -72,8 +89,44 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 this.componentDidMount();
             })
         } else {
+            //Se modifica para cuartilización agil y se puedan guardar los valores seleccionados y no seleccionados 14-04-2021
             result = result.filter(elem => elem.selected === true);
-            result = JSON.stringify(result);
+
+            let relativeValues = [];
+
+            for (const row of result) {
+                let relValues = new calcular_modelo(row.Q1.VMin, row.Q4.VMax);
+                let aux=row;
+                aux.edited=false;
+                let objectToCompare = nombreColumnas.find(element => element.QName === row.QName);
+                
+                if(objectToCompare){
+                    if(
+                        (objectToCompare.Q1.VMax!=row.Q1.VMax ||
+                        objectToCompare.Q2.VMax!=row.Q2.VMax ||
+                        objectToCompare.Q3.VMax!=row.Q3.VMax)
+                        ){
+                            aux.edited=true;
+                        } 
+                }
+
+                aux.Q1.VMax= relValues.abs_to_rel(row.Q1.VMax);
+                aux.Q2.VMax=relValues.abs_to_rel(row.Q2.VMax);
+                aux.Q3.VMax=relValues.abs_to_rel(row.Q3.VMax);
+                aux.Q4.VMax=relValues.abs_to_rel(row.Q4.VMax);
+
+                aux.Q1.VMin=relValues.abs_to_rel(row.Q1.VMin);
+                aux.Q2.VMin=aux.Q1.VMax;
+                aux.Q3.VMin=aux.Q2.VMax;
+                aux.Q4.VMin=aux.Q3.VMax;
+
+                relativeValues.push(aux);
+            }
+
+            console.log(result);
+            console.log(relativeValues);
+
+            relativeValues = JSON.stringify(relativeValues);
             let token = JSON.parse(localStorage.getItem('token'))
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
@@ -81,7 +134,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
             const bodyParameters = {
                 name: modelName,
-                values: result
+                values: relativeValues
             }
 
             if (Object.keys(modelSelected).length > 0) {

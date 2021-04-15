@@ -337,9 +337,16 @@ const MyVerticallyCenteredModal = (props) => {
             <tbody>
                 <tr>
                   <td>Valores</td>
-                    {valores.map((v,i)=>{
+                  {
+                    props.valor.Qorder=='ASC' ?
+                    valores.slice().reverse().map((v,i)=>{
                       return <td key={v.value+i}>{v.value}</td>
-                    })}
+                    })
+                    :
+                    valores.map((v,i)=>{
+                      return <td key={v.value+i}>{v.value}</td>
+                    })
+                  }
                 </tr>
             </tbody>
           </Table>

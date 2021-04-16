@@ -694,13 +694,13 @@ export default class StepName extends Component {
 
                                         {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'SUPERVISOR AUXILIAR' && this.state.role !== 'RESPONSABLE' && this.state.role !== 'SUPERVISOR' &&
                                             <article>
-                                                <h6 className="titulo-seccion">Coordinador / Coordinador on Site</h6>
+                                                <h6 className="titulo-seccion">Coordinador</h6>
                                                 <hr />
                                                 {customFields &&
                                                     <CustomFields
-                                                        disabled={this.state.role !== 'COORDINADOR OC' && this.state.role !== 'COORDINADOR' && this.state.role !== 'ADMINISTRATOR'}
+                                                        disabled={this.state.role !== 'COORDINADOR' && this.state.role !== 'ADMINISTRATOR'}
                                                         fields={customFields}
-                                                        section='P'
+                                                        section='   P'
                                                         subsection='COO'
                                                         values={step.coordinatorOnSiteComments}
                                                         data={(d) => {

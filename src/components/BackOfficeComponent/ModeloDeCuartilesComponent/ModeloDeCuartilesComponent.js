@@ -41,7 +41,14 @@ export default class ModeloDePartiturasComponent extends Component {
                             localStorage.setItem('token', JSON.stringify(response.data.loggedUser.token))
                             if (response.data.Success) {
                                 swal("Felicidades!", "Modelo eliminado correctamente", "success");
-                                window.location.reload(window.location.href);
+                                let { data } = this.state;
+                                let index = data.findIndex(elem => elem._id === id);
+                                if(index !== -1) {
+                                    data.splice(index, 1);
+                                } else return false;
+
+                                this.setState({ data })
+                                //window.location.reload(window.location.href);
                             }
 
                         })

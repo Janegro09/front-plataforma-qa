@@ -658,7 +658,7 @@ export default class StepName extends Component {
                                                 {customFields &&
                                                     <CustomFields
                                                         fields={customFields}
-                                                        disabled={this.state.role !== 'RESPONSABLE' && this.state.role !== 'ADMINISTRATOR'}
+                                                        disabled={this.state.role !== 'RESPONSABLE' && this.state.role !== 'ADMINISTRATOR' && this.state.role !== 'SUPERVISOR'}
                                                         section='P'
                                                         subsection='RESP'
                                                         values={step.responsibleComments}
@@ -669,7 +669,7 @@ export default class StepName extends Component {
                                                 }
                                             </article>
                                         }
-                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'LIDER ON SITE' &&
+                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE'  && this.state.role !== 'LIDER' && this.state.role !== 'SUPERVISOR AUXILIAR' && 
 
                                             <article>
                                                 <h6 className="titulo-seccion">Gerente</h6>
@@ -692,7 +692,7 @@ export default class StepName extends Component {
                                         }
 
 
-                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'RESPONSABLE' &&
+                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'SUPERVISOR AUXILIAR' && this.state.role !== 'RESPONSABLE' &&  && this.state.role !== 'SUPERVISOR' &&
                                             <article>
                                                 <h6 className="titulo-seccion">Coordinador / Coordinador on Site</h6>
                                                 <hr />

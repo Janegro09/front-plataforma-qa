@@ -692,7 +692,7 @@ export default class StepName extends Component {
                                         }
 
 
-                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'SUPERVISOR AUXILIAR' && this.state.role !== 'RESPONSABLE' &&  && this.state.role !== 'SUPERVISOR' &&
+                                        {this.state.role !== false && this.state.role !== 'REPRESENTANTE' && this.state.role !== 'LIDER' && this.state.role !== 'SUPERVISOR AUXILIAR' && this.state.role !== 'RESPONSABLE' && this.state.role !== 'SUPERVISOR' &&
                                             <article>
                                                 <h6 className="titulo-seccion">Coordinador / Coordinador on Site</h6>
                                                 <hr />

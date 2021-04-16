@@ -222,9 +222,9 @@ const MyVerticallyCenteredModal = (props) => {
         cantQ1++
       } else if (Q2.value<v && v<=Q3.value){
         cantQ2++
-      } else if (Q3.value<v && v<=Q4.value){
+      } else if (Q3.value<v && v<Q4.value){
         cantQ3++
-      } else if (Q4.value<v && v<=Vmax.value){
+      } else if (Q4.value<=v && v<=Vmax.value){
         cantQ4++
       }
     });
@@ -271,14 +271,11 @@ const MyVerticallyCenteredModal = (props) => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            {props.valor.QName}
+           Metrica {props.valor.QName}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <h4>Orden {props.valor.Qorder}</h4>
-          <p>
-              Prueba de perfilamiento Online
-          </p>
           <div className="sliderContainer">
           <h5></h5>
           {

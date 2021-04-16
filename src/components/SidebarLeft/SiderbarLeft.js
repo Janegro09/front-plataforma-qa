@@ -66,7 +66,7 @@ export default class SiderbarLeft extends Component {
                                     }
 
                                     {HELPER_FUNCTIONS.checkPermission("GET|files/:id") &&
-                                        <NavLink to="/modelo-cuartil">Modelo de Cuartiles</NavLink>
+                                        <NavLink to="/modelo-de-cuartiles">Modelo de Cuartiles</NavLink>
                                     }
 
                                     <NavLink to="/tipos-de-calibraciones">Tipos de calibraciones</NavLink>

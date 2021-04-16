@@ -31,6 +31,8 @@ import PerfilamientosComponent from '../components/PerfilamientoComponent/Perfil
 import PerfilamientoCuartilesComponent from '../components/PerfilamientoComponent/PerfilamientoCuartilesComponent';
 import PartiturasComponent from '../components/PartiturasComponent/PartiturasComponent';
 import BibliotecaArchivosComponent from '../components/BackOfficeComponent/BibliotecaArchivosComponent/BibliotecaArchivosComponent';
+import ModeloDeCuartilesComponent from '../components/BackOfficeComponent/ModeloDeCuartilesComponent/ModeloDeCuartilesComponent';
+import EditarModeloDeCuartiles from '../components/BackOfficeComponent/ModeloDeCuartilesComponent/EditarModeloDeCuartiles';
 import ModeloDePartiturasComponent from '../components/BackOfficeComponent/ModeloDePartiturasComponent/ModeloDePartiturasComponent';
 import AdministracionFormulariosComponent from '../components/BackOfficeComponent/AdministracionFormulariosComponent/AdministracionFormulariosComponent';
 import ExportarBasesDeDatosComponent from '../components/BackOfficeComponent/ExportarBasesDeDatosComponent/ExportarBasesDeDatosComponent';
@@ -89,6 +91,8 @@ export default class DashboardRoutes extends Component {
           <Route path="/groups" component={GroupsComponent} />
           <Route path="/home" component={Home} />
           <Route path="/login" component={Login} />
+          <Route exact path="/modelo-de-cuartiles" component={ModeloDeCuartilesComponent} />
+          <Route exact path="/modelo-de-cuartiles/:id" component={EditarModeloDeCuartiles} />
           <Route path="/modelo-de-partituras" component={ModeloDePartiturasComponent} />
           <Route exact path="/partituras" component={PartiturasComponent} />
           <Route exact path="/partituras/step/:id/:idUsuario/:idStep" component={StepName} />

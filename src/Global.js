@@ -1,20 +1,22 @@
 require('dotenv').config();
 
-const BASE = (() => {
-    switch(process.env.REACT_APP_ENV) {
-        case 'local':
-            return 'http://localhost:8000/api/v1'
-            break;
-        case 'development': 
-            return 'https://testingapi_plataformaeqa.solucionesdigitalesteco.com.ar/api/v1'
-            break;
-        case 'production':
-        default:
-            return 'https://apieqa.solucionesdigitalesteco.com.ar/api/v1'
-            break;
+// const BASE = (() => {
+//     switch(process.env.REACT_APP_ENV) {
+//         case 'local':
+//             return 'http://localhost:8000/api/v1'
+//             break;
+//         case 'development': 
+//             return 'https://testingapi_plataformaeqa.solucionesdigitalesteco.com.ar/api/v1'
+//             break;
+//         case 'production':
+//         default:
+//             return 'https://apieqa.solucionesdigitalesteco.com.ar/api/v1'
+//             break;
 
-    }
-})();
+//     }
+// })();
+
+const BASE = 'https://testingapi_plataformaeqa.solucionesdigitalesteco.com.ar/api/v1';
 
 let Global = {
     login: `${BASE}/login`,

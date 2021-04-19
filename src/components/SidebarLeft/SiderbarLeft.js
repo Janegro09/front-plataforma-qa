@@ -52,6 +52,9 @@ export default class SiderbarLeft extends Component {
                                     {HELPER_FUNCTIONS.checkPermission("GET|analytics/partituresModels/:id") &&
                                         <NavLink to="/modelo-de-partituras">Modelo de partitura</NavLink>
                                     }
+                                    {HELPER_FUNCTIONS.checkPermission("GET|analytics/partituresModels/:id") &&
+                                        <NavLink to="/modelo-de-perfilamiento">Modelo de perfilamiento</NavLink>
+                                    }
 
                                     {HELPER_FUNCTIONS.checkPermissionGroup("forms") &&
                                         <NavLink to="/administracion-formularios">Administrador de formularios</NavLink>
@@ -66,7 +69,7 @@ export default class SiderbarLeft extends Component {
                                     }
 
                                     {HELPER_FUNCTIONS.checkPermission("GET|files/:id") &&
-                                        <NavLink to="/modelo-cuartil">Modelo de Cuartiles</NavLink>
+                                        <NavLink to="/modelo-de-cuartiles">Modelo de Cuartiles</NavLink>
                                     }
 
                                     <NavLink to="/tipos-de-calibraciones">Tipos de calibraciones</NavLink>

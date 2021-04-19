@@ -85,8 +85,7 @@ const MyVerticallyCenteredModal = (props) => {
   const [valores, setValores] = useState([]);
   const [valoresAsc, setValoresAsc] = useState([]);
   const [valoresOnline, setValoresOnline] = useState([]);
-  const [cantidadesCuartilesDESC, setcantidadesCuartilesDESC] = useState([0,0,0,0]);
-  const [cantidadesCuartilesASC, setcantidadesCuartilesASC] = useState([0,0,0,0]);
+  const [cantidadesCuartiles, setcantidadesCuartiles] = useState([0,0,0,0]);
   
   const arrayInicial = [
     {
@@ -223,17 +222,17 @@ const MyVerticallyCenteredModal = (props) => {
         cantQ1++
       } else if (Q2.value<v && v<=Q3.value){
         cantQ2++
-      } else if (Q3.value<v && v<=Q4.value){
+      } else if (Q3.value<v && v<Q4.value){
         cantQ3++
-      } else if (Q4.value<v && v<=Vmax.value){
+      } else if (Q4.value<=v && v<=Vmax.value){
         cantQ4++
       }
     });
-
-    setcantidadesCuartilesDESC([cantQ1,cantQ2,cantQ3,cantQ4]);
-
-    setcantidadesCuartilesASC([cantQ4,cantQ3,cantQ2,cantQ1]);
-
+    if(props.valor.Qorder=="ASC"){
+      setcantidadesCuartiles([cantQ4,cantQ3,cantQ2,cantQ1]);
+    } else {
+      setcantidadesCuartiles([cantQ1,cantQ2,cantQ3,cantQ4]);
+    }
 
   }
   
@@ -272,14 +271,11 @@ const MyVerticallyCenteredModal = (props) => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            {props.valor.QName}
+           Metrica {props.valor.QName}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <h4>Orden {props.valor.Qorder}</h4>
-          <p>
-              Prueba de perfilamiento Online
-          </p>
           <div className="sliderContainer">
           <h5></h5>
           {
@@ -338,9 +334,16 @@ const MyVerticallyCenteredModal = (props) => {
             <tbody>
                 <tr>
                   <td>Valores</td>
-                    {valores.map((v,i)=>{
+                  {
+                    props.valor.Qorder=='ASC' ?
+                    valores.slice().reverse().map((v,i)=>{
                       return <td key={v.value+i}>{v.value}</td>
-                    })}
+                    })
+                    :
+                    valores.map((v,i)=>{
+                      return <td key={v.value+i}>{v.value}</td>
+                    })
+                  }
                 </tr>
             </tbody>
           </Table>
@@ -363,16 +366,9 @@ const MyVerticallyCenteredModal = (props) => {
               <tr>
                 <td>Cantidades</td>
                 {
-                  props.valor.Qorder=='ASC' ?
-
-                  cantidadesCuartilesASC.map((v,i) => {
+                  cantidadesCuartiles.map((v,i) => {
                     return <td key={i}> {v} </td>
                   })
-                :
-                cantidadesCuartilesDESC.slide(0).reverse().map((v,i) => {
-                    return <td key={i}> {v} </td>
-                  })
-
                 }
               </tr>
             </tbody>

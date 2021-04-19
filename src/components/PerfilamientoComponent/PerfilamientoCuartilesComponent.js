@@ -77,7 +77,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
 
     guardarModel = () => {
         let { modelSelected, result, nombreColumnas } = this.state;
-        console.log(result);
         let modelName = document.getElementById('model-name').value;
 
         if (modelName.trim() === '') {
@@ -198,17 +197,16 @@ export default class PerfilamientoCuartilesComponent extends Component {
                     let relValues = new calcular_modelo(result[r].Q1.VMin, result[r].Q4.VMax);
                     let f = model.find(elem => elem.QName === result[r].QName);
                     if(f) {
-                        // result[r] = f;
-                        result[r].Q1.VMax = relValues.rel_to_abs(f.Q1.VMax);
-                        result[r].Q2.VMax = relValues.rel_to_abs(f.Q2.VMax);
-                        result[r].Q3.VMax = relValues.rel_to_abs(f.Q3.VMax);
-
-                        result[r].Q2.VMin = relValues.rel_to_abs(f.Q2.VMin);
-                        result[r].Q3.VMin = relValues.rel_to_abs(f.Q3.VMin);
-                        result[r].Q4.VMin = relValues.rel_to_abs(f.Q4.VMin);
-
+                        if(f.edited){
+                            result[r].Q1.VMax = relValues.rel_to_abs(f.Q1.VMax);
+                            result[r].Q2.VMax = relValues.rel_to_abs(f.Q2.VMax);
+                            result[r].Q3.VMax = relValues.rel_to_abs(f.Q3.VMax);
+                            
+                            result[r].Q2.VMin = relValues.rel_to_abs(f.Q2.VMin);
+                            result[r].Q3.VMin = relValues.rel_to_abs(f.Q3.VMin);
+                            result[r].Q4.VMin = relValues.rel_to_abs(f.Q4.VMin);
+                        }
                         result[r].selected = true;
-                        console.log(result[r]);
                     } else {
                         result[r].selected = false;
                     }
@@ -431,7 +429,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
         if(value !== undefined && index !== -1) {
             switch(name) {
                 case "VMin": 
-                    result[index].Q1.VMax = (value)
+                    result[index].Q1.VMax = (value);
                 break;
                 case "VMax": 
                     result[index].Q3.VMax = (value);
@@ -440,12 +438,12 @@ export default class PerfilamientoCuartilesComponent extends Component {
                     result[index][name] = value
             }
             this.setState({ result });
+            console.log(result[index])
         } else return false;
 
     }
 
     guardarValores = (valoresModal) => {
-        // const {cuartilamientoOnline} = this.state;
         if(valoresModal){
             this.setState({
                 cuartilamientoOnline:valoresModal

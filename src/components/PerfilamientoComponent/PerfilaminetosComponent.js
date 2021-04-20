@@ -575,6 +575,7 @@ export default class PerfilaminetosComponent extends Component {
         }
 
         let id = cuartilSeleccionado;
+        console.log(id)
         const tokenUser = JSON.parse(localStorage.getItem("token"))
         let token = tokenUser
         let bearer = `Bearer ${token}`
@@ -585,6 +586,7 @@ export default class PerfilaminetosComponent extends Component {
             token = response.data.loggedUser.token
             bearer = `Bearer ${token}`
             let respuesta = response.data.Data
+            console.log(respuesta)
             const allUsers = respuesta.usuariosTotal
             const cuartiles = respuesta.cuartiles;
 

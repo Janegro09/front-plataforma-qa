@@ -16,7 +16,8 @@ require('dotenv').config();
 //     }
 // })();
 
-const BASE = 'https://testingapi_plataformaeqa.solucionesdigitalesteco.com.ar/api/v1';
+// const BASE = 'https://testingapi_plataformaeqa.solucionesdigitalesteco.com.ar/api/v1';
+const BASE = 'http://localhost:8000/api/v1';
 
 let Global = {
     login: `${BASE}/login`,
@@ -51,7 +52,8 @@ let Global = {
     monitoreos: `${BASE}/qa/monitoring`,
     calibrationTypes: `${BASE}/qa/calibration/types`,
     calibration: `${BASE}/qa/calibration`,
-    reporteria: `${BASE}/reporting`
+    reporteria: `${BASE}/reporting`,
+    agile: `${BASE}/analytics/agile`
 }
 
 export default Global;

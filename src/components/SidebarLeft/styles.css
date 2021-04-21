@@ -729,6 +729,13 @@ h4 {
   margin-top: 83px;
 }
 
+.labelTeco {
+    padding: 5px;
+    border-radius: 6px;
+    color: #fff;
+    background: #f57777;
+}
+
 .longXTable {
   font-weight: 100 !important;
 }
@@ -1180,3 +1187,22 @@ table tbody tr:hover {
 */
 
 /* FIN DARK MODE */
+
+.archivosSelesccionadosAgil {
+
+}
+
+.archivosSeleccionadosAgil article {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    padding: 10px;
+    background: #6f6f6f;
+    color: #fff;
+    width: 50%;
+    margin-bottom: 10px
+}
+
+.archivosSeleccionadosAgil article h4 {
+  cursor: pointer
+}

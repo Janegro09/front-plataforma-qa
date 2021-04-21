@@ -98,6 +98,9 @@ export default class SiderbarLeft extends Component {
                                         {HELPER_FUNCTIONS.checkPermission("GET|analytics/partitures/:id/:userId/:stepId") &&
                                             <NavLink to="/partituras">Partituras</NavLink>
                                         }
+                                        {HELPER_FUNCTIONS.checkPermission("POST|analytics/agile/:type") &&
+                                            <NavLink to="/agile/cuartilizacion">Cuartilización Agil</NavLink>
+                                        }
                                     </span>
                                     Analytics
                                 </div>

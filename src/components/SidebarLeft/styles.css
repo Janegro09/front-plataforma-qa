@@ -1188,21 +1188,31 @@ table tbody tr:hover {
 
 /* FIN DARK MODE */
 
-.archivosSelesccionadosAgil {
 
+select {
+  margin: 0px!important;
 }
 
 .archivosSeleccionadosAgil article {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
-    padding: 10px;
+    padding: 5px 10px;
     background: #6f6f6f;
     color: #fff;
-    width: 50%;
-    margin-bottom: 10px
+    /* width: 50%; */
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.archivosSeleccionadosAgil article p{
+  margin: 0px;
 }
 
 .archivosSeleccionadosAgil article h4 {
   cursor: pointer
+}
+
+.tablaBuscarUsuarios tr {
+  cursor: pointer;
 }

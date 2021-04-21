@@ -16,8 +16,8 @@ require('dotenv').config();
 //     }
 // })();
 
-// const BASE = 'https://testingapi_plataformaeqa.solucionesdigitalesteco.com.ar/api/v1';
-const BASE = 'http://localhost:8000/api/v1';
+const BASE = 'https://testingapi_plataformaeqa.solucionesdigitalesteco.com.ar/api/v1';
+// const BASE = 'http://localhost:8000/api/v1';
 
 let Global = {
     login: `${BASE}/login`,

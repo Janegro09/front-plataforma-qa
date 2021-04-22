@@ -171,17 +171,19 @@ export const CuartilizacionAgil = () => {
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
+                                    <th>Programa</th>
                                 </tr>
                             </thead>
+                            <tbody>
                             {files.map(p => {
                                 return (
-                                    <tbody key={p.id} onClick={() => selectFile(p)}>
-                                        <tr>
-                                            <td>{p.name} - <span className={!p.program ? 'labelTeco': ""}>{!p.program ? 'SIN PROGRAMA' : p.program.name }</span></td>
-                                        </tr>
-                                    </tbody>
+                                    <tr key={p.id} onClick={() => selectFile(p)}>
+                                        <td>{p.name}</td>
+                                        <td><span className={!p.program ? 'labelTeco red': "labelTeco green"}>{!p.program ? 'SIN PROGRAMA' : p.program.name }</span></td>
+                                    </tr>
                                 )
                             })}
+                            </tbody>
                         </table>
                     }
                 </div>
@@ -199,7 +201,7 @@ export const CuartilizacionAgil = () => {
                                     }
                                 </select>
                                 <p>{file.name}</p>
-                                <h4 onClick={() => deleteFile(file)}>X</h4>
+                                <span onClick={() => deleteFile(file)}>&times;</span>
                             </article>
                         )
                     })

@@ -730,10 +730,21 @@ h4 {
 }
 
 .labelTeco {
-    padding: 5px;
-    border-radius: 6px;
-    color: #fff;
-    background: #f57777;
+  padding: 5px 7px;
+  font-size: .7rem;
+  text-transform:uppercase;
+  display: inline-block;
+  border-radius: 3px;
+  color: #fff;
+}
+.labelTeco.red {
+    background: #e74c3c !important;
+}
+.labelTeco.blue {
+    background: #2980b9 !important;
+}
+.labelTeco.green {
+  background:#27ae60 !important;
 }
 
 .longXTable {
@@ -1187,32 +1198,52 @@ table tbody tr:hover {
 */
 
 /* FIN DARK MODE */
-
-
-select {
-  margin: 0px!important;
+.archivosSeleccionadosAgil{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: start;
 }
-
 .archivosSeleccionadosAgil article {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
-    padding: 5px 10px;
-    background: #6f6f6f;
+    align-items:center;
+    padding: .8rem;
+    background: #2e3338;
     color: #fff;
-    /* width: 50%; */
-    margin-bottom: 10px;
-    align-items: center;
+    width: 49%;
+    margin-bottom: 1rem;
+    border-radius: 3px;
 }
 
-.archivosSeleccionadosAgil article p{
-  margin: 0px;
+.archivosSeleccionadosAgil article * {
+  margin:0;
 }
 
-.archivosSeleccionadosAgil article h4 {
-  cursor: pointer
+.archivosSeleccionadosAgil article select {
+  padding:.3rem;
+  background-color: rgba(255,255,255,.2) !important;
+  color:#fff;
+  border:none;
+  border-radius: 3px;
+  outline:none !important;
+  font-size: .8rem;
+}
+.archivosSeleccionadosAgil article option {
+  color:#111;
+  padding: 3px;
 }
 
-.tablaBuscarUsuarios tr {
+.archivosSeleccionadosAgil article p {
+  margin:0 1rem;
+}
+
+.archivosSeleccionadosAgil article span {
   cursor: pointer;
+  color:#fff;
+}
+.tablaBuscarUsuarios .labelTeco {
+  min-width:120px;
+  text-align: center;
 }

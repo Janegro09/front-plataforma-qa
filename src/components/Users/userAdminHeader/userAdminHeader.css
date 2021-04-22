@@ -5,7 +5,7 @@
     float: right;
     padding: 9px;
     align-items: baseline;
- 
+    z-index: 1;
 }
 
 .containerIn:focus {

@@ -152,7 +152,7 @@ export const ResultadoCuartilizacion = ({ responseAgil, archivosSeleccionados })
                     <Table striped bordered hover className="table_agile" >
                         <thead>
                             <tr>
-                                <td>Columnas</td>
+                                <th colspan="2">Columnas</th>
                                 {headers.map((v) => {
                                     return <th id={v.file_id} onClick={redirectToCuartiles} key={v.file_id}>{v.file_name}</th>
                                 })
@@ -160,85 +160,85 @@ export const ResultadoCuartilizacion = ({ responseAgil, archivosSeleccionados })
                             </tr>
                         </thead>
                         <tbody className="tbody_agile">
-                                {columnas.map((v, i) => {
-                                    return  (
-                                        <tr key={v}>
-                                            <td>
-                                                <article>
-                                                    <div className="file_name">
-                                                        <h4>{v}</h4>
-                                                    </div>
-                                                    <div className="file_rows">
-                                                        <span>Q1 [VMin - VMax]</span>
-                                                        <span>Q1 Usuarios</span>
+                            {columnas.map((v, i) => {
+                                return  (
+                                    <tr key={v}>
+                                        <td>
+                                            <div className="file_name">
+                                                <h4>{v}</h4>                                                        
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <article>
+                                                <div className="file_rows">
+                                                    <span>Q1 [VMin - VMax]</span>
+                                                    <span>Q1 Usuarios</span>
 
-                                                        <span>Q2 [VMin - VMax]</span>
-                                                        <span>Q2 Usuarios</span>
+                                                    <span>Q2 [VMin - VMax]</span>
+                                                    <span>Q2 Usuarios</span>
 
-                                                        <span>Q3 [VMin - VMax]</span>
-                                                        <span>Q3 Usuarios</span>
+                                                    <span>Q3 [VMin - VMax]</span>
+                                                    <span>Q3 Usuarios</span>
 
-                                                        <span>Q4 [VMin - VMax]</span>
-                                                        <span>Q4 Usuarios</span>
-                                                        <span>Order</span>
-                                                    </div>
-                                                </article>
-                                            </td>
-                                            {filas.map((filas, index) => {
-                                                // Buscamos si existe la fila para este archivo
-                                                const existelafila = filas.find(elem => elem['Nombre del Cuartil'].value == v);
-                                                if(existelafila) {
-                                                    return (
-                                                        <td>
-                                                            <article>
-                                                                <div className="file_rows">
-                                                                    <span>[{existelafila['Q1 | VMin'].value} - {existelafila['Q1 | VMax'].value}]</span>
-                                                                    <span>{existelafila['Q1 | Cant'].value}</span>
+                                                    <span>Q4 [VMin - VMax]</span>
+                                                    <span>Q4 Usuarios</span>
+                                                    <span>Order</span>
+                                                </div>
+                                            </article>
+                                        </td>
+                                        {filas.map((filas, index) => {
+                                            // Buscamos si existe la fila para este archivo
+                                            const existelafila = filas.find(elem => elem['Nombre del Cuartil'].value == v);
+                                            if(existelafila) {
+                                                return (
+                                                    <td>
+                                                        <article>
+                                                            <div className="file_rows">
+                                                                <span>[{existelafila['Q1 | VMin'].value} - {existelafila['Q1 | VMax'].value}]</span>
+                                                                <span>{existelafila['Q1 | Cant'].value}</span>
 
-                                                                    <span>[{existelafila['Q2 | VMin'].value} - {existelafila['Q2 | VMax'].value}]</span>
-                                                                    <span>{existelafila['Q2 | Cant'].value}</span>
+                                                                <span>[{existelafila['Q2 | VMin'].value} - {existelafila['Q2 | VMax'].value}]</span>
+                                                                <span>{existelafila['Q2 | Cant'].value}</span>
 
-                                                                    <span>[{existelafila['Q3 | VMin'].value} - {existelafila['Q3 | VMax'].value}]</span>
-                                                                    <span>{existelafila['Q3 | Cant'].value}</span>
+                                                                <span>[{existelafila['Q3 | VMin'].value} - {existelafila['Q3 | VMax'].value}]</span>
+                                                                <span>{existelafila['Q3 | Cant'].value}</span>
 
-                                                                    <span>[{existelafila['Q4 | VMin'].value} - {existelafila['Q4 | VMax'].value}]</span>
-                                                                    <span>{existelafila['Q4 | Cant'].value}</span>
+                                                                <span>[{existelafila['Q4 | VMin'].value} - {existelafila['Q4 | VMax'].value}]</span>
+                                                                <span>{existelafila['Q4 | Cant'].value}</span>
 
-                                                                    <span>{existelafila['Q1 | VMin'].value < existelafila['Q4 | VMax'].value ? 'DESC' : 'ASC'}</span>
-                                                                </div>
-                                                            </article>
-                                                        </td>
-                                                    )
-                                                } else {
-                                                    return (
-                                                        <td>
-                                                            <article>
-                                                                <div className="file_rows">
-                                                                    <span>-</span>
-                                                                    <span>-</span>
+                                                                <span>{existelafila['Q1 | VMin'].value < existelafila['Q4 | VMax'].value ? 'DESC' : 'ASC'}</span>
+                                                            </div>
+                                                        </article>
+                                                    </td>
+                                                )
+                                            } else {
+                                                return (
+                                                    <td>
+                                                        <article>
+                                                            <div className="file_rows">
+                                                                <span>-</span>
+                                                                <span>-</span>
 
-                                                                    <span>-</span>
-                                                                    <span>-</span>
+                                                                <span>-</span>
+                                                                <span>-</span>
 
-                                                                    <span>-</span>
-                                                                    <span>-</span>
+                                                                <span>-</span>
+                                                                <span>-</span>
 
-                                                                    <span>-</span>
-                                                                    <span>-</span>
-                                                                    <span>-</span>
-                                                                </div>
-                                                            </article>
-                                                        </td>
-                                                    )
-                                                }
-
-
-                                            })
+                                                                <span>-</span>
+                                                                <span>-</span>
+                                                                <span>-</span>
+                                                            </div>
+                                                        </article>
+                                                    </td>
+                                                )
                                             }
-                                        </tr>
-                                    )
-                                })
-                                }
+                                        })
+                                        }
+                                    </tr>
+                                )
+                            })
+                            }
                         </tbody>
                     </Table>
                 }

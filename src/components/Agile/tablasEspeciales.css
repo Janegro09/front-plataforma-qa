@@ -9,31 +9,40 @@
 .tbody_agile tr {
 }
 
+.table_agile thead tr th {
+    text-align: center;
+    font-weight: bold !important;
+    text-transform: uppercase;
+    font-size: .75rem;
+}
 .tbody_agile tr td {
-    
+    vertical-align: middle;
+}
+.tbody_agile > tr > td {
+    padding:0;
 }
 
 .tbody_agile tr td article {
     display: flex;
     flex-flow: row nowrap;
     min-height: 200px;
-    width: 200px !important;
-    justify-content: center;
+    justify-content: space-evenly;
+    border-radius: 0;
 }
 
-.tbody_agile tr td article .file_name {
+.tbody_agile tr td .file_name {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 10%;
+    padding:.5rem;
 }
 
-.tbody_agile tr td article .file_name h4 {
-    /* text-orientation: unset; */
-    -webkit-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
-    transform: rotate(-90deg);
+.tbody_agile tr td .file_name h4 {
+    writing-mode:vertical-lr;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
     text-transform: uppercase;
     white-space: nowrap;
 }
@@ -43,8 +52,13 @@
     flex-flow: column nowrap;
     justify-content: space-between;
     align-items: center;
+    width:100%;
 }
 
 .tbody_agile tr td article .file_rows span {
-
+    width: 100%;
+    padding: .5rem;
+    font-size: .8rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(0,0,0,.05);
 }

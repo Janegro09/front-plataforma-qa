@@ -1,0 +1,50 @@
+.tbody_agile {
+    border: 1px solid red;
+}
+
+.table_agile {
+    overflow: scroll;
+}
+
+.tbody_agile tr {
+}
+
+.tbody_agile tr td {
+    
+}
+
+.tbody_agile tr td article {
+    display: flex;
+    flex-flow: row nowrap;
+    min-height: 200px;
+    width: 200px !important;
+    justify-content: center;
+}
+
+.tbody_agile tr td article .file_name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10%;
+}
+
+.tbody_agile tr td article .file_name h4 {
+    /* text-orientation: unset; */
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.tbody_agile tr td article .file_rows {
+    display: flex;          
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tbody_agile tr td article .file_rows span {
+
+}

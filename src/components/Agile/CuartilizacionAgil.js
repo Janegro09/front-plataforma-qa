@@ -108,24 +108,26 @@ export const CuartilizacionAgil = () => {
     }, [])
 
     const selectFile = (file) => {
-
         const { id, name, program } = file
-
+        
         if(!program) {
             swal('Error', 'Solo puedes agregar archivos que tengan un programa asignado', 'error');
             return;
         }
-
+        
         let Seleccionados = archivosSeleccionados
-
-        if(!archivosSeleccionados.includes(id)) {
+        
+        if(!archivosSeleccionados.find(elem => elem.id===id)) {
             Seleccionados.push(file) 
+        } else {
+            swal('Info', `El archivo ${name} ya se encuentra seleccionado`, 'info');
         }
 
         setSelectedFiles([...Seleccionados])
     }
 
     const selectModel = (e, fileId) => {
+
         if(!fileId || !e) return;
         const { value } = e.target;
 

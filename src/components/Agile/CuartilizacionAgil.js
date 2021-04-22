@@ -5,7 +5,7 @@ import swal from 'sweetalert'
 import Global from '../../Global'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import moment from 'moment'
-
+import { ResultadoCuartilizacion } from './ResultadoCuartilizacion'
 export const CuartilizacionAgil = () => {
     const [loading, setloading] = useState(false);
 
@@ -15,6 +15,7 @@ export const CuartilizacionAgil = () => {
     const [fileSearch, setfileSearch] = useState("");
 
     const [archivosSeleccionados, setSelectedFiles] = useState([]);
+    const [responseAgil, setresponseAgil] = useState(null);
 
     const getFile = (e) => {
         const { value } = e.target;
@@ -68,8 +69,9 @@ export const CuartilizacionAgil = () => {
         .then(response => {
             let respuesta = response.data;
             setloading(false);
-
-            console.log(respuesta)
+            if(respuesta.Success) {
+                setresponseAgil(respuesta.Data);
+            }
         })
         .catch((e) => {
             // Si hay algún error en el request lo deslogueamos
@@ -156,58 +158,67 @@ export const CuartilizacionAgil = () => {
         <Body loading={loading}>
             <div>
                 <h4>Cuartilizacion Automatica</h4>
-                <div>
-                    <br />
-                    <input
-                        type="text"
-                        placeholder="Buscar archivo de perfilamiento"
-                        onBlur={getFile}
-                        defaultValue={fileSearch}
-                        className="form-control margin-bottom-10"
-                    />
+                {responseAgil ?
+                        <ResultadoCuartilizacion
+                            responseAgil={responseAgil}
+                            archivosSeleccionados={archivosSeleccionados}
+                        />
+                    :
+                    <>
+                        <div>
+                            <br />
+                            <input
+                                type="text"
+                                placeholder="Buscar archivo de perfilamiento"
+                                onBlur={getFile}
+                                defaultValue={fileSearch}
+                                className="form-control margin-bottom-10"
+                            />
 
-                    {files.length > 0 &&
-                        <table className="tablaBuscarUsuarios">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Programa</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {files.map(p => {
-                                return (
-                                    <tr key={p.id} onClick={() => selectFile(p)}>
-                                        <td>{p.name}</td>
-                                        <td><span className={!p.program ? 'labelTeco red': "labelTeco green"}>{!p.program ? 'SIN PROGRAMA' : p.program.name }</span></td>
-                                    </tr>
-                                )
-                            })}
-                            </tbody>
-                        </table>
-                    }
-                </div>
-                <div className="archivosSeleccionadosAgil">
-                    {archivosSeleccionados.map(file => {
-                        return (
-                            <article key={file.id} >
-                                <select value={file.model_id} onChange={(e) => selectModel(e,file.id)}>
-                                    <option value="">Selecciona un modelo...</option>
-                                    {models.map((v) => {
+                            {files.length > 0 &&
+                                <table className="tablaBuscarUsuarios">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Programa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {files.map(p => {
                                         return (
-                                            <option key={v._id} value={v._id}>{v.name}</option>
+                                            <tr key={p.id} onClick={() => selectFile(p)}>
+                                                <td>{p.name}</td>
+                                                <td><span className={!p.program ? 'labelTeco red': "labelTeco green"}>{!p.program ? 'SIN PROGRAMA' : p.program.name }</span></td>
+                                            </tr>
                                         )
-                                    })
-                                    }
-                                </select>
-                                <p>{file.name}</p>
-                                <span onClick={() => deleteFile(file)}>&times;</span>
-                            </article>
-                        )
-                    })
-                    }
-                </div>
-                <button onClick={enviar} className="buttonSiguiente">Guardar</button>
+                                    })}
+                                    </tbody>
+                                </table>
+                            }
+                        </div>
+                        <div className="archivosSeleccionadosAgil">
+                            {archivosSeleccionados.map(file => {
+                                return (
+                                    <article key={file.id} >
+                                        <select value={file.model_id} onChange={(e) => selectModel(e,file.id)}>
+                                            <option value="">Selecciona un modelo...</option>
+                                            {models.map((v) => {
+                                                return (
+                                                    <option key={v._id} value={v._id}>{v.name}</option>
+                                                )
+                                            })
+                                            }
+                                        </select>
+                                        <p>{file.name}</p>
+                                        <span onClick={() => deleteFile(file)}>&times;</span>
+                                    </article>
+                                )
+                            })
+                            }
+                        </div>
+                        <button onClick={enviar} className="buttonSiguiente">Guardar</button>
+                    </>
+                }
             </div>
         </Body>
     )

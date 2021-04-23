@@ -5,8 +5,10 @@ import swal from 'sweetalert'
 import Global from '../../Global'
 import { HELPER_FUNCTIONS } from '../../helpers/Helpers'
 import moment from 'moment'
-import { ResultadoCuartilizacion } from './ResultadoCuartilizacion'
-export const CuartilizacionAgil = () => {
+import { ResultadosPerfilamiento } from './ResultadosPerfilamiento'
+
+
+export const PerfilamientoAgil = () => {
     const [loading, setloading] = useState(false);
 
     // Archivos
@@ -43,12 +45,9 @@ export const CuartilizacionAgil = () => {
             console.log("Error: ", e)
         });
     }
-    // Archivos
-    // Modelos de cuartiles
 
     const enviar = () => {
         let Seleccionados = [];
-        
 
         archivosSeleccionados.map(v => {
             if(v.id && v.model_id) {
@@ -65,7 +64,7 @@ export const CuartilizacionAgil = () => {
         setloading(true);
         const token = JSON.parse(localStorage.getItem("token"))
         const bearer = `Bearer ${token}`
-        axios.post(Global.agile + '/cuartilizacion', Seleccionados ,{ headers: { Authorization: bearer } })
+        axios.post(Global.agile + '/perfilamiento', Seleccionados ,{ headers: { Authorization: bearer } })
         .then(response => {
             let respuesta = response.data;
             setloading(false);
@@ -87,7 +86,7 @@ export const CuartilizacionAgil = () => {
         const tokenUser = JSON.parse(localStorage.getItem("token"))
         const token = tokenUser
         const bearer = `Bearer ${token}`
-        axios.get(Global.newModel, { headers: { Authorization: bearer } }).then(response => {
+        axios.get(Global.perfilamientosModel, { headers: { Authorization: bearer } }).then(response => {
             let data = response.data.Data
 
             setloading(false);
@@ -127,6 +126,14 @@ export const CuartilizacionAgil = () => {
 
         setSelectedFiles([...Seleccionados])
     }
+        
+    const deleteFile = (file) => {
+        const { id, name, program } = file
+
+        let Seleccionados = archivosSeleccionados.filter(e => e.id != file.id);
+
+        setSelectedFiles([...Seleccionados])
+    }
 
     const selectModel = (e, fileId) => {
 
@@ -146,20 +153,12 @@ export const CuartilizacionAgil = () => {
 
     }
     
-    const deleteFile = (file) => {
-        const { id, name, program } = file
-
-        let Seleccionados = archivosSeleccionados.filter(e => e.id != file.id);
-
-        setSelectedFiles([...Seleccionados])
-    }
-
     return (
         <Body loading={loading}>
             <div>
-                <h4>Cuartilizacion Agil</h4>
+                <h4>Perfilamiento Agil</h4>
                 {responseAgil ?
-                        <ResultadoCuartilizacion
+                        <ResultadosPerfilamiento
                             responseAgil={responseAgil}
                             archivosSeleccionados={archivosSeleccionados}
                         />

@@ -195,6 +195,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                     let relValues = new calcular_modelo(result[r].Q1.VMin, result[r].Q4.VMax);
                     let f = model.find(elem => elem.QName === result[r].QName);
                     if(f) {
+                        console.log(f)
                         if(f.edited){
                             result[r].Q1.VMax = relValues.rel_to_abs(f.Q1.VMax);
                             result[r].Q2.VMax = relValues.rel_to_abs(f.Q2.VMax);
@@ -205,6 +206,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
                             result[r].Q4.VMin = relValues.rel_to_abs(f.Q4.VMin);
                         }
                         result[r].selected = true;
+                        result[r].Qorder = f.Qorder;
                     } else {
                         result[r].selected = false;
                     }

@@ -37,8 +37,9 @@ export default class ModeloCuartilesComponent extends Component {
                 dataFiltered: searchResults
             })
         } else {
+            let dataFiltered = result.filter(el => el.selected === true);
             this.setState({
-                dataFiltered: result
+                dataFiltered
             })
         }
 
@@ -97,20 +98,22 @@ export default class ModeloCuartilesComponent extends Component {
 
             let result = [];
             let nameModelSelected = '';
+            let dataFiltered = [];
             
             let modelSelected = modelos.find(element => element._id === id);
             if (modelSelected) { 
                 nameModelSelected = modelSelected.name;
                 let model = JSON.parse(modelSelected.values);
                 result = model;
-            }          
+            }     
+            dataFiltered = result.filter(element => element.selected === true);
+
             this.setState({
                 nameModelSelected,
-                dataFiltered: result,
+                dataFiltered,
                 result,
                 loading: false,
             }); 
-            console.log(result);
         }).catch((e) => {
             // Si hay algún error en el request lo deslogueamos
             if (!e.response.data.Success && e.response.data.HttpCodeResponse === 401) {
@@ -126,12 +129,15 @@ export default class ModeloCuartilesComponent extends Component {
 
     selectRow = async(e) => {
         e.preventDefault();
-        const { id } = e.target;
+        const { id, name } = e.target;
         let { result } = this.state;
         let index = result.findIndex(elem => elem.QName === id);
         if(index !== -1) {
-            result[index].edited = !result[index].edited;
-            console.log(result[index].edited);
+            if(name === 'edited'){
+                result[index].edited = !result[index].edited;
+            } else {
+                result[index].selected = !result[index].selected;
+            }
         } else return false;
 
         this.setState({ result })
@@ -202,6 +208,7 @@ export default class ModeloCuartilesComponent extends Component {
                                     <th>Q2 VMax</th>
                                     <th>Q3 VMax</th>
                                     <th className="tableIcons">Cuartilizar Automáticamente</th>
+                                    <th className="tableIcons">Seleccionar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -256,15 +263,23 @@ export default class ModeloCuartilesComponent extends Component {
 
                                                 <td>
                                                     <Checkbox
-                                                        name=""
+                                                        name="edited"
                                                         checked={!columna.edited}
                                                         id={columna.QName}
                                                         onChange={this.selectRow}
                                                     /> 
-                                                    <button onClick={(e) => {
+                                                    {/*<button onClick={(e) => {
                                                         e.preventDefault();
                                                         this.deleteRow(columna.QName);
-                                                    }} className="celdaBtnHover"> <DeleteIcon style={{ fontSize: 15 }} /> </button>
+                                                    }} className="celdaBtnHover"> <DeleteIcon style={{ fontSize: 15 }} /> </button>*/}
+                                                </td>
+                                                <td>
+                                                    <Checkbox
+                                                        name="selected"
+                                                        checked={columna.selected}
+                                                        id={columna.QName}
+                                                        onChange={this.selectRow}
+                                                    /> 
                                                 </td>
                                             </tr>
                                         )

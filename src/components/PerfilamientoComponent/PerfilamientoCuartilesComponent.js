@@ -64,8 +64,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
                 dataFiltered: nombreColumnas
             })
         }
-
-
     }
 
     handleInputChange = (event) => {
@@ -85,7 +83,7 @@ export default class PerfilamientoCuartilesComponent extends Component {
             })
         } else {
             //Se modifica para cuartilización agil y se puedan guardar los valores seleccionados y no seleccionados 14-04-2021
-            result = result.filter(elem => elem.selected === true);
+            //result = result.filter(elem => elem.selected === true);
 
             let relativeValues = [];
 
@@ -206,7 +204,8 @@ export default class PerfilamientoCuartilesComponent extends Component {
                             result[r].Q3.VMin = relValues.rel_to_abs(f.Q3.VMin);
                             result[r].Q4.VMin = relValues.rel_to_abs(f.Q4.VMin);
                         }
-                        result[r].selected = true;
+                        result[r].Qorder = f.Qorder;
+                        result[r].selected = f.selected;
                     } else {
                         result[r].selected = false;
                     }

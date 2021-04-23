@@ -53,7 +53,7 @@ import TiposDeCalibraciones from '../components/BackOfficeComponent/TiposDeCalib
 import CalibracionesView from '../components/QA/CalibracionesView';
 import Reporteria from '../components/Reporteria/Reporteria';
 import { CuartilizacionAgil } from '../components/Agile/CuartilizacionAgil';
-
+import { PerfilamientoAgil } from '../components/Agile/PerfilamientoAgil';
 export default class DashboardRoutes extends Component {
   render() {
 
@@ -116,6 +116,7 @@ export default class DashboardRoutes extends Component {
           <Route exact path="/calibraciones" component={Calibraciones} />
           <Route exact path="/calibraciones/:id" component={CalibracionesView} />
           <Route exact path="/agile/cuartilizacion" component={CuartilizacionAgil} />
+          <Route exact path="/agile/perfilamiento" component={PerfilamientoAgil} />
         </Switch>
       </BrowserRouter>
     )

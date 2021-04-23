@@ -101,6 +101,9 @@ export default class SiderbarLeft extends Component {
                                         {HELPER_FUNCTIONS.checkPermission("POST|analytics/agile/:type") &&
                                             <NavLink to="/agile/cuartilizacion">Cuartilización Agil</NavLink>
                                         }
+                                        {HELPER_FUNCTIONS.checkPermission("POST|analytics/agile/:type") &&
+                                            <NavLink to="/agile/perfilamiento">Perfilamiento Agil</NavLink>
+                                        }
                                     </span>
                                     Analytics
                                 </div>

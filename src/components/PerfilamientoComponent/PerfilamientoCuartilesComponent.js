@@ -86,38 +86,36 @@ export default class PerfilamientoCuartilesComponent extends Component {
             //result = result.filter(elem => elem.selected === true);
 
             let relativeValues = [];
-
+            
             for (const row of result) {
                 let relValues = new calcular_modelo(row.Q1.VMin, row.Q4.VMax);
                 let aux=row;
                 aux.edited=false;
-                let objectToCompare = nombreColumnas.find(element => element.QName === row.QName);
-                
+                let objectToCompare = nombreColumnas.find(element => element.columnName === row.QName);
                 if(objectToCompare){
                     if(
-                        (objectToCompare.Q1.VMax!=row.Q1.VMax ||
-                        objectToCompare.Q2.VMax!=row.Q2.VMax ||
-                        objectToCompare.Q3.VMax!=row.Q3.VMax)
-                        ){
-                            aux.edited=true;
-                        } 
-                }
-
+                        (objectToCompare.DefaultValues.Q1.VMax!=row.Q1.VMax ||
+                            objectToCompare.DefaultValues.Q2.VMax!=row.Q2.VMax ||
+                            objectToCompare.DefaultValues.Q3.VMax!=row.Q3.VMax)
+                            ){
+                                aux.edited=true;
+                            } 
+                        }
+                        
                 aux.Q1.VMax= relValues.abs_to_rel(row.Q1.VMax);
                 aux.Q2.VMax=relValues.abs_to_rel(row.Q2.VMax);
                 aux.Q3.VMax=relValues.abs_to_rel(row.Q3.VMax);
                 aux.Q4.VMax=relValues.abs_to_rel(row.Q4.VMax);
-
+                
                 aux.Q1.VMin=relValues.abs_to_rel(row.Q1.VMin);
                 aux.Q2.VMin=aux.Q1.VMax;
                 aux.Q3.VMin=aux.Q2.VMax;
                 aux.Q4.VMin=aux.Q3.VMax;
-
+                
                 relativeValues.push(aux);
             }
-
-            console.log(relativeValues);
-
+                    
+                    
             relativeValues = JSON.stringify(relativeValues);
             let token = JSON.parse(localStorage.getItem('token'))
             const config = {
@@ -437,7 +435,6 @@ export default class PerfilamientoCuartilesComponent extends Component {
                     result[index][name] = value
             }
             this.setState({ result });
-            console.log(result[index])
         } else return false;
 
     }
